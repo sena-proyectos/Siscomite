@@ -1,5 +1,4 @@
 import { pool } from '../db.js'
-import bcrypt from 'bcryptjs'
 
 export const getUser = async (req, res) => {
     try {
