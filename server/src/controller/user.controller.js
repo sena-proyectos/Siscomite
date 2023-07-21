@@ -14,7 +14,7 @@ export const regiserUser = async (req, res) => {
 
     try {
         await pool.query('INSERT INTO usuarios (nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena, id_roles) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 2)', [nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena])
-        res.status(200).send({ message: 'Usuario creado exitosamente' })
+        res.status(201).send({ message: 'Usuario creado exitosamente' })
     } catch (error) {
         res.status(500).send({ message: 'Error al crear el usuario' })
     }
@@ -34,6 +34,6 @@ export const loginUser = async (req, res) => {
 
         res.status(200).json(response)
     } catch (error) {
-        res.status(400).send({ message: 'No se ha podido iniciar sesión' })
+        res.status(500).send({ message: 'No se ha podido iniciar sesión' })
     }
 }
