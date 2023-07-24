@@ -3,7 +3,7 @@ import { pool } from '../db.js'
 export const getUser = async (req, res) => {
     try {
         const [result] = await pool.query('SELECT * FROM usuarios')
-        res.status(200).send(result)
+        res.status(200).send({result})
     } catch (error) {
         res.status(500).send({ message: 'Error al listar los usuarios' })
     }
@@ -32,7 +32,7 @@ export const loginUser = async (req, res) => {
             },
         }
 
-        res.status(200).json(response)
+        res.status(200).json({response})
     } catch (error) {
         res.status(500).send({ message: 'No se ha podido iniciar sesión' })
     }
