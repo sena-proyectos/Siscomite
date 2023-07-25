@@ -3,7 +3,7 @@ import { User } from './Components/User/User'
 
 import './App.css'
 
-function App() {
+function App  ()  {
 
   return (
     <Routes>
