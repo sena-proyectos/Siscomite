@@ -9,6 +9,15 @@ export const getUser = async (req, res) => {
     }
 }
 
+export const getTeacher = async (req, res) => {
+    try {
+        const [result] = await pool.query('SELECT * FROM usuarios WHERE id_roles = 2')
+        res.status(200).send({result})
+    } catch (error) {
+        res.status(500).send({ message: 'Error al listar los instructores' })
+    }
+}
+
 export const regiserUser = async (req, res) => {
     const { nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena } = req.body
 
