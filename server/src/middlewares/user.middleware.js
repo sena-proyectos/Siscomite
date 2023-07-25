@@ -98,6 +98,6 @@ export const createToken = async (req, res, next) => {
         res.locals.token = token
         next()
     } catch (error) {
-        res.status(400).send({ message: 'Error al generar el token' })
+        res.status(500).send({ message: 'Error al generar el token' })
     }
 }

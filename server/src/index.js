@@ -10,7 +10,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.use('/api', indexRoutes)
+app.use(indexRoutes)
 app.use('/api', userRoutes)
 
 app.use((req, res) => {
