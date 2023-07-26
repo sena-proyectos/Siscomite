@@ -65,7 +65,7 @@ const Register = () => {
 
 
 
-            <button className="btn">RegistrateR</button>
+            <button className="btn">Registrate</button>
             <p className="textForm">
               ¿Ya estas registrado?{" "}
               <Link className="text" to={"/"}>

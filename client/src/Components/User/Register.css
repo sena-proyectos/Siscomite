@@ -94,6 +94,13 @@
   color: gray;
 }
 
+.formInputRe:focus + .formLabel,
+.formInputRe:not(:placeholder-shown) + .formLabel {
+  transform: translateY(-1px) scale(0.9);
+  transform-origin: left top;
+  color: gray;
+}
+e
 .formLabel {
   cursor: pointer;
   pointer-events: none;
