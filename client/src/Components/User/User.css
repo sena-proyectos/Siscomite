@@ -15,7 +15,7 @@
 
 .main {
   margin: auto;
-  animation: show 2s ease-in-out;
+  animation: show 1s ease-in-out;
 }
 
 .loginForm {
@@ -52,7 +52,7 @@
   width: 100%;
   background-color: rgba(128, 128, 128, 0.374);
   font-size: 1em;
-  padding: 0.8em;
+  padding: 0.8em 0;
   border: none;
   outline: none;
   border-radius: 20px;
@@ -95,17 +95,6 @@
 .textForm {
   background-color: white;
 }
-
-/* .loginImageForm {
-  background-color: white;
-  display: grid;
-  place-items: center;
-  box-shadow: 0px 5px 10px -5px rgba(0, 0, 0, 0.674);
-}
-
-.image {
-  background-color: white;
-} */
 
 /* @media screen and (max-width: 1000px) {
   .image,.loginImageForm {

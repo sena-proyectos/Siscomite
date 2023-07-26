@@ -1,11 +1,11 @@
-/* @keyframes show {
+@keyframes show {
   0% {
     opacity: 0;
   }
   100% {
     opacity: 1;
   }
-}*/
+}
 
 .container {
   display: flex;
@@ -67,6 +67,16 @@
 
 .formInputR{
   width: 80%;
+  background-color: rgba(128, 128, 128, 0.374);
+  font-size: 1em;
+  padding: 0.8em;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  justify-content: space-between;
+}
+.formInputRe{
+  width: 90%;
   background-color: rgba(128, 128, 128, 0.374);
   font-size: 1em;
   padding: 0.8em;

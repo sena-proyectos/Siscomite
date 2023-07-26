@@ -26,14 +26,14 @@ const Register = () => {
             </section>
 
             <section className="inp">
-                <input type="text" name="document" className="formInput" placeholder=" " />
+                <input type="text" name="document" className="formInputRe" placeholder=" " />
                 <label className="formLabel" htmlFor="document">
                   Correo institucional
                 </label>
               </section>
 
               <section className="inp">
-                <input type="text" name="document" className="formInput" placeholder=" " />
+                <input type="text" name="document" className="formInputRe" placeholder=" " />
                 <label className="formLabel" htmlFor="document">
                   Teléfono
                 </label>
@@ -57,7 +57,7 @@ const Register = () => {
             </section>
 
             <section className="inp">
-              <input type="password" name="password" className="formInput" placeholder=" " />
+              <input type="password" name="password" className="formInputRe" placeholder=" " />
               <label className="formLabel" htmlFor="password">
                 Contraseña
               </label>
@@ -65,7 +65,7 @@ const Register = () => {
 
 
 
-            <button className="btn">Registrate</button>
+            <button className="btn">RegistrateR</button>
             <p className="textForm">
               ¿Ya estas registrado?{" "}
               <Link className="text" to={"/"}>
