@@ -32,7 +32,7 @@ const User = () => {
         </figure>
       </div>
     </section>
-  );
+  )
 }
 
-export { User };
+export { User }
