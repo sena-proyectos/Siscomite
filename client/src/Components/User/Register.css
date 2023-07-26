@@ -32,19 +32,16 @@
 .registerForm .title {
   font-size: 2rem;
   margin-bottom: 0.8em;
-  background-color: white;
 }
 
 .inputGroup{
   display: flex;
-  background-color: white;
 
 }
 
 .inpu {
   position: relative;
   color: black;
-  background-color: white;
   
 }
 
@@ -100,14 +97,13 @@
   transform-origin: left top;
   color: gray;
 }
-e
+
 .formLabel {
   cursor: pointer;
   pointer-events: none;
   position: absolute;
   top: 0;
   left: 20px;
-  background-color: transparent;
   transform: translateY(12px);
   transition: transform 0.5s;
   font-size: 15px;

@@ -32,20 +32,17 @@
 .loginForm .title {
   font-size: 2rem;
   margin-bottom: 0.5em;
-  background-color: white;
 }
 
 .formContainer {
   margin-top: 3em;
   display: grid;
   gap: 2.5em;
-  background-color: white;
 }
 
 .inp {
   position: relative;
   color: black;
-  background-color: white;
 }
 
 .formInput {
@@ -88,13 +85,10 @@
 }
 
 .text {
-  background-color: white;
   color: #587fff;
 }
 
-.textForm {
-  background-color: white;
-}
+
 
 /* @media screen and (max-width: 1000px) {
   .image,.loginImageForm {
