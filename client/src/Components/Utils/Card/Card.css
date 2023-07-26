@@ -1,0 +1,11 @@
+.container{
+    display: grid;
+    place-items: center;
+    
+}
+.cuadro {
+  background-color: rgb(127, 54, 54);
+  width: 55%;
+  height: 35rem;
+  border-radius: 30px;
+}

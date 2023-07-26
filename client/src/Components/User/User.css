@@ -1,0 +1,102 @@
+@keyframes show{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+section {
+  height: 79.9vh;
+
+  padding: 80px 0;
+  background-color: #171b29;
+  display: flex;
+}
+
+.main {
+  margin: auto;
+  background-color: #ffffff1a;
+  width: 50%;
+  border-radius: 15px;
+  overflow: hidden;
+  padding: 0.7em;
+  animation: show 1.5s ease-in-out;
+  gap: 0.6em;
+  display: flex;
+}
+
+h2 {
+  color: white;
+  font-size: 30px;
+  display: grid;
+  place-items: center;
+  top:4 b0px;
+  position: relative;
+}
+
+form {
+  padding: 4.5rem;
+  margin: auto;
+  display: grid;
+  place-items: center;
+}
+
+.loginImg {
+  width: 50rem;
+  display: grid;
+  place-items: center;
+  background-color: #171b29;
+}
+
+.inp label{
+  position: absolute;
+  left: 32%;
+}
+
+input {
+  width: 20rem;
+  height: 50px;
+  background-color: #ffffff26;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  padding-left: 10px;
+  font-size: 15px;
+}
+
+button {
+  width: 20rem;
+  height: 50px;
+  background-color: #0799b6;
+  color: white;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  padding-left: 10px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.inp {
+  padding: 0.5rem;
+}
+
+p {
+  padding: 0.5rem;
+  color: white;
+}
+
+a {
+  padding: 0.5rem;
+  color: #0799b6;
+}
+
+@media screen and (max-width: 900px) {
+  .loginImg {
+    display: none;
+  }
+}
+
