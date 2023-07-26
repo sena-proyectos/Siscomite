@@ -1,59 +1,82 @@
 import "./Register.css";
 import { Link } from "react-router-dom";
-import image from "../../assets/image/register.png";
+// import image from "../../assets/image/register.png";
 
-function Register() {
+const Register = () => {
   return (
-    <section className="container">
-      <div className="main">
-        <form className="loginForm">
-          <h2 className="title">Crea una cuenta</h2>
-          <div className="group">
-            <div className="inp">
-              <input type="text" placeholder="Nombres" />
-            </div>
-            <div className="inp">
-              <input type="text" placeholder="Apellidos" />
-            </div>
-          </div>
-          <div className="inp">
-            <input type="email" placeholder="Correo institucional" />
-          </div>
-          <div className="inp">
-            <input type="text" placeholder="Número de teléfono" />
-          </div>
-          <div className="group">
-            <div className="inp">
-              {/* <label for="lang">Tipo de documento</label> */}
-              <select name="lenguajes" id="lang">
-                <option value="cedula">Tipo de documento</option>
-                <option value="cedula">CC</option>
-                <option value="tarjetaIdentida">TI</option>
-                <option value="pasaporte">PES</option>
-              </select>
-            </div>
-            <div className="inp">
-              <input type="text" placeholder="Documento" />
-            </div>
-          </div>
-          <div className="inp">
-            <input type="password" placeholder="Contraseña" />
-          </div>
+    <main className="container">
+      <section className="main">
+        <form className="registerForm">
+          <h2 className="title">Crear una cuenta</h2>
+          <section className="formContainerR">
 
-          <div className="btn">
-            <button>Registrate</button>
-          </div>
-          <p>
-            ¿Ya tienes una cuenta? <Link to={"/"}>Iniciar Sesión</Link>
-          </p>
+            <section className="inputGroup">
+              <section className="inpu">
+                <input type="text" name="document" className="formInputR" placeholder=" " />
+                <label className="formLabel" htmlFor="document">
+                  Nombre
+                </label>
+              </section>
+              <section className="inpu">
+                <input type="text" name="document" className="formInputR" placeholder=" " />
+                <label className="formLabel" htmlFor="document">
+                  Apellido
+                </label>
+              </section>
+            </section>
+
+            <section className="inp">
+                <input type="text" name="document" className="formInput" placeholder=" " />
+                <label className="formLabel" htmlFor="document">
+                  Correo institucional
+                </label>
+              </section>
+
+              <section className="inp">
+                <input type="text" name="document" className="formInput" placeholder=" " />
+                <label className="formLabel" htmlFor="document">
+                  Teléfono
+                </label>
+              </section>
+
+            <section className="inputGroup">
+              <section className="inpu">
+                <select className="formSelect">
+                    <option value="">Tipo de documento</option>
+                    <option value="">CC</option>
+                    <option value="">TI</option>
+                    <option value="">PE</option>
+                </select>
+              </section>
+              <section className="inpu">
+                <input type="text" name="document" className="formInputR" placeholder=" " />
+                <label className="formLabel" htmlFor="document">
+                  Documento
+                </label>
+              </section>
+            </section>
+
+            <section className="inp">
+              <input type="password" name="password" className="formInput" placeholder=" " />
+              <label className="formLabel" htmlFor="password">
+                Contraseña
+              </label>
+            </section>
+
+
+
+            <button className="btn">Registrate</button>
+            <p className="textForm">
+              ¿Ya estas registrado?{" "}
+              <Link className="text" to={"/"}>
+                Iniciar sesión
+              </Link>
+            </p>
+          </section>
         </form>
-
-        <figure className="registerImg">
-          <img src={image} alt="Reister" />
-        </figure>
-      </div>
-    </section>
+      </section>
+    </main>
   );
-}
+};
 
 export { Register };

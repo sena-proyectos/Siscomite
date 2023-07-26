@@ -1,38 +1,46 @@
 import "./User.css";
 import { Link } from "react-router-dom";
-import image from "../../assets/image/imageLogin.png";
+// import image from "../../assets/image/imageLogin.png";
 
 const User = () => {
   return (
-    <section className="container">
-      <div className="main">
+    <main className="container">
+      <section className="main">
         <form className="loginForm">
-        <h2 className="title">Iniciar Sesión</h2>
-          <div className="inp">
-            <input type="text" name="document"/>
-            <label htmlFor="document">Número de documento</label>
-          </div>
-          <div className="inp">
-            <input type="password" name="password"/>
-            <label htmlFor="">Contraseña</label>
-          </div>
-          <p>
-            <a href="">¿Olvidaste tu contraseña?</a>
-          </p>
-          <div className="btn">
-            <button>Iniciar sesión</button>
-          </div>
-          <p>
-            ¿Nuevo usuario? <Link to={"/Register"}>Registrate</Link>
-          </p>
+          <h2 className="title">Iniciar Sesión</h2>
+          <section className="formContainer">
+            <section className="inp">
+              <input type="text" name="document" className="formInput" placeholder=" " />
+              <label className="formLabel" htmlFor="document">
+                Número de documento
+              </label>
+            </section>
+            <section className="inp">
+              <input type="password" name="password" className="formInput" placeholder=" " />
+              <label className="formLabel" htmlFor="password">
+                Contraseña
+              </label>
+            </section>
+            <p className="text">
+              <a href="" className="text">
+                ¿Olvidaste tu contraseña?
+              </a>
+            </p>
+            <button className="btn">Iniciar sesión</button>
+            <p className="textForm">
+              ¿Nuevo usuario?{" "}
+              <Link className="text" to={"/Register"}>
+                Registrate
+              </Link>
+            </p>
+          </section>
         </form>
-
-        <figure className="loginImg">
-          <img src={image} alt="Login" />
-        </figure>
-      </div>
-    </section>
+        {/* <section className="loginImageForm">
+          <img src={image} alt="Login" className="image" />
+        </section> */}
+      </section>
+    </main>
   );
-}
+};
 
 export { User };

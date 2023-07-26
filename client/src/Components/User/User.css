@@ -1,102 +1,114 @@
-@keyframes show{
-  0%{
+@keyframes show {
+  0% {
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
   }
 }
 
-section {
-  height: 79.9vh;
-
-  padding: 80px 0;
-  background-color: #171b29;
+.container {
   display: flex;
+  height: 99.5vh;
+
 }
 
 .main {
   margin: auto;
-  background-color: #ffffff1a;
-  width: 50%;
-  border-radius: 15px;
-  overflow: hidden;
-  padding: 0.7em;
-  animation: show 1.5s ease-in-out;
-  gap: 0.6em;
-  display: flex;
+  animation: show 2s ease-in-out;
 }
 
-h2 {
-  color: white;
-  font-size: 30px;
+.loginForm {
+  background-color: white;
+  width: 80%;
+  max-width: 400px;
+  padding: 4.5em;
+  border-radius: 10px; 
+  box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
+  text-align: center;
+  
+}
+
+.loginForm .title {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+  background-color: white;
+}
+
+.formContainer {
+  margin-top: 3em;
   display: grid;
-  place-items: center;
-  top:4 b0px;
-  position: relative;
-}
-
-form {
-  padding: 4.5rem;
-  margin: auto;
-  display: grid;
-  place-items: center;
-}
-
-.loginImg {
-  width: 50rem;
-  display: grid;
-  place-items: center;
-  background-color: #171b29;
-}
-
-.inp label{
-  position: absolute;
-  left: 32%;
-}
-
-input {
-  width: 20rem;
-  height: 50px;
-  background-color: #ffffff26;
-  color: white;
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  padding-left: 10px;
-  font-size: 15px;
-}
-
-button {
-  width: 20rem;
-  height: 50px;
-  background-color: #0799b6;
-  color: white;
-  border: none;
-  outline: none;
-  border-radius: 20px;
-  padding-left: 10px;
-  font-size: 15px;
-  cursor: pointer;
+  gap: 2.5em;
+  background-color: white;
 }
 
 .inp {
-  padding: 0.5rem;
+  position: relative;
+  color: black;
+  background-color: white;
 }
 
-p {
-  padding: 0.5rem;
+.formInput {
+  width: 100%;
+  background-color: rgba(128, 128, 128, 0.374);
+  font-size: 1em;
+  padding: 0.8em;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+}
+
+.formInput:focus + .formLabel,
+.formInput:not(:placeholder-shown) + .formLabel {
+  transform: translateY(-1px) scale(0.9);
+  transform-origin: left top;
+  color: gray;
+}
+
+.formLabel {
+  cursor: pointer;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background-color: transparent;
+  transform: translateY(12px);
+  transition: transform 0.5s;
+  font-size: 15px;
+}
+
+.btn {
+  background-color: #3c3c3c;
   color: white;
+  font-size: 1rem;
+  font-weight: 300;
+  padding: 0.8rem 0;
+  border: none;
+  border-radius: 1em;
 }
 
-a {
-  padding: 0.5rem;
-  color: #0799b6;
+.text {
+  background-color: white;
+  color: #587fff;
 }
 
-@media screen and (max-width: 900px) {
-  .loginImg {
+.textForm {
+  background-color: white;
+}
+
+/* .loginImageForm {
+  background-color: white;
+  display: grid;
+  place-items: center;
+  box-shadow: 0px 5px 10px -5px rgba(0, 0, 0, 0.674);
+}
+
+.image {
+  background-color: white;
+} */
+
+/* @media screen and (max-width: 1000px) {
+  .image,.loginImageForm {
     display: none;
   }
-}
-
+} */
