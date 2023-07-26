@@ -1,0 +1,21 @@
+section {
+  height: 100vh;
+  background-color: #171b29;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+form {
+  background-color: #ffffff1a;
+  width: 70%;
+  height: 37rem;
+  border-radius: 15px;
+  display: inline;
+  /* column-count: 2;
+  column-gap: 2px;
+  column-rule: 5px outset #999999;  */
+}
+
+header{
+    color: #ffff;
+}
