@@ -1,23 +1,38 @@
 import "./User.css";
+import { Link } from "react-router-dom";
+import image from "../../assets/image/imageLogin.png";
 
-function User() {
+const User = () => {
   return (
-    <section>
-      <form action="">
-        <h1>Iniciar Sesión</h1>
-        <div className="inside">
-          <input type="text" />
-          <input type="password" />
-          <a href="#">¿Olvidaste tu contraseña?</a>
-          <button>Inicar Sesión</button>
+    <section className="container">
+      <div className="main">
+        <form className="loginForm">
+        <h2 className="title">Iniciar Sesión</h2>
+          <div className="inp">
+            <input type="text" name="document"/>
+            <label htmlFor="document">Número de documento</label>
+          </div>
+          <div className="inp">
+            <input type="password" name="password"/>
+            <label htmlFor="">Contraseña</label>
+          </div>
           <p>
-            ¿Nuevo usuario? <a href="#">Registrate</a>
+            <a href="">¿Olvidaste tu contraseña?</a>
           </p>
-        </div>
-        <img src="" alt="" />
-      </form>
+          <div className="btn">
+            <button>Iniciar sesión</button>
+          </div>
+          <p>
+            ¿Nuevo usuario? <Link to={"/Register"}>Registrate</Link>
+          </p>
+        </form>
+
+        <figure className="loginImg">
+          <img src={image} alt="Login" />
+        </figure>
+      </div>
     </section>
-  );
+  )
 }
 
-export { User };
+export { User }
