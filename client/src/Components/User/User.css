@@ -46,6 +46,13 @@ form {
 .loginImg {
   width: 50rem;
   display: grid;
+  place-items: center;
+  background-color: #171b29;
+}
+
+.inp label{
+  position: absolute;
+  left: 32%;
 }
 
 input {
