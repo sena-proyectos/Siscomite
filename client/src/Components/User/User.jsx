@@ -43,4 +43,4 @@ const User = () => {
   );
 };
 
-export { User };
+export { User }
