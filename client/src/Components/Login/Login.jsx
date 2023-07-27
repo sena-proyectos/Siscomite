@@ -1,16 +1,21 @@
 import './Login.css'
 import { Link } from 'react-router-dom'
-import { useRef } from 'react'
+import { useRef, useState } from 'react' // Agregamos useState para manejar el estado de carga
 import { login } from '../../api/httpRequest'
+import { Toast } from '../toast/toast'
 import Cookie from 'js-cookie'
-// import image from "../../assets/image/imageLogin.png";
 
 export const Login = () => {
   const num_documento = useRef()
   const contrasena = useRef()
+  const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
+  const [error, setError] = useState(null) // Estado para manejar los errores
 
   const sendData = async (e) => {
     e.preventDefault()
+
+    setIsLoading(true)
+
     const dataValue = {
       num_documento: num_documento.current.value,
       contrasena: contrasena.current.value,
@@ -19,9 +24,18 @@ export const Login = () => {
     try {
       const res = await login(dataValue)
       const response = res.data.response.info.token
+      Cookie.set('token', response, { expires: 2, secure: true, sameSite: 'None', path: '/' })
+      setError(null)
+    } catch (error) {
+      const message = error.response.data.message
+      setError(message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
-      Cookie.set('token', response, { expires: 2,secure : true, sameSite: 'None', path: '/' })
-    } catch (error) {}
+  const closed = () => {
+    setError(null)
   }
 
   return (
@@ -29,6 +43,7 @@ export const Login = () => {
       <section className="main">
         <form className="loginForm" onSubmit={sendData}>
           <h2 className="title">Iniciar Sesión</h2>
+          {error && <Toast message={error} typeToast={'error'}  onClose={closed}/>}
           <section className="formContainer">
             <section className="inp">
               <input type="text" name="document" className="formInput" placeholder=" " autoComplete="off" ref={num_documento} />
@@ -43,11 +58,14 @@ export const Login = () => {
               </label>
             </section>
             <p className="text">
-              <a href="" className="text">
-                ¿Olvidaste tu contraseña?
-              </a>
+              {/* Quitamos el atributo href si no hay un enlace válido */}
+              ¿Olvidaste tu contraseña?
             </p>
-            <button className="btn">Iniciar sesión</button>
+            <button className="btn" disabled={isLoading}>
+              {' '}
+              {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
+              {isLoading ? 'Cargando...' : 'Iniciar sesión'}
+            </button>
             <p className="textForm">
               ¿Nuevo usuario?{' '}
               <Link className="text" to={'/Register'}>
@@ -56,9 +74,6 @@ export const Login = () => {
             </p>
           </section>
         </form>
-        {/* <section className="loginImageForm">
-          <img src={image} alt="Login" className="image" />
-        </section> */}
       </section>
     </main>
   )

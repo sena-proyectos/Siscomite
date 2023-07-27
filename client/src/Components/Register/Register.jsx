@@ -28,7 +28,6 @@ export const Register = () => {
     try {
       const res = await register(dataValue)
       const response = res.data.message
-      console.log(response);
     } catch (error) {}
   }
 
