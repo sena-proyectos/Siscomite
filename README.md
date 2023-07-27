@@ -13,8 +13,6 @@
   <img alt="Github issues" src="https://img.shields.io/github/issues/STBenji/Siscomite?color=56BEB8" />
 </p>
 
-Status
-
 <h4 align="center">
 	🚧  Siscomite 🚀 En construcción...  🚧
 </h4>
@@ -22,12 +20,12 @@ Status
 <hr>
 
 <p align="center">
-  <a href="#🎯-acerca-de">Acerca de</a> &#xa0; | &#xa0;
-  <a href="#✨-características">Características</a> &#xa0; | &#xa0;
-  <a href="#🚀-tecnologías">Tecnologías</a> &#xa0; | &#xa0;
-  <a href="#✅-requerimientos">Requerimientos</a> &#xa0; | &#xa0;
-  <a href="#🏁-empezando">Empezando</a> &#xa0; | &#xa0;
-  <a href="#📃-licencia">Licencia</a> &#xa0; | &#xa0;
+  <a href="#-acerca-de">Acerca de</a> &#xa0; | &#xa0;
+  <a href="#-características">Características</a> &#xa0; | &#xa0;
+  <a href="#-tecnologías">Tecnologías</a> &#xa0; | &#xa0;
+  <a href="#-requerimientos">Requerimientos</a> &#xa0; | &#xa0;
+  <a href="#-empezando">Empezando</a> &#xa0; | &#xa0;
+  <a href="#-licencia">Licencia</a> &#xa0; | &#xa0;
   <a href="https://github.com/STBenji" target="_blank">Autor</a>
 </p>
 
@@ -87,7 +85,7 @@ DB_PORT=3306 // Puerto de conexión de SQL
 
 ## 📃 Licencia
 
-<!-- Este proyecto está bajo licencia del MIT. Para más detalles, mira el archivo [LICENSE](). -->
+Este proyecto está bajo licencia del MIT. Para más detalles, mira el archivo [LICENSE](https://github.com/STBenji/Siscomite/blob/master/LICENSE.md).
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
