@@ -43,7 +43,7 @@ export const Login = () => {
       <section className="main">
         <form className="loginForm" onSubmit={sendData}>
           <h2 className="title">Iniciar Sesión</h2>
-          {error && <Toast message={error} typeToast={'error'}  onClose={closed}/>}
+          {error && <Toast message={error} typeToast={'error'} onClose={closed} />}
           <section className="formContainer">
             <section className="inp">
               <input type="text" name="document" className="formInput" placeholder=" " autoComplete="off" ref={num_documento} />
@@ -57,13 +57,8 @@ export const Login = () => {
                 Contraseña
               </label>
             </section>
-            <p className="text">
-              {/* Quitamos el atributo href si no hay un enlace válido */}
-              ¿Olvidaste tu contraseña?
-            </p>
+            <p className="text">¿Olvidaste tu contraseña?</p>
             <button className="btn" disabled={isLoading}>
-              {' '}
-              {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
               {isLoading ? 'Cargando...' : 'Iniciar sesión'}
             </button>
             <p className="textForm">
