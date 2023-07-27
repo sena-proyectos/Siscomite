@@ -22,12 +22,12 @@ Status
 <hr>
 
 <p align="center">
-  <a href="#dart-about">Acerca de</a> &#xa0; | &#xa0; 
-  <a href="#sparkles-features">Características</a> &#xa0; | &#xa0;
-  <a href="#rocket-technologies">Tecnologías</a> &#xa0; | &#xa0;
-  <a href="#white_check_mark-requirements">Requirimientos</a> &#xa0; | &#xa0;
-  <a href="#checkered_flag-starting">Empezando</a> &#xa0; | &#xa0;
-  <a href="#memo-license">Licencia</a> &#xa0; | &#xa0;
+  <a href="#🎯-acerca-de">Acerca de</a> &#xa0; | &#xa0;
+  <a href="#✨-características">Características</a> &#xa0; | &#xa0;
+  <a href="#🚀-tecnologías">Tecnologías</a> &#xa0; | &#xa0;
+  <a href="#✅-requerimientos">Requerimientos</a> &#xa0; | &#xa0;
+  <a href="#🏁-empezando">Empezando</a> &#xa0; | &#xa0;
+  <a href="#📃-licencia">Licencia</a> &#xa0; | &#xa0;
   <a href="https://github.com/STBenji" target="_blank">Autor</a>
 </p>
 
@@ -48,7 +48,7 @@ Siscomite es un proyecto para el SENA Centro Tecnológico del Mobiliario.
 
 En este proyecto se utilizaron las siguientes herramientas:
 
-> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a>
+> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a> <a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a>
 
 ## ✅ Requerimientos
 
