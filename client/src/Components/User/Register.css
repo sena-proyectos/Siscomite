@@ -1,15 +1,14 @@
-@keyframes show{
-  0%{
+@keyframes show {
+  0% {
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
   }
 }
 
 section {
   height: 79.9vh;
-
   padding: 80px 0;
   background-color: #171b29;
   display: flex;
@@ -32,7 +31,7 @@ h2 {
   font-size: 30px;
   display: grid;
   place-items: center;
-  top:4 b0px;
+  top: 4 b0px;
   position: relative;
 }
 
@@ -43,16 +42,20 @@ form {
   place-items: center;
 }
 
-.loginImg {
-  width: 50rem;
+.registerImg {
   display: grid;
   place-items: center;
-  background-color: #171b29;
+  right: 6rem;
+  position: relative;
 }
 
-.inp label{
-  position: absolute;
-  left: 32%;
+.group {
+  display: flex;
+}
+
+.group input {
+  max-width: 10rem;
+
 }
 
 input {
@@ -66,6 +69,18 @@ input {
   padding-left: 10px;
   font-size: 15px;
 }
+
+
+select {
+    width: 10rem;
+    height: 50px;
+    background-color: #ffffff26;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    padding-left: 10px;
+    font-size: 15px;
+  }
 
 button {
   width: 20rem;
@@ -94,9 +109,10 @@ a {
   color: #0799b6;
 }
 
+
+
 @media screen and (max-width: 900px) {
   .loginImg {
     display: none;
   }
 }
-

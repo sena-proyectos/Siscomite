@@ -1,35 +1,82 @@
-# Bienvenido a Siscomite 👋
+<div align="center" id="top">
 
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+&#xa0;
 
-> Proyecto dedicado a los comité de evaluación CTM - SENA 
+</div>
 
-## Instalación
+<h1 align="center">Siscomite</h1>
 
-### Server y Client
+<p align="center">
+  <img alt="Github top language" src="https://img.shields.io/github/languages/top/STBenji/Siscomite?color=56BEB8">
+  <img alt="Github language count" src="https://img.shields.io/github/languages/count/STBenji/Siscomite?color=56BEB8">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/STBenji/Siscomite?color=56BEB8">
+  <img alt="Github issues" src="https://img.shields.io/github/issues/STBenji/Siscomite?color=56BEB8" />
+</p>
 
-```sh
-> npm i
+Status
+
+<h4 align="center">
+	🚧  Siscomite 🚀 En construcción...  🚧
+</h4>
+
+<hr>
+
+<p align="center">
+  <a href="#🎯-acerca-de">Acerca de</a> &#xa0; | &#xa0;
+  <a href="#✨-características">Características</a> &#xa0; | &#xa0;
+  <a href="#🚀-tecnologías">Tecnologías</a> &#xa0; | &#xa0;
+  <a href="#✅-requerimientos">Requerimientos</a> &#xa0; | &#xa0;
+  <a href="#🏁-empezando">Empezando</a> &#xa0; | &#xa0;
+  <a href="#📃-licencia">Licencia</a> &#xa0; | &#xa0;
+  <a href="https://github.com/STBenji" target="_blank">Autor</a>
+</p>
+
+<br>
+
+## 🎯 Acerca de
+
+Siscomite es un proyecto para el SENA Centro Tecnológico del Mobiliario.
+
+## ✨ Características
+
+✔️ Responsivo;\
+✔️ Viable;\
+✔️ Uso institucional;\
+✔️ Escalable;
+
+## 🚀 Tecnologías
+
+En este proyecto se utilizaron las siguientes herramientas:
+
+> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a> <a href="https://www.mysql.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a>
+
+## ✅ Requerimientos
+
+Antes de empezar 🏁, necesitas tener [Git](https://git-scm.com) y [Node](https://nodejs.org/en/) instalado.
+
+## 🏁 Empezando
+
+```bash
+# Clona este repositorio
+$ git clone https://github.com/STBenji/Siscomite.git
+
+# Accede
+$ cd Siscomite -> cd Siscomite/client || cd Siscomite/server
+
+# Instala dependencias
+$ npm i
+
+# Ejecuta el proyecto
+$ npm run dev
+
+## Notas en el Servidor
+
+# El servidor se iniciará en el <http://localhost:3000>
 ```
 
-## Uso
-
-### Server
-
 ```sh
-> npm run dev
-```
+En server crear un archivo llamado: .env que tenga la siguiente forma:
 
-### Cliente
-
-```sh
-> npm run dev
-```
-
-## Notas en el API
-En api crear un archivo llamado: .env que tenga la siguiente forma:
-
-```sh
 PORT=3000 // Ruta del servidor de express
 DB_USER=root // Usuario del usuario MySQL
 DB_PASSWORD=passwordRoot123 // Contraseña del usuario MySQL
@@ -38,27 +85,21 @@ DB_DATABASE=db_root // nombre de la base de datos MySQL
 DB_PORT=3306 // Puerto de conexión de SQL
 ```
 
-Reemplazar credenciales para conectarte a MySQL. Este archivo va ser ignorado en la subida a github, ya que contiene información sensible.
+## 📃 Licencia
 
-El contenido de client fue creado usando: Vite.
-El contenido de server fue creado usando: npm init
+<!-- Este proyecto está bajo licencia del MIT. Para más detalles, mira el archivo [LICENSE](). -->
 
-## Tecnologías
-![React](https://img.shields.io/badge/React-react-blue.svg?logo=react&logoColor=blue)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-## Autores
+## Hecho con ❤️ por
 
-- 👤 **Stiven Benjumea**
-- 👤 **Juan Guillermo Gomez**
-- 👤 **Tatiana Mosquera**
-- 👤 **Cristian David Bedoya Torres**
+- 🏆 [@STBenji](https://github.com/STBenjo)
 
-## Perfiles Github
+### 🏅 Colaboradores
 
-- [@STBenji](https://github.com/STBenji)
-- [@iLestar](https://github.com/iLestar)
-- [@Tattoarco](https://github.com/Tattoarco)
-- [@Cristian10-24](https://github.com/Cristian10-24)
+- 👤 [@iLestar](https://github.com/iLestar)
+- 👤 [@Tattoarco](https://github.com/Tattoarco)
+- 👤 [@Cristian10-24](https://github.com/Cristian10-24)
 
 ## 🤝 Contribuciones
 
@@ -69,3 +110,7 @@ Siéntete libre de generar un problema en nuestra [issues page](https://github.c
 ## Ayúdanos
 
 ¡Danos una ⭐️ si te interesa este proyecto!
+
+&#xa0;
+
+<a href="#top">Volver arriba</a>
