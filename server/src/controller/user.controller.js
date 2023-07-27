@@ -19,10 +19,10 @@ export const getTeacher = async (req, res) => {
 }
 
 export const regiserUser = async (req, res) => {
-    const { nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena } = req.body
+    const { nombre, apellido, correo_institucional, num_telefono, tipo_documento, num_documento, contrasena } = req.body
 
     try {
-        await pool.query('INSERT INTO usuarios (nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena, id_roles) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 2)', [nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena])
+        await pool.query('INSERT INTO usuarios (nombre, apellido, correo_institucional, num_telefono, tipo_documento, num_documento, contrasena, id_roles) VALUES (?, ?, ?, ?, ?, ?, ?, 2)', [nombre, apellido, correo_institucional, num_telefono, tipo_documento, num_documento, contrasena])
         res.status(201).send({ message: 'Usuario creado exitosamente' })
     } catch (error) {
         res.status(500).send({ message: 'Error al crear el usuario' })

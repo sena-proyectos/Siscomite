@@ -1,0 +1,107 @@
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.container {
+  display: grid;
+  place-content: center;
+  place-items: center;
+  height: 100vh;
+}
+
+.main {
+  
+  animation: show .8s ease-in-out;
+}
+
+.loginForm {
+  background-color: white;
+  width: 80%;
+  max-width: 400px;
+  padding: 4.5em;
+  border-radius: 10px; 
+  box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
+  text-align: center;
+  
+}
+
+.loginForm .title {
+  font-size: 2rem;
+  margin-bottom: 0.5em;
+  background-color: white;
+}
+
+.formContainer {
+  margin-top: 3em;
+  display: grid;
+  gap: 1em;
+  width: 100%;
+  background-color: white;
+}
+
+.inp {
+  position: relative;
+  color: black;
+  background-color: white;
+}
+
+.formInput {
+  width: 90%;
+  background-color: rgba(128, 128, 128, 0.374);
+  font-size: 1em;
+  padding: 0.8em;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+}
+
+.formInput:focus + .formLabel,
+.formInput:not(:placeholder-shown) + .formLabel {
+  transform: translateY(-9px) scale(0.9);
+  transform-origin: left top;
+  color: rgb(0, 0, 0);
+}
+
+.formLabel {
+  cursor: pointer;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background-color: transparent;
+  transform: translateY(12px);
+  transition: transform 0.5s;
+  font-size: 15px;
+}
+
+.btn {
+  background-color: #3c3c3c;
+  color: white;
+  font-size: 1rem;
+  font-weight: 300;
+  width: 100%;
+  padding: 0.8em 0 1em 0;
+  border: none;
+  border-radius: 1em;
+  cursor: pointer;
+}
+
+.text {
+  background-color: white;
+  color: #587fff;
+}
+
+.textForm {
+  background-color: white;
+}
+
+/* @media screen and (max-width: 1000px) {
+  .image,.loginImageForm {
+    display: none;
+  }
+} */
