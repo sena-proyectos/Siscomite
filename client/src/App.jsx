@@ -1,6 +1,6 @@
 import  { Route, Routes } from 'react-router-dom'
-import { User } from './Components/User/User'
-import { Register } from './Components/User/Register'
+import { Login } from './Components/Login/Login'
+import { Register } from './Components/Register/Register'
 
 import './App.css'
 
@@ -8,7 +8,7 @@ function App  ()  {
 
   return (
     <Routes>
-      <Route path='/' element = {<User/>}/>
+      <Route path='/' element = {<Login/>}/>
       <Route path='/Register' element = {<Register/>}/>
     </Routes>
 

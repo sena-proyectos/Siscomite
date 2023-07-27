@@ -8,14 +8,15 @@
 }
 
 .container {
-  display: flex;
-  height: 99.5vh;
-
+  display: grid;
+  place-content: center;
+  place-items: center;
+  height: 100vh;
 }
 
 .main {
-  margin: auto;
-  animation: show 1s ease-in-out;
+  
+  animation: show .8s ease-in-out;
 }
 
 .loginForm {
@@ -38,7 +39,8 @@
 .formContainer {
   margin-top: 3em;
   display: grid;
-  gap: 2.5em;
+  gap: 1em;
+  width: 100%;
   background-color: white;
 }
 
@@ -49,10 +51,10 @@
 }
 
 .formInput {
-  width: 100%;
+  width: 90%;
   background-color: rgba(128, 128, 128, 0.374);
   font-size: 1em;
-  padding: 0.8em 0;
+  padding: 0.8em;
   border: none;
   outline: none;
   border-radius: 20px;
@@ -60,9 +62,9 @@
 
 .formInput:focus + .formLabel,
 .formInput:not(:placeholder-shown) + .formLabel {
-  transform: translateY(-1px) scale(0.9);
+  transform: translateY(-9px) scale(0.9);
   transform-origin: left top;
-  color: gray;
+  color: rgb(0, 0, 0);
 }
 
 .formLabel {
@@ -82,9 +84,11 @@
   color: white;
   font-size: 1rem;
   font-weight: 300;
-  padding: 0.8rem 0;
+  width: 100%;
+  padding: 0.8em 0 1em 0;
   border: none;
   border-radius: 1em;
+  cursor: pointer;
 }
 
 .text {

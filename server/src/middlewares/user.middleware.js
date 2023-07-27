@@ -21,14 +21,14 @@ export const checkUserExist = async (req, res, next) => {
 }
 
 export const checkRegisterData = (req, res, next) => {
-    const { nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena } = req.body
+    const { nombre, apellido, correo_institucional, num_telefono, tipo_documento, num_documento, contrasena } = req.body
 
     const idNumberParsed = Number(num_documento)
 
     try {
         if (isNaN(idNumberParsed)) res.status(400).send({ message: 'El número de documento no es un número válido.' })
-        const { error } = registerDataSchema.validate({ nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena })
-        if (error !== undefined) return res.send({ message: 'Los datos ingresados no son válidos, verifícalos.' })
+        const { error } = registerDataSchema.validate({ nombre, apellido, correo_institucional, num_telefono, tipo_documento, num_documento, contrasena })
+        if (error !== undefined) return res.status(400).send({ message: 'Los datos ingresados no son válidos, verifícalos.' })
 
         next()
     } catch (error) {
