@@ -24,7 +24,7 @@ Status
 <p align="center">
   <a href="#dart-about">Acerca de</a> &#xa0; | &#xa0; 
   <a href="#sparkles-features">Características</a> &#xa0; | &#xa0;
-  <a href="#rocket-technologies">Tecnologíás</a> &#xa0; | &#xa0;
+  <a href="#rocket-technologies">Tecnologías</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requirements">Requirimientos</a> &#xa0; | &#xa0;
   <a href="#checkered_flag-starting">Empezando</a> &#xa0; | &#xa0;
   <a href="#memo-license">Licencia</a> &#xa0; | &#xa0;
