@@ -1,17 +1,21 @@
 import './Register.css'
 import { Link } from 'react-router-dom'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { register } from '../../api/httpRequest'
+import { Toast } from '../toast/toast'
 // import image from "../../assets/image/register.png";
 
 export const Register = () => {
   const nombre = useRef()
   const apellido = useRef()
   const correo_institucional = useRef()
-  const telefono = useRef()
+  const num_telefono = useRef()
   const tipo_documento = useRef()
   const num_documento = useRef()
   const contrasena = useRef()
+
+  const [error, setError] = useState()
+  const [message, setMessage] = useState()
 
   const sendData = async (e) => {
     e.preventDefault()
@@ -19,7 +23,7 @@ export const Register = () => {
       nombre: nombre.current.value,
       apellido: apellido.current.value,
       correo_institucional: correo_institucional.current.value,
-      num_telefono: telefono.current.value,
+      num_telefono: num_telefono.current.value,
       tipo_documento: tipo_documento.current.value,
       num_documento: num_documento.current.value,
       contrasena: contrasena.current.value,
@@ -28,7 +32,15 @@ export const Register = () => {
     try {
       const res = await register(dataValue)
       const response = res.data.message
-    } catch (error) {}
+
+    } catch (error) {
+      const message = error.response.data.message
+      setError(message)
+    }
+  }
+
+  const closed = () => {
+    setError(null)
   }
 
   return (
@@ -36,6 +48,7 @@ export const Register = () => {
       <section className="main">
         <form className="registerForm" onSubmit={sendData}>
           <h2 className="title">Crear una cuenta</h2>
+          { error && <Toast message={error} typeToast='warnning' onClose={closed}/> }
           <section className="formContainerR">
             <section className="inputGroup">
               <section className="inpu">
@@ -60,7 +73,7 @@ export const Register = () => {
             </section>
 
             <section className="inp">
-              <input type="text" name="document" className="formInputRe" placeholder=" " autoComplete="off" ref={telefono} />
+              <input type="text" name="document" className="formInputRe" placeholder=" " autoComplete="off" ref={num_telefono} />
               <label className="formLabel" htmlFor="document">
                 Teléfono
               </label>
