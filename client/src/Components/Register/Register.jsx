@@ -8,7 +8,7 @@ export const Register = () => {
   const nombre = useRef()
   const apellido = useRef()
   const correo_institucional = useRef()
-  const telefono = useRef()
+  const num_telefono = useRef()
   const tipo_documento = useRef()
   const num_documento = useRef()
   const contrasena = useRef()
@@ -19,7 +19,7 @@ export const Register = () => {
       nombre: nombre.current.value,
       apellido: apellido.current.value,
       correo_institucional: correo_institucional.current.value,
-      num_telefono: telefono.current.value,
+      num_telefono: num_telefono.current.value,
       tipo_documento: tipo_documento.current.value,
       num_documento: num_documento.current.value,
       contrasena: contrasena.current.value,
@@ -28,7 +28,11 @@ export const Register = () => {
     try {
       const res = await register(dataValue)
       const response = res.data.message
-    } catch (error) {}
+      console.log(response);
+    } catch (error) {
+      const message = error.response.data.message
+      console.log(message);
+    }
   }
 
   return (
@@ -60,7 +64,7 @@ export const Register = () => {
             </section>
 
             <section className="inp">
-              <input type="text" name="document" className="formInputRe" placeholder=" " autoComplete="off" ref={telefono} />
+              <input type="text" name="document" className="formInputRe" placeholder=" " autoComplete="off" ref={num_telefono} />
               <label className="formLabel" htmlFor="document">
                 Teléfono
               </label>
