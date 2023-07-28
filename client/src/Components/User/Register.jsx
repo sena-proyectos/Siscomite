@@ -4,12 +4,11 @@ import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
-    <main className="container">
+    <main className="containerRegister">
       <section className="main">
         <form className="registerForm">
           <h2 className="title">Crear una cuenta</h2>
           <section className="formContainerR">
-
             <section className="inputGroup">
               <section className="inpu">
                 <input type="text" name="document" className="formInputR" placeholder=" " />
@@ -26,26 +25,26 @@ const Register = () => {
             </section>
 
             <section className="inp">
-                <input type="text" name="document" className="formInputRe" placeholder=" " />
-                <label className="formLabel" htmlFor="document">
-                  Correo institucional
-                </label>
-              </section>
+              <input type="text" name="document" className="formInputRe" placeholder=" " />
+              <label className="formLabel" htmlFor="document">
+                Correo institucional
+              </label>
+            </section>
 
-              <section className="inp">
-                <input type="text" name="document" className="formInputRe" placeholder=" " />
-                <label className="formLabel" htmlFor="document">
-                  Teléfono
-                </label>
-              </section>
+            <section className="inp">
+              <input type="text" name="document" className="formInputRe" placeholder=" " />
+              <label className="formLabel" htmlFor="document">
+                Teléfono
+              </label>
+            </section>
 
             <section className="inputGroup">
               <section className="inpu">
                 <select className="formSelect">
-                    <option value="">Tipo de documento</option>
-                    <option value="">CC</option>
-                    <option value="">TI</option>
-                    <option value="">PE</option>
+                  <option value="">Tipo de documento</option>
+                  <option value="">CC</option>
+                  <option value="">TI</option>
+                  <option value="">PE</option>
                 </select>
               </section>
               <section className="inpu">
@@ -62,8 +61,6 @@ const Register = () => {
                 Contraseña
               </label>
             </section>
-
-
 
             <button className="btn">Registrate</button>
             <p className="textForm">

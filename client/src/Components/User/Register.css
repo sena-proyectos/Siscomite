@@ -7,20 +7,22 @@
   }
 }
 
-.container {
+.containerRegister {
   display: flex;
-  height: 99.5vh;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  height: 99.9vh;
 
 }
 
 .main {
-  margin: auto;
-  animation: show 2s ease-in-out;
+  animation: show 1s ease-in-out;
 }
 
 .registerForm {
   background-color: white;
-  width: 80%;
+  width: 70%;
   max-width: 400px;
   padding: 3em;
   border-radius: 10px; 
@@ -30,13 +32,12 @@
 }
 
 .registerForm .title {
-  font-size: 2rem;
-  margin-bottom: 0.8em;
+  font-size: 1.5rem;
+  margin-bottom: 1em;
 }
 
 .inputGroup{
   display: flex;
-
 }
 
 .inpu {
@@ -48,9 +49,9 @@
 .formContainerR {
   margin-top: 1em;
   display: grid;
-  gap: 2em;
-  background-color: white;
+  gap: 1.5em;
 }
+
 .formSelect{
   width: 100%;
   background-color: rgba(128, 128, 128, 0.374);
@@ -60,13 +61,14 @@
   outline: none;
   border-radius: 20px;
   justify-content: space-between;
+  font-size: 12px;
 }
 
 .formInputR{
   width: 80%;
   background-color: rgba(128, 128, 128, 0.374);
   font-size: 1em;
-  padding: 0.8em;
+  padding: 0.5em;
   border: none;
   outline: none;
   border-radius: 20px;
@@ -75,8 +77,8 @@
 .formInputRe{
   width: 90%;
   background-color: rgba(128, 128, 128, 0.374);
-  font-size: 1em;
-  padding: 0.8em;
+  font-size: 15px;
+  padding: 0.6em;
   border: none;
   outline: none;
   border-radius: 20px;
@@ -106,14 +108,7 @@
   left: 20px;
   transform: translateY(12px);
   transition: transform 0.5s;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 
-
-
-/* @media screen and (max-width: 900px) {
-  .loginImg {
-    display: none;
-  }
-}  */

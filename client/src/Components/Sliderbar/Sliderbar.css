@@ -1,0 +1,77 @@
+.sliderbar {
+  background-color: #2E323E;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: 15%;
+  max-width: 200px;
+  height: 95vh;
+  display: block;
+  color: white;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.sliderbar .top{
+    position: relative;
+    top: 3rem;
+    left: 2.5rem;
+    font-size: 15px;
+}
+
+.sliderbar p{
+    font-size: 13px;
+}
+
+.sliderbar .pages{
+    display: flex;
+    justify-content: center;
+    margin-top: 7rem;
+    font-size: 15px;
+}
+
+.pages .center, .end .down{
+    list-style: none;
+}
+
+.pages .line, .end .line{
+    text-decoration: none;
+    color: white;
+}
+
+.part:hover{
+    background-color: #1b1e25;
+    border-radius: 10px;
+}
+
+
+.pages .part, i{ 
+    padding: .5rem;
+    color: white;
+}
+.end .part, i{ 
+    padding: .6rem;
+}
+
+.sliderbar .end{
+    display: flex;
+    justify-content: center;
+    margin-top: 5rem;
+    font-size: 15px;
+}
+
+@media screen and (max-width: 1000px) {
+    .sliderbar{
+        width: 10%;
+    }
+
+    .top, .slideText{
+        display: none;
+    }
+
+    .sliderbar .slideText{
+        display: none;
+    }
+
+    
+
+}

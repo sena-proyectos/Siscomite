@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const User = () => {
   return (
-    <main className="container">
+    <main className="containerLogin">
       <section className="main">
         <form className="loginForm">
           <h2 className="title">Iniciar Sesión</h2>
@@ -26,7 +26,10 @@ const User = () => {
                 ¿Olvidaste tu contraseña?
               </a>
             </p>
-            <button className="btn">Iniciar sesión</button>
+            <button className="btn">
+              {" "}
+              <Link to={"/Home"}>Iniciar sesión</Link>{" "}
+            </button>
             <p className="textForm">
               ¿Nuevo usuario?{" "}
               <Link className="text" to={"/Register"}>
@@ -43,4 +46,4 @@ const User = () => {
   );
 };
 
-export { User }
+export { User };

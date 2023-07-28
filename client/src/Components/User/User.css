@@ -7,37 +7,37 @@
   }
 }
 
-.container {
+.containerLogin {
   display: flex;
-  height: 99.5vh;
-
+  align-items: center;
+  justify-content: center;
+  margin-right: 8rem;
+  height: 99.9vh;
 }
 
 .main {
-  margin: auto;
   animation: show 1s ease-in-out;
 }
 
 .loginForm {
   background-color: white;
-  width: 80%;
+  width: 70%;
   max-width: 400px;
   padding: 4.5em;
-  border-radius: 10px; 
+  border-radius: 10px;
   box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
   text-align: center;
-  
 }
 
 .loginForm .title {
-  font-size: 2rem;
-  margin-bottom: 0.5em;
+  font-size: 1.5rem;
+  margin-bottom: 0.2em;
 }
 
 .formContainer {
-  margin-top: 3em;
+  margin-top: 2em;
   display: grid;
-  gap: 2.5em;
+  gap: 1.5em;
 }
 
 .inp {
@@ -48,7 +48,7 @@
 .formInput {
   width: 100%;
   background-color: rgba(128, 128, 128, 0.374);
-  font-size: 1em;
+  font-size: 0.8em;
   padding: 0.8em 0;
   border: none;
   outline: none;
@@ -71,27 +71,24 @@
   background-color: transparent;
   transform: translateY(12px);
   transition: transform 0.5s;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .btn {
   background-color: #3c3c3c;
   color: white;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 300;
   padding: 0.8rem 0;
   border: none;
-  border-radius: 1em;
+  border-radius: 30px;
 }
 
 .text {
   color: #587fff;
+  font-size: 12px;
 }
 
-
-
-/* @media screen and (max-width: 1000px) {
-  .image,.loginImageForm {
-    display: none;
-  }
-} */
+.textForm {
+  font-size: 12px;
+}
