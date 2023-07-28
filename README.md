@@ -91,7 +91,7 @@ Este proyecto está bajo licencia del MIT. Para más detalles, mira el archivo [
 
 ## Hecho con ❤️ por
 
-- 🏆 [@STBenji](https://github.com/STBenjo)
+- 🏆 [@STBenji](https://github.com/STBenji)
 
 ### 🏅 Colaboradores
 
