@@ -1,0 +1,70 @@
+.containerRequests {
+  height: 100vh;
+}
+
+.bodyRequests {
+  height: 100vh;
+  width: 84%;
+  margin-left: 16%;
+}
+
+.barRequests {
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.barRequests .titleRequests {
+  padding-bottom: 2rem;
+}
+
+.barRequests .title {
+  font-size: 19px;
+}
+
+.tableRequests {
+  height: 69vh;
+  display: grid;
+  justify-content: center;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 150vh;
+  max-width: 1100px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+
+}
+
+.headtable {
+  background-color: #2e323e;
+  color: white;
+  padding: 8px;
+}
+
+.bodytable {
+  border: 1px solid #dddddd;
+  padding: 8px;
+}
+
+.trTable:nth-child(even) {
+  background-color: #EBEBEB;
+}
+
+.trTable:nth-child(odd) {
+  background-color: #ffffff;
+}
+
+/* Estilos de  la paginacion de tabla */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  list-style: none;
+}
+
+.pagination a {
+  padding-left: 2rem;
+}

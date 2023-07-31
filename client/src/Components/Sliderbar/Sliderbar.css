@@ -5,11 +5,13 @@
   width: 15%;
   max-width: 200px;
   height: 95vh;
+  max-height: 550px;
   display: block;
   color: white;
   border-radius: 30px;
   overflow: hidden;
-}
+  position: absolute;
+ }
 
 .sliderbar .top{
     position: relative;
@@ -44,11 +46,11 @@
 }
 
 
-.pages .part, i{ 
+.pages .part, #icon{ 
     padding: .5rem;
-    color: white;
 }
-.end .part, i{ 
+
+.end .part, #icon{ 
     padding: .6rem;
 }
 

@@ -1,0 +1,6 @@
+.containerFooter{
+    display: grid;
+    justify-content: center;
+    align-items: end;
+    font-size: 15px;
+}

@@ -1,4 +1,31 @@
-.containerHome{
-    display: flex; 
+.containerHome {
+  height: 100vh;
+}
+.homeContent {
+  display: flex;
+  justify-content: center;
+  max-width: 1100px;
+  height: 96vh;
+  margin-left: 12.7rem;
 }
 
+.cardHome {
+  height: 10rem;
+  transition: 0.4s ease-in-out;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  margin-left: 2rem;
+  margin-top: 15%;
+
+}
+
+.cardHome:hover {
+  transform: scale(1.2);
+}
+
+@media screen and (max-width: 1000px) {
+  .homeContent {
+    display: inline;
+  }
+}
