@@ -9,24 +9,31 @@
   left: 77%;
 }
 
-.containerToast section i {
+.containerToast .sectionToast {
+  background: transparent;
+}
+
+.containerToast .sectionToast i {
   position: absolute;
   font-size: 0.5rem;
   display: flex;
   right: 0.7rem;
   top: 0.7rem;
-  color: #ffff;
   transition: 0.1s ease-in;
+  color: #ffff;
+  background: transparent;
 }
 
-.containerToast section i:hover {
+.containerToast .sectionToast i:hover {
   color: #333;
   transform: scale(1.1);
+  
 }
 
-.containerToast section span {
+.containerToast .sectionToast span {
   color: #ffff;
   user-select: none;
+  background: transparent;
 }
 
 .success {
