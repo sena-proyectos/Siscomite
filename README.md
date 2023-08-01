@@ -33,7 +33,7 @@
 
 ## 🎯 Acerca de
 
-Siscomite es un proyecto para el SENA Centro Tecnológico del Mobiliario.
+El proyecto `Siscomite` es un software diseñado para facilitar la gestión de solicitudes a comité de evaluación en el SENA Centro Tecnológico del Mobiliario. El objetivo principal es permitir que los instructores envíen solicitudes para procesar acciones específicas relacionadas con los aprendices, ya sea por incumplimiento de reglamento del aprendiz o por méritos como felicitaciones.
 
 ## ✨ Características
 
