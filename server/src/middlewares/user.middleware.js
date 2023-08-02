@@ -4,11 +4,11 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 // import Joi from 'joi'
 
-export const checkUserExist = async (req, res, next) => {
-    const { correo_institucional, num_documento } = req.body
+export const checkUserExistRegister = async (req, res, next) => {
+    const {  num_documento } = req.body
 
     try {
-        const [userExist] = await pool.query('SELECT * FROM usuarios WHERE correo_institucional = ? OR num_documento = ?', [correo_institucional, num_documento])
+        const [userExist] = await pool.query('SELECT * FROM usuarios WHERE num_documento = ?', [num_documento])
 
         if (userExist.length > 0) {
             return res.status(409).send({ message: 'El usuario ya está registrado' })
@@ -19,16 +19,29 @@ export const checkUserExist = async (req, res, next) => {
         res.status(500).send({ message: 'Error al verificar el usuario' })
     }
 }
+export const checkUserExistLogin= async (req, res, next) => {
+    const {  num_documento } = req.body
+
+    try {
+        const [userExist] = await pool.query('SELECT * FROM usuarios WHERE num_documento = ?', [num_documento])
+        if (!userExist[0]) {
+            return res.status(409).send({ message: 'El usuario NO está registrado' })
+        }
+
+        next()
+    } catch (error) {
+        res.status(500).send({ message: 'Error al verificar el usuario' })
+    }
+}
 
 export const checkRegisterData = (req, res, next) => {
-    const { nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena } = req.body
-
+    const { nombre, apellido, correo_institucional, num_telefono, tipo_documento, num_documento, contrasena } = req.body
     const idNumberParsed = Number(num_documento)
 
     try {
         if (isNaN(idNumberParsed)) res.status(400).send({ message: 'El número de documento no es un número válido.' })
-        const { error } = registerDataSchema.validate({ nombre, apellido, correo_institucional, correo_personal, num_telefono, num_fijo, tipo_documento, num_documento, contrasena })
-        if (error !== undefined) return res.send({ message: 'Los datos ingresados no son válidos, verifícalos.' })
+        const { error } = registerDataSchema.validate({ nombre, apellido, correo_institucional, num_telefono, tipo_documento, num_documento, contrasena })
+        if (error !== undefined) return res.status(400).send({ message: 'Los datos ingresados no son válidos, verifícalos.' })
 
         next()
     } catch (error) {
@@ -44,7 +57,7 @@ export const checkLoginData = (req, res, next) => {
     try {
         if (isNaN(idNumberParsed)) res.status(400).send({ message: 'El número de documento no es un número válido.' })
         const { error } = loginDataSchema.validate({ num_documento, contrasena })
-        if (error !== undefined) return res.send({ message: 'Los datos ingresados no son válidos, verifícalos.' })
+        if (error !== undefined) return res.status(200).send({ message: 'Los datos ingresados no son válidos, verifícalos.' })
 
         next()
     } catch (error) {
