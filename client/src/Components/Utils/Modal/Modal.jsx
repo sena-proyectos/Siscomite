@@ -18,19 +18,19 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             {modalAdd && (
               <section className="modalAdd">
                 <section className="modalIput">
-                  <input type="text" name="fistName" className="inputModal" required/>
+                  <input type="text" name="fistName" className="inputModal" required placeholder=" "/>
                   <label className="modalLabel" htmlFor="fistName">
                     Nombre
                   </label>
                 </section>
                 <section className="modalIput">
-                  <input type="text" name="lastName" className="inputModal" required/>
+                  <input type="text" name="lastName" className="inputModal" required placeholder=" "/>
                   <label className="modalLabel" htmlFor="lastName">
                     Apellido
                   </label>
                 </section>
 
-                <select className="ModalSelect" required>
+                <select className="modalSelect" required>
                   <option value="">Tipo de documento</option>
                   <option value="">CC</option>
                   <option value="">TI</option>
@@ -38,31 +38,31 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 </select>
 
                 <section className="modalIput">
-                  <input type="text" name="document" className="inputModal" required/>
+                  <input type="text" name="document" className="inputModal" required placeholder=" "/>
                   <label className="modalLabel" htmlFor="document">
                     Número de documento
                   </label>
                 </section>
                 <section className="modalIput">
-                  <input type="email" name="emailSena" className="inputModal" required/>
+                  <input type="email" name="emailSena" className="inputModal" required placeholder=" "/>
                   <label className="modalLabel" htmlFor="emailSena">
                     Correo @soy.sena.edu.co
                   </label>
                 </section>
                 <section className="modalIput">
-                  <input type="email" name="email" className="inputModal" required/>
+                  <input type="email" name="email" className="inputModal" required placeholder=" "/>
                   <label className="modalLabel" htmlFor="email">
                     Correo alterno
                   </label>
                 </section>
                 <section className="modalIput">
-                  <input type="email" name="email" className="inputModal" required/>
+                  <input type="email" name="email" className="inputModal" required placeholder=" "/>
                   <label className="modalLabel" htmlFor="email">
                     Número celular
                   </label>
                 </section>
                 <section className="modalIput">
-                  <input type="email" name="email" className="inputModal" required/>
+                  <input type="email" name="email" className="inputModal" required placeholder=" "/>
                   <label className="modalLabel" htmlFor="email">
                     Número fijo
                   </label>

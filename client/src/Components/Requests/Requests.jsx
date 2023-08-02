@@ -18,9 +18,12 @@ const Requests = () => {
     { id: 8, name: "Dato 8", value: 800 },
     { id: 9, name: "Dato 9", value: 900 },
     { id: 10, name: "Dato 10", value: 1000 },
+    { id: 11, name: "Dato 11", value: 2000 },
+    { id: 12, name: "Dato 12", value: 3000 },
+    { id: 13, name: "Dato 13", value: 4000 },
   ];
 
-  const itemsPerPage = 6; // Número de elementos por página
+  const itemsPerPage = 9; // Número de elementos por página
   const [activePage, setActivePage] = useState(1);
 
   // Calcula los datos a mostrar en la página actual

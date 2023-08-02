@@ -40,7 +40,7 @@
   top: .5rem;
 }
 
-.inputModal{
+.inputModal, .modalSelect{
   width: 13rem;
   height: 30px;
   border: none;
@@ -52,7 +52,21 @@
 }
 
 .modalLabel{
-  font-size: 12px;
+  font-size: 14px;
   position: absolute;
-  left: 2rem;
+  left: 1rem;
+  transform: translateY(12px);
+  transition: transform 0.5s;
+  pointer-events: none;
+}
+
+.inputModal:focus + .modalLabel,
+.inputModal:not(:placeholder-shown) + .modalLabel {
+  transform: translateY(-2px) scale(0.9);
+  transform-origin: left top;
+  color: rgb(0, 0, 0);
+}
+
+.enviar .button{
+  width: 50px;
 }
