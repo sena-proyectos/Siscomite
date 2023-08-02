@@ -10,19 +10,19 @@ const Sliderbar = () => {
       </section>
       <section className="pages">
         <ul className="center">
-          <Link to={"/Home"} className="line">
+          <Link to={"/home"} className="line">
             <li className="part">
               <i class="fi fi-rr-home" id="icon" title="Inicio" />
               <span className="slideText">Inicio</span>
             </li>
           </Link>
-          <Link className="line" to={"/Students"}>
+          <Link className="line" to={"/students"}>
             <li className="part">
               <i class="fi fi-rr-user" id="icon" title="Aprendices" />
               <span className="slideText">Aprendices</span>
             </li>
           </Link>
-          <Link className="line" to={"/Requests"}>
+          <Link className="line" to={"/requests"}>
             <li className="part">
               <i class="fi fi-rs-file" id="icon" title="Solicitudes" />
               <span className="slideText"> Solicitudes </span>
