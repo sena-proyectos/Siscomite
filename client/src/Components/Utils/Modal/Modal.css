@@ -68,5 +68,12 @@
 }
 
 .enviar .button{
-  width: 50px;
+  width: 9rem;
+  height: 30px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #0799B6;
+  color: white;
+  font-weight: 800;
 }
