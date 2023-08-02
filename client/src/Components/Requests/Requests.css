@@ -23,29 +23,33 @@
 }
 
 .tableRequests {
-  height: 69vh;
+  height: 65vh;
   display: grid;
   justify-content: center;
+  position: relative;
+  top: 1rem;
+  
 }
 
 .table {
   border-collapse: collapse;
   width: 150vh;
   max-width: 1100px;
-  margin-bottom: 20px;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-
+  max-height: 230px; 
+  
 }
 
 .headtable {
   background-color: #2e323e;
   color: white;
   padding: 8px;
+  align-items: center;
 }
-
 .bodytable {
   border: 1px solid #dddddd;
   padding: 8px;
+  text-align: center;
 }
 
 .trTable:nth-child(even) {
@@ -56,15 +60,44 @@
   background-color: #ffffff;
 }
 
+#buttonRequests .button{
+  background-color: white;
+  cursor: pointer;
+  border: 1.5px #3E3E3E solid;
+  border-radius: 20px;
+  padding: .4em;
+  font-size: 12px;
+}
+
 /* Estilos de  la paginacion de tabla */
 
-.pagination {
+.aRequests{
+  position: relative;
+}
+.aRequests .pagination {
+  width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  list-style: none;
+  list-style: none;  
 }
 
-.pagination a {
-  padding-left: 2rem;
+
+
+.pagination a{
+  background-color: #3c3c3c25;
+  margin: .5rem;
+  padding: 9px 15px;
+  color: black;
+  text-decoration: none;
+  border-radius: 60px;
+  font-weight: bolder;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+
 }
+
+.pagination a:hover{
+  background-color: black;
+  color: white;
+}
+
+

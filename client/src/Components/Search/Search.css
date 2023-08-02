@@ -9,8 +9,8 @@
 }
 
 .searchBar #iconSearch{
-    position: absolute;
-    left: 55rem;
-    top: 7.2rem;
+    left: 20rem;
+    top: 3px;
     cursor: pointer;
+    position: relative;
 }

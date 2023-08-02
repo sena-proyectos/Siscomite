@@ -1,0 +1,58 @@
+.fondo {
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.521);
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+
+.fondo .containerModal {
+  background-color: white;
+  padding: 2rem;
+  border-top: 4px #2E323E solid;
+  border-radius: 20px;
+  max-width: 1100px;
+  width: 40%;
+
+}
+
+.headerModal #iconModal{
+  position: relative;
+  cursor: pointer;
+}
+
+.headerModal{
+  display: flex;
+  justify-content: center;
+}
+
+/* Estilos modal de agregar estudiante */
+.modalAdd{
+  width: 80%;
+  height: 70vh;
+  position: relative;
+  top: .5rem;
+}
+
+.inputModal{
+  width: 13rem;
+  height: 30px;
+  border: none;
+  background-color: #2e323e54;
+  border-radius: 10px;
+  text-indent: 10px;
+  margin: 7px;
+  outline: none;
+}
+
+.modalLabel{
+  font-size: 12px;
+  position: absolute;
+  left: 2rem;
+}

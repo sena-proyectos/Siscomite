@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   max-width: 1100px;
-  height: 96vh;
+  height: 100vh;
   margin-left: 12.7rem;
 }
 
@@ -22,6 +22,11 @@
 
 .cardHome:hover {
   transform: scale(1.2);
+}
+
+.footerHome .footer{
+  position: relative;
+  left: 30rem;
 }
 
 @media screen and (max-width: 1000px) {

@@ -1,16 +1,15 @@
 import "./Card.css";
-import { Link } from "react-router-dom";
 
-export const Card = ({ title, descripción, image, depende = false }) => {
+export const Card = ({ title, descripción, image, depende = false, click }) => {
   return (
-    <main className="containerCard">
+    <main className="containerCard" onClick={click} >
       {depende && (
         <section className="cardImage">
           <img className="fondoCard" src={image} alt="Imágen" />
         </section>
       )}
       <header className="cardTitle">
-        <h4>{title}</h4>
+        <h4>{title} </h4>
       </header>
       <section className="cardBody">
         <p className="bodyText">{descripción}</p>

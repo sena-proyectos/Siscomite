@@ -4,6 +4,7 @@ import Pagination from "react-js-pagination";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
+import { Button } from "../Utils/Button/Button";
 
 const Requests = () => {
   const data = [
@@ -37,7 +38,6 @@ const Requests = () => {
       <Sliderbar />
       <section className="bodyRequests">
         <header className="barRequests">
-          <h2 className="titleRequests">Solicitudes a comité</h2>
           <Search placeholder={"Buscar solicitud"} icon={<i class="fi fi-rr-search"></i>} />
         </header>
         <section className="tableRequests">
@@ -56,19 +56,20 @@ const Requests = () => {
                   <td className="bodytable">{item.id}</td>
                   <td className="bodytable">{item.name}</td>
                   <td className="bodytable">{item.value}</td>
-                  <td className="bodytable">otro</td>
+                  <td className="bodytable" id="buttonRequests">
+                    <Button title={"Detalles"} />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <Pagination 
-          activePage={activePage} 
-          itemsCountPerPage={itemsPerPage} 
-          totalItemsCount={data.length} 
-          pageRangeDisplayed={5} 
-          onChange={handlePageChange} />
         </section>
-        <Footer/>
+        <section className="aRequests">
+          <Pagination activePage={activePage} itemsCountPerPage={itemsPerPage} totalItemsCount={data.length} pageRangeDisplayed={5} onChange={handlePageChange} />
+        </section>
+        <section className="footerRequest">
+          <Footer />
+        </section>
       </section>
     </main>
   );
