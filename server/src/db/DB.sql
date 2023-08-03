@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `siscomite` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `siscomite`;
 -- MySQL dump 10.13  Distrib 8.0.33, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: siscomite
@@ -25,10 +27,10 @@ DROP TABLE IF EXISTS `aprendices`;
 CREATE TABLE `aprendices` (
   `id_aprendiz` int NOT NULL AUTO_INCREMENT,
   `nombres_aprendiz` varchar(100) NOT NULL,
-  `apellidos_aprendiz` varchar(100) DEFAULT NULL,
+  `apellidos_aprendiz` varchar(100) NOT NULL,
   `email_aprendiz_sena` varchar(300) NOT NULL,
   `email_aprendiz_personal` varchar(300) NOT NULL,
-  `celular_aprendiz` varchar(20) DEFAULT NULL,
+  `celular_aprendiz` varchar(20) NOT NULL,
   `fijo_aprendiz` varchar(20) DEFAULT NULL,
   `id_documento` int NOT NULL,
   `id_ficha` int NOT NULL,
@@ -59,8 +61,8 @@ DROP TABLE IF EXISTS `articulos`;
 CREATE TABLE `articulos` (
   `id_articulo` int NOT NULL AUTO_INCREMENT,
   `numero_articulo` varchar(10) NOT NULL,
-  `prohibicion_articulo` varchar(10) DEFAULT NULL,
-  `descripcion_articulo` varchar(500) DEFAULT NULL,
+  `prohibicion_articulo` varchar(10) NOT NULL,
+  `descripcion_articulo` varchar(500) NOT NULL,
   PRIMARY KEY (`id_articulo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -83,9 +85,9 @@ DROP TABLE IF EXISTS `causas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `causas` (
   `id_causa` int NOT NULL AUTO_INCREMENT,
-  `categoria_causa` varchar(100) DEFAULT NULL,
-  `calificacion_causa` varchar(100) DEFAULT NULL,
-  `descripcion_caso` varchar(1000) DEFAULT NULL,
+  `categoria_causa` varchar(100) NOT NULL,
+  `calificacion_causa` varchar(100) NOT NULL,
+  `descripcion_caso` varchar(1000) NOT NULL,
   `evidencias` varchar(1000) NOT NULL,
   `id_articulo` int NOT NULL,
   PRIMARY KEY (`id_causa`),
@@ -136,10 +138,10 @@ DROP TABLE IF EXISTS `fichas`;
 CREATE TABLE `fichas` (
   `id_ficha` int NOT NULL AUTO_INCREMENT,
   `numero_ficha` varchar(100) NOT NULL,
-  `programa` varchar(100) DEFAULT NULL,
-  `jornada` varchar(100) DEFAULT NULL,
-  `etapa` varchar(100) DEFAULT NULL,
-  `trimestre` varchar(100) DEFAULT NULL,
+  `nombre_programa` varchar(100) NOT NULL,
+  `jornada` varchar(100) NOT NULL,
+  `etapa_programa` varchar(100) NOT NULL,
+  `numero_trimestre` varchar(100) NOT NULL,
   `id_modalidad` int NOT NULL,
   PRIMARY KEY (`id_ficha`),
   KEY `id_modalidad` (`id_modalidad`),
@@ -165,7 +167,7 @@ DROP TABLE IF EXISTS `modalidades`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `modalidades` (
   `id_modalidad` int NOT NULL AUTO_INCREMENT,
-  `nombre_modalidad` varchar(100) DEFAULT NULL,
+  `nombre_modalidad` varchar(100) NOT NULL,
   PRIMARY KEY (`id_modalidad`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -249,12 +251,12 @@ CREATE TABLE `usuarios` (
   `id_usuario` int NOT NULL AUTO_INCREMENT,
   `nombres` varchar(100) NOT NULL,
   `apellidos` varchar(100) NOT NULL,
-  `numero_documento_usuario` varchar(100) NOT NULL,
+  `numero_documento` varchar(100) NOT NULL,
   `email_sena` varchar(300) NOT NULL,
-  `email_personal` varchar(300) NOT NULL,
-  `celular` varchar(20) NOT NULL,
-  `teléfono_fijo` varchar(20) NOT NULL,
-  `password_usuario` varchar(500) NOT NULL,
+  `email_personal` varchar(300) DEFAULT NULL,
+  `numero_celular` varchar(20) NOT NULL,
+  `telefono_fijo` varchar(20) DEFAULT NULL,
+  `contrasena` varchar(500) NOT NULL,
   `id_documento` int NOT NULL,
   `id_rol` int NOT NULL,
   PRIMARY KEY (`id_usuario`),
@@ -273,6 +275,14 @@ LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'siscomite'
+--
+
+--
+-- Dumping routines for database 'siscomite'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -283,4 +293,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-02 15:26:02
+-- Dump completed on 2023-08-03 15:09:11
