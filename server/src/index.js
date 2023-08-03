@@ -4,7 +4,7 @@ import indexRoutes from './routes/index.routes.js'
 import userRoutes from './routes/user.routes.js'
 
 import { PORT } from './config.js'
-v 
+
 const app = express()
 
 app.use(cors())
