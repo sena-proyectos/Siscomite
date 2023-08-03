@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import "./Sliderbar.css";
-import { Link, useLocation } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 
 const Sliderbar = () => {
-  const location = useLocation();
-  const currentPath = location.pathname;
-
-  const [selectedIcon, setSelectedIcon] = useState("");
-
   
+  const [selectedIcon, setSelectedIcon] = useState(0);
+
   const handleIconClick = (iconId) => {
     setSelectedIcon(iconId);
   };
@@ -23,25 +19,25 @@ const Sliderbar = () => {
       <section className="pages">
         <ul className="center">
           <Link to={"/home"} className="line">
-            <li className={`part ${selectedIcon === "home" ? "active" : ""}`} onClick={() => handleIconClick("home")}>
+            <li className={`part ${selectedIcon === 0 ? "active" : ""}`} onClick={() => setSelectedIcon(0)}>
               <i class="fi fi-rr-home" id="icon" title="Inicio" />
               <span className="slideText">Inicio</span>
             </li>
           </Link>
           <Link className="line" to={"/students"}>
-            <li className={`part ${selectedIcon === "students" ? "active" : ""}`} onClick={() => handleIconClick("students")}>
+            <li className={`part ${selectedIcon === 1 ? "active" : ""}`} onClick={() => setSelectedIcon(1)}>
               <i class="fi fi-rr-user" id="icon" title="Aprendices" />
               <span className="slideText">Aprendices</span>
             </li>
           </Link>
           <Link className="line" to={"/requests"}>
-            <li className={`part ${selectedIcon === "requests" ? "active" : ""}`} onClick={() => handleIconClick("requests")}>
+            <li className={`part ${selectedIcon === 2 ? "active" : ""}`} onClick={() => setSelectedIcon(2)}>
               <i class="fi fi-rs-file" id="icon" title="Solicitudes" />
               <span className="slideText"> Solicitudes </span>
             </li>
           </Link>
           <Link className="line" to={"/create"}>
-            <li className={`part ${selectedIcon === "create" ? "active" : ""}`} onClick={() => handleIconClick("create")} >
+            <li className={`part ${selectedIcon === 3 ? "active" : ""}`} onClick={() => setSelectedIcon(3)}>
               <i class="fi fi-rs-add-document" id="icon" title="Crear solicitud" />
               <span className="slideText">Crear solicitud</span>
             </li>
