@@ -19,7 +19,6 @@ export const regiserUser = async (req, res) => {
         res.status(500).send({ message: 'Error al crear el usuario' })
     }
 }
-
 export const loginUser = async (req, res) => {
     try {
         const token = res.locals.token

@@ -2,8 +2,10 @@ import express from 'express'
 import cors from 'cors'
 import indexRoutes from './routes/index.routes.js'
 import userRoutes from './routes/user.routes.js'
-
+import articleRoutes  from './routes/article.routes.js'
+import { causeRoutes } from './routes/cause.routes.js'
 import { PORT } from './config.js'
+
 
 const app = express()
 
@@ -12,6 +14,8 @@ app.use(express.json())
 
 app.use(indexRoutes)
 app.use('/api', userRoutes)
+app.use('/api', articleRoutes)
+app.use('/api', causeRoutes)
 
 app.use((req, res) => {
   res.status(404).send({
