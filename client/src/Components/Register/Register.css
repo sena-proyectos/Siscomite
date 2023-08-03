@@ -7,13 +7,8 @@
     }
 }
 
-/* .container {
-    display: flex;
-    height: 100vh;
-} */
 
 .main {
-    /* margin: auto; */
     animation: show .8s ease-in-out;
 }
 
@@ -54,7 +49,6 @@
     color: black;
     background-color: white;
     width: 100%;
-    /* border: 2px solid red; */
 }
 
 .formContainerR {
@@ -64,13 +58,15 @@
     background-color: white;
 }
 .formSelect {
+    width: 93%;
     background-color: rgba(128, 128, 128, 0.374);
-    font-size: 1em;
+    font-size: 14px;
     padding: 0.8em;
     border: none;
     outline: none;
-    border-radius: 20px;
+    border-radius: 10px;
     justify-content: space-between;
+
 }
 
 .formInputR {
@@ -80,7 +76,7 @@
     padding: 0.8em;
     border: none;
     outline: none;
-    border-radius: 20px;
+    border-radius: 10px;
     justify-content: space-between;
 }
 .formInputRe {
@@ -90,7 +86,7 @@
     padding: 0.8em;
     border: none;
     outline: none;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .formInputR:focus + .formLabel,

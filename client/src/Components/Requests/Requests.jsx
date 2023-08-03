@@ -8,19 +8,19 @@ import { Button } from "../Utils/Button/Button";
 
 const Requests = () => {
   const data = [
-    { id: 1, name: "Dato 1", value: 100 },
-    { id: 2, name: "Dato 2", value: 200 },
-    { id: 3, name: "Dato 3", value: 300 },
-    { id: 4, name: "Dato 4", value: 400 },
-    { id: 5, name: "Dato 5", value: 500 },
-    { id: 6, name: "Dato 6", value: 600 },
-    { id: 7, name: "Dato 7", value: 700 },
-    { id: 8, name: "Dato 8", value: 800 },
-    { id: 9, name: "Dato 9", value: 900 },
-    { id: 10, name: "Dato 10", value: 1000 },
-    { id: 11, name: "Dato 11", value: 2000 },
-    { id: 12, name: "Dato 12", value: 3000 },
-    { id: 13, name: "Dato 13", value: 4000 },
+    { id: 1, name: "Azul Andres Velez Romero", date: "02/10/2023" , value: "Aprobado" },
+    { id: 2, name: "Carlos Perez Falcó", date: "02/10/2020" , value: "Rechazado" },
+    { id: 3, name: "Juan Fernando Pérez del Corral", date: "02/10/2021" , value: "Pendiente" },
+    { id: 4, name: "Valentina Laverde de la Rosa", date: "02/10/2023" , value: "Rechazado" },
+    { id: 5, name: "Óscar de la Renta", date: "02/10/2024" , value: "Pendiente" },
+    { id: 6, name: "Sara Teresa Sánchez del Pinar", date: "02/10/2023" , value: "Pendiente" },
+    { id: 7, name: "Efraín de las Casas Mejía", date: "02/10/2023" , value: "Pendiente" },
+    { id: 8, name: "Julieta Ponce de León", date: "02/10/2024" , value: "Aprovado" },
+    { id: 9, name: "Martín Elías de los Ríos Acosta", date: "02/10/2022" , value: "Rechazado" },
+    { id: 10, name: "Gabriela de la Pava de la Torre", date: "02/10/2020" , value: "Pendiente" },
+    { id: 11, name: "Matías de Greiff Rincón", date: "02/10/2023" , value: "Aprobado" },
+    { id: 12, name: "Manuela del Pino Hincapié", date: "02/10/2021" , value: "Rechazado" },
+    { id: 13, name: "Sebastián del Campo Yepes", date: "02/10/2021" , value: "Aprobado" },
   ];
 
   const itemsPerPage = 9; // Número de elementos por página
@@ -47,6 +47,7 @@ const Requests = () => {
           <table className="table">
             <thead>
               <tr>
+                <th className="headtable">N°</th>
                 <th className="headtable">Solicitud</th>
                 <th className="headtable">Fecha solicitud</th>
                 <th className="headtable">Estado</th>
@@ -58,6 +59,7 @@ const Requests = () => {
                 <tr className="trTable" key={item.id}>
                   <td className="bodytable">{item.id}</td>
                   <td className="bodytable">{item.name}</td>
+                  <td className="bodytable">{item.date}</td>
                   <td className="bodytable">{item.value}</td>
                   <td className="bodytable" id="buttonRequests">
                     <Button title={"Detalles"} />

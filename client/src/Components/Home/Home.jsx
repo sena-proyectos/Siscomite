@@ -9,6 +9,9 @@ const Home = () => {
     <main className="containerHome">
       <Sliderbar />
       <section className="homeContent">
+        <section className="cardTitle">
+          <h1 className="titleHome">Siscomite</h1>
+        </section>
         <section className="cardHome">
           <Card depende className="card_Home" image={image} title={"Solicitudes"} descripción={"Aquí podrás ver las solicitudes que se han realizado y su estado de aprobación."} />
         </section>
@@ -25,9 +28,9 @@ const Home = () => {
           <Card depende className="card_Home" image={image} title={"Agregar Aprendiz"} descripción={"Aquí podrás Agregar aprendices."} />
         </section>
       </section>
-        <section className="footerHome">
-          <Footer />
-        </section>
+      <section className="footerHome">
+        <Footer />
+      </section>
     </main>
   );
 };
