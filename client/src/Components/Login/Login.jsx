@@ -6,7 +6,7 @@ import { Toast } from '../toast/toast'
 import Cookie from 'js-cookie'
 
 export const Login = () => {
-  const num_documento = useRef()
+  const numero_documento = useRef()
   const contrasena = useRef()
   const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
   const [error, setError] = useState(null) // Estado para manejar los errores
@@ -17,7 +17,7 @@ export const Login = () => {
     setIsLoading(true)
 
     const dataValue = {
-      num_documento: num_documento.current.value,
+      numero_documento: numero_documento.current.value,
       contrasena: contrasena.current.value,
     }
 
@@ -46,7 +46,7 @@ export const Login = () => {
           {error && <Toast message={error} typeToast={'error'} onClose={closed} />}
           <section className="formContainer">
             <section className="inp">
-              <input type="text" name="document" className="formInput" placeholder=" " autoComplete="off" ref={num_documento} />
+              <input type="text" name="document" className="formInput" placeholder=" " autoComplete="off" ref={numero_documento} />
               <label className="formLabel" htmlFor="document">
                 Número de documento
               </label>
