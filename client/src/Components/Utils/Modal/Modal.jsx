@@ -78,7 +78,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </label>
                   </section>
                   <section className="enviar">
-                    <Button icon={<i class="fi fi-br-check" id="iconSave" />} title={"Guardar"} />
+                    <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={"Guardar"} />
                   </section>
                 </section>
               </section>
