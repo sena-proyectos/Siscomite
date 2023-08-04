@@ -1,5 +1,5 @@
 import './Register.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react'
 import { register } from '../../api/httpRequest'
 import { Toast } from '../toast/toast'
@@ -17,6 +17,8 @@ export const Register = () => {
   const [error, setError] = useState()
   const [message, setMessage] = useState()
 
+  const navigate = useNavigate()
+
   const sendData = async (e) => {
     e.preventDefault()
     const dataValue = {
@@ -32,7 +34,8 @@ export const Register = () => {
     try {
       const res = await register(dataValue)
       const response = res.data.message
-
+      setMessage(response)
+      navigate('/')
     } catch (error) {
       const message = error.response.data.message
       setError(message)
@@ -41,6 +44,7 @@ export const Register = () => {
 
   const closed = () => {
     setError(null)
+    setMessage(null)
   }
 
   return (
@@ -49,6 +53,7 @@ export const Register = () => {
         <form className="registerForm" onSubmit={sendData}>
           <h2 className="title">Crear una cuenta</h2>
           { error && <Toast message={error} typeToast='warnning' onClose={closed}/> }
+          { message && <Toast message={message} typeToast='success' onClose={closed}/> }
           <section className="formContainerR">
             <section className="inputGroup">
               <section className="inpu">
