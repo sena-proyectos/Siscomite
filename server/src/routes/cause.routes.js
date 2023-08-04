@@ -6,4 +6,4 @@ const causeRoutes = Router();
 causeRoutes.get('/causes', getCause);
 causeRoutes.post('/createCause');
 
-export {causeRoutes} 
+export default causeRoutes 

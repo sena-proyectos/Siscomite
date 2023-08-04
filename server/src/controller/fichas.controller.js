@@ -1,4 +1,4 @@
-import { pool } from "../db";
+import { pool } from "../db.js";
 
 export const getFichas = async (res) => {
     try {
@@ -12,5 +12,5 @@ export const getFichas = async (res) => {
 export const createFicha = (req, res) => {
     const { num_ficha, nombre_programa_formacion } = req.body
 
-    
+
 }
