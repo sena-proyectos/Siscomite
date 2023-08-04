@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import indexRoutes from './routes/index.routes.js'
 import userRoutes from './routes/user.routes.js'
+import fichasRoutes from './routes/fichas.routes.js'
 
 import { PORT } from './config.js'
 
@@ -12,6 +13,7 @@ app.use(express.json())
 
 app.use(indexRoutes)
 app.use('/api', userRoutes)
+app.use('/api', fichasRoutes)
 
 app.use((req, res) => {
   res.status(404).send({
