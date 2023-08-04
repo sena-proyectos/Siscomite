@@ -21,23 +21,21 @@
 
 .loginForm {
   background-color: white;
-  width: 80%;
+  width: 70%;
   max-width: 400px;
   padding: 4.5em;
-  border-radius: 10px; 
+  border-radius: 10px;
   box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
   text-align: center;
-  
 }
 
 .loginForm .title {
-  font-size: 2rem;
-  margin-bottom: 0.5em;
-  background-color: white;
+  font-size: 1.5rem;
+  margin-bottom: 0.2em;
 }
 
 .formContainer {
-  margin-top: 3em;
+  margin-top: 2em;
   display: grid;
   gap: 1em;
   width: 100%;
@@ -47,7 +45,6 @@
 .inp {
   position: relative;
   color: black;
-  background-color: white;
 }
 
 .formInput {
@@ -57,7 +54,7 @@
   padding: 0.8em;
   border: none;
   outline: none;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .formInput:focus + .formLabel,
@@ -76,13 +73,13 @@
   background-color: transparent;
   transform: translateY(12px);
   transition: transform 0.5s;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .btn {
   background-color: #3c3c3c;
   color: white;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 300;
   width: 100%;
   padding: 0.8em 0 1em 0;
@@ -92,16 +89,10 @@
 }
 
 .text {
-  background-color: white;
   color: #587fff;
+  font-size: 12px;
 }
 
 .textForm {
-  background-color: white;
+  font-size: 12px;
 }
-
-/* @media screen and (max-width: 1000px) {
-  .image,.loginImageForm {
-    display: none;
-  }
-} */

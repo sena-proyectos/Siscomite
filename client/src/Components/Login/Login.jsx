@@ -1,5 +1,5 @@
 import './Login.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react' // Agregamos useState para manejar el estado de carga
 import { login } from '../../api/httpRequest'
 import { Toast } from '../toast/toast'
@@ -10,6 +10,7 @@ export const Login = () => {
   const contrasena = useRef()
   const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
   const [error, setError] = useState(null) // Estado para manejar los errores
+  const navigate = useNavigate()
 
   const sendData = async (e) => {
     e.preventDefault()
@@ -26,6 +27,7 @@ export const Login = () => {
       const response = res.data.response.info.token
       Cookie.set('token', response, { expires: 2, secure: true, sameSite: 'None', path: '/' })
       setError(null)
+      navigate('/home')
     } catch (error) {
       const message = error.response.data.message
       setError(message)
