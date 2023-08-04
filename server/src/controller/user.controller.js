@@ -27,7 +27,6 @@ export const registerUser = async (req, res) => {
     return res.status(500).json({ message: 'Error al crear el usuario' })
   }
 }
-
 export const loginUser = async (req, res) => {
   try {
     const token = res.locals.token
