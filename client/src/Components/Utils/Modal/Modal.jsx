@@ -84,7 +84,40 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
               </section>
             )}
 
-            {modalInfo && <p>Info</p>}
+            {modalInfo && (
+              <section className="modalInfo">
+                <section className="contentInfo">
+                  <section className="info">
+                    <span className="infoTitle">Nombre completo</span>
+                    <p className="infoText">Mariana Lopez Robledo Estrada</p>
+                  </section>
+                  <section className="info">
+                    <span className="infoTitle">Tipo de documento</span>
+                    <p className="infoText">Cédula de ciudadanía</p>
+                  </section>
+                  <section className="info">
+                    <span className="infoTitle">Número de documento</span>
+                    <p className="infoText">12345678</p>
+                  </section>
+                  <section className="info">
+                    <span className="infoTitle">Correo @soy.sena.edu.co</span>
+                    <p className="infoText">mariana34@soy.sena.edu.co</p>
+                  </section>
+                  <section className="info">
+                    <span className="infoTitle">Correo Alterno</span>
+                    <p className="infoText">marinalopez@gmail.com</p>
+                  </section>
+                  <section className="info">
+                    <span className="infoTitle">Número celular</span>
+                    <p className="infoText">3245555555</p>
+                  </section>
+                  <section className="info">
+                    <span className="infoTitle">Número fijo</span>
+                    <p className="infoText">6666666</p>
+                  </section>
+                </section>
+              </section>
+            )}
           </section>
         </section>
       </main>

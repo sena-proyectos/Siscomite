@@ -1,122 +1,113 @@
 @keyframes show {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-
 .main {
-    animation: show .8s ease-in-out;
+  animation: show 0.8s ease-in-out;
 }
 
 .registerForm {
-    background-color: white;
-    width: 80%;
-    max-width: 400px;
-    padding: 3em;
-    border-radius: 10px;
-    box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
-    text-align: center;
+  background-color: white;
+  width: 80%;
+  max-width: 400px;
+  padding: 3em;
+  border-radius: 10px;
+  box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
+  text-align: center;
 }
 
 .registerForm .title {
-    font-size: 2rem;
-    margin-bottom: 0.8em;
-    background-color: white;
+  font-size: 2rem;
+  margin-bottom: 0.8em;
+  background-color: white;
 }
 
 .inputGroup {
-    width: 100%;    
-    display: flex;
-    justify-content: flex-end;
-    background-color: white;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  background-color: white;
 }
 
 .inputGroupDocument {
-    width: 100%;
-    margin-left: .1rem;
-    display: flex;
-    justify-content: flex-end;
-    background-color: white;
+  width: 100%;
+  margin-left: 0.1rem;
+  display: flex;
+  justify-content: flex-end;
+  background-color: white;
 }
 
-
 .inpu {
-    position: relative;
-    color: black;
-    background-color: white;
-    width: 100%;
+  position: relative;
+  color: black;
+  background-color: white;
+  width: 100%;
 }
 
 .formContainerR {
-    margin-top: 1em;
-    display: grid;
-    gap: 1em;
-    background-color: white;
+  margin-top: 1em;
+  display: grid;
+  gap: 1em;
+  background-color: white;
 }
 .formSelect {
-    width: 93%;
-    background-color: rgba(128, 128, 128, 0.374);
-    font-size: 14px;
-    padding: 0.8em;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    justify-content: space-between;
-
+  width: 93%;
+  background-color: rgba(128, 128, 128, 0.374);
+  font-size: 14px;
+  padding: 0.5em;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  justify-content: space-between;
 }
 
 .formInputR {
-    width: 80%;
-    background-color: rgba(128, 128, 128, 0.374);
-    font-size: 1em;
-    padding: 0.8em;
-    border: none;
-    outline: none;
-    border-radius: 10px;
-    justify-content: space-between;
+  width: 80%;
+  background-color: rgba(128, 128, 128, 0.374);
+  font-size: 1em;
+  padding: 0.5em;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  justify-content: space-between;
 }
 .formInputRe {
-    width: 90%;
-    background-color: rgba(128, 128, 128, 0.374);
-    font-size: 1em;
-    padding: 0.8em;
-    border: none;
-    outline: none;
-    border-radius: 10px;
+  width: 90%;
+  background-color: rgba(128, 128, 128, 0.374);
+  font-size: 1em;
+  padding: 0.5em;
+  border: none;
+  outline: none;
+  border-radius: 10px;
 }
 
 .formInputR:focus + .formLabel,
 .formInputR:not(:placeholder-shown) + .formLabel {
-    transform: translateY(-9px) scale(0.9);
-    transform-origin: left top;
-    color: rgb(0, 0, 0);
+  transform: translateY(-9px) scale(0.9);
+  transform-origin: left top;
+  color: rgb(0, 0, 0);
 }
 
 .formInputRe:focus + .formLabel,
 .formInputRe:not(:placeholder-shown) + .formLabel {
-    transform: translateY(-9px) scale(0.9);
-    transform-origin: left top;
-    color: rgb(0, 0, 0);
+  transform: translateY(-9px) scale(0.9);
+  transform-origin: left top;
+  color: rgb(0, 0, 0);
 }
 
 .formLabel {
-    cursor: pointer;
-    pointer-events: none;
-    position: absolute;
-    top: 0;
-    left: 20px;
-    background-color: transparent;
-    transform: translateY(12px);
-    transition: transform 0.5s;
-    font-size: 15px;
+  cursor: pointer;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  background-color: transparent;
+  transform: translateY(12px);
+  transition: transform 0.5s;
+  font-size: 16px;
 }
-
-/* @media screen and (max-width: 900px) {
-  .loginImg {
-    display: none;
-  }
-}  */

@@ -1,20 +1,21 @@
-import './Register.css'
-import { Link } from 'react-router-dom'
-import { useRef } from 'react'
-import { register } from '../../api/httpRequest'
-// import image from "../../assets/image/register.png";
+import "./Register.css";
+import Image from "../../assets/image/logoSena.png";
+import { Footer } from "../Footer/Footer";
+import { Link } from "react-router-dom";
+import { useRef } from "react";
+import { register } from "../../api/httpRequest";
 
 export const Register = () => {
-  const nombre = useRef()
-  const apellido = useRef()
-  const correo_institucional = useRef()
-  const telefono = useRef()
-  const tipo_documento = useRef()
-  const num_documento = useRef()
-  const contrasena = useRef()
+  const nombre = useRef();
+  const apellido = useRef();
+  const correo_institucional = useRef();
+  const telefono = useRef();
+  const tipo_documento = useRef();
+  const num_documento = useRef();
+  const contrasena = useRef();
 
   const sendData = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const dataValue = {
       nombre: nombre.current.value,
       apellido: apellido.current.value,
@@ -23,16 +24,20 @@ export const Register = () => {
       tipo_documento: tipo_documento.current.value,
       num_documento: num_documento.current.value,
       contrasena: contrasena.current.value,
-    }
+    };
 
     try {
-      const res = await register(dataValue)
-      const response = res.data.message
+      const res = await register(dataValue);
+      const response = res.data.message;
     } catch (error) {}
-  }
+  };
 
   return (
     <main className="container">
+      <section className="logo">
+        <img src={Image} alt="Sena" />
+        {/* <span className="sena">SENA</span> */}
+      </section>
       <section className="main">
         <form className="registerForm" onSubmit={sendData}>
           <h2 className="title">Crear una cuenta</h2>
@@ -93,14 +98,15 @@ export const Register = () => {
 
             <button className="btn">Registrate</button>
             <p className="textForm">
-              ¿Ya estas registrado?{' '}
-              <Link className="text" to={'/'}>
+              ¿Ya estas registrado?{" "}
+              <Link className="text" to={"/"}>
                 Iniciar sesión
               </Link>
             </p>
           </section>
+          <Footer />
         </form>
       </section>
     </main>
-  )
-}
+  );
+};

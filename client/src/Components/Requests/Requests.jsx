@@ -15,7 +15,7 @@ const Requests = () => {
     { id: 5, name: "Óscar de la Renta", date: "02/10/2024" , value: "Pendiente" },
     { id: 6, name: "Sara Teresa Sánchez del Pinar", date: "02/10/2023" , value: "Pendiente" },
     { id: 7, name: "Efraín de las Casas Mejía", date: "02/10/2023" , value: "Pendiente" },
-    { id: 8, name: "Julieta Ponce de León", date: "02/10/2024" , value: "Aprovado" },
+    { id: 8, name: "Julieta Ponce de León", date: "02/10/2024" , value: "Aprobado" },
     { id: 9, name: "Martín Elías de los Ríos Acosta", date: "02/10/2022" , value: "Rechazado" },
     { id: 10, name: "Gabriela de la Pava de la Torre", date: "02/10/2020" , value: "Pendiente" },
     { id: 11, name: "Matías de Greiff Rincón", date: "02/10/2023" , value: "Aprobado" },

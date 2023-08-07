@@ -22,7 +22,7 @@ const Students = () => {
     { title: "Carla María Tibetano De Espana", descripción: 10 },
   ];
 
-  const itemsPerPage = 8; // Número de elementos por página
+  const itemsPerPage = 12; // Número de elementos por página
   const [activePage, setActivePage] = useState(1);
 
   // Calcula los datos a mostrar en la página actual

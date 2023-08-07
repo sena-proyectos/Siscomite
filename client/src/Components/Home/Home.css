@@ -27,7 +27,6 @@
   display: grid;
   place-items: center;
   cursor: pointer;
-  margin-left: 2rem;
   margin-top: 15%;
 }
 
@@ -36,8 +35,7 @@
 }
 
 .footerHome .footer {
-  position: relative;
-  left: 30rem;
+  margin-left: 15rem;
 }
 
 @media screen and (max-width: 1000px) {
