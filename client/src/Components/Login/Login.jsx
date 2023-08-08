@@ -1,5 +1,7 @@
 import './Login.css'
-import { Link } from 'react-router-dom'
+import { Footer } from '../Footer/Footer'
+import Image from '../../assets/image/logoSena.png'
+import { Link, useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react' // Agregamos useState para manejar el estado de carga
 import { login } from '../../api/httpRequest'
 import { Toast } from '../toast/toast'
@@ -10,6 +12,7 @@ export const Login = () => {
   const contrasena = useRef()
   const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
   const [error, setError] = useState(null) // Estado para manejar los errores
+  const navigate = useNavigate()
 
   const sendData = async (e) => {
     e.preventDefault()
@@ -26,6 +29,7 @@ export const Login = () => {
       const response = res.data.response.info.token
       Cookie.set('token', response, { expires: 2, secure: true, sameSite: 'None', path: '/' })
       setError(null)
+      navigate('/home')
     } catch (error) {
       const message = error.response.data.message
       setError(message)
@@ -40,6 +44,10 @@ export const Login = () => {
 
   return (
     <main className="container">
+      <section className="logo">
+        <img src={Image} alt="Sena" />
+        {/* <span className="sena">SENA</span> */}
+      </section>
       <section className="main">
         <form className="loginForm" onSubmit={sendData}>
           <h2 className="title">Iniciar Sesión</h2>
@@ -59,6 +67,8 @@ export const Login = () => {
             </section>
             <p className="text">¿Olvidaste tu contraseña?</p>
             <button className="btn" disabled={isLoading}>
+              {' '}
+              {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
               {isLoading ? 'Cargando...' : 'Iniciar sesión'}
             </button>
             <p className="textForm">
@@ -68,6 +78,7 @@ export const Login = () => {
               </Link>
             </p>
           </section>
+          <Footer />
         </form>
       </section>
     </main>

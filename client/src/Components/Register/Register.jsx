@@ -1,15 +1,14 @@
 import './Register.css'
+import Image from '../../assets/image/logoSena.png'
 import { Link } from 'react-router-dom'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { register } from '../../api/httpRequest'
-import { Toast } from '../toast/toast'
-// import image from "../../assets/image/register.png";
 
 export const Register = () => {
   const nombre = useRef()
   const apellido = useRef()
   const correo_institucional = useRef()
-  const num_telefono = useRef()
+  const telefono = useRef()
   const tipo_documento = useRef()
   const num_documento = useRef()
   const contrasena = useRef()
@@ -32,23 +31,19 @@ export const Register = () => {
     try {
       const res = await register(dataValue)
       const response = res.data.message
-
-    } catch (error) {
-      const message = error.response.data.message
-      setError(message)
-    }
-  }
-
-  const closed = () => {
-    setError(null)
+    } catch (error) {}
   }
 
   return (
     <main className="container">
+      <section className="logo">
+        <img src={Image} alt="Sena" />
+        {/* <span className="sena">SENA</span> */}
+      </section>
       <section className="main">
         <form className="registerForm" onSubmit={sendData}>
           <h2 className="title">Crear una cuenta</h2>
-          { error && <Toast message={error} typeToast='warnning' onClose={closed}/> }
+          {error && <Toast message={error} typeToast="warnning" onClose={closed} />}
           <section className="formContainerR">
             <section className="inputGroup">
               <section className="inpu">
@@ -112,6 +107,7 @@ export const Register = () => {
               </Link>
             </p>
           </section>
+          <Footer />
         </form>
       </section>
     </main>

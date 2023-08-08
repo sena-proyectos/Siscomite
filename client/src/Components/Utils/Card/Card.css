@@ -1,11 +1,66 @@
-.container{
-    display: grid;
-    place-items: center;
-    
+.containerCard{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
-.cuadro {
-  background-color: rgb(127, 54, 54);
-  width: 55%;
-  height: 35rem;
-  border-radius: 30px;
+
+.cardImage .fondoCard{
+  width: 10rem;
+}
+
+.cardTitle, .cardBody{
+  padding-top: .5rem;
+}
+
+.bodyText{
+  font-size: 12px;
+}
+
+
+/* Estilos de las card giratorias */
+.card_flip {
+  position: relative;
+  width: 200px;
+  height: 100px;
+  color: black;
+}
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+
+}
+
+.front {
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  border: 1px #2e323e solid;
+  border-radius: 10px;
+}
+
+.back {
+  background-color: #3498db;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transform: rotateY(180deg);
+  border-radius: 10px;
+
+}
+
+.card_flip:hover .front {
+  transform: rotateY(180deg);
+}
+
+.card_flip:hover .back {
+  transform: rotateY(0deg);
 }
