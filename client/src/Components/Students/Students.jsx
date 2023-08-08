@@ -5,7 +5,6 @@ import { Card } from "../Utils/Card/Card";
 import { Footer } from "../Footer/Footer";
 import React, { useState } from "react";
 import Pagination from "react-js-pagination";
-import { Link } from "react-router-dom";
 import { Modal } from "../Utils/Modal/Modal";
 
 const Students = () => {
@@ -22,7 +21,7 @@ const Students = () => {
     { title: "Carla María Tibetano De Espana", descripción: 10 },
   ];
 
-  const itemsPerPage = 12; // Número de elementos por página
+  const itemsPerPage = 8; // Número de elementos por página
   const [activePage, setActivePage] = useState(1);
 
   // Calcula los datos a mostrar en la página actual
@@ -48,7 +47,7 @@ const Students = () => {
   return (
     <>
       {modalStudent && <Modal modalAdd cerrarModal={modalAdd} titulo={"Agregar Estudiantes"} />}
-      {infoStudents && <Modal modalInfo cerrarModal={infoStudent} titulo={"Información"}/>}
+      {infoStudents && <Modal modalInfo cerrarModal={infoStudent} titulo={"Información"} />}
 
       <main className="containerStudent">
         <Sliderbar />
@@ -60,7 +59,7 @@ const Students = () => {
             {currentItems.map((item) => {
               return (
                 <section className="studentCard" key={item.title}>
-                  <Card click={infoStudent} title={item.title} descripción={item.descripción} />
+                  <Card header click={infoStudent} title={item.title} descripción={item.descripción} />
                 </section>
               );
             })}
@@ -68,9 +67,9 @@ const Students = () => {
           <section className="aStudents">
             <Pagination activePage={activePage} itemsCountPerPage={itemsPerPage} totalItemsCount={cards.length} pageRangeDisplayed={5} onChange={handlePageChange} />
           </section>
-        <section className="footerStudents">
-          <Footer />
-        </section>
+          <section className="footerStudents">
+            <Footer />
+          </section>
         </section>
         <section className="agregar">
           <button className="add" onClick={modalAdd}>

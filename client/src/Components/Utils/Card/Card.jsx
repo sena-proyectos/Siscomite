@@ -1,5 +1,4 @@
 import "./Card.css";
-import React, { useState } from "react";
 
 export const Card = ({ title, descripción, image, icon, depende = false, flip = false, header = false, click, frontContent, backContent }) => {
   return (
@@ -17,12 +16,19 @@ export const Card = ({ title, descripción, image, icon, depende = false, flip =
           </h4>
         )}
       </header>
-      <section className="cardBody">
+      <section className="card_Body">
         <p className="bodyText">{descripción}</p>
         {flip && (
           <section className="card_flip">
             <section className="front">{frontContent}</section>
-            <section className="back">{backContent}</section>
+            <section className="back">
+              <ul className="list">
+                {backContent.map((item, index) => (
+                  <li key={index} className="listItem">{item}</li>
+                ))}
+              </ul>
+            </section>
+
           </section>
         )}
       </section>

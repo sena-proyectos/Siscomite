@@ -11,38 +11,23 @@ const Groups = () => {
     {
       id: 2345543,
       frontContent: "Análisis y Desarrollo de Software",
-      backContent: "Back Content 1",
+      backContent: ["Maria Juana Perez", "Presencial", "Tarde"],
     },
     {
       id: 24567778,
       frontContent: "Multimedia",
-      backContent: "Back Content 2",
+      backContent: ["Item 1", "Item 2", "Item 3"],    
     },
     {
       id: 2656666,
       frontContent: "Moda",
-      backContent: "Back Content 2",
+      backContent: ["Item 1", "Item 2", "Item 3"],    
     },
     {
       id: 2344666,
       frontContent: "Diseño de interiores",
-      backContent: "Back Content 2",
-    },
-    {
-      id: 2344666,
-      frontContent: "Diseño de interiores",
-      backContent: "Back Content 2",
-    },
-    {
-      id: 2344666,
-      frontContent: "Diseño de interiores",
-      backContent: "Back Content 2",
-    },
-    {
-      id: 2344666,
-      frontContent: "Diseño de interiores",
-      backContent: "Back Content 2",
-    },
+      backContent: ["Item 1", "Item 2", "Item 3"],    
+    }
   ];
 
   return (
@@ -53,10 +38,13 @@ const Groups = () => {
           <Search placeholder={"Buscar ficha"} icon={<i className="fi fi-rr-search"></i>} />
         </header>
         <section className="bodyGroup">
-          {cardData.map((card, id) => (
+          {cardData.map((card) => (
             <section className="card-content">
               <Link to={"/students"}>
-                <Card flip key={id} frontContent={card.frontContent} backContent={card.backContent} />
+                <Card flip key={card.id}
+                frontContent={<section><p className="id">{card.id}</p><p>{card.frontContent}</p></section>} 
+                backContent={ card.backContent.map((item, index) => 
+                <li key={index}>{item}</li>)} />
               </Link>
             </section>
           ))}

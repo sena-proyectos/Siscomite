@@ -1,21 +1,26 @@
 .containerCard{
-  display: flex;
-  align-items: center;
+  position: relative;
+  display: grid;
+  place-items: center;  
+  width:150px;
   cursor: pointer;
+
 }
 
-.cardImage .fondoCard{
+.fondoCard, .cardImage {
   width: 10rem;
+
 }
 
-.cardTitle, .cardBody{
-  padding-top: .5rem;
+.cardTitle,
+.card_Body {
+  width: 100%;
+
 }
 
-.bodyText{
+.bodyText {
   font-size: 12px;
 }
-
 
 /* Estilos de las card giratorias */
 .card_flip {
@@ -32,17 +37,16 @@
   height: 100%;
   backface-visibility: hidden;
   transition: transform 0.6s;
-
 }
 
 .front {
-  background-color: #f0f0f0;
+  background-color: #d9d3d3;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 19px;
-  border: 1px #2e323e solid;
+  font-size: 14px;
   border-radius: 10px;
+  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .back {
@@ -54,7 +58,6 @@
   font-size: 18px;
   transform: rotateY(180deg);
   border-radius: 10px;
-
 }
 
 .card_flip:hover .front {
@@ -63,4 +66,17 @@
 
 .card_flip:hover .back {
   transform: rotateY(0deg);
+}
+
+
+.list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.listItem {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+  /* Agrega cualquier otro estilo que desees para la lista */
 }
