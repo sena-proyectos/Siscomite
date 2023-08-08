@@ -1,7 +1,7 @@
 import "./Modal.css";
 import { Button } from "../Button/Button";
 
-export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false }) => {
+export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false }) => {
   const closeModal = () => {
     cerrarModal();
   };
@@ -114,6 +114,64 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   <section className="info">
                     <span className="infoTitle">Número fijo</span>
                     <p className="infoText">6666666</p>
+                  </section>
+                </section>
+              </section>
+            )}
+
+            {modalAddGroups && (
+              <section className="modalGrup">
+                <section className="contentGroup">
+                  <section className="modalInput">
+                    <input type="text" name="fistName" className="inputModal" required placeholder=" " />
+                    <label className="modalLabel" htmlFor="fistName">
+                      Número de ficha
+                    </label>
+                  </section>
+                  <section className="modalInput">
+                    <input type="text" name="fistName" className="inputModal" required placeholder=" " />
+                    <label className="modalLabel" htmlFor="fistName">
+                      Nombre del programa
+                    </label>
+                  </section>
+                  <section>
+                    <select className="modalSelect" required>
+                      <option value="">Jornada</option>
+                      <option value="Mañana">Mañana</option>
+                      <option value="Tarde">Tarde</option>
+                      <option value="Noche">Noche</option>
+                      <option value="Noche">Fines de semana</option>
+                      <option value="Noche">Virtual</option>
+                    </select>
+                  </section>
+                  <section>
+                    <select className="modalSelect" required>
+                      <option value="">Etapa</option>
+                      <option value="lectiva">Lectiva</option>
+                      <option value="practica">Práctica</option>
+                    </select>
+                  </section>
+                  <section>
+                    <select className="modalSelect" required>
+                      <option value="">Trimestre lectivo</option>
+                      <option value="lectiva">1</option>
+                      <option value="practica">2</option>
+                      <option value="practica">3</option>
+                      <option value="practica">4</option>
+                      <option value="practica">5</option>
+                      <option value="practica">6</option>
+                    </select>
+                  </section>
+                  <select className="modalSelect" required>
+                    <option value="">Modalidad</option>
+                    <option value="vitual">Vitual</option>
+                    <option value="presencial">Presencial</option>
+                    <option value="media_tecnica">Media Técnica</option>
+                    <option value="distancia">A distancia</option>
+                    <option value="virtual">Virtual</option>
+                  </select>
+                  <section className="enviarGroup">
+                    <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={"Guardar"} />
                   </section>
                 </section>
               </section>

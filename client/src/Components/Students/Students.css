@@ -2,10 +2,11 @@
   height: 100vh;
 }
 
-.junto {
-  height: 90vh;
-  width: 84%;
-  margin-left: 16%;
+.contentStudents {
+  height: 100vh;
+  width: 83.5%;
+  position: relative;
+  left: 16.5%;
 }
 
 .studentBar {
@@ -19,35 +20,33 @@
 }
 
 .studentBody {
-  width: 100%;
-  max-width: 1100px;
-  height: 340px;
-  max-height: 400px;
+  padding: 0.5rem;
+  justify-content: center;
+  align-items: center;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  left: -2rem;
-  position: relative;
-  top: 1rem;
 }
 
 .studentBody .studentCard {
   width: 170px;
-  height: 130px;
   border-radius: 10px;
   overflow: hidden;
   margin-left: 3rem;
   margin-bottom: 3rem;
   padding: 1rem;
-  background-color: #b6b2b2;
+  background-color: #e0e0e0;
   cursor: pointer;
-  border: 2px #2e323e81 solid;
+  box-shadow: 5px 5px 10px #969696,
+  -5px -5px 10px #ffffff;
+}
+
+.studentsDescription{
+  display: flex;
 }
 
 .containerStudent .agregar {
   display: grid;
   place-items: center;
-
 }
 
 .add {
@@ -62,7 +61,6 @@
   cursor: pointer;
   background-color: #2e323e;
   position: relative;
-
 }
 
 .add:active {
@@ -71,15 +69,10 @@
 
 .footerStudents {
   position: relative;
-  bottom: 0;
 }
 
 /* Estilos de  la paginacion de tabla */
 
-.aStudents {
-  position: relative;
-  top: 1rem;
-}
 
 .aStudents .pagination {
   width: 100%;
