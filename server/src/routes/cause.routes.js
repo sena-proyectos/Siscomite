@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { getCause } from "../controller/cause.controller.js";
+import { createCause, getCause } from "../controller/cause.controller.js";
 
-const causeRoutes = Router();
+const router = Router();
 
-causeRoutes.get('/causes', getCause);
-causeRoutes.post('/createCause');
+router.get('/causes', getCause);
+router.post('/createCause', createCause);
 
-export default causeRoutes 
+export default router 

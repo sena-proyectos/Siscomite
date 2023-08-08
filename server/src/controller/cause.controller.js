@@ -11,12 +11,13 @@ export const getCause = async (req,res) =>{
 
 export const createCause = async (req, res) => {
     const {
-       categoria_causa, calificacion_causa, descripcion_causa, evidencias, id_articulo } = req.body
+    categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo } = req.body
     try {
-        await pool.query('INSERT INTO articulos ( categoria_causa, calificacion_causa, descripcion_causa, evidencias, id_articulo) VALUES (?, ?, ?, ?, 1)', [categoria_causa, calificacion_causa, descripcion_causa, evidencias, id_articulo]);
+        await pool.query('INSERT INTO causas ( categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo) VALUES (?, ?, ?, ?, ?)', [categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo]);
         res.status(201).send({ message: 'Causa creada exitosamente' });
     } catch (error) {
         res.status(500).send({ message: 'Error al crear la causa' })
+        console.log(error);
     }
 }
 
