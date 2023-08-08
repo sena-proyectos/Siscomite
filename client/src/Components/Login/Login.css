@@ -15,8 +15,7 @@
 }
 
 .main {
-  
-  animation: show .8s ease-in-out;
+  animation: show 0.8s ease-in-out;
 }
 
 .loginForm {
@@ -51,7 +50,7 @@
   width: 90%;
   background-color: rgba(128, 128, 128, 0.374);
   font-size: 1em;
-  padding: 0.8em;
+  padding: 0.5em;
   border: none;
   outline: none;
   border-radius: 10px;
@@ -88,6 +87,10 @@
   cursor: pointer;
 }
 
+.btn:active {
+  transform: scale(0.9);
+}
+
 .text {
   color: #587fff;
   font-size: 12px;
@@ -95,4 +98,25 @@
 
 .textForm {
   font-size: 12px;
+}
+
+.logo{
+  display: flex;
+  align-items: center;
+  animation: show 0.8s ease-in-out;
+
+}
+
+.container .logo {
+  position: absolute;
+  top: 2.5rem;
+  left: 3rem;
+}
+
+.logo > img {
+  width: 3rem;
+}
+
+.sena {
+  font-size: 15px;
 }

@@ -1,6 +1,6 @@
 import "./Search.css";
 
-const Search = ({ placeholder, icon }) => {
+const Search = ({ placeholder,  }) => {
   return (
     <main className="containerSearch">
       <section className="searchBar">

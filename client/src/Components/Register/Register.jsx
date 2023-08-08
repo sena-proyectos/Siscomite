@@ -19,7 +19,7 @@ export const Register = () => {
 
 
   const sendData = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     const dataValue = {
       nombres: nombres.current.value,
       apellidos: apellidos.current.value,
@@ -28,7 +28,7 @@ export const Register = () => {
       id_documento: id_documento.current.value,
       numero_documento: numero_documento.current.value,
       contrasena: contrasena.current.value,
-    }
+    };
 
     try {
       const res = await register(dataValue)
@@ -47,6 +47,10 @@ export const Register = () => {
 
   return (
     <main className="container">
+      <section className="logo">
+        <img src={Image} alt="Sena" />
+        {/* <span className="sena">SENA</span> */}
+      </section>
       <section className="main">
         <form className="registerForm" onSubmit={sendData}>
           <h2 className="title">Crear una cuenta</h2>
@@ -109,14 +113,15 @@ export const Register = () => {
 
             <button className="btn">Registrate</button>
             <p className="textForm">
-              ¿Ya estas registrado?{' '}
-              <Link className="text" to={'/'}>
+              ¿Ya estas registrado?{" "}
+              <Link className="text" to={"/"}>
                 Iniciar sesión
               </Link>
             </p>
           </section>
+          <Footer />
         </form>
       </section>
     </main>
-  )
-}
+  );
+};
