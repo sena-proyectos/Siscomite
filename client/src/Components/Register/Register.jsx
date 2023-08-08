@@ -1,34 +1,48 @@
 import './Register.css'
-import { Link } from 'react-router-dom'
-import { useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useRef, useState } from 'react'
 import { register } from '../../api/httpRequest'
+import { Toast } from '../toast/toast'
 // import image from "../../assets/image/register.png";
 
 export const Register = () => {
-  const nombre = useRef()
-  const apellido = useRef()
-  const correo_institucional = useRef()
-  const telefono = useRef()
-  const tipo_documento = useRef()
-  const num_documento = useRef()
+  const nombres = useRef()
+  const apellidos = useRef()
+  const email_sena = useRef()
+  const numero_celular = useRef()
+  const id_documento = useRef()
+  const numero_documento = useRef()
   const contrasena = useRef()
+
+  const [error, setError] = useState()
+  const [message, setMessage] = useState()
+
 
   const sendData = async (e) => {
     e.preventDefault()
     const dataValue = {
-      nombre: nombre.current.value,
-      apellido: apellido.current.value,
-      correo_institucional: correo_institucional.current.value,
-      num_telefono: telefono.current.value,
-      tipo_documento: tipo_documento.current.value,
-      num_documento: num_documento.current.value,
+      nombres: nombres.current.value,
+      apellidos: apellidos.current.value,
+      email_sena: email_sena.current.value,
+      numero_celular: numero_celular.current.value,
+      id_documento: id_documento.current.value,
+      numero_documento: numero_documento.current.value,
       contrasena: contrasena.current.value,
     }
 
     try {
       const res = await register(dataValue)
       const response = res.data.message
-    } catch (error) {}
+      setMessage(response)
+    } catch (error) {
+      const message = error.response.data.message
+      setError(message)
+    }
+  }
+
+  const closed = () => {
+    setError(null)
+    setMessage(null)
   }
 
   return (
@@ -36,16 +50,18 @@ export const Register = () => {
       <section className="main">
         <form className="registerForm" onSubmit={sendData}>
           <h2 className="title">Crear una cuenta</h2>
+          { error && <Toast message={error} typeToast='warnning' onClose={closed}/> }
+          { message && <Toast message={message} typeToast='success' onClose={closed}/> }
           <section className="formContainerR">
             <section className="inputGroup">
               <section className="inpu">
-                <input type="text" name="document" className="formInputR" placeholder=" " autoComplete="off" ref={nombre} />
+                <input type="text" name="document" className="formInputR" placeholder=" " autoComplete="off" ref={nombres} />
                 <label className="formLabel" htmlFor="document">
                   Nombre
                 </label>
               </section>
               <section className="inpu">
-                <input type="text" name="document" className="formInputR" placeholder=" " autoComplete="off" ref={apellido} />
+                <input type="text" name="document" className="formInputR" placeholder=" " autoComplete="off" ref={apellidos} />
                 <label className="formLabel" htmlFor="document">
                   Apellido
                 </label>
@@ -53,14 +69,14 @@ export const Register = () => {
             </section>
 
             <section className="inp">
-              <input type="text" name="document" className="formInputRe" placeholder=" " autoComplete="off" ref={correo_institucional} />
+              <input type="text" name="document" className="formInputRe" placeholder=" " autoComplete="off" ref={email_sena} />
               <label className="formLabel" htmlFor="document">
                 Correo institucional
               </label>
             </section>
 
             <section className="inp">
-              <input type="text" name="document" className="formInputRe" placeholder=" " autoComplete="off" ref={telefono} />
+              <input type="text" name="document" className="formInputRe" placeholder=" " autoComplete="off" ref={numero_celular} />
               <label className="formLabel" htmlFor="document">
                 Teléfono
               </label>
@@ -68,16 +84,16 @@ export const Register = () => {
 
             <section className="inputGroupDocument">
               <section className="inpu">
-                <select className="formSelect" ref={tipo_documento}>
+                <select className="formSelect" ref={id_documento}>
                   <option value="">Tipo de documento</option>
-                  <option value="C.C">C.C</option>
-                  <option value="C.E">C.E</option>
-                  <option value="T.I">T.I</option>
-                  <option value="PE">PE</option>
+                  <option value="1">C.C</option>
+                  <option value="2">C.E</option>
+                  <option value="3">T.I</option>
+                  <option value="4">PEP</option>
                 </select>
               </section>
               <section className="inpu">
-                <input type="text" name="document" className="formInputR" placeholder=" " autoComplete="off" ref={num_documento} />
+                <input type="text" name="document" className="formInputR" placeholder=" " autoComplete="off" ref={numero_documento} />
                 <label className="formLabel" htmlFor="document">
                   Documento
                 </label>

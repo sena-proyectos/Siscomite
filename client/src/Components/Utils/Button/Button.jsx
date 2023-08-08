@@ -1,10 +1,10 @@
 import "./Button.css"
 
-export const Button = ({ title, condicion }) => {
+export const Button = ({ title, icon }) => {
     return (
       <main className="containerButton">
         <button className="button">
-            {title}
+           {icon}  {title}
         </button>
 
       </main>

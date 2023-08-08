@@ -54,7 +54,7 @@
   padding: 0.8em;
   border: none;
   outline: none;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .formInput:focus + .formLabel,
