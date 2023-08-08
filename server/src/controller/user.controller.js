@@ -46,10 +46,10 @@ export const loginUser = async (req, res) => {
 }
 
 export const searchUser = async (req, res) => {
-  const { nombre } = req.query
+  const { nombres } = req.query
 
   try {
-    const [user] = await pool.query('SELECT * FROM aprendices WHERE CONCAT(nombre, " ", apellido) LIKE ?', [`%${nombre}%`])
+    const [user] = await pool.query('SELECT * FROM aprendices WHERE CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
     if (user.length === 0) return res.status(401).send({ message: 'No se encontró al aprendiz' })
     res.status(200).send({ user })
   } catch (error) {

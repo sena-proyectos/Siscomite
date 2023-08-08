@@ -1,0 +1,88 @@
+.sliderbar {
+  background-color: #2e323e;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  width: 15%;
+  max-width: 200px;
+  height: 95vh;
+  display: block;
+  color: white;
+  border-radius: 30px;
+  overflow: hidden;
+  position: absolute;
+}
+
+.sliderbar .top {
+  position: relative;
+  text-align: start;
+  /* border: 2px solid red; */
+  max-width: 150px;
+  top: 3rem;
+  left: 2rem;
+  /* margin: 1  rem; */
+  font-size: 15px;
+}
+
+.sliderbar p {
+  font-size: 13px;
+}
+
+.sliderbar .pages {
+  display: flex;
+  justify-content: center;
+  margin-top: 7rem;
+  font-size: 15px;
+}
+
+.pages .center,
+.end .down {
+  list-style: none;
+}
+
+.pages .line,
+.end .line {
+  text-decoration: none;
+  color: white;
+}
+
+.part:hover {
+  background-color: #1b1e25;
+  border-radius: 10px;
+}
+
+.part.active{
+  background-color: #1b1e25;
+  border-radius: 10px;
+}
+
+.pages .part,
+#icon {
+  padding: 0.5rem;
+}
+
+.end .part,
+#icon {
+  padding: 0.6rem;
+}
+
+.sliderbar .end {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+  font-size: 15px;
+}
+
+@media screen and (max-width: 1000px) {
+  .sliderbar {
+    width: 10%;
+  }
+
+  .top,
+  .slideText {
+    display: none;
+  }
+
+  .sliderbar .slideText {
+    display: none;
+  }
+}

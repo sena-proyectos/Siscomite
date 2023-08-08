@@ -1,11 +1,82 @@
-.container{
-    display: grid;
-    place-items: center;
-    
+.containerCard{
+  position: relative;
+  display: grid;
+  place-items: center;  
+  width:150px;
+  cursor: pointer;
+
 }
-.cuadro {
-  background-color: rgb(127, 54, 54);
-  width: 55%;
-  height: 35rem;
-  border-radius: 30px;
+
+.fondoCard, .cardImage {
+  width: 10rem;
+
+}
+
+.cardTitle,
+.card_Body {
+  width: 100%;
+
+}
+
+.bodyText {
+  font-size: 12px;
+}
+
+/* Estilos de las card giratorias */
+.card_flip {
+  position: relative;
+  width: 200px;
+  height: 100px;
+  color: black;
+}
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.6s;
+}
+
+.front {
+  background-color: #d9d3d3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.back {
+  background-color: #3498db;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transform: rotateY(180deg);
+  border-radius: 10px;
+}
+
+.card_flip:hover .front {
+  transform: rotateY(180deg);
+}
+
+.card_flip:hover .back {
+  transform: rotateY(0deg);
+}
+
+
+.list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.listItem {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+  /* Agrega cualquier otro estilo que desees para la lista */
 }
