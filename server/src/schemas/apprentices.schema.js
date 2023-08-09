@@ -1,5 +1,6 @@
 import Joi from "joi";
 
+/* El código define un esquema de validación utilizando la biblioteca Joi en JavaScript. */
 export const createAprendiz = Joi.object({
     nombres_aprendiz: Joi.string().required().min(2).max(100),
     apellidos_aprendiz: Joi.string().required().min(2).max(100),

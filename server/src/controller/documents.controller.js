@@ -1,6 +1,10 @@
 import { pool } from "../db.js";
 
-//Consulta de todos los documentos 
+//CONSULTA DE TODOS LOS DOCUMENTOS
+/**
+ * La función `getDocuments` recupera todos los documentos de una tabla de base de datos y envía el
+ * resultado como respuesta.
+ */
 export const getDocuments = async (req, res) => {
     try {
         const [result] = await pool.query('SELECT * FROM documentos');
@@ -10,7 +14,10 @@ export const getDocuments = async (req, res) => {
     }
 }
 
-//Creacion de un nuevo documento
+//CREACION DE UN NUEVO DOCUMENTO
+/**
+ * La función crea un documento en una tabla de base de datos con el tipo de documento proporcionado.
+ */
 export const createDocument = async (req, res) =>{
     const { tipo_documento } = req.body
     try {
@@ -21,7 +28,11 @@ export const createDocument = async (req, res) =>{
     }
 }
 
-//Eliminar un documento
+//ELIMINAR UN PRODUCTO
+/**
+ * La función `deleteDocument` es una función asíncrona que elimina un documento de una tabla de base
+ * de datos en función del ID del documento proporcionado.
+ */
 export const deleteDocument = async (req,res) => {
     const { id } = req.params;
     try {

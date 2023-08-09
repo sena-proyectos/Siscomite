@@ -1,6 +1,17 @@
 import { pool } from "../db.js";
 
-//Buscar todas las modalidades
+//BUSCAR TODAS LAS MODALIDADES
+/**
+ * La función `getModalities` recupera una lista de modalidades de una base de datos y la envía como
+ * respuesta.
+ * @param req - El parámetro `req` es el objeto de solicitud que contiene información sobre la
+ * solicitud HTTP realizada por el cliente. Incluye detalles como el método de solicitud, los
+ * encabezados, los parámetros de consulta y el cuerpo.
+ * @param res - El parámetro "res" es el objeto de respuesta que se utiliza para enviar la respuesta al
+ * cliente. Es un objeto que contiene métodos y propiedades relacionadas con la respuesta HTTP, como
+ * status(), send() y json(). En este fragmento de código, se utiliza para enviar el resultado de la
+ * base de datos.
+ */
 export const getModalities = async (req, res) => {
     try {
         const [result] = await pool.query('SELECT * FROM modalidades');
@@ -10,7 +21,11 @@ export const getModalities = async (req, res) => {
     }
 }
 
-//Creacion de una nueva modalidad
+//CREACION DE UNA NUEVA MODALIDAD
+/**
+ * La función crea una nueva modalidad en una tabla de base de datos llamada "modalidades" con el valor
+ * "nombre_modalidad" proporcionado.
+ */
 export const createModality = async (req, res) =>{
     const { nombre_modalidad } = req.body
     try {
@@ -21,7 +36,11 @@ export const createModality = async (req, res) =>{
     }
 }
 
-//Actualizacion de la modalidad
+//ACTUALIZACION DE UNA MODALIDAD
+/**
+ * La función `updateModality` actualiza el nombre de una modalidad en una tabla de base de datos según
+ * la ID proporcionada.
+ */
 export const updateModality = async (req, res) => {
     const { id } = req.params;
     const { nombre_modalidad } = req.body;
@@ -38,7 +57,11 @@ export const updateModality = async (req, res) => {
     }
 }
 
-//Eliminar una modalidad
+//ELIMINAR UNA MODALIDAD
+/**
+ * La función `deleteModality` es una función asíncrona que elimina una modalidad de una tabla de base
+ * de datos según la ID proporcionada.
+ */
 export const deleteModality = async (req,res) => {
     const { id } = req.params;
     try {

@@ -3,6 +3,8 @@ import { getApprentices,getApprenticeById, createApprentices, updateApprentice, 
 
 const router = Router();
 
+/* El código que proporcionó define las rutas para manejar las solicitudes HTTP relacionadas con los
+aprendices. */
 //GET aprendices
 router.get('/aprendices', getApprentices)
 // GETBYID  aprendiz

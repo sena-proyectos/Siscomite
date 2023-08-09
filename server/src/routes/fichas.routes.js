@@ -4,8 +4,9 @@ import { createDataFicha, checkFichaExist } from '../middlewares/fichas.middlewa
 
 const router = Router()
 
+/* El código define tres rutas para una API RESTful utilizando el marco Express en JavaScript. */
 // GET FICHAS
-router.get('/fichas', getFichas)
+router.get('/fichas',getFichas )
 
 // CREATE FICHA
 router.post('/createFicha', createDataFicha, checkFichaExist, createFicha)

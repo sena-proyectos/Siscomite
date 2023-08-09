@@ -1,6 +1,16 @@
 import { pool } from "../db.js";
 
-//Buscar todas las solicitudes 
+//BUSCAR TODAS LAS SOLICITUDES
+/**
+ * La función `getRequests` recupera todos los registros de la tabla `solicitud` y los envía como
+ * respuesta.
+ * @param req - El parámetro `req` es el objeto de solicitud que contiene información sobre la
+ * solicitud HTTP entrante, como los encabezados de la solicitud, el cuerpo de la solicitud y los
+ * parámetros de la solicitud. Se utiliza para recuperar datos del lado del cliente y pasarlos al
+ * código del lado del servidor.
+ * @param res - El parámetro `res` es el objeto de respuesta que se usa para enviar la respuesta al
+ * cliente. Es una instancia del objeto Express `Response`.
+ */
 export const getRequests = async (req, res) => {
     try {
         const [result] = await pool.query('SELECT * FROM solicitud');
@@ -9,7 +19,12 @@ export const getRequests = async (req, res) => {
         res.status(500).send({ message: 'Error al listar las solictudes' })
     }
 }
-//Buscar una solicitud
+
+//BUSCAR UNA SOLICITUD
+/**
+ * La función `getRequestById` es una función asíncrona que recupera una solicitud por su ID de una
+ * base de datos y envía una respuesta con el resultado.
+ */
 export const getRequestById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -24,7 +39,11 @@ export const getRequestById = async (req, res) => {
         console.log(error);
     }
 }
-//Creacion de la solicitud
+
+//CREACION DE UNA NUEVA SOLICITUD
+/**
+ * Esta función crea una solicitud insertando datos en una tabla de base de datos.
+ */
 export const createRequest = async (req, res) => {
     const { tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_usuario_receptor, id_aprendiz } = req.body
     try {
@@ -36,7 +55,11 @@ export const createRequest = async (req, res) => {
     }
 }
 
-//Actualizacion de la solicitud
+//ACTUALIZACION DE UNA SOLICITUD
+/**
+ * La función `updateRequest` actualiza una solicitud en una base de datos según el ID de solicitud
+ * proporcionado y los datos de la solicitud.
+ */
 export const updateRequest = async (req, res) => {
     const { id } = req.params;
     const { tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_usuario_receptor, id_aprendiz } = req.body;
@@ -53,7 +76,11 @@ export const updateRequest = async (req, res) => {
     }
 }
 
-//Eliminar una solicitud
+//ELIMINACION DE UNA SOLICITUD
+/**
+ * La función `deleteRequest` es una función asíncrona que elimina una solicitud de una tabla de base
+ * de datos según la ID proporcionada.
+ */
 export const deleteRequest = async (req, res) => {
     const { id } = req.params;
     try {

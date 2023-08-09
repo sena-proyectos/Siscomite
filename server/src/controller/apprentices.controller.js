@@ -1,5 +1,15 @@
 import { pool } from "../db.js";
 
+//CONSULTAR TODOS LOS APRENDICES
+/**
+ * La función `getApprentices` recupera todos los aprendices de una tabla de base de datos y envía el
+ * resultado como respuesta.
+ * @param req - El parámetro `req` es el objeto de solicitud que contiene información sobre la
+ * solicitud HTTP entrante, como los encabezados de la solicitud, el cuerpo de la solicitud y los
+ * parámetros de la solicitud. Se utiliza para recuperar datos del cliente y pasarlos al servidor.
+ * @param res - El parámetro "res" es el objeto de respuesta que se utiliza para enviar la respuesta al
+ * cliente. Es una instancia del objeto de respuesta Express.
+ */
 export const getApprentices = async (req, res) => {
     try {
         const [result] = await pool.query('SELECT * FROM aprendices');
@@ -9,6 +19,11 @@ export const getApprentices = async (req, res) => {
     }
 }
 
+//CONSULTAR UN APRENDIZ
+/**
+ * La función `getApprenticeById` es una función asíncrona que recupera un aprendiz de una base de
+ * datos en función de su ID y envía una respuesta con el resultado.
+ */
 export const getApprenticeById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -24,6 +39,11 @@ export const getApprenticeById = async (req, res) => {
     }
 }
 
+//CREAR UN NUEVO APRENDIZ
+/**
+ * La función `createApprentices` es una función asíncrona que inserta un nuevo aprendiz en una tabla
+ * de base de datos y envía una respuesta con un mensaje de éxito o un mensaje de error.
+ */
 export const createApprentices = async (req, res) => {
     const { nombres_aprendiz, apellidos_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
     try {
@@ -34,6 +54,11 @@ export const createApprentices = async (req, res) => {
     }
 }
 
+//ACTUALIZAR UN APRENDIZ
+/**
+ * La función `updateApprentice` actualiza la información de un aprendiz en una base de datos basada en
+ * la identificación proporcionada.
+ */
 export const updateApprentice = async (req, res) => {
     const { id } = req.params;
     const { nombres_aprendiz, apellidos_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body;
@@ -50,6 +75,11 @@ export const updateApprentice = async (req, res) => {
     }
 }
 
+//ELIMINAR UN APRENDIZ
+/**
+ * La función `deleteApprentice` es una función asíncrona que elimina un aprendiz de una tabla de base
+ * de datos en función de su ID.
+ */
 export const deleteApprentice = async (req, res) => {
     const { id } = req.params;
     try {
