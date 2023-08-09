@@ -7,6 +7,8 @@ import apprenticesRoutes from './routes/apprentices.routes.js'
 import articleRoutes from './routes/article.routes.js'
 import causeRoutes from './routes/cause.routes.js'
 import requestsRoutes from './routes/request.routes.js'
+import documentsRoutes from './routes/documents.routes.js'
+import modalitiesRouter from './routes/modalities.routes.js'
 import { PORT } from './config.js'
 
 
@@ -22,7 +24,8 @@ app.use('/api', articleRoutes)
 app.use('/api', causeRoutes)
 app.use('/api', apprenticesRoutes)
 app.use('/api', requestsRoutes)
-
+app.use('/api', documentsRoutes)
+app.use('/api', modalitiesRouter)
 
 
 app.use((req, res) => {
