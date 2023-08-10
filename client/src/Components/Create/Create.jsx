@@ -47,10 +47,10 @@ const Create = () => {
               {isOpen && (
                 <section className="dropdown-menu">
                   <ul className="create-ul">
-                    <li onClick={() => handleOptionClick("Opción 1")}>Opción 1</li>
-                    <li onClick={() => handleOptionClick("Opción 2")}>Opción 2</li>
-                    <li onClick={() => handleOptionClick("Opción 3")}>Opción 3</li>
-                    <li onClick={() => handleOptionClick("Opción 4")}>Opción 4</li>
+                    <li onClick={() => handleOptionClick("Marianela Henao Atehortua")}>Marianela Henao Atehortua</li>
+                    <li onClick={() => handleOptionClick("Jaime León Vergara Areiza")}>Jaime León Vergara Areiza</li>
+                    <li onClick={() => handleOptionClick("Sergio Soto Henao")}>Sergio Soto Henao</li>
+                    <li onClick={() => handleOptionClick("Mauro Isaías Arango Vanegas")}>Mauro Isaías Arango Vanegas</li>
                   </ul>
                 </section>
               )}
@@ -78,11 +78,21 @@ const Create = () => {
                 <p>Observaciones</p>
                 <textarea className="textarea" name="" id="" cols="30" rows="5" placeholder="Añade tu obsevación" />
               </section>
-              <section>hola</section>
+              <section className="creteFile">
+                <section className="file">
+                  <label className="custom-file-input">
+                    Seleccionar archivo 
+                    <i class="fi fi-rr-upload"></i>
+                    <input type="file" id="inputFile" />
+                  </label>
+                </section>
+              </section>
             </section>
           </section>
           <section className="row">
-            <section className="reglamento"> holi</section>
+            <section className="reglamentoContent">
+              <section className="reglamento">holi</section>
+            </section>
           </section>
           <section className="buttonCreate">
             <Button title={"Enviar"} icon={<i class="fi fi-br-check"></i>} />

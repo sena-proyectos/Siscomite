@@ -13,6 +13,7 @@
   display: grid;
   place-items: center;
   padding: 1rem 2rem;
+  background-color: aqua;
 }
 .groupRadio,
 .contentHeader {
@@ -44,10 +45,22 @@
 }
 
 .dropdown-menu .create-ul {
-  background-color: #dcdbdb;
+  background-color: #b4b4b4;
   position: absolute;
-  padding: 1rem;
+  top: 6.5rem;
   list-style: none;
+  z-index: 1;
+  border-radius: 10px;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.create-ul li {
+  padding: 0.5rem;
+}
+.create-ul li:hover {
+  padding: 0.5rem;
+  background-color: #757373;
+  border-radius: 10px;
 }
 
 .dropdown-toggle {
@@ -67,7 +80,9 @@
 .bodyCreate {
   height: 78vh;
   display: flex;
+  place-items: center;
   justify-content: space-between;
+  background-color: yellowgreen;
 }
 
 .row {
@@ -108,6 +123,10 @@
   margin: auto;
 }
 
+.content {
+  display: flex;
+}
+
 .textarea {
   border: none;
   outline: none;
@@ -120,10 +139,6 @@
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
-.content {
-  height: 250px;
-}
-
 .reglamento {
   position: relative;
   width: 330px;
@@ -133,7 +148,7 @@
   border-radius: 15px;
 }
 
-.buttonCreate{
+.buttonCreate {
   position: absolute;
   left: 40%;
   top: 85%;
@@ -151,3 +166,18 @@
   font-size: 15px;
   letter-spacing: 1.5px;
 }
+
+.custom-file-input {
+  display: inline-block;
+  background-color: #3C3C3C;
+  color: white;
+  padding: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  user-select: none; 
+}
+
+.custom-file-input #inputFile[type="file"] {
+  display: none; 
+}
+
