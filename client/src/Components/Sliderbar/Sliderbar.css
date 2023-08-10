@@ -1,42 +1,37 @@
 .sliderbar {
   background-color: #2e323e;
-  margin-top: 1rem;
-  margin-left: 1rem;
+  margin: 1rem;
   width: 15%;
   max-width: 200px;
   height: 95vh;
-  display: block;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   color: white;
   border-radius: 30px;
-  overflow: hidden;
   position: absolute;
 }
 
-.sliderbar .top {
-  position: relative;
-  text-align: start;
-  /* border: 2px solid red; */
-  max-width: 150px;
-  top: 3rem;
-  left: 2rem;
-  /* margin: 1  rem; */
-  font-size: 15px;
-}
-
-.sliderbar p {
-  font-size: 13px;
-}
-
-.sliderbar .pages {
+.top {
   display: flex;
-  justify-content: center;
-  margin-top: 7rem;
-  font-size: 15px;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 30px;
+  font-size: 13px;
+  text-align: center;
+  width: 90%;
+  /* border: 2px solid red; */
 }
 
-.pages .center,
-.end .down {
-  list-style: none;
+.top h3 {
+  /* width: 110%; */
+  font-size: 17px;
+  margin-top: 1rem;
+}
+
+.pages {
+  position: absolute;
+  top: 35%;
 }
 
 .pages .line,
@@ -55,21 +50,42 @@
   border-radius: 10px;
 }
 
-.pages .part,
-#icon {
-  padding: 0.5rem;
+
+.pages .center {
+  list-style: none;
+  padding: 0%;
 }
 
-.end .part,
-#icon {
-  padding: 0.6rem;
+.pages .part {
+  margin-bottom: 15px;
+  cursor: pointer;
 }
 
-.sliderbar .end {
+.sliderbar .end{
+  position: absolute;
+  bottom: .5em;
+}
+
+.end {
   display: flex;
-  justify-content: center;
-  margin-top: 5rem;
-  font-size: 15px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 20px;
+}
+
+.down {
+  list-style: none;
+  padding: 0;
+}
+
+.down .part {
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.slideText {
+  margin-left: 10px;
 }
 
 @media screen and (max-width: 1000px) {

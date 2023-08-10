@@ -8,7 +8,7 @@ import { Toast } from '../toast/toast'
 import Cookie from 'js-cookie'
 
 export const Login = () => {
-  const num_documento = useRef()
+  const numero_documento = useRef()
   const contrasena = useRef()
   const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
   const [error, setError] = useState(null) // Estado para manejar los errores
@@ -46,7 +46,6 @@ export const Login = () => {
     <main className="container">
       <section className="logo">
         <img src={Image} alt="Sena" />
-        {/* <span className="sena">SENA</span> */}
       </section>
       <section className="main">
         <form className="loginForm" onSubmit={sendData}>

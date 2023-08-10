@@ -19,13 +19,18 @@
   padding: 0.5rem;
   justify-content: center;
   align-items: center;
-
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .card-content {
-    display: inline-block;
-    padding-left: .5rem;
+  padding: .5rem 2rem;
 }
+
+.id{
+  font-size: 15px;
+}
+
 
 @keyframes slideDown {
   0% {

@@ -5,24 +5,23 @@ import { Card } from "../Utils/Card/Card";
 import { Footer } from "../Footer/Footer";
 import React, { useState } from "react";
 import Pagination from "react-js-pagination";
-import { Link } from "react-router-dom";
 import { Modal } from "../Utils/Modal/Modal";
 
 const Students = () => {
   const cards = [
-    { title: "Angie Tatiana Mosquera Arco", descripción: 1 },
-    { title: "Mariano Lore Florez Azul", descripción: 2 },
-    { title: "Guillermo Stiven Bejumeda Morales", descripción: 3 },
-    { title: "Lorena Quiceno Giraldo", descripción: 4 },
-    { title: "Juan Guillermo Gomez Zapata", descripción: 5 },
-    { title: "Mariano Lopez Robledo Estrada", descripción: 6 },
-    { title: "Mariana Lucia Perez Carol", descripción: 7 },
-    { title: "Estaban Quito Romero Suarez", descripción: 8 },
-    { title: "Luna Lunera Roble Maria", descripción: 9 },
-    { title: "Carla María Tibetano De Espana", descripción: 10 },
+    { title: "Angie Tatiana Mosquera Arco", document: "CC", descripción: 1027150354 },
+    { title: "Mariano Lore Florez Azul", document: "TI", descripción: 24567877 },
+    { title: "Guillermo Stiven Bejumeda Morales", document: "CE", descripción: 34567876 },
+    { title: "Lorena Quiceno Giraldo", document: "CC", descripción: 49878787 },
+    { title: "Juan Guillermo Gomez Zapata", document: "CC", descripción: 57656787 },
+    { title: "Mariano Lopez Robledo Estrada", document: "TI", descripción: 655676 },
+    { title: "Mariana Lucia Perez Carol", document: "CC", descripción: 79876787 },
+    { title: "Estaban Quito Romero Suarez", document: "CC", descripción: 8766567 },
+    { title: "Luna Lunera Roble Maria", document: "CE", descripción: 98765786 },
+    { title: "Carla María Tibetano De Espana", document: "PE", descripción: 1076567766 },
   ];
 
-  const itemsPerPage = 12; // Número de elementos por página
+  const itemsPerPage = 8; // Número de elementos por página
   const [activePage, setActivePage] = useState(1);
 
   // Calcula los datos a mostrar en la página actual
@@ -48,19 +47,19 @@ const Students = () => {
   return (
     <>
       {modalStudent && <Modal modalAdd cerrarModal={modalAdd} titulo={"Agregar Estudiantes"} />}
-      {infoStudents && <Modal modalInfo cerrarModal={infoStudent} titulo={"Información"}/>}
+      {infoStudents && <Modal modalInfo cerrarModal={infoStudent} titulo={"Información"} />}
 
       <main className="containerStudent">
         <Sliderbar />
-        <section className="junto">
+        <section className="contentStudents">
           <header className="studentBar">
-            <Search className="student_Bar" placeholder={"Busca un aprendiz"} />
+            <Search className="student_Bar" icon={<i class="fi fi-rr-settings-sliders" />} placeholder={"Busca un aprendiz"} />
           </header>
           <section className="studentBody">
             {currentItems.map((item) => {
               return (
                 <section className="studentCard" key={item.title}>
-                  <Card click={infoStudent} title={item.title} descripción={item.descripción} />
+                  <Card header click={infoStudent} title={item.title} document={item.document} descripción={item.descripción} />
                 </section>
               );
             })}
@@ -68,14 +67,14 @@ const Students = () => {
           <section className="aStudents">
             <Pagination activePage={activePage} itemsCountPerPage={itemsPerPage} totalItemsCount={cards.length} pageRangeDisplayed={5} onChange={handlePageChange} />
           </section>
-        <section className="footerStudents">
-          <Footer />
-        </section>
-        </section>
-        <section className="agregar">
-          <button className="add" onClick={modalAdd}>
-            +
-          </button>
+          <section className="agregar">
+            <button className="add" onClick={modalAdd}>
+              +
+            </button>
+          </section>
+          <section className="footerStudents">
+            <Footer />
+          </section>
         </section>
       </main>
     </>

@@ -172,3 +172,37 @@ label:active {
   font-size: 15px;
   
 }
+
+/* Estilos de la modal de agrgar fichas */
+
+.contentGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  top: 2rem;
+}
+
+.enviarGroup #iconSave{
+  font-size: 15px;
+  color: white;
+}
+
+.enviarGroup{
+  padding: 1rem 0rem 2rem ;
+}
+
+.enviarGroup .button{
+  padding: 8px 30px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #0799b6;
+  color: white;
+  font-weight: 800;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  letter-spacing: 1.5px;
+}
+
+

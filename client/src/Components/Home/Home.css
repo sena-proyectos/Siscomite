@@ -1,46 +1,44 @@
+/* Estilos de la sección de inicio */
 .containerHome {
   height: 100vh;
 }
+
 .homeContent {
-  display: flex;
   justify-content: center;
-  max-width: 1100px;
   height: 100vh;
   margin-left: 12.7rem;
 }
 
-.homeContent > .cardTitle {
-  width: 15rem;
-  padding-bottom: 1rem;
-  position: absolute;
-  top: 3rem;
-  border-bottom: 3px #0799b6 solid;
+.headerTitle {
+  padding: 2rem;
   display: grid;
   place-items: center;
-  font-size: 24px;
-  
+  font-size: 23px;
+}
+
+.titleHome {
+  width: 20rem;
+  display: grid;
+  place-items: center;
+  border-bottom: 1.5px #0799b6 solid;
+}
+
+/* Estilos para las tarjetas de contenido */
+.cardBody {
+  height: 80vh;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0rem 5rem;
 }
 
 .cardHome {
-  height: 10rem;
+  height: 28%;
+  color: black;
   transition: 0.4s ease-in-out;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  margin-top: 15%;
 }
 
 .cardHome:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
-
-.footerHome .footer {
-  margin-left: 15rem;
-}
-
-@media screen and (max-width: 1000px) {
-  .homeContent {
-    display: inline;
-  }
-}
-
