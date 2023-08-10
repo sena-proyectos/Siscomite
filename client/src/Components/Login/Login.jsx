@@ -20,7 +20,7 @@ export const Login = () => {
     setIsLoading(true)
 
     const dataValue = {
-      num_documento: num_documento.current.value,
+      numero_documento: numero_documento.current.value,
       contrasena: contrasena.current.value,
     }
 
@@ -54,7 +54,7 @@ export const Login = () => {
           {error && <Toast message={error} typeToast={'error'} onClose={closed} />}
           <section className="formContainer">
             <section className="inp">
-              <input type="text" name="document" className="formInput" placeholder=" " autoComplete="off" ref={num_documento} />
+              <input type="text" name="document" className="formInput" placeholder=" " autoComplete="off" ref={numero_documento} />
               <label className="formLabel" htmlFor="document">
                 Número de documento
               </label>

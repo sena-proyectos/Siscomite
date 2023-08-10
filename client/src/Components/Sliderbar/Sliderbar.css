@@ -14,8 +14,12 @@
 
 .sliderbar .top {
   position: relative;
+  text-align: start;
+  /* border: 2px solid red; */
+  max-width: 150px;
   top: 3rem;
-  left: 2.5rem;
+  left: 2rem;
+  /* margin: 1  rem; */
   font-size: 15px;
 }
 

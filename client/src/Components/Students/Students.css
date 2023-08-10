@@ -3,7 +3,7 @@
 }
 
 .junto {
-  height: 100vh;
+  height: 90vh;
   width: 84%;
   margin-left: 16%;
 }
@@ -20,14 +20,20 @@
 
 .studentBody {
   width: 100%;
-  height: 70vh;
+  max-width: 1100px;
+  height: 340px;
+  max-height: 400px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
+  left: -2rem;
+  position: relative;
+  top: 1rem;
 }
 
-.studentCard {
+.studentBody .studentCard {
+  width: 170px;
+  height: 130px;
   border-radius: 10px;
   overflow: hidden;
   margin-left: 3rem;
@@ -35,15 +41,13 @@
   padding: 1rem;
   background-color: #b6b2b2;
   cursor: pointer;
-  display: grid;
-  place-items: center;
-
+  border: 2px #2e323e81 solid;
 }
 
 .containerStudent .agregar {
-  position: absolute;
-  bottom: 2rem;
-  left: 80%;
+  display: grid;
+  place-items: center;
+
 }
 
 .add {
