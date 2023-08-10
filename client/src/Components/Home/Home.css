@@ -1,3 +1,4 @@
+/* Estilos de la sección de inicio */
 .containerHome {
   height: 100vh;
 }
@@ -19,28 +20,25 @@
   width: 20rem;
   display: grid;
   place-items: center;
-  border-bottom: 1.5px #0799B6 solid;
-
+  border-bottom: 1.5px #0799b6 solid;
 }
 
+/* Estilos para las tarjetas de contenido */
 .cardBody {
   height: 80vh;
-  display: flex;
   flex-wrap: wrap;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 0rem 10rem;
+  gap: 0rem 5rem;
 }
 
 .cardHome {
   height: 28%;
   color: black;
   transition: 0.4s ease-in-out;
-
 }
 
 .cardHome:hover {
   transform: scale(1.1);
 }
-
-
-
