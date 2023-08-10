@@ -2,10 +2,152 @@
   height: 100vh;
 }
 
-.createCentent {
+.createContent {
   height: 100vh;
   width: 83.5%;
   position: relative;
   left: 16.5%;
-  background-color: red;
+}
+
+.createHeader {
+  display: grid;
+  place-items: center;
+  padding: 1rem 2rem;
+}
+.groupRadio,
+.contentHeader {
+  display: flex;
+}
+.contentHeader {
+  background-color: #dcdbdb;
+  margin-top: 1rem;
+  width: 90%;
+  padding: 0.6rem;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.createRadio {
+  padding-left: 1rem;
+}
+
+.radioLebel {
+  padding-left: 0.5rem;
+}
+
+.createDrop {
+  padding-right: 1.6rem;
+  margin: -0.3rem;
+}
+
+.dropdown-menu .create-ul {
+  background-color: #dcdbdb;
+  position: absolute;
+  padding: 1rem;
+  list-style: none;
+}
+
+.dropdown-toggle {
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  font-size: 14px;
+}
+
+#dropIcon {
+  font-size: 20px;
+  position: relative;
+  left: 0.5rem;
+  top: 0.3rem;
+}
+
+.bodyCreate {
+  height: 78vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+.row {
+  display: 1;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+
+#iconSearch {
+  left: 20rem;
+  top: 3px;
+  cursor: pointer;
+  position: relative;
+}
+
+.barCreate {
+  width: 21.5rem;
+  height: 4rem;
+  background-color: #3c3c3c25;
+  display: flex;
+  position: relative;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  padding: 0rem 0rem;
+  top: 0.5rem;
+  left: 1rem;
+}
+
+.createSearch {
+  position: relative;
+}
+
+.searchTitleCreate {
+  border-bottom: 1px #179fba solid;
+  width: 15rem;
+  display: grid;
+  place-items: center;
+  margin: auto;
+}
+
+.textarea {
+  border: none;
+  outline: none;
+  background-color: #dcdbdb;
+  max-width: 297px;
+  max-height: 85px;
+  min-width: 257px;
+  min-height: 75px;
+  padding: 1rem;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.content {
+  height: 250px;
+}
+
+.reglamento {
+  position: relative;
+  width: 330px;
+  height: 387px;
+  background: #e1e1e1;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 15px;
+}
+
+.buttonCreate{
+  position: absolute;
+  left: 40%;
+  top: 85%;
+}
+
+.buttonCreate .button {
+  padding: 8px 30px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background-color: #0799b6;
+  color: white;
+  font-weight: 800;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.25);
+  font-size: 15px;
+  letter-spacing: 1.5px;
 }

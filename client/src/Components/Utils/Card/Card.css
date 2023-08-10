@@ -1,26 +1,45 @@
-.containerCard{
+.containerCard {
   position: relative;
   display: grid;
-  place-items: center;  
-  width:150px;
+  place-items: center;
+  width: 150px;
   cursor: pointer;
+}
+
+
+.cardImage {
+  width: 14.5rem;
+  position: relative; 
+  flex: 1;
+}
+
+.fondoCard {
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px #96969666;
 
 }
 
-.fondoCard, .cardImage {
-  width: 10rem;
-
-}
-
-.cardTitle,
-.card_Body {
+.textoImagen {
   width: 100%;
-
+  height: 70px;
+  position: absolute;
+  top: 79.5%;
+  left: 50%;
+  border-radius: 0 0 20px 20px;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8); 
+  box-shadow: 5px 5px 10px #96969666;
+  padding: .5;
 }
 
-.bodyText {
+.bodyText{
+  height: 40px;
   font-size: 12px;
 }
+
+
 
 /* Estilos de las card giratorias */
 .card_flip {
@@ -67,7 +86,6 @@
 .card_flip:hover .back {
   transform: rotateY(0deg);
 }
-
 
 .list {
   list-style-type: none;

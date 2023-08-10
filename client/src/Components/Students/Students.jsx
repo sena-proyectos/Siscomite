@@ -53,7 +53,7 @@ const Students = () => {
         <Sliderbar />
         <section className="contentStudents">
           <header className="studentBar">
-            <Search className="student_Bar" placeholder={"Busca un aprendiz"} />
+            <Search className="student_Bar" icon={<i class="fi fi-rr-settings-sliders" />} placeholder={"Busca un aprendiz"} />
           </header>
           <section className="studentBody">
             {currentItems.map((item) => {
@@ -64,14 +64,14 @@ const Students = () => {
               );
             })}
           </section>
-            <section className="aStudents">
-              <Pagination activePage={activePage} itemsCountPerPage={itemsPerPage} totalItemsCount={cards.length} pageRangeDisplayed={5} onChange={handlePageChange} />
-            </section>
-            <section className="agregar">
-              <button className="add" onClick={modalAdd}>
-                +
-              </button>
-            </section>
+          <section className="aStudents">
+            <Pagination activePage={activePage} itemsCountPerPage={itemsPerPage} totalItemsCount={cards.length} pageRangeDisplayed={5} onChange={handlePageChange} />
+          </section>
+          <section className="agregar">
+            <button className="add" onClick={modalAdd}>
+              +
+            </button>
+          </section>
           <section className="footerStudents">
             <Footer />
           </section>

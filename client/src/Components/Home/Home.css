@@ -8,9 +8,8 @@
   margin-left: 12.7rem;
 }
 
-
 .headerTitle {
-  padding: 1.5rem;
+  padding: 2rem;
   display: grid;
   place-items: center;
   font-size: 23px;
@@ -20,7 +19,8 @@
   width: 20rem;
   display: grid;
   place-items: center;
-  border-bottom: 2px rgb(127, 187, 255) solid;
+  border-bottom: 1.5px #0799B6 solid;
+
 }
 
 .cardBody {
@@ -28,21 +28,19 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 30px;
+  gap: 0rem 10rem;
 }
 
 .cardHome {
-  margin-top: 7rem;
+  height: 28%;
+  color: black;
   transition: 0.4s ease-in-out;
-}
 
+}
 
 .cardHome:hover {
   transform: scale(1.1);
 }
 
-/* @media screen and (max-width: 1000px) {
-  .homeContent {
-    display: inline;
-  }
-} */
+
+

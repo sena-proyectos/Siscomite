@@ -1,9 +1,10 @@
 import './Register.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useRef, useState } from 'react'
 import { register } from '../../api/httpRequest'
 import { Toast } from '../toast/toast'
-// import image from "../../assets/image/register.png";
+import { Footer } from '../Footer/Footer'
+import Image from "../../assets/image/logoSena.png";
 
 export const Register = () => {
   const nombres = useRef()

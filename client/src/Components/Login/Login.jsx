@@ -46,7 +46,6 @@ export const Login = () => {
     <main className="container">
       <section className="logo">
         <img src={Image} alt="Sena" />
-        {/* <span className="sena">SENA</span> */}
       </section>
       <section className="main">
         <form className="loginForm" onSubmit={sendData}>
