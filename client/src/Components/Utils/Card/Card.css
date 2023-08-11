@@ -1,25 +1,43 @@
-.containerCard{
+/* Estilos generales */
+.containerCard {
   position: relative;
   display: grid;
-  place-items: center;  
-  width:150px;
+  place-items: center;
+  width: auto;
   cursor: pointer;
-
 }
 
-.fondoCard, .cardImage {
-  width: 10rem;
-
+.fondoCard {
+  border-radius: 10px;
+  height: 10rem;
+  max-width: 100%;
+  box-shadow: 5px 5px 10px #96969666;
 }
 
-.cardTitle,
-.card_Body {
+.cardImage {
   width: 100%;
+  max-width: 14.5rem;
+  object-fit: cover;
+  position: relative;
+}
 
+.textoImagen {
+  width: 85.5%;
+  height: auto;
+  position: absolute;
+  top: 79.5%;
+  left: 50%;
+  border-radius: 0 0 10px 10px;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 5px 5px 10px #96969666;
+  padding: 1rem;
 }
 
 .bodyText {
+  height: 40px;
   font-size: 12px;
+  color: #333;
 }
 
 /* Estilos de las card giratorias */
@@ -37,27 +55,24 @@
   height: 100%;
   backface-visibility: hidden;
   transition: transform 0.6s;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 .front {
   background-color: #d9d3d3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 14px;
-  border-radius: 10px;
   box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
+  display: flex;
 }
 
 .back {
   background-color: #3498db;
   color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 18px;
   transform: rotateY(180deg);
-  border-radius: 10px;
+  display: flex;
 }
 
 .card_flip:hover .front {
@@ -68,7 +83,7 @@
   transform: rotateY(0deg);
 }
 
-
+/* Estilos para listas */
 .list {
   list-style-type: none;
   padding: 0;
