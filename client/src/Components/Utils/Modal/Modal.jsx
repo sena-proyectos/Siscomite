@@ -1,10 +1,18 @@
 import "./Modal.css";
+import React, { useState } from "react";
 import { Button } from "../Button/Button";
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false }) => {
   const closeModal = () => {
     cerrarModal();
   };
+
+    const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
+  
+    const handleEtapaChange = (event) => {
+      const selectedValue = event.target.value;
+      setIsTrimestreEnabled(selectedValue === "lectiva");
+    };
 
   return (
     <>
@@ -47,7 +55,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   <section className="modalInput">
                     <input type="email" name="emailSena" className="inputModal" required placeholder=" " />
                     <label className="modalLabel" htmlFor="emailSena">
-                      Correo @soy.sena.edu.co
+                      Correo institucional
                     </label>
                   </section>
                   <section className="modalInput">
@@ -59,22 +67,22 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   <section className="modalInput">
                     <input type="email" name="email" className="inputModal" required placeholder=" " />
                     <label className="modalLabel" htmlFor="email">
-                      Número celular
+                      Número
                     </label>
                   </section>
                   <section className="modalInput">
                     <input type="email" name="email" className="inputModal" required placeholder=" " />
                     <label className="modalLabel" htmlFor="email">
-                      Número fijo
+                      Número alterno
                     </label>
                   </section>
                 </section>
                 <section className="modalArchivo">
                   <section className="modalInput">
-                    <input type="file" name="archivo" id="inputArchivo" required placeholder=" " />
-                    <label className="labelArchivo" htmlFor="archivo">
+                    <label className="labelArchivo">
                       <i class="fi fi-rr-folder-upload" id="iconArchivo" />
                       Subir Excel
+                      <input type="file" name="archivo" id="inputArchivo" required />
                     </label>
                   </section>
                   <section className="enviar">
@@ -100,7 +108,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     <p className="infoText">12345678</p>
                   </section>
                   <section className="info">
-                    <span className="infoTitle">Correo @soy.sena.edu.co</span>
+                    <span className="infoTitle">Correo institucional</span>
                     <p className="infoText">mariana34@soy.sena.edu.co</p>
                   </section>
                   <section className="info">
@@ -108,11 +116,11 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     <p className="infoText">marinalopez@gmail.com</p>
                   </section>
                   <section className="info">
-                    <span className="infoTitle">Número celular</span>
+                    <span className="infoTitle">Número</span>
                     <p className="infoText">3245555555</p>
                   </section>
                   <section className="info">
-                    <span className="infoTitle">Número fijo</span>
+                    <span className="infoTitle">Número alteno</span>
                     <p className="infoText">6666666</p>
                   </section>
                 </section>
@@ -145,14 +153,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </select>
                   </section>
                   <section>
-                    <select className="modalSelect" required>
+                    <select className="modalSelect" required onChange={handleEtapaChange}>
                       <option value="">Etapa</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
                   <section>
-                    <select className="modalSelect" required>
+                    <select className="modalSelect" required disabled={!isTrimestreEnabled}>
                       <option value="">Trimestre lectivo</option>
                       <option value="lectiva">1</option>
                       <option value="practica">2</option>

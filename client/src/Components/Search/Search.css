@@ -1,3 +1,11 @@
+.containerSearch{
+  display: flex;
+  align-items: center;
+  position: relative;display: flex;
+  align-items: center;
+  position: relative;
+}
+
 .searchTerm {
   width: 20rem;
   padding: .8rem;
@@ -8,9 +16,3 @@
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* .searchBar #iconSearch{
-    left: 20rem;
-    top: 3px;
-    cursor: pointer;
-    position: relative;
-} */

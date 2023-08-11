@@ -41,7 +41,7 @@ const Requests = () => {
       <Sliderbar />
       <section className="bodyRequests">
         <header className="barRequests">
-          <Search placeholder={"Buscar solicitud"} icon={<i class="fi fi-rr-settings-sliders"/>} />
+          <Search placeholder={"Buscar solicitud"} icon={<i class="fi fi-rr-settings-sliders" id="iconBar"/>} />
         </header>
         <section className="tableRequests">
           <table className="table">

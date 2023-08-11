@@ -1,19 +1,17 @@
 .containerCreate {
   height: 100vh;
+  display: flex;
 }
 
 .createContent {
   height: 100vh;
-  width: 83.5%;
-  position: relative;
-  left: 16.5%;
+  width: 100%;
 }
 
 .createHeader {
   display: grid;
   place-items: center;
   padding: 1rem 2rem;
-  background-color: aqua;
 }
 .groupRadio,
 .contentHeader {
@@ -80,15 +78,13 @@
 .bodyCreate {
   height: 78vh;
   display: flex;
-  place-items: center;
   justify-content: space-between;
-  background-color: yellowgreen;
+  /* background-color: yellowgreen; */
 }
 
 .row {
   display: 1;
   flex-wrap: wrap;
-  margin: 10px 0;
 }
 
 #iconSearch {
@@ -99,20 +95,21 @@
 }
 
 .barCreate {
-  width: 21.5rem;
   height: 4rem;
-  background-color: #3c3c3c25;
-  display: flex;
+  background-color:  #2E323E;
   position: relative;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
-  padding: 0rem 0rem;
+  padding: 0.2rem 0rem;
   top: 0.5rem;
-  left: 1rem;
+  color: white;
 }
 
 .createSearch {
+  height: 140px;
+  justify-content: space-between;
   position: relative;
+  left: 3.5rem;
 }
 
 .searchTitleCreate {
@@ -124,23 +121,48 @@
 }
 
 .content {
+  width: 110%;
   display: flex;
+  position: relative;
+  left: 4.5rem;
+  justify-content: space-between;
 }
+
+.createFile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40%;
+  height: 150px;
+  /* background-color: #75737333;
+  border-radius: 15px; */
+}
+
+/* #icon_file{
+  font-size: 70px;
+} */
 
 .textarea {
   border: none;
   outline: none;
   background-color: #dcdbdb;
-  max-width: 297px;
-  max-height: 85px;
-  min-width: 257px;
+  max-width: 240px;
+  max-height: 75px;
+  min-width: 240px;
   min-height: 75px;
   padding: 1rem;
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+}
+
+.reglamentoContent {
+  /* background-color: red; */
+  display: grid;
+  place-items: center;
+  padding: 0rem 5rem 0rem;
 }
 
 .reglamento {
-  position: relative;
   width: 330px;
   height: 387px;
   background: #e1e1e1;
@@ -149,9 +171,8 @@
 }
 
 .buttonCreate {
-  position: absolute;
   left: 40%;
-  top: 85%;
+  top: 90%;
 }
 
 .buttonCreate .button {
@@ -169,15 +190,18 @@
 
 .custom-file-input {
   display: inline-block;
-  background-color: #3C3C3C;
+  background-color: #2E323E;
   color: white;
-  padding: 10px;
+  padding: 13px;
   border-radius: 15px;
   cursor: pointer;
-  user-select: none; 
+  user-select: none;
 }
 
 .custom-file-input #inputFile[type="file"] {
-  display: none; 
+  display: none;
 }
 
+#iconFile {
+  padding: 0rem 0.5rem 0rem 1rem;
+}

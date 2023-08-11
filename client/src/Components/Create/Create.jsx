@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import { Footer } from "../Footer/Footer";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Search } from "../Search/Search";
-import { Button } from "../Utils/Button/Button";
 
 const Create = () => {
+ 
+
+
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedAprendizOption, setSelectedAprendizOption] = useState(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -16,6 +20,10 @@ const Create = () => {
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setIsOpen(false); // Cerrar el dropdown después de seleccionar una opción
+  };
+
+  const handleAprendizOptionClick = (option) => {
+    setSelectedAprendizOption(option);
   };
 
   return (
@@ -61,9 +69,9 @@ const Create = () => {
           <section className="row">
             <section className="searchPerson">
               <section className="createSearch">
-                <Search placeholder={"Buscar aprendiz"} icon={<i class="fi fi-br-search" id="iconSearch" />} />
+                <Search className="bar_create" placeholder={"Buscar aprendiz"} icon={<i class="fi fi-br-search" id="iconSearch"/>} onSelect={handleAprendizOptionClick}/>
                 <section className="barCreate">
-                  <p className="searchTitleCreate">Sin seleccionar aprendices</p>
+                  <p className="searchTitleCreate">{selectedAprendizOption ? `Aprendiz seleccionado: ${selectedAprendizOption}` : "Sin seleccionar aprendices"}</p>
                 </section>
               </section>
               <section className="createSearch">
@@ -78,11 +86,11 @@ const Create = () => {
                 <p>Observaciones</p>
                 <textarea className="textarea" name="" id="" cols="30" rows="5" placeholder="Añade tu obsevación" />
               </section>
-              <section className="creteFile">
+              <section className="createFile">
                 <section className="file">
                   <label className="custom-file-input">
-                    Seleccionar archivo 
-                    <i class="fi fi-rr-upload"></i>
+                    Subir evidencia
+                    <i class="fi fi-rr-upload" id="iconFile"></i>
                     <input type="file" id="inputFile" />
                   </label>
                 </section>
@@ -94,9 +102,9 @@ const Create = () => {
               <section className="reglamento">holi</section>
             </section>
           </section>
-          <section className="buttonCreate">
+          {/* <section className="buttonCreate">
             <Button title={"Enviar"} icon={<i class="fi fi-br-check"></i>} />
-          </section>
+          </section> */}
         </section>
         <Footer />
       </section>

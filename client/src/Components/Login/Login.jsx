@@ -6,6 +6,8 @@ import { useRef, useState } from "react"; // Agregamos useState para manejar el 
 import { login } from "../../api/httpRequest";
 import { Toast } from "../toast/toast";
 import Cookie from "js-cookie";
+import { Input } from "@nextui-org/react";
+import React from "react";
 
 export const Login = () => {
   const numero_documento = useRef();
@@ -42,36 +44,48 @@ export const Login = () => {
     setError(null);
   };
 
+  const positions = ["outside"];
+
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  const toggleVisibility = () => setIsVisible(!isVisible);
+
   return (
-    <main className="container">
-      <section className="logo">
+    <main className="container ">
+      <section className="logo ">
         <img src={Image} alt="Sena" />
       </section>
-      <section className="main">
+      <section className="mainLogin">
         <form className="loginForm" onSubmit={sendData}>
           <h2 className="title">Iniciar Sesión</h2>
           {error && <Toast message={error} typeToast={"error"} onClose={closed} />}
           <section className="formContainer">
-            <section className="inp">
-              <input type="text" name="document" className="formInput" placeholder=" " autoComplete="off" ref={numero_documento} />
-              <label className="formLabel" htmlFor="document">
-                Número de documento
-              </label>
-            </section>
-            <section className="inp">
-              <input type="password" name="password" className="formInput" placeholder=" " autoComplete="off" ref={contrasena} />
-              <label className="formLabel" htmlFor="password">
-                Contraseña
-              </label>
-            </section>
+            <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+              <Input type="text" label="Número documento" labelPlacement={"outside"} autoComplete="off" ref={numero_documento} />
+            </div>
+            <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
+              <Input
+                label="Contraseña"
+                labelPlacement={"outside"}
+                endContent={
+                  <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                    {isVisible ? <i class="fi fi-rs-crossed-eye"></i> : <i class="fi fi-rr-eye"></i>}
+                  </button>
+                }
+                type={isVisible ? "text" : "password"}
+                className="max-w-xs"
+                autoComplete="off"
+                ref={contrasena}
+              />
+            </div>
+
             <p className="text">¿Olvidaste tu contraseña?</p>
             <button className="btn" disabled={isLoading}>
-              {" "}
               {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
               {isLoading ? "Cargando..." : "Iniciar sesión"}
             </button>
             <p className="textForm">
-              ¿Nuevo usuario?{" "}
+              ¿Nuevo usuario?
               <Link className="text" to={"/Register"}>
                 Registrate
               </Link>

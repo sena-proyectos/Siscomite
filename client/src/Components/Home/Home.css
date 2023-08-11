@@ -1,12 +1,12 @@
 /* Estilos de la sección de inicio */
 .containerHome {
   height: 100vh;
+  display: flex;
 }
 
 .homeContent {
   justify-content: center;
   height: 100vh;
-  margin-left: 12.7rem;
 }
 
 .headerTitle {
