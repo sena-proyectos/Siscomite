@@ -2,13 +2,13 @@ import { causeDataSchema } from "../schemas/cause.schemas"
 
 export const checkCausaData = async (req, res, next) => {
     const {
-        categoria_causa, calificacion_causa, descripcion_causa, evidencias, id_articulo } = req.body
+        categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo } = req.body
 
         const idNumberParsed = Number(calificacion_causa)
     
         try {
             if(isNaN(idNumberParsed)) throw new Error('El numero no es valido')
-            const errorSchema = causeDataSchema.validateAsync({  categoria_causa, calificacion_causa, descripcion_causa, evidencias, id_articulo })
+            const errorSchema = causeDataSchema.validateAsync({  categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo })
             console.log(errorSchema)
             // if (error !== undefined) return res.send({ message: 'Los datos ingresados no son validos' })
             // next()

@@ -8,11 +8,9 @@ export const checkUserExistRegister = async (req, res, next) => {
 
   try {
     const [userExist] = await pool.query("SELECT * FROM usuarios WHERE numero_documento = ?", [numero_documento]);
-
     if (userExist.length > 0) {
       return res.status(409).json({ message: "El usuario ya está registrado" });
     }
-
     next();
   } catch (error) {
     return res.status(500).json({ message: "Error al verificar el usuario" });
@@ -30,7 +28,6 @@ export const checkUserExistLogin = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Error al verificar el usuario" });
   }
 };
