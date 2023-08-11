@@ -39,12 +39,10 @@ export const deleteDocument = async (req,res) => {
         const [result] = await pool.query('DELETE FROM documentos WHERE id_documento = ?', [id]);
         if (result.affectedRows === 0) {
             res.status(404).send({ message: `No se pudo encotrar el documento con el id ${id}`})
-            console.log(error);
         } else {
             res.status(200).send({ message: `Documento con id ${id} eliminado exitosamente` })
         }
     } catch (error) {
-        res.status(500).send({ message: 'Error al eliminar el documento' })
-        console.log(error);
+        res.status(500).send({ message: 'Error al eliminar el documento' })      
     }
 }

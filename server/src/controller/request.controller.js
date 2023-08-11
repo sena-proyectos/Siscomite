@@ -36,7 +36,6 @@ export const getRequestById = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al obtener el solicitud' })
-        console.log(error);
     }
 }
 
@@ -45,13 +44,12 @@ export const getRequestById = async (req, res) => {
  * Esta función crea una solicitud insertando datos en una tabla de base de datos.
  */
 export const createRequest = async (req, res) => {
-    const { tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_usuario_receptor, id_aprendiz } = req.body
+    const { tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_aprendiz } = req.body
     try {
-    await pool.query('INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_usuario_receptor, id_aprendiz) VALUES (?, ?, ?, ?, ?, ?)', [tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_usuario_receptor, id_aprendiz])
+    await pool.query('INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_aprendiz, estado) VALUES (?, ?, ?, ?, ?, "Pendiente")', [tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_aprendiz])
     res.status(201).send({ message: 'Solitud creada exitosamente' })
     } catch (error) {
     res.status(500).send({ message: 'Error al crear la solitud' })
-    console.log(error);
     }
 }
 
@@ -62,17 +60,16 @@ export const createRequest = async (req, res) => {
  */
 export const updateRequest = async (req, res) => {
     const { id } = req.params;
-    const { tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_usuario_receptor, id_aprendiz } = req.body;
+    const { tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_aprendiz, estado } = req.body;
     try {
-        const [result] = await pool.query('UPDATE solicitud SET tipo_solicitud=?, nombre_coordinacion=?, id_causa=?, id_usuario_solicitante=?, id_usuario_receptor=?, id_aprendiz=? WHERE id_solicitud=?', [tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_usuario_receptor, id_aprendiz, id]);
+        const [result] = await pool.query('UPDATE solicitud SET IFNULL (?, tipo_solicitud), IFNULL (?, nombre_coordinacion), IFNULL (?, id_causa), IFNULL (?, id_usuario_solicitante), IFNULL (?, id_aprendiz), IFNULL (?, estado) WHERE id_solicitud=?', [tipo_solicitud, nombre_coordinacion, id_causa, id_usuario_solicitante, id_aprendiz, estado, id]);
         if (result.affectedRows === 0) {
             res.status(404).send({ message: `No se pudo encontrar la solicitud con id ${id}` })
         } else {
             res.status(200).send({ message: `Solicitud con id ${id} actualizada exitosamente` })
         }
     } catch (error) {
-        res.status(500).send({ message: 'Error al actualizar la solicitud' })
-        console.log(error);
+        res.status(500).send({ message: 'Error al actualizar la solicitud' })   
     }
 }
 
@@ -92,6 +89,5 @@ export const deleteRequest = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al eliminar la solicitud' })
-        console.log(error);
     }
 }

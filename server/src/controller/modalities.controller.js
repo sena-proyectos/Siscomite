@@ -53,7 +53,6 @@ export const updateModality = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al actualizar la modalidad' })
-        console.log(error);
     }
 }
 
@@ -68,12 +67,10 @@ export const deleteModality = async (req,res) => {
         const [result] = await pool.query('DELETE FROM modalidades WHERE id_modalidad = ?', [id]);
         if (result.affectedRows === 0) {
             res.status(404).send({ message: `No se pudo encotrar la modalidad con el id ${id}`})
-            console.log(error);
         } else {
             res.status(200).send({ message: `Modalidad con id ${id} eliminada exitosamente` })
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al eliminar la modalidad' })
-        console.log(error);
     }
 }
