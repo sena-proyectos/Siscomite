@@ -1,0 +1,10 @@
+.containerFooter {
+  display: flex;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.containerFooter .footer {
+    position: fixed;
+    bottom: 0;
+}

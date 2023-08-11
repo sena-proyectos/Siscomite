@@ -1,63 +1,72 @@
-@keyframes show {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.container {
+  display: flex; /* Usar flexbox en lugar de grid para centrar */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Usar 'min-height' para evitar que el contenedor se encoja */
+  background-color: #f0f0f0; /* Agregar un color de fondo */
 }
 
-.container {
-  display: grid;
-  place-content: center;
-  place-items: center;
-  height: 100vh;
+/* Animación */
+@keyframes show {
+  from {
+    opacity: 0;
+    transform: scale(0.8); /* Agregar escala inicial para animación */
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .main {
-  
-  animation: show .8s ease-in-out;
+  width: 30rem;
+  max-width: 100%; /* Evitar que el elemento se desborde en pantallas pequeñas */
+  padding: 3rem; /* Aumentar un poco el espacio interno */
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); /* Ajustar la sombra */
+  text-align: center;
+  animation: show 0.8s ease-in-out forwards; /* Aplicar la animación con 'forwards' */
 }
 
-.loginForm {
-  background-color: white;
-  width: 80%;
-  max-width: 400px;
-  padding: 4.5em;
-  border-radius: 10px; 
-  box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
-  text-align: center;
-  
+/* Estilos para el contenido interno */
+.main h1 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
+
+.main p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Estilos adicionales si es necesario */
 
 .loginForm .title {
-  font-size: 2rem;
-  margin-bottom: 0.5em;
-  background-color: white;
+  font-size: 1.5rem;
+  margin-bottom: 0.2em;
 }
 
 .formContainer {
-  margin-top: 3em;
+  margin-top: 2em;
   display: grid;
   gap: 1em;
   width: 100%;
-  background-color: white;
 }
 
 .inp {
   position: relative;
   color: black;
-  background-color: white;
 }
 
 .formInput {
   width: 90%;
   background-color: rgba(128, 128, 128, 0.374);
   font-size: 1em;
-  padding: 0.8em;
+  padding: 0.5em;
   border: none;
   outline: none;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .formInput:focus + .formLabel,
@@ -76,13 +85,13 @@
   background-color: transparent;
   transform: translateY(12px);
   transition: transform 0.5s;
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .btn {
   background-color: #3c3c3c;
   color: white;
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 300;
   width: 100%;
   padding: 0.8em 0 1em 0;
@@ -91,17 +100,35 @@
   cursor: pointer;
 }
 
+.btn:active {
+  transform: scale(0.9);
+}
+
 .text {
-  background-color: white;
   color: #587fff;
+  font-size: 12px;
 }
 
 .textForm {
-  background-color: white;
+  font-size: 12px;
 }
 
-/* @media screen and (max-width: 1000px) {
-  .image,.loginImageForm {
-    display: none;
-  }
-} */
+.logo {
+  display: flex;
+  align-items: center;
+  animation: show 0.8s ease-in-out;
+}
+
+.container .logo {
+  position: absolute;
+  top: 2.5rem;
+  left: 3rem;
+}
+
+.logo > img {
+  width: 3rem;
+}
+
+.sena {
+  font-size: 15px;
+}
