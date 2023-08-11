@@ -20,12 +20,10 @@
   font-size: 13px;
   text-align: center;
   width: 90%;
-  /* border: 2px solid red; */
 }
 
 .top h3 {
-  /* width: 110%; */
-  font-size: 17px;
+   font-size: 17px;
   margin-top: 1rem;
 }
 

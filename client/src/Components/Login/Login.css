@@ -1,32 +1,46 @@
-@keyframes show {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.container {
+  display: flex; /* Usar flexbox en lugar de grid para centrar */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Usar 'min-height' para evitar que el contenedor se encoja */
+  background-color: #f0f0f0; /* Agregar un color de fondo */
 }
 
-.container {
-  display: grid;
-  place-content: center;
-  place-items: center;
-  height: 100vh;
+/* Animación */
+@keyframes show {
+  from {
+    opacity: 0;
+    transform: scale(0.8); /* Agregar escala inicial para animación */
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .main {
-  animation: show 0.8s ease-in-out;
+  width: 30rem;
+  max-width: 100%; /* Evitar que el elemento se desborde en pantallas pequeñas */
+  padding: 3rem; /* Aumentar un poco el espacio interno */
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); /* Ajustar la sombra */
+  text-align: center;
+  animation: show 0.8s ease-in-out forwards; /* Aplicar la animación con 'forwards' */
 }
 
-.loginForm {
-  background-color: white;
-  width: 70%;
-  max-width: 400px;
-  padding: 4.5em;
-  border-radius: 10px;
-  box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
-  text-align: center;
+/* Estilos para el contenido interno */
+.main h1 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
+
+.main p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Estilos adicionales si es necesario */
 
 .loginForm .title {
   font-size: 1.5rem;
@@ -38,7 +52,6 @@
   display: grid;
   gap: 1em;
   width: 100%;
-  background-color: white;
 }
 
 .inp {
@@ -100,11 +113,10 @@
   font-size: 12px;
 }
 
-.logo{
+.logo {
   display: flex;
   align-items: center;
   animation: show 0.8s ease-in-out;
-
 }
 
 .container .logo {
