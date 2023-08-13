@@ -56,17 +56,17 @@ export const Register = () => {
   const toggleVisibility = () => setIsVisible(!isVisible);
 
   return (
-    <main className="containerRegister">
-      <section className="absolute top-0 left-0 logo">
-        <img src={Image} alt="Sena" />
-      </section>
-      <section className="flex items-center justify-center w-full h-screen ">
-        <form className="p-4 registerForm rounded-3xl" onSubmit={sendData}>
-          <h2 className="title">Crear una cuenta</h2>
+    <main className="h-screen">
           {error && <Toast message={error} typeToast="warnning" onClose={closed} />}
           {message && <Toast message={message} typeToast="success" onClose={closed} />}
-          <section className="formContainerR">
-            <section className="inputGroup">
+      <section className="absolute top-11 left-11" style={{ animation: "show 0.8s ease-in-out" }}>
+        <img src={Image} alt="Sena" className="w-[4rem]" />
+      </section>
+      <section className="flex items-center justify-center w-full h-screen" style={{ animation: "show 0.8s ease-in-out" }}>
+        <form className="relative grid p-4 rounded-xl bg-white shadow-md text-center place-items-center " onSubmit={sendData}>
+          <h2 className="font-semibold text-[1.5rem]">Crear una cuenta</h2>
+          <section className="relative w-[90%] top-[1rem] grid gap-8  ">
+            <section className="w-full flex justify-between gap-2">
               <div className="flex flex-wrap items-end w-full gap-4 mb-6 p md:flex-nowrap md:mb-0">
                 <Input type="text" label="Nombre" labelPlacement={"outside"} autoComplete="off" ref={nombres} />
               </div>
@@ -83,10 +83,10 @@ export const Register = () => {
               <Input type="text" label="Teléfono" labelPlacement={"outside"} autoComplete="off" ref={numero_celular} />
             </div>
 
-            <section className="grid inputGroupDocument grid-cols-2-50-50">
+            <section className="w-full flex justify-between gap-2 ">
               <Dropdown>
                 <DropdownTrigger>
-                  <Button variant="bordered" className="w-full capitalize " ref={id_documento}>
+                  <Button variant="bordered" className="w-full gap-4 capitalize " ref={id_documento}>
                     {selectedValue}
                   </Button>
                 </DropdownTrigger>
@@ -118,17 +118,17 @@ export const Register = () => {
               />
             </div>
 
-            <button className="btn">Registrate</button>
-            <p className="textForm">
+            <button className="bg-[#3c3c3c] text-white w-full cursor-pointer rounded-md font-light text-xs py-3">Registrate</button>
+            <p className="text-sm top-[-1rem] relative">
               ¿Ya estas registrado?{" "}
-              <Link className="text" to={"/"}>
+              <Link className="text-sm text-[#587fff]" to={"/"}>
                 Iniciar sesión
               </Link>
             </p>
           </section>
         </form>
-        <Footer />
       </section>
+        <Footer />
     </main>
   );
 };
