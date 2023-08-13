@@ -22,7 +22,7 @@ const Create = () => {
   let tabs = [
     {
       id: "1 ",
-      label: "Academicas",
+      label: "Académicas",
       content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
     },
     {
@@ -33,7 +33,8 @@ const Create = () => {
     {
       id: "3",
       label: "Otro",
-      content: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      content: <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px]"  />
+      
     },
   ];
 
@@ -43,7 +44,7 @@ const Create = () => {
       <section className="w-full">
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
           <h1 className="text-2xl font-semibold">Toda la información debe ser la registrada en Sofía Plus</h1>
-          <section className="bg-[#2e323e8b] relative top-[1rem]  place-items-center flex w-[90%] p-[.5rem] p shadow-lg rounded-xl justify-between">
+          <section className="bg-white relative top-[1rem]  place-items-center flex w-[90%] p-[.5rem] p shadow-lg rounded-xl justify-between">
             <section>
               <RadioGroup orientation="horizontal">
                 <Radio value="buenos-aires">Grupal</Radio>
@@ -53,7 +54,7 @@ const Create = () => {
             <section>
               <Dropdown>
                 <DropdownTrigger>
-                  <Button variant="flat" className="capitalize">
+                  <Button variant="flat" className="capitalize" color="primary">
                     {selectedValue}
                     <i class="fi fi-rr-angle-small-down text-[1.5rem]" />
                   </Button>
@@ -68,35 +69,41 @@ const Create = () => {
             </section>
           </section>
         </header>
-        <section className=" relative top-[1.6rem] px-[1rem] place-items-center grid grid-cols-2 ">
-          <section className="w-[85%]">
+        <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
+          <section className="w-[85%] ml-[3rem]" >
             <section className=" relative ">
               <Search className="relative " placeholder={"Buscar Instructor"} icon={<i class="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
-              <section className="bg-[#2E323E] w-[100%]  h-[4rem] relative shadow-lg top-[.5rem] rounded-xl flex justify-center">
-                <p className="text-white justify-center  border-b-white">Sin seleccionar aprendices</p>
+              <section className="bg-[#2E323E] w-[97%]  h-[4rem] relative shadow-lg top-[.5rem] rounded-xl grid justify-center">
+                <h3 className="text-white justify-center  border-b-white">Sin seleccionar aprendices</h3>
               </section>
             </section>
             <section className="relative top-[3rem]">
               <Search className="relative w-[100%]  " placeholder={"Buscar Instructor"} icon={<i class="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
-              <section className="bg-[#2E323E] w-[100%]  h-[4rem] relative shadow-lg top-[.5rem] rounded-xl flex justify-center">
-                <p className="text-white ">Sin seleccionar instructores</p>
+              <section className="bg-[#2E323E] w-[97%]  relative shadow-lg top-[.5rem] rounded-xl  ">
+                <h3 className="text-white grid justify-center ">Sin seleccionar instructores</h3>
+                <p className="text-white relative mx-5  w-[90%]  border-t-2 border-blue-500">
+                  <ul className="flex justify-between text-[13px] py-[.5rem]">
+                    <li>23454545</li>
+                    <li>Guillermo Stiven Bejumea Morales</li>
+                  </ul>
+                </p>
               </section>
             </section>
-            <section className="py-[2rem] relative top-[2.5rem] flex gap-4 justify-between items-center ">
-              <section className=" w-[60%]">
-                <Textarea label="Descripción" labelPlacement="outside" placeholder="Enter your description" className="max-w-[300px] " />
+            <section className="py-[2rem] relative top-[2.5rem] flex gap-4 justify-between items-center  ">
+              <section className=" w-[55%]">
+                <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px] " />
               </section>
-              <section className=" ">
+              <section className="">
                 <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
                   Subir evidencia
-                  <i class="fi fi-rr-upload px-[5px]" />
+                  <i class="fi fi-rr-upload px-[.5rem]" />
                   <input type="file" className="hidden" />
                 </label>
               </section>
             </section>
           </section>
 
-          <section className="  w-[85%] h-full">
+          <section className="mr-[3.1rem] w-[85%] h-full">
             <div className="flex w-full  flex-col">
               <Tabs aria-label="Dynamic tabs" items={tabs}>
                 {(item) => (
