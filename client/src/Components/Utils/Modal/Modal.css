@@ -53,14 +53,15 @@
   top: 0.5rem;
   overflow: hidden;
   
+
 }
 
 .modalContent {
-  display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   position: relative;
   top: 2rem;
+  display: flex;
+  background-color: red;
 }
 
 .inputModal,
@@ -123,7 +124,9 @@
   justify-content: center;
 }
 
-#inputArchivo {
+
+
+.labelArchivo #inputArchivo[type="file"] {
   display: none;
 }
 
