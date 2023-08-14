@@ -28,6 +28,7 @@ CREATE TABLE `aprendices` (
   `id_aprendiz` int NOT NULL AUTO_INCREMENT,
   `nombres_aprendiz` varchar(100) NOT NULL,
   `apellidos_aprendiz` varchar(100) NOT NULL,
+  `numero_documento_aprendiz` varchar(45) NOT NULL,
   `email_aprendiz_sena` varchar(300) NOT NULL,
   `email_aprendiz_personal` varchar(300) NOT NULL,
   `celular_aprendiz` varchar(20) NOT NULL,
@@ -39,7 +40,7 @@ CREATE TABLE `aprendices` (
   KEY `id_ficha` (`id_ficha`),
   CONSTRAINT `aprendices_ibfk_1` FOREIGN KEY (`id_documento`) REFERENCES `documentos` (`id_documento`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `aprendices_ibfk_2` FOREIGN KEY (`id_ficha`) REFERENCES `fichas` (`id_ficha`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +49,7 @@ CREATE TABLE `aprendices` (
 
 LOCK TABLES `aprendices` WRITE;
 /*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
-INSERT INTO `aprendices` VALUES (1,'Cristian D','Bedoya T','torres23torres@soy.sena.edu','torres23torres@gamil.com','3007030424','4512461',1,1),(3,'Juan Carlos','Prasca','prasca@soy.sena.edu.co','parasca85@gmail.com','30124242555',NULL,1,1),(4,'Juan Guillermo','Gomez','jggomez319@soy.sena.edu.co','jggomez016@gmail.com','3195910996',NULL,1,1);
+INSERT INTO `aprendices` VALUES (1,'Cristian D','Bedoya T','','torres23torres@soy.sena.edu','torres23torres@gamil.com','3007030424','4512461',1,1),(3,'Juan Carlos','Prasca','','prasca@soy.sena.edu.co','parasca85@gmail.com','30124242555',NULL,1,1),(4,'Juan Guillermo','Gomez','','jggomez319@soy.sena.edu.co','jggomez016@gmail.com','3195910996',NULL,1,1),(5,'Cristian David ','Bedoya T','1027944969','torres23torresTo@soy.sena.edu','torres23torresTo@gamil.com','3007030424',NULL,1,1);
 /*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,6 +227,7 @@ CREATE TABLE `solicitud` (
   `id_usuario_solicitante` int NOT NULL,
   `id_aprendiz` int NOT NULL,
   `estado` varchar(45) NOT NULL,
+  `fecha_creacion` datetime DEFAULT NULL,
   PRIMARY KEY (`id_solicitud`),
   KEY `fk_solicitud_1` (`id_usuario_solicitante`),
   KEY `id_causa` (`id_causa`),
@@ -242,7 +244,7 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
-INSERT INTO `solicitud` VALUES (1,'Individual','Marianela Henao',2,5,4,'Pendiente');
+INSERT INTO `solicitud` VALUES (1,'Individual','Marianela Henao',2,5,5,'aprobado','2023-08-14 17:12:28');
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,4 +302,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-10 17:37:30
+-- Dump completed on 2023-08-14 12:33:10
