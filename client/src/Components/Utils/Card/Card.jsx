@@ -17,7 +17,7 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
 
           <section className="cardHome">
             <section className="cardImage">
-              <img className="fondoCard" src={image} alt="Imágen" lazyloading/>
+              <img className="fondoCard" src={image} alt="Imágen" lazyloading="true"/>
               <div className="textoImagen">
                 <h4>{titleHome}</h4>
                 <p className="bodyText">{descripciónHome}</p>

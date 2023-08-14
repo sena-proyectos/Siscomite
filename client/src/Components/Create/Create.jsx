@@ -72,21 +72,21 @@ const Create = () => {
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
           <section className="w-[85%] ml-[3rem]" >
             <section className=" relative ">
-              <Search className="relative " placeholder={"Buscar Instructor"} icon={<i class="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
+              <Search className="relative " placeholder={"Buscar Instructor"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
               <section className="bg-[#2E323E] w-[97%]  h-[4rem] relative shadow-lg top-[.5rem] rounded-xl grid justify-center">
                 <h3 className="text-white justify-center  border-b-white">Sin seleccionar aprendices</h3>
               </section>
             </section>
             <section className="relative top-[3rem]">
-              <Search className="relative w-[100%]  " placeholder={"Buscar Instructor"} icon={<i class="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
+              <Search className="relative w-[100%]  " placeholder={"Buscar Instructor"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
               <section className="bg-[#2E323E] w-[97%]  relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Sin seleccionar instructores</h3>
-                <p className="text-white relative mx-5  w-[90%]  border-t-2 border-blue-500">
+                <nav className="text-white relative mx-5  w-[90%]  border-t-2 border-blue-500">
                   <ul className="flex justify-between text-[13px] py-[.5rem]">
                     <li>23454545</li>
                     <li>Guillermo Stiven Bejumea Morales</li>
                   </ul>
-                </p>
+                </nav>
               </section>
             </section>
             <section className="py-[2rem] relative top-[2.5rem] flex gap-4 justify-between items-center  ">
