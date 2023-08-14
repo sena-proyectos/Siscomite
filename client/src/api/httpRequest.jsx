@@ -5,33 +5,48 @@ const api = '/api'
 
 /* Get users */
 export const getUsers = () => {
-    const URL = `${BaseUrl}${api}/users`
-    const response = axios.get(URL)
+  const URL = `${BaseUrl}${api}/users`
+  const response = axios.get(URL)
 
-    return response
+  return response
 }
 
 /* Get teachers */
 export const getTeachers = () => {
-    const URL = `${BaseUrl}${api}/teachers`
-    const response = axios.get(URL)
+  const URL = `${BaseUrl}${api}/teachers`
+  const response = axios.get(URL)
 
-    return response
+  return response
 }
 
+/* Get teachers by name*/
+export const getTeacherByName = (nombres) => {
+  const URL = `${BaseUrl}${api}/searchTeacher?nombres=${nombres}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* Get apprentices by name */
+export const getApprenticesByName = (nombres) => {
+  const URL = `${BaseUrl}${api}/searchUser?nombres=${nombres}`
+  const response = axios.get(URL)
+
+  return response
+}
 
 /* Login */
 export const login = (data) => {
-    const URL = `${BaseUrl}${api}/login`
-    const response = axios.post(URL, data)
+  const URL = `${BaseUrl}${api}/login`
+  const response = axios.post(URL, data)
 
-    return response
+  return response
 }
 
 /* Register */
 export const register = (data) => {
-    const URL = `${BaseUrl}${api}/register`
-    const response = axios.post(URL, data)
-    
-    return response
+  const URL = `${BaseUrl}${api}/register`
+  const response = axios.post(URL, data)
+
+  return response
 }

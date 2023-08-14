@@ -15,3 +15,7 @@ export const registerDataSchema = Joi.object({
     numero_documento: Joi.string().required().min(8).max(50),
     contrasena: Joi.string().required().min(8).max(300).pattern(PASSWORD_REGEX),
 })
+
+export const searchUsers = Joi.object({
+    
+})
