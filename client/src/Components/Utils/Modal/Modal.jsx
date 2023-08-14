@@ -1,18 +1,26 @@
 import "./Modal.css";
 import React, { useState } from "react";
 import { Button } from "../Button/Button";
+import { Input } from "@nextui-org/react";
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false }) => {
   const closeModal = () => {
     cerrarModal();
   };
 
-    const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
-  
-    const handleEtapaChange = (event) => {
-      const selectedValue = event.target.value;
-      setIsTrimestreEnabled(selectedValue === "lectiva");
-    };
+  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
+
+  const handleEtapaChange = (event) => {
+    const selectedValue = event.target.value;
+    setIsTrimestreEnabled(selectedValue === "lectiva");
+  };
+
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["text"]));
+
+  const selectedValue = React.useMemo(
+    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+    [selectedKeys]
+  );
 
   return (
     <>
@@ -20,7 +28,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         <section className="containerModal">
           <header className="headerModal">
             <h3>{titulo}</h3>
-            <i className="fi fi-br-cross" onClick={closeModal} id="iconModal" />
+            <i className="fi fi-br-cross relative left-[25%]" onClick={closeModal}  />
           </header>
           <section className="bodyModal">
             {modalAdd && (
@@ -128,22 +136,20 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             )}
 
             {modalAddGroups && (
-              <section className="modalGrup">
-                <section className="contentGroup">
-                  <section className="modalInput">
-                    <input type="text" name="fistName" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="fistName">
-                      Número de ficha
-                    </label>
+              <section className="modalGrup ">
+                <section className=" flex flex-wrap justify-center relative top-5 gap-x-7 gap-y-6">
+                  <section className="modalInput ">
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0" >
+                      <Input size="md" type="text" label="Número de ficha" labelPlacement={"outside"}  variant={"flat"} />
+                    </div>
                   </section>
                   <section className="modalInput">
-                    <input type="text" name="fistName" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="fistName">
-                      Nombre del programa
-                    </label>
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={"outside"} variant={"bordered"} />
+                    </div>
                   </section>
-                  <section>
-                    <select className="modalSelect" required>
+                  <section > 
+                    <select className="bg-[#2e323e54] px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" >
                       <option value="">Jornada</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
@@ -152,15 +158,15 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <option value="Noche">Virtual</option>
                     </select>
                   </section>
-                  <section>
-                    <select className="modalSelect" required onChange={handleEtapaChange}>
+                  <section >
+                    <select className="bg-[#2e323e54]  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange}>
                       <option value="">Etapa</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
-                  <section>
-                    <select className="modalSelect" required disabled={!isTrimestreEnabled}>
+                  <section >
+                    <select className="bg-[#2e323e54] px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled}>
                       <option value="">Trimestre lectivo</option>
                       <option value="lectiva">1</option>
                       <option value="practica">2</option>
@@ -170,7 +176,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <option value="practica">6</option>
                     </select>
                   </section>
-                  <select className="modalSelect" required>
+                  <select className="bg-[#2e323e54]  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required>
                     <option value="">Modalidad</option>
                     <option value="vitual">Vitual</option>
                     <option value="presencial">Presencial</option>
@@ -178,9 +184,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     <option value="distancia">A distancia</option>
                     <option value="virtual">Virtual</option>
                   </select>
-                  <section className="enviarGroup">
-                    <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={"Guardar"} />
-                  </section>
+                </section>
+                <section className="enviarGroup relative top-[2rem] fl justify-center">
+                  <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={"Guardar"} />
                 </section>
               </section>
             )}

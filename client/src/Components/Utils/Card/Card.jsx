@@ -30,11 +30,11 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
         
         {flip && (
           <section className="card_flip">
-            <section className="front">{frontContent}</section>
-            <section className="back">
+            <section className="front ">{frontContent}</section>
+            <section className="back border-2 border-blue-200 ">
               <ul className="list">
                 {backContent.map((item, index) => (
-                  <li key={index} className="listItem">
+                  <li key={index} className="listItem ">
                     {item}
                   </li>
                 ))}
