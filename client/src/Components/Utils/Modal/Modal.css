@@ -10,19 +10,6 @@
   }
 }
 
-.fondo {
-  height: 100vh;
-  width: 100%;
-  background-color: rgba(0, 0, 0, 0.521);
-  z-index: 1;
-  position: fixed;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(3px);
-}
 
 .fondo .containerModal {
   background-color: white;
@@ -53,43 +40,17 @@
   top: 0.5rem;
   overflow: hidden;
   
+
 }
 
 .modalContent {
-  display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   position: relative;
   top: 2rem;
+  display: flex;
+  background-color: red;
 }
 
-.inputModal,
-.modalSelect {
-  width: 13rem;
-  height: 35px;
-  border: none;
-  background-color: #2e323e54;
-  border-radius: 10px;
-  text-indent: 10px;
-  margin: 7px;
-  outline: none;
-  margin-bottom: 1rem;
-}
-
-.modalLabel {
-  font-size: 14px;
-  position: absolute;
-  transform: translateY(12px);
-  transition: transform 0.5s;
-  pointer-events: none;
-  margin-left: -13rem;
-}
-
-.inputModal:focus + .modalLabel,
-.inputModal:not(:placeholder-shown) + .modalLabel {
-  transform: translateY(-7px) scale(0.9);
-  transform-origin: left top;
-}
 
 .enviar {
   position: relative;
@@ -123,7 +84,9 @@
   justify-content: center;
 }
 
-#inputArchivo {
+
+
+.labelArchivo #inputArchivo[type="file"] {
   display: none;
 }
 

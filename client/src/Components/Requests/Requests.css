@@ -1,104 +1,13 @@
-.containerRequests {
-  height: 100vh;
-}
-
-.bodyRequests {
-  height: 100vh;
-  width: 84%;
-  margin-left: 16%;
-}
-
-.barRequests {
-  display: grid;
-  place-items: center;
-  padding: 1.5rem;
-}
-
-.barRequests .titleRequests {
-  padding-bottom: 2rem;
-}
-
-.barRequests .title {
-  font-size: 19px;
-}
-
-.tableRequests {
-  height: 65vh;
-  display: grid;
-  justify-content: center;
-  position: relative;
-  top: 1rem;
-  
-}
-
-.table {
-  border-collapse: collapse;
-  width: 150vh;
-  max-width: 900px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  min-height: 170px; 
-}
 
 
-.headtable {
-  background-color: #2e323e;
-  color: white;
-  padding: 8px;
-  align-items: center;
-}
 
 
-.bodytable {
-  padding: 5px;
-  text-align: center;
-  font-size: 13px;
-}
 
-.trTable:nth-child(even) {
-  background-color: #EBEBEB;
-}
 
-.trTable:nth-child(odd) {
-  background-color: #ffffff;
-}
 
-#buttonRequests .button{
-  background-color: white;
-  cursor: pointer;
-  border: 1.5px #3E3E3E solid;
-  border-radius: 20px;
-  padding: 0rem 1rem;
-  font-size: 12px;
-}
 
-/* Estilos de  la paginacion de tabla */
 
-.aRequests{
-  position: relative;
-}
-.aRequests .pagination {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  list-style: none;  
-  margin-top: 2.7rem;
-}
 
-.pagination a{
-  background-color: #3c3c3c25;
-  margin: .5rem;
-  padding: 9px 15px;
-  color: black;
-  text-decoration: none;
-  border-radius: 60px;
-  font-weight: bolder;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 
-}
-
-.pagination a:hover{
-  background-color: black;
-  color: white;
-}
 
 

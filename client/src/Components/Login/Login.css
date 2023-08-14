@@ -1,122 +1,21 @@
+
+
+/* Animación */
 @keyframes show {
-  0% {
+  from {
     opacity: 0;
+    transform: scale(0.8); /* Agregar escala inicial para animación */
   }
-  100% {
+  to {
     opacity: 1;
+    transform: scale(1);
   }
-}
-
-.container {
-  display: grid;
-  place-content: center;
-  place-items: center;
-  height: 100vh;
-}
-
-.main {
-  animation: show 0.8s ease-in-out;
-}
-
-.loginForm {
-  background-color: white;
-  width: 70%;
-  max-width: 400px;
-  padding: 4.5em;
-  border-radius: 10px;
-  box-shadow: 2px 5px 10px -5px rgba(0, 0, 0, 0.674);
-  text-align: center;
-}
-
-.loginForm .title {
-  font-size: 1.5rem;
-  margin-bottom: 0.2em;
-}
-
-.formContainer {
-  margin-top: 2em;
-  display: grid;
-  gap: 1em;
-  width: 100%;
-  background-color: white;
-}
-
-.inp {
-  position: relative;
-  color: black;
-}
-
-.formInput {
-  width: 90%;
-  background-color: rgba(128, 128, 128, 0.374);
-  font-size: 1em;
-  padding: 0.5em;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-}
-
-.formInput:focus + .formLabel,
-.formInput:not(:placeholder-shown) + .formLabel {
-  transform: translateY(-9px) scale(0.9);
-  transform-origin: left top;
-  color: rgb(0, 0, 0);
-}
-
-.formLabel {
-  cursor: pointer;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 20px;
-  background-color: transparent;
-  transform: translateY(12px);
-  transition: transform 0.5s;
-  font-size: 12px;
-}
-
-.btn {
-  background-color: #3c3c3c;
-  color: white;
-  font-size: 0.8rem;
-  font-weight: 300;
-  width: 100%;
-  padding: 0.8em 0 1em 0;
-  border: none;
-  border-radius: 1em;
-  cursor: pointer;
 }
 
 .btn:active {
   transform: scale(0.9);
 }
 
-.text {
-  color: #587fff;
-  font-size: 12px;
-}
-
-.textForm {
-  font-size: 12px;
-}
-
-.logo{
-  display: flex;
-  align-items: center;
-  animation: show 0.8s ease-in-out;
-
-}
-
-.container .logo {
-  position: absolute;
-  top: 2.5rem;
-  left: 3rem;
-}
-
-.logo > img {
-  width: 3rem;
-}
-
 .sena {
-  font-size: 15px;
+  font-size: 15px;
 }

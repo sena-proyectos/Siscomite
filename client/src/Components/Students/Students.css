@@ -1,18 +1,24 @@
 .containerStudent {
   height: 100vh;
+  display: flex;
 }
 
 .contentStudents {
   height: 100vh;
-  width: 83.5%;
-  position: relative;
-  left: 16.5%;
+  width: 100%;
 }
 
 .studentBar {
   display: grid;
   place-items: center;
   padding: 1.5rem;
+}
+
+#iconBar{
+  top: 1.5rem;
+  left: 19rem;
+  position: absolute;
+  transform: translateY(-50%);
 }
 
 .studentCard .title {
