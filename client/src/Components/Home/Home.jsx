@@ -20,28 +20,28 @@ const Home = () => {
         </header>
         <section className="h-[80vh] flex-wrap flex items-center justify-center gap-x-20">
           <Link to={'/requests'}>
-            <section className="h-[28%] text-black" style={{ transition: '0.4s ease-in-out' }}>
+            <section className="h-[28%] text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
               <Card inside image={image} titleHome={'Solicitudes'} descripciónHome={'Aquí podrás ver las solicitudes que se han realizado y su estado de aprobación.'} />
             </section>
           </Link>
           <Link to={'/create'}>
-            <section className="h-[28%] text-black" style={{ transition: '0.4s ease-in-out' }}>
+            <section className="h-[28%] text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
               <Card inside image={image2} titleHome={'Crear Solicitud'} descripciónHome={'Aquí podrás crear una solicitud para un comité de evalución.'} />
             </section>
           </Link>
           <Link to={'/groups'}>
-            <section className="h-[28%] text-black" style={{ transition: '0.4s ease-in-out' }}>
+            <section className="h-[28%] text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
               <Card inside image={image3} titleHome={'Fichas'} descripciónHome={'Aquí podrás visualizar las fichas del CTM.'} />
             </section>
           </Link>
 
           <Link>
-            <section className="h-[28%] text-black" style={{ transition: '0.4s ease-in-out' }}>
+            <section className="h-[28%] text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
               <Card inside image={image4} titleHome={'Reglamento'} descripciónHome={'Aquí podrás ver el reglamento para consultar los artículos necesarios.'} />
             </section>
           </Link>
           <Link to={'/students'}>
-            <section className="h-[28%] text-black" style={{ transition: '0.4s ease-in-out' }}>
+            <section className="h-[28%] text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
               <Card inside image={image5} titleHome={'Agregar Aprendiz'} descripciónHome={'Aquí podrás Agregar aprendices.'} />
             </section>
           </Link>
