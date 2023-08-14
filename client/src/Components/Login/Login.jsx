@@ -52,20 +52,23 @@ export const Login = () => {
   const toggleVisibility = () => setIsVisible(!isVisible)
 
   return (
-    <main className="container ">
-      <section className="absolute flex items-center w-12 top-10 left-12" style={{ animation: 'show 0.8s ease-in-out' }}>
-        <img src={Image} alt="Sena" />
+    <main className="h-screen ">
+      <section className="absolute top-11 left-11 " style={{ animation: 'show 0.8s ease-in-out' }}>
+        <img src={Image} alt="Sena" className="w-[4rem]" />
       </section>
-      <section className="flex items-center justify-center w-full h-screen ">
-        <form className="relative bg-white w-[30%] p-[1rem] rounded-xl grid text-center shadow-lg place-items-center" onSubmit={sendData}>
+      {error && <Toast message={error} typeToast={'error'} onClose={closed} />}
+      <section className="grid h-screen place-items-center " style={{ animation: 'show 0.8s ease-in-out' }}>
+        <form className="relative w-[400px] bg-white  p-[1rem] rounded-xl grid text-center shadow-lg place-items-center" onSubmit={sendData}>
           <h2 className="text-[1.5rem] font-bold mb-7">Iniciar Sesión</h2>
-          <section className="grid w-[80%] gap-7">
+          <section className="grid w-[80%] gap-8  ">
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
               <Input type="text" label="Número documento" labelPlacement={'outside'} autoComplete="off" ref={numero_documento} />
             </div>
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
               <Input
                 label="Contraseña"
+                autoComplete="off"
+                ref={contrasena}
                 labelPlacement={'outside'}
                 endContent={
                   <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
@@ -74,8 +77,6 @@ export const Login = () => {
                 }
                 type={isVisible ? 'text' : 'password'}
                 className="max-w-xs"
-                autoComplete="off"
-                ref={contrasena}
               />
             </div>
 
@@ -93,7 +94,7 @@ export const Login = () => {
           </section>
         </form>
       </section>
-      {/* <Footer /> */}
+      <Footer />
     </main>
   )
 }

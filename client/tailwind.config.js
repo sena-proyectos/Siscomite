@@ -27,5 +27,16 @@ module.exports = {
     },
   },
   darkMode: 'class',
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      layout: {
+        fontSize: {
+          tiny: '0.75rem', // text-tiny
+          small: '0.875rem', // text-small
+          medium: '1rem', // text-medium
+          large: '1.125rem', // text-large
+        },
+      },
+    }),
+  ],
 }
