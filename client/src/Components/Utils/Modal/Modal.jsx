@@ -6,16 +6,16 @@ import { Textarea } from "@nextui-org/react";
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false }) => {
   const closeModal = () => {
-    cerrarModal();
-  };
+    cerrarModal()
+  }
 
   //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
 
   const handleEtapaChange = (event) => {
-    const selectedValue = event.target.value;
-    setIsTrimestreEnabled(selectedValue === "lectiva");
-  };
+    const selectedValue = event.target.value
+    setIsTrimestreEnabled(selectedValue === 'lectiva')
+  }
 
   // Dropdown detalles de solicitud
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Estado"]));
@@ -41,57 +41,50 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="modalAdd">
-                <section className="modalContent">
-                  <section className="modalInput">
-                    <input type="text" name="fistName" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="fistName">
-                      Nombre
-                    </label>
+              <section className="w-full h-[60vh] relative top-2 overflow-hidden">
+                <section className="relative flex flex-wrap justify-center gap-x-7 top-8 gap-y-8 ">
+                  <section className="modalInput ">
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} />
+                    </div>
                   </section>
-                  <section className="modalInput">
-                    <input type="text" name="lastName" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="lastName">
-                      Apellido
-                    </label>
+                  <section className="modalInput ">
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} />
+                    </div>
                   </section>
-
-                  <select className="modalSelect" required>
-                    <option value="">Tipo de documento</option>
-                    <option value="">CC</option>
-                    <option value="">TI</option>
-                    <option value="">PE</option>
-                  </select>
-
-                  <section className="modalInput">
-                    <input type="text" name="document" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="document">
-                      Número de documento
-                    </label>
+                  <section>
+                    <select className="bg-[#2e323e54] px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none">
+                      <option value="">Tipo de documento</option>
+                      <option value="">CC</option>
+                      <option value="">TI</option>
+                      <option value="">PE</option>
+                    </select>
                   </section>
-                  <section className="modalInput">
-                    <input type="email" name="emailSena" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="emailSena">
-                      Correo institucional
-                    </label>
+                  <section className="modalInput ">
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} />
+                    </div>
                   </section>
-                  <section className="modalInput">
-                    <input type="email" name="email" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="email">
-                      Correo alterno
-                    </label>
+                  <section className="modalInput ">
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} />
+                    </div>
                   </section>
-                  <section className="modalInput">
-                    <input type="email" name="email" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="email">
-                      Número
-                    </label>
+                  <section className="modalInput ">
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} />
+                    </div>
                   </section>
-                  <section className="modalInput">
-                    <input type="email" name="email" className="inputModal" required placeholder=" " />
-                    <label className="modalLabel" htmlFor="email">
-                      Número alterno
-                    </label>
+                  <section className="modalInput ">
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} />
+                    </div>
+                  </section>
+                  <section className="modalInput ">
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Número alterno" labelPlacement={'outside'} variant={'flat'} />
+                    </div>
                   </section>
                 </section>
                 <section className="modalArchivo">
@@ -103,7 +96,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </label>
                   </section>
                   <section className="enviar">
-                    <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={"Guardar"} />
+                    <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={'Guardar'} />
                   </section>
                 </section>
               </section>
@@ -146,15 +139,15 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             {/* Agregar Fichas */}
             {modalAddGroups && (
               <section className="modalGrup ">
-                <section className=" flex flex-wrap justify-center relative top-5 gap-x-7 gap-y-6">
+                <section className="relative flex flex-wrap justify-center top-5 gap-x-7 gap-y-6">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={"outside"} variant={"bordered"} />
+                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'bordered'} />
                     </div>
                   </section>
                   <section>
@@ -195,7 +188,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </select>
                 </section>
                 <section className="enviarGroup relative top-[2rem] fl justify-center">
-                  <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={"Guardar"} />
+                  <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={'Guardar'} />
                 </section>
               </section>
             )}
@@ -230,5 +223,5 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         </section>
       </main>
     </>
-  );
-};
+  )
+}

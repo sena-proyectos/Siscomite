@@ -14,7 +14,7 @@
   padding: 1.5rem;
 }
 
-#iconBar{
+#iconBar {
   top: 1.5rem;
   left: 19rem;
   position: absolute;
@@ -42,31 +42,11 @@
   padding: 1rem;
   background-color: #e0e0e0;
   cursor: pointer;
-  box-shadow: 5px 5px 10px #969696,
-  -5px -5px 10px #ffffff;
+  box-shadow: 5px 5px 10px #969696, -5px -5px 10px #ffffff;
 }
 
-.studentsDescription{
+.studentsDescription {
   display: flex;
-}
-
-.containerStudent .agregar {
-  display: grid;
-  place-items: center;
-}
-
-.add {
-  width: 60px;
-  height: 60px;
-  border-radius: 100px;
-  border: none;
-  color: white;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  font-size: 28px;
-  outline: none;
-  cursor: pointer;
-  background-color: #2e323e;
-  position: relative;
 }
 
 .add:active {
@@ -78,7 +58,6 @@
 }
 
 /* Estilos de  la paginacion de tabla */
-
 
 .aStudents .pagination {
   width: 100%;

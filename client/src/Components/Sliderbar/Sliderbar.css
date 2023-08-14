@@ -43,11 +43,10 @@
   border-radius: 10px;
 }
 
-.part.active{
+.part.active {
   background-color: #1b1e25;
   border-radius: 10px;
 }
-
 
 .pages .center {
   list-style: none;
@@ -59,9 +58,9 @@
   cursor: pointer;
 }
 
-.sliderbar .end{
+.sliderbar .end {
   position: absolute;
-  bottom: .5em;
+  bottom: 0.5em;
 }
 
 .end {

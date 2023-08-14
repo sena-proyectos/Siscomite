@@ -33,25 +33,6 @@
 }
 
 /* Estilos modal de agregar estudiante */
-.modalAdd {
-  width: 100%;
-  height: 60vh;
-  position: relative;
-  top: 0.5rem;
-  overflow: hidden;
-  
-
-}
-
-.modalContent {
-  flex-wrap: wrap;
-  position: relative;
-  top: 2rem;
-  display: flex;
-  background-color: red;
-}
-
-
 .enviar {
   position: relative;
   display: grid;
@@ -84,9 +65,7 @@
   justify-content: center;
 }
 
-
-
-.labelArchivo #inputArchivo[type="file"] {
+.labelArchivo #inputArchivo[type='file'] {
   display: none;
 }
 
@@ -115,25 +94,24 @@ label:active {
 
 /* Estilos de la modal de información de aprendices */
 
-.contentInfo{
+.contentInfo {
   margin-top: 1rem;
   overflow: hidden;
   min-width: 50%;
 }
 
-.info{
+.info {
   margin: 10px;
   border-bottom: 1px #0799b6 solid;
 }
 
-.infoTitle{
+.infoTitle {
   font-weight: bolder;
   font-size: 17px;
 }
 
-.infoText{
+.infoText {
   font-size: 15px;
-  
 }
 
 /* Estilos de la modal de agrgar fichas */
@@ -146,16 +124,16 @@ label:active {
   top: 2rem;
 }
 
-.enviarGroup #iconSave{
+.enviarGroup #iconSave {
   font-size: 15px;
   color: white;
 }
 
-.enviarGroup{
-  padding: 1rem 0rem 2rem ;
+.enviarGroup {
+  padding: 1rem 0rem 2rem;
 }
 
-.enviarGroup .button{
+.enviarGroup .button {
   padding: 8px 30px;
   border-radius: 10px;
   border: none;
@@ -167,5 +145,3 @@ label:active {
   font-size: 15px;
   letter-spacing: 1.5px;
 }
-
-
