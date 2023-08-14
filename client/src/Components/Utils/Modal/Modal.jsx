@@ -1,13 +1,15 @@
 import "./Modal.css";
 import React, { useState } from "react";
-import { Button } from "../Button/Button";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
+import { Textarea } from "@nextui-org/react";
 
-export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false }) => {
+export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false }) => {
   const closeModal = () => {
     cerrarModal();
   };
 
+  //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
 
   const handleEtapaChange = (event) => {
@@ -15,22 +17,29 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     setIsTrimestreEnabled(selectedValue === "lectiva");
   };
 
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["text"]));
+  // Dropdown detalles de solicitud
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Estado"]));
+  const selectedValueDetails = React.useMemo(() => Array.from(selectedKeys).join(", ").replaceAll("_", " "), [selectedKeys]);
 
-  const selectedValue = React.useMemo(
-    () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-    [selectedKeys]
-  );
+  const getStatusColorClass = (status) => {
+    const statusColorMap = {
+      Aprobado: "bg-green-200 text-success rounded-2xl", // Clase CSS para aprobado
+      Rechazado: "bg-red-200 text-danger rounded-2xl", // Clase CSS para rechazado
+      Pendiente: "bg-yellow-200 text-warning rounded-2xl", // Clase CSS para pendiente
+    };
+    return statusColorMap[status] || "text-black"; // Clase CSS por defecto (negro) si el estado no está en el mapa
+  };
 
   return (
     <>
-      <main className="fondo">
-        <section className="containerModal">
+      <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
+        <section className="bg-white p-2rem">
           <header className="headerModal">
             <h3>{titulo}</h3>
-            <i className="fi fi-br-cross relative left-[25%]" onClick={closeModal}  />
+            <i className="fi fi-br-cross relative left-[25%]" onClick={closeModal} />
           </header>
           <section className="bodyModal">
+            {/* Agregar aprendices */}
             {modalAdd && (
               <section className="modalAdd">
                 <section className="modalContent">
@@ -99,7 +108,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 </section>
               </section>
             )}
-
+            {/* Información Aprendices */}
             {modalInfo && (
               <section className="modalInfo">
                 <section className="contentInfo">
@@ -134,13 +143,13 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 </section>
               </section>
             )}
-
+            {/* Agregar Fichas */}
             {modalAddGroups && (
               <section className="modalGrup ">
                 <section className=" flex flex-wrap justify-center relative top-5 gap-x-7 gap-y-6">
                   <section className="modalInput ">
-                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0" >
-                      <Input size="md" type="text" label="Número de ficha" labelPlacement={"outside"}  variant={"flat"} />
+                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                      <Input size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} />
                     </div>
                   </section>
                   <section className="modalInput">
@@ -148,8 +157,8 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <Input size="md" type="text" label="Nombre del programa" labelPlacement={"outside"} variant={"bordered"} />
                     </div>
                   </section>
-                  <section > 
-                    <select className="bg-[#2e323e54] px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" >
+                  <section>
+                    <select className="bg-[#2e323e54] px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none">
                       <option value="">Jornada</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
@@ -158,14 +167,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <option value="Noche">Virtual</option>
                     </select>
                   </section>
-                  <section >
+                  <section>
                     <select className="bg-[#2e323e54]  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange}>
                       <option value="">Etapa</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
-                  <section >
+                  <section>
                     <select className="bg-[#2e323e54] px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled}>
                       <option value="">Trimestre lectivo</option>
                       <option value="lectiva">1</option>
@@ -187,6 +196,33 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 </section>
                 <section className="enviarGroup relative top-[2rem] fl justify-center">
                   <Button icon={<i className="fi fi-br-check" id="iconSave" />} title={"Guardar"} />
+                </section>
+              </section>
+            )}
+            {/* Ver detalles Solicitudes */}
+            {modalDetails && (
+              <section className="bg-blue-500 relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
+                <section className="bg-red-700 ">
+                  <Dropdown>
+                    <DropdownTrigger>
+                      <Button variant="flat" className={`capitalize ${getStatusColorClass(selectedValueDetails)}`}>
+                        {selectedValueDetails}
+                      </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
+                      <DropdownItem key="Aprobado">Aprobado</DropdownItem>
+                      <DropdownItem key="Pendiente">Pendiente</DropdownItem>
+                      <DropdownItem key="Rechazado">Rechazado</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                  <section className="w-full grid grid-cols-12 gap-4 ">
+                    <Textarea variant={"faded"} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-6 mb-6 md:mb-0" />
+                  </section>
+                </section>
+                <section className="bg-yellow-400">
+                <section className="w-full grid grid-cols-12 gap-4 ">
+                    <Textarea variant={"faded"} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-6 mb-6 md:mb-0" />
+                  </section>
                 </section>
               </section>
             )}
