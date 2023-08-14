@@ -108,7 +108,7 @@ export const Register = () => {
                 labelPlacement={"outside"}
                 endContent={
                   <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                    {isVisible ? <i class="fi fi-rs-crossed-eye"></i> : <i class="fi fi-rr-eye"></i>}
+                    {isVisible ? <i className="fi fi-rs-crossed-eye"></i> : <i className="fi fi-rr-eye"></i>}
                   </button>
                 }
                 type={isVisible ? "text" : "password"}

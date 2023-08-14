@@ -80,7 +80,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="modalArchivo">
                   <section className="modalInput">
                     <label className="labelArchivo">
-                      <i class="fi fi-rr-folder-upload" id="iconArchivo" />
+                      <i className="fi fi-rr-folder-upload" id="iconArchivo" />
                       Subir Excel
                       <input type="file" name="archivo" id="inputArchivo" required />
                     </label>

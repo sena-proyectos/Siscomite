@@ -56,7 +56,7 @@ const Create = () => {
                 <DropdownTrigger>
                   <Button variant="flat" className="capitalize" color="primary">
                     {selectedValue}
-                    <i class="fi fi-rr-angle-small-down text-[1.5rem]" />
+                    <i className="fi fi-rr-angle-small-down text-[1.5rem]" />
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
@@ -96,7 +96,7 @@ const Create = () => {
               <section className="">
                 <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
                   Subir evidencia
-                  <i class="fi fi-rr-upload px-[.5rem]" />
+                  <i className="fi fi-rr-upload px-[.5rem]" />
                   <input type="file" className="hidden" />
                 </label>
               </section>
@@ -119,7 +119,7 @@ const Create = () => {
           <section className=" absolute top-[25rem] ">
             <Button className="" size="lg" color="primary">
               Enviar
-              <i class="fi fi-br-check"></i>
+              <i className="fi fi-br-check"></i>
             </Button>
           </section>
         </section>

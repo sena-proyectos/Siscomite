@@ -59,7 +59,7 @@ const Groups = () => {
         <Sliderbar />
         <section className="groupCentent">
           <header className="groupHeader">
-            <Search   placeholder={"Buscar ficha"} icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+            <Search   placeholder={"Buscar ficha"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
           </header>
           <section className="bodyGroup">
             {cardData.map((card) => (
