@@ -1,19 +1,3 @@
-.containerStudent {
-  height: 100vh;
-  display: flex;
-}
-
-.contentStudents {
-  height: 100vh;
-  width: 100%;
-}
-
-.studentBar {
-  display: grid;
-  place-items: center;
-  padding: 1.5rem;
-}
-
 #iconBar {
   top: 1.5rem;
   left: 19rem;
@@ -21,40 +5,8 @@
   transform: translateY(-50%);
 }
 
-.studentCard .title {
-  font-size: 19px;
-}
-
-.studentBody {
-  padding: 0.5rem;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.studentBody .studentCard {
-  width: 170px;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-left: 3rem;
-  margin-bottom: 3rem;
-  padding: 1rem;
-  background-color: #e0e0e0;
-  cursor: pointer;
-  box-shadow: 5px 5px 10px #969696, -5px -5px 10px #ffffff;
-}
-
-.studentsDescription {
-  display: flex;
-}
-
 .add:active {
   transform: scale(0.9);
-}
-
-.footerStudents {
-  position: relative;
 }
 
 /* Estilos de  la paginacion de tabla */
