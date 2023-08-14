@@ -49,16 +49,16 @@ const Students = () => {
       {modalStudent && <Modal modalAdd cerrarModal={modalAdd} titulo={<section className="text-2xl font-semibold">Agregar Estudiantes</section>} />}
       {infoStudents && <Modal modalInfo cerrarModal={infoStudent} titulo={<section className="text-2xl font-semibold">Información</section>} />}
 
-      <main className="containerStudent">
+      <main className="flex h-screen">
         <Sliderbar />
-        <section className="contentStudents">
-          <header className="studentBar">
+        <section className="w-full h-screen">
+          <header className="grid p-6 place-items-center">
             <Search className="student_Bar" icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem] " />} placeholder={'Busca un aprendiz'} />
           </header>
-          <section className="studentBody">
+          <section className="flex flex-wrap items-center justify-center p-2">
             {currentItems.map((item) => {
               return (
-                <section className="studentCard" key={item.title}>
+                <section className="w-[170px] rounded-md overflow-hidden ml-12 mb-12 p-4 bg-[#e0e0e0] cursor-pointer" style={{ boxShadow: '5px 5px 10px #969696, -5px -5px 10px #ffffff' }} key={item.title}>
                   <Card header click={infoStudent} title={item.title} document={item.document} descripción={item.descripción} />
                 </section>
               )
@@ -72,7 +72,7 @@ const Students = () => {
               +
             </button>
           </section>
-          <section className="footerStudents">
+          <section className="relative">
             <Footer />
           </section>
         </section>
