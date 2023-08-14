@@ -53,7 +53,7 @@ const Students = () => {
         <Sliderbar />
         <section className="contentStudents">
           <header className="studentBar">
-            <Search className="student_Bar" icon={<i class="fi fi-rr-settings-sliders" />} placeholder={"Busca un aprendiz"} />
+            <Search className="student_Bar" icon={<i class="fi fi-rr-settings-sliders" id="iconBar" />} placeholder={"Busca un aprendiz"} />
           </header>
           <section className="studentBody">
             {currentItems.map((item) => {

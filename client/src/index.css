@@ -1,4 +1,4 @@
-@import "@flaticon/flaticon-uicons/css/all/all";
+@import '@flaticon/flaticon-uicons/css/all/all';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +8,6 @@
   padding: 0;
   font-family: 'Quicksand', sans-serif;
 }
-body{
-  background-color: #EBEBEB;
+body {
+  background-color: #ebebeb;
 }

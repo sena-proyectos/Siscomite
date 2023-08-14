@@ -1,7 +1,7 @@
 .sliderbar {
   background-color: #2e323e;
   margin: 1rem;
-  width: 15%;
+  width: 20%;
   max-width: 200px;
   height: 95vh;
   display: flex;
@@ -9,7 +9,7 @@
   flex-direction: column;
   color: white;
   border-radius: 30px;
-  position: absolute;
+  position: relative;
 }
 
 .top {
@@ -23,7 +23,7 @@
 }
 
 .top h3 {
-   font-size: 17px;
+  font-size: 17px;
   margin-top: 1rem;
 }
 
@@ -43,11 +43,10 @@
   border-radius: 10px;
 }
 
-.part.active{
+.part.active {
   background-color: #1b1e25;
   border-radius: 10px;
 }
-
 
 .pages .center {
   list-style: none;
@@ -59,9 +58,9 @@
   cursor: pointer;
 }
 
-.sliderbar .end{
+.sliderbar .end {
   position: absolute;
-  bottom: .5em;
+  bottom: 0.5em;
 }
 
 .end {

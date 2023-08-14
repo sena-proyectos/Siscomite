@@ -5,7 +5,7 @@ const Search = ({ placeholder, icon }) => {
     <main className="containerSearch">
       <section className="searchBar">
         {icon}
-        <input type="text" name="buscar" className="searchTerm" placeholder={placeholder} />
+        <input type="text" name="buscar" className="searchTerm" placeholder={placeholder}/>
       </section>
     </main>
   );
