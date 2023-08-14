@@ -1,4 +1,4 @@
-/* Estilos de la sección de inicio */
+/* Estilos de la sección de inicio
 .containerHome {
   height: 100vh;
   display: flex;
@@ -24,7 +24,7 @@
 }
 
 /* Estilos para las tarjetas de contenido */
-.cardBody {
+/* .cardBody {
   height: 80vh;
   flex-wrap: wrap;
   display: flex;
@@ -37,7 +37,7 @@
   height: 28%;
   color: black;
   transition: 0.4s ease-in-out;
-}
+} */
 
 .cardHome:hover {
   transform: scale(1.1);
