@@ -35,6 +35,14 @@ export const getApprenticesByName = (nombres) => {
   return response
 }
 
+/* Create Request */
+export const createRequest = (data) => {
+  const URL = `${BaseUrl}${api}/createSolicitud`
+  const response = axios.post(URL, data)
+
+  return response
+}
+
 /* Login */
 export const login = (data) => {
   const URL = `${BaseUrl}${api}/login`

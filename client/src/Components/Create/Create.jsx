@@ -1,5 +1,8 @@
 import './Create.css'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import jwtDecode from 'jwt-decode'
+import Cookie from 'js-cookie'
+
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { RadioGroup, Radio } from '@nextui-org/react'
@@ -11,13 +14,19 @@ import { getTeacherByName, getApprenticesByName } from '../../api/httpRequest'
 
 const Create = () => {
   const [selectedAprendizOption, setSelectedAprendizOption] = useState(null)
+  
   const [teacherSearch, setTeacherSearch] = useState([])
   const [userSearch, setUserSearch] = useState([])
+
   const [error, setError] = useState(null)
   const [errorUser, setErrorUser] = useState(null)
+  const [userID, setUserID] = useState('')
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Coordinador']))
-  const selectedValue = React.useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
+  const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')), [selectedKeys])
+  
+  const [tipoSolicitud, setTipoSolicitud] = useState(null)
+  // const 
 
   const handleAprendizOptionClick = (option) => {
     setSelectedAprendizOption(option)
@@ -58,6 +67,23 @@ const Create = () => {
       setUserSearch([])
     }
   }
+  useEffect(() => {
+    const infoUser = Cookie.get('token')
+    const decoded = jwtDecode(infoUser)
+    setUserID(decoded.id_usuario)
+    console.log("hola");
+  }, [])
+
+  const sendData = () => {
+    const dataValue = {
+      tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
+      nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
+      // id_causa,
+      id_usuario_solicitante: userID,
+      // id_aprendiz,
+    }
+    console.log(dataValue)
+  }
 
   let tabs = [
     {
@@ -85,9 +111,11 @@ const Create = () => {
           <h1 className="text-2xl font-semibold">Toda la información debe ser la registrada en Sofía Plus</h1>
           <section className="bg-white relative top-[1rem]  place-items-center flex w-[90%] p-[.5rem] p shadow-lg rounded-xl justify-between">
             <section>
-              <RadioGroup orientation="horizontal">
-                <Radio value="buenos-aires" isDisabled="true">Grupal</Radio>
-                <Radio value="sydney">Individual</Radio>
+              <RadioGroup orientation="horizontal" onChange={(e) => setTipoSolicitud(e.target.value)}>
+                <Radio value="Grupal" isDisabled={true}>
+                  Grupal
+                </Radio>
+                <Radio value="Individual">Individual</Radio>
               </RadioGroup>
             </section>
             <section>
@@ -142,7 +170,7 @@ const Create = () => {
                       {userSearch.map((item, id_aprendiz) => (
                         <ul className="flex justify-between text-[13px] py-[.5rem]">
                           <React.Fragment key={id_aprendiz}>
-                            <li>{item.numero_documento}</li>
+                            <li>{item.numero_documento_aprendiz}</li>
                             <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                           </React.Fragment>
                         </ul>
@@ -182,7 +210,7 @@ const Create = () => {
             </div>
           </section>
           <section className=" absolute top-[25rem] ">
-            <Button className="" size="lg" color="primary">
+            <Button className="" size="lg" color="primary" onClick={sendData}>
               Enviar
               <i className="fi fi-br-check"></i>
             </Button>
