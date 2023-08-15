@@ -43,7 +43,7 @@ const Sliderbar = () => {
           </Link>
           <Link className="line" to={"/requests"}>
             <li className={`part ${selectedIcon === 2 ? "active" : ""}`} onClick={() => setSelectedIcon(2)}>
-              <i class="fi fi-rs-file" id="icon" title="Solicitudes" />
+              <i className="fi fi-rs-file" id="icon" title="Solicitudes" />
               <span className="slideText"> Solicitudes </span>
             </li>
           </Link>
@@ -55,7 +55,7 @@ const Sliderbar = () => {
           </Link>
           <Link className="line" to={"/groups"}>
             <li className={`part ${selectedIcon === 4 ? "active" : ""}`} onClick={() => setSelectedIcon(4)}>
-              <i class="fi fi-rr-users" id="icon" title="Fichas" />
+              <i className="fi fi-rr-users" id="icon" title="Fichas" />
               <span className="slideText">Fichas</span>
             </li>
           </Link>

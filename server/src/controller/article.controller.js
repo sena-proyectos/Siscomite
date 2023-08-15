@@ -35,7 +35,6 @@ export const getArticleById = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al obtener el articulo' })
-        console.log(error);
     }
 }
 
@@ -72,7 +71,6 @@ export const updateArticle = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al actualizar el articulo' })
-        console.log(error);
     }
 }
 
@@ -92,6 +90,5 @@ export const deleteArticle = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al eliminar el Articulo' })
-        console.log(error);
     }
 }

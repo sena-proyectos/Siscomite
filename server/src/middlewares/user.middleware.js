@@ -2,18 +2,20 @@ import { pool } from '../db.js'
 import { registerDataSchema, loginDataSchema } from '../schemas/user.schemas.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
+import Joi from 'joi'
 
 export const checkUserExistRegister = async (req, res, next) => {
   const { numero_documento } = req.body
 
   try {
     const [userExist] = await pool.query('SELECT * FROM usuarios WHERE numero_documento = ?', [numero_documento])
+
     if (userExist.length > 0) {
       return res.status(409).json({ message: 'El usuario ya está registrado' })
     }
+
     next()
   } catch (error) {
-    console.log(error)
     return res.status(500).json({ message: 'Error al verificar el usuario' })
   }
 }
@@ -111,5 +113,17 @@ export const createToken = async (req, res, next) => {
     next()
   } catch (error) {
     return res.status(500).json({ message: 'Error al generar el token' })
+  }
+}
+
+export const checkName = (req, res, next) => {
+  const { nombres } = req.query
+  const nameSchema = Joi.object({ nombres: Joi.string().required().min(0).max(100) })
+  try {
+    const { error } = nameSchema.validate({ nombres })
+    if (error !== undefined) return res.status(400).send({ message: 'El nombre completo ingresado no es válido.' })
+    next()
+  } catch (error) {
+    return res.status(500).json({ message: 'Error inesperado' })
   }
 }

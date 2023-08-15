@@ -29,7 +29,6 @@ export const getCauseById = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al obtener la causa' })
-        console.log(error);
     }
 }
 
@@ -44,8 +43,7 @@ export const createCause = async (req, res) => {
         await pool.query('INSERT INTO causas ( categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo) VALUES (?, ?, ?, ?, ?)', [categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo]);
         res.status(201).send({ message: 'Causa creada exitosamente' });
     } catch (error) {
-        res.status(500).send({ message: 'Error al crear la causa' })
-        console.log(error);
+        res.status(500).send({ message: 'Error al crear la causa' })  
     }
 }
 
@@ -66,7 +64,6 @@ export const updateCause = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al actualizar la causa' })
-        console.log(error);
     }
 }
 
@@ -86,7 +83,7 @@ export const deleteCause = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send({ message: 'Error al eliminar la causa' })
-        console.log(error);
+
     }
 }
 
