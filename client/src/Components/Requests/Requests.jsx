@@ -77,7 +77,7 @@ const Requests = () => {
             </TableBody>
           </Table>
           <section className="grid place-items-center">
-            <Pagination className="relative top-[.5rem]" total={10} initialPage={1} color={"primary"} totalItemsCount={data.length} onChange={handlePageChange} />
+            <Pagination className="relative top-[.5rem]" total={10} initialPage={1} color={"primary"} totalitemscount={data.length} onChange={handlePageChange} />
           </section>
         </section>
         <Footer />

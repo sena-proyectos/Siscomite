@@ -82,7 +82,7 @@ const Groups = () => {
               </section>
             ))}
             <section className="grid place-items-center">
-              <Pagination className="relative top-[.5rem]" total={10} initialPage={1} color={"primary"} totalItemsCount={cardData.length} onChange={handlePageChange} />
+              <Pagination className="relative top-[.5rem]" total={10} initialPage={1} color={"primary"} totalitemscount={cardData.length} onChange={handlePageChange} />
             </section>
           </section>
           <section className="agregar" onClick={modalAddGroups}>

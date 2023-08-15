@@ -10,23 +10,24 @@ import { Tabs, Tab, Card, CardBody, CardHeader } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
-import { getTeacherByName, getApprenticesByName } from '../../api/httpRequest'
+import { getTeacherByName, getApprenticesByName, getApprenticesById } from '../../api/httpRequest'
 
 const Create = () => {
   const [selectedAprendizOption, setSelectedAprendizOption] = useState(null)
-  
+
   const [teacherSearch, setTeacherSearch] = useState([])
   const [userSearch, setUserSearch] = useState([])
 
+  const [selectedApprentice, setSelectedApprentice] = useState([])
   const [error, setError] = useState(null)
   const [errorUser, setErrorUser] = useState(null)
   const [userID, setUserID] = useState('')
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Coordinador']))
   const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')), [selectedKeys])
-  
+
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
-  // const 
+  // const
 
   const handleAprendizOptionClick = (option) => {
     setSelectedAprendizOption(option)
@@ -65,13 +66,14 @@ const Create = () => {
       const message = error.response.data.message
       setErrorUser(message)
       setUserSearch([])
+      setSelectedApprentice([])
     }
   }
   useEffect(() => {
     const infoUser = Cookie.get('token')
     const decoded = jwtDecode(infoUser)
     setUserID(decoded.id_usuario)
-    console.log("hola");
+    // console.log("hola");
   }, [])
 
   const sendData = () => {
@@ -80,33 +82,50 @@ const Create = () => {
       nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
       // id_causa,
       id_usuario_solicitante: userID,
-      // id_aprendiz,
+      id_aprendiz: selectedApprentice[0].id_aprendiz
     }
     console.log(dataValue)
+  }
+
+  const handleTeacherClick = async (userId) => {
+    console.log('ID del instructor:', userId)
+  }
+
+  const handleUserClick = async (userId) => {
+    // console.log('ID del aprendiz:', userId)
+    try {
+      const response = await getApprenticesById(userId)
+      const res = response.data.result
+      setSelectedApprentice(res)
+      setUserSearch([])
+      setTeacherSearch([])
+    } catch (error) {
+      console.error('Error obteniendo detalles del aprendiz:', error)
+    }
   }
 
   let tabs = [
     {
       id: '1 ',
       label: 'Académicas',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     },
     {
       id: '2',
       label: 'Disciplinarios',
-      content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+      content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
     },
     {
       id: '3',
       label: 'Otro',
-      content: <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px]" />,
-    },
+      content: <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px]" />
+    }
   ]
 
   return (
-    <main className="relative h-screen flex">
+    <main className="relative h-screen flex ">
       <Sliderbar />
-      <section className="w-full">
+      <section className="w-full overflow-auto">
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
           <h1 className="text-2xl font-semibold">Toda la información debe ser la registrada en Sofía Plus</h1>
           <section className="bg-white relative top-[1rem]  place-items-center flex w-[90%] p-[.5rem] p shadow-lg rounded-xl justify-between">
@@ -142,12 +161,12 @@ const Create = () => {
               <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Instructores</h3>
-                <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500">
+                <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
                   {teacherSearch.length > 0 ? (
                     <>
-                      {teacherSearch.map((item, id_usuario) => (
-                        <ul className="flex justify-between text-[13px] py-[.5rem]">
-                          <React.Fragment key={id_usuario}>
+                      {teacherSearch.map((item) => (
+                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario} onClick={() => handleTeacherClick(item.id_usuario)}>
+                          <React.Fragment>
                             <li>{item.numero_documento}</li>
                             <li>{item.nombres + ' ' + item.apellidos}</li>
                           </React.Fragment>
@@ -160,18 +179,27 @@ const Create = () => {
                 </section>
               </section>
             </section>
-            <section className="relative top-[3rem]">
+            <section className="relative top-[1rem]">
               <Search className="relative w-[100%]  " placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
-              <section className="bg-[#2E323E] w-[97%]  relative shadow-lg top-[.5rem] rounded-xl  ">
-                <h3 className="text-white grid justify-center ">Aprendices</h3>
-                <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500">
-                  {userSearch.length > 0 ? (
+              <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl">
+                <h3 className="text-white grid justify-center">Aprendices</h3>
+                <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
+                  {userSearch.length > 0 || selectedApprentice.length > 0 ? (
                     <>
-                      {userSearch.map((item, id_aprendiz) => (
-                        <ul className="flex justify-between text-[13px] py-[.5rem]">
-                          <React.Fragment key={id_aprendiz}>
+                      {userSearch.map((item) => (
+                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
+                          <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
                             <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
+                          </React.Fragment>
+                        </ul>
+                      ))}
+                      {selectedApprentice.map((item) => (
+                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
+                          <React.Fragment>
+                            <li>{item.numero_documento_aprendiz}</li>
+                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
+                            <li>X</li>
                           </React.Fragment>
                         </ul>
                       ))}
