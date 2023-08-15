@@ -22,6 +22,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Estado"]));
   const selectedValueDetails = React.useMemo(() => Array.from(selectedKeys).join(", ").replaceAll("_", " "), [selectedKeys]);
 
+
+   
+
   const getStatusColorClass = (status) => {
     const statusColorMap = {
       Aprobado: "bg-green-200 text-success rounded-2xl", // Clase CSS para aprobado
@@ -202,7 +205,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             {/* Ver detalles Solicitudes */}
             {modalDetails && (
               <section className="relative top-[1.6rem]   ">
-                <section className="  place-items-center gap-4">
+                <section className="  place-items-center gap-4 flex justify-between">
                   <Dropdown>
                     <DropdownTrigger>
                       <Button variant="flat" className={`capitalize ${getStatusColorClass(selectedValueDetails)}`}>
@@ -215,6 +218,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <DropdownItem key="Rechazado">Rechazado</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
+                  <section>
+                      <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" />
+                  </section>
                 </section>
                 <section className="relative py-[1.5rem]">
                   <Accordion isCompact variant="bordered">
@@ -239,12 +245,10 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </AccordionItem>
                     <AccordionItem aria-label="Accordion 2" startContent={<i class="fi fi-rr-user text-purple-500"></i>} title="Información Instructor">
                       <section className="flex flex-wrap gap-4 justify-center">
-                        <section className=" ">
-                          <label for="nombre" className="text-[13px] block">
-                            Nombre
-                            <input type="text" id="nombre" value="Adelaida" readonly className=" bg-[#80808036]  text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block " />
-                          </label>
-                        </section>
+                        <label for="nombre" className="text-[13px] block">
+                          Nombre
+                          <input type="text" id="nombre" value="Adelaida" readonly className=" bg-[#80808036]  text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block " />
+                        </label>
                         <section>
                           <label for="apellidp" className="text-[13px] block">
                             Apellido

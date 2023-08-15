@@ -1,12 +1,12 @@
-import { Route, Routes } from 'react-router-dom'
-import { Register } from './Components/Register/Register'
-import { Login } from './Components/Login/Login'
-import { Home } from './Components/Home/Home'
-import { Students } from './Components/Students/Students'
-import { Requests } from './Components/Requests/Requests'
-import { Create } from './Components/Create/Create'
-import { Groups } from './Components/Groups/Groups'
-import './App.css'
+import { Route, Routes } from "react-router-dom";
+import { Register } from "./Components/Register/Register";
+import { Login } from "./Components/Login/Login";
+import { Home } from "./Components/Home/Home";
+import { Students } from "./Components/Students/Students";
+import { Requests } from "./Components/Requests/Requests";
+import { Create } from "./Components/Create/Create";
+import { Groups } from "./Components/Groups/Groups";
+import "./App.css";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
       <Route path="/create" element={<Create />} />
       <Route path="/groups" element={<Groups />} />
     </Routes>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,110 +1,116 @@
-import './Create.css'
-import React, { useEffect, useRef, useState } from 'react'
-import jwtDecode from 'jwt-decode'
-import Cookie from 'js-cookie'
-
-import { Footer } from '../Footer/Footer'
-import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { RadioGroup, Radio } from '@nextui-org/react'
-import { Tabs, Tab, Card, CardBody, CardHeader } from '@nextui-org/react'
-import { Textarea } from '@nextui-org/react'
-import { Search } from '../Search/Search'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
-import { getTeacherByName, getApprenticesByName } from '../../api/httpRequest'
+import "./Create.css";
+import React, { useEffect, useRef, useState } from "react";
+import jwtDecode from "jwt-decode";
+import Cookie from "js-cookie";
+import { Tooltip } from "@nextui-org/react";
+import { Footer } from "../Footer/Footer";
+import { Sliderbar } from "../Sliderbar/Sliderbar";
+import { RadioGroup, Radio } from "@nextui-org/react";
+import { Tabs, Tab, Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Textarea } from "@nextui-org/react";
+import { Search } from "../Search/Search";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { getTeacherByName, getApprenticesByName } from "../../api/httpRequest";
 
 const Create = () => {
-  const [selectedAprendizOption, setSelectedAprendizOption] = useState(null)
-  
-  const [teacherSearch, setTeacherSearch] = useState([])
-  const [userSearch, setUserSearch] = useState([])
+  const [selectedAprendizOption, setSelectedAprendizOption] = useState(null);
 
-  const [error, setError] = useState(null)
-  const [errorUser, setErrorUser] = useState(null)
-  const [userID, setUserID] = useState('')
+  const [teacherSearch, setTeacherSearch] = useState([]);
+  const [userSearch, setUserSearch] = useState([]);
 
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Coordinador']))
-  const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')), [selectedKeys])
-  
-  const [tipoSolicitud, setTipoSolicitud] = useState(null)
-  // const 
+  const [error, setError] = useState(null);
+  const [errorUser, setErrorUser] = useState(null);
+  const [userID, setUserID] = useState("");
+
+  // Drop coordinador
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Coordinador"]));
+  const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, " ")), [selectedKeys]);
+
+  // Drop tipo falta
+  const [selectedFalta, setSelectedFalta] = React.useState(new Set(["Calificación"]));
+  const selectedValueFalta = React.useMemo(() => Array.from(selectedFalta).join(", ").replaceAll("_", " "), [selectedFalta]);
+
+  const [tipoSolicitud, setTipoSolicitud] = useState(null);
+  // const
 
   const handleAprendizOptionClick = (option) => {
-    setSelectedAprendizOption(option)
-  }
+    setSelectedAprendizOption(option);
+  };
 
   const getTeacher = async (nombres) => {
     try {
-      if (nombres.trim() === '') {
-        setTeacherSearch([])
-        setError(null)
-        return
+      if (nombres.trim() === "") {
+        setTeacherSearch([]);
+        setError(null);
+        return;
       } else {
-        setError(null)
-        const response = await getTeacherByName(nombres)
-        setTeacherSearch(response.data.user)
+        setError(null);
+        const response = await getTeacherByName(nombres);
+        setTeacherSearch(response.data.user);
       }
     } catch (error) {
-      const message = error.response.data.message
-      setError(message)
-      setTeacherSearch([])
+      const message = error.response.data.message;
+      setError(message);
+      setTeacherSearch([]);
     }
-  }
+  };
 
   const getUser = async (nombres) => {
     try {
-      if (nombres.trim() === '') {
-        setUserSearch([])
-        setError(null)
-        return
+      if (nombres.trim() === "") {
+        setUserSearch([]);
+        setError(null);
+        return;
       } else {
-        setErrorUser(null)
-        const response = await getApprenticesByName(nombres)
-        setUserSearch(response.data.user)
+        setErrorUser(null);
+        const response = await getApprenticesByName(nombres);
+        setUserSearch(response.data.user);
       }
     } catch (error) {
-      const message = error.response.data.message
-      setErrorUser(message)
-      setUserSearch([])
+      const message = error.response.data.message;
+      setErrorUser(message);
+      setUserSearch([]);
     }
-  }
+  };
   useEffect(() => {
-    const infoUser = Cookie.get('token')
-    const decoded = jwtDecode(infoUser)
-    setUserID(decoded.id_usuario)
+    const infoUser = Cookie.get("token");
+    const decoded = jwtDecode(infoUser);
+    setUserID(decoded.id_usuario);
     console.log("hola");
-  }, [])
+  }, []);
 
   const sendData = () => {
     const dataValue = {
       tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
-      nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
+      nombre_coordinacion: selectedValue.join(", "), // Agregar el valor del dropdown
       // id_causa,
       id_usuario_solicitante: userID,
       // id_aprendiz,
-    }
-    console.log(dataValue)
-  }
+    };
+    console.log(dataValue);
+  };
 
   let tabs = [
     {
-      id: '1 ',
-      label: 'Académicas',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      id: "1 ",
+      label: "Académicas",
+      content: 1,
+      pop: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat perspiciatis modi qui?" 
     },
     {
-      id: '2',
-      label: 'Disciplinarios',
-      content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+      id: "2",
+      label: "Disciplinarios",
+      content: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     },
     {
-      id: '3',
-      label: 'Otro',
+      id: "3",
+      label: "Otro",
       content: <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px]" />,
     },
-  ]
+  ];
 
   return (
-    <main className="relative h-screen flex">
+    <main className="relative min-h-screen flex">
       <Sliderbar />
       <section className="w-full">
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
@@ -118,6 +124,23 @@ const Create = () => {
                 <Radio value="Individual">Individual</Radio>
               </RadioGroup>
             </section>
+
+            <section>
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button variant="flat" className="capitalize" color="primary">
+                    {selectedValueFalta}
+                    <i className="fi fi-rr-angle-small-down text-[1.5rem]" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedFalta={selectedFalta} onSelectionChange={setSelectedFalta}>
+                  <DropdownItem key="leve">Leve</DropdownItem>
+                  <DropdownItem key="grave">Grave</DropdownItem>
+                  <DropdownItem key="gravísimas">Gravísimas</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </section>
+
             <section>
               <Dropdown>
                 <DropdownTrigger>
@@ -139,7 +162,7 @@ const Create = () => {
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
           <section className="w-[85%] ml-[3rem]">
             <section className=" relative ">
-              <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
+              <Search className="relative " placeholder={"Buscar Instructor"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Instructores</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500">
@@ -149,19 +172,19 @@ const Create = () => {
                         <ul className="flex justify-between text-[13px] py-[.5rem]">
                           <React.Fragment key={id_usuario}>
                             <li>{item.numero_documento}</li>
-                            <li>{item.nombres + ' ' + item.apellidos}</li>
+                            <li>{item.nombres + " " + item.apellidos}</li>
                           </React.Fragment>
                         </ul>
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">{error ? error : 'Ningún instructor seleccionado'}</span>
+                    <span className="text-white text-center py-[1rem] block">{error ? error : "Ningún instructor seleccionado"}</span>
                   )}
                 </section>
               </section>
             </section>
             <section className="relative top-[3rem]">
-              <Search className="relative w-[100%]  " placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
+              <Search className="relative w-[100%]  " placeholder={"Buscar aprendiz"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
               <section className="bg-[#2E323E] w-[97%]  relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Aprendices</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500">
@@ -171,13 +194,13 @@ const Create = () => {
                         <ul className="flex justify-between text-[13px] py-[.5rem]">
                           <React.Fragment key={id_aprendiz}>
                             <li>{item.numero_documento_aprendiz}</li>
-                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
+                            <li>{item.nombres_aprendiz + " " + item.apellidos_aprendiz}</li>
                           </React.Fragment>
                         </ul>
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">{errorUser ? errorUser : 'Ningún aprendiz seleccionado'}</span>
+                    <span className="text-white text-center py-[1rem] block">{errorUser ? errorUser : "Ningún aprendiz seleccionado"}</span>
                   )}
                 </section>
               </section>
@@ -202,13 +225,22 @@ const Create = () => {
                 {(item) => (
                   <Tab key={item.id} title={item.label}>
                     <Card>
-                      <CardBody>{item.content}</CardBody>
+                      <CardBody>
+                        <label htmlFor="">
+                          <input type="checkbox" />
+                          {item.content}
+                        </label>
+                             
+                      </CardBody>
                     </Card>
                   </Tab>
                 )}
               </Tabs>
             </div>
           </section>
+
+        
+                 
           <section className=" absolute top-[25rem] ">
             <Button className="" size="lg" color="primary" onClick={sendData}>
               Enviar
@@ -219,7 +251,7 @@ const Create = () => {
         <Footer />
       </section>
     </main>
-  )
-}
+  );
+};
 
-export { Create }
+export { Create };
