@@ -30,37 +30,37 @@ const Create = () => {
   // const
 
   const handleAprendizOptionClick = (option) => {
-    setSelectedAprendizOption(option)
-  }
+    setSelectedAprendizOption(option);
+  };
 
   const getTeacher = async (nombres) => {
     try {
-      if (nombres.trim() === '') {
-        setTeacherSearch([])
-        setError(null)
-        return
+      if (nombres.trim() === "") {
+        setTeacherSearch([]);
+        setError(null);
+        return;
       } else {
-        setError(null)
-        const response = await getTeacherByName(nombres)
-        setTeacherSearch(response.data.user)
+        setError(null);
+        const response = await getTeacherByName(nombres);
+        setTeacherSearch(response.data.user);
       }
     } catch (error) {
-      const message = error.response.data.message
-      setError(message)
-      setTeacherSearch([])
+      const message = error.response.data.message;
+      setError(message);
+      setTeacherSearch([]);
     }
-  }
+  };
 
   const getUser = async (nombres) => {
     try {
-      if (nombres.trim() === '') {
-        setUserSearch([])
-        setError(null)
-        return
+      if (nombres.trim() === "") {
+        setUserSearch([]);
+        setError(null);
+        return;
       } else {
-        setErrorUser(null)
-        const response = await getApprenticesByName(nombres)
-        setUserSearch(response.data.user)
+        setErrorUser(null);
+        const response = await getApprenticesByName(nombres);
+        setUserSearch(response.data.user);
       }
     } catch (error) {
       const message = error.response.data.message
@@ -68,7 +68,7 @@ const Create = () => {
       setUserSearch([])
       setSelectedApprentice([])
     }
-  }
+  };
   useEffect(() => {
     const infoUser = Cookie.get('token')
     const decoded = jwtDecode(infoUser)
@@ -79,7 +79,7 @@ const Create = () => {
   const sendData = () => {
     const dataValue = {
       tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
-      nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
+      nombre_coordinacion: selectedValue.join(", "), // Agregar el valor del dropdown
       // id_causa,
       id_usuario_solicitante: userID,
       id_aprendiz: selectedApprentice[0].id_aprendiz
@@ -137,6 +137,23 @@ const Create = () => {
                 <Radio value="Individual">Individual</Radio>
               </RadioGroup>
             </section>
+
+            <section>
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button variant="flat" className="capitalize" color="primary">
+                    {selectedValueFalta}
+                    <i className="fi fi-rr-angle-small-down text-[1.5rem]" />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedFalta={selectedFalta} onSelectionChange={setSelectedFalta}>
+                  <DropdownItem key="leve">Leve</DropdownItem>
+                  <DropdownItem key="grave">Grave</DropdownItem>
+                  <DropdownItem key="gravísimas">Gravísimas</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </section>
+
             <section>
               <Dropdown>
                 <DropdownTrigger>
@@ -158,7 +175,7 @@ const Create = () => {
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
           <section className="w-[85%] ml-[3rem]">
             <section className=" relative ">
-              <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
+              <Search className="relative " placeholder={"Buscar Instructor"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Instructores</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
@@ -168,13 +185,13 @@ const Create = () => {
                         <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario} onClick={() => handleTeacherClick(item.id_usuario)}>
                           <React.Fragment>
                             <li>{item.numero_documento}</li>
-                            <li>{item.nombres + ' ' + item.apellidos}</li>
+                            <li>{item.nombres + " " + item.apellidos}</li>
                           </React.Fragment>
                         </ul>
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">{error ? error : 'Ningún instructor seleccionado'}</span>
+                    <span className="text-white text-center py-[1rem] block">{error ? error : "Ningún instructor seleccionado"}</span>
                   )}
                 </section>
               </section>
@@ -190,7 +207,7 @@ const Create = () => {
                         <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
                           <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
-                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
+                            <li>{item.nombres_aprendiz + " " + item.apellidos_aprendiz}</li>
                           </React.Fragment>
                         </ul>
                       ))}
@@ -205,14 +222,14 @@ const Create = () => {
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">{errorUser ? errorUser : 'Ningún aprendiz seleccionado'}</span>
+                    <span className="text-white text-center py-[1rem] block">{errorUser ? errorUser : "Ningún aprendiz seleccionado"}</span>
                   )}
                 </section>
               </section>
             </section>
             <section className="py-[2rem] relative top-[2.5rem] flex gap-4 justify-between items-center  ">
               <section className=" w-[55%]">
-                <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px] " />
+                <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descripción" className="max-w-[300px] " />
               </section>
               <section className="">
                 <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
@@ -230,13 +247,22 @@ const Create = () => {
                 {(item) => (
                   <Tab key={item.id} title={item.label}>
                     <Card>
-                      <CardBody>{item.content}</CardBody>
+                      <CardBody>
+                        <label htmlFor="">
+                          <input type="checkbox" />
+                          {item.content}
+                        </label>
+                             
+                      </CardBody>
                     </Card>
                   </Tab>
                 )}
               </Tabs>
             </div>
           </section>
+
+        
+                 
           <section className=" absolute top-[25rem] ">
             <Button className="" size="lg" color="primary" onClick={sendData}>
               Enviar
@@ -247,7 +273,7 @@ const Create = () => {
         <Footer />
       </section>
     </main>
-  )
-}
+  );
+};
 
-export { Create }
+export { Create };

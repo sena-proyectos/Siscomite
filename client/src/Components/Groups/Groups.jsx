@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Pagination } from "@nextui-org/react";
 import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
-import { Card } from "../Utils/Card/Card";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Modal } from "../Utils/Modal/Modal";
+import { Card } from "../Utils/Card/Card";
 import "./Groups.css";
 
 const Groups = () => {
@@ -31,62 +31,62 @@ const Groups = () => {
       backContent: ["Item 1", "Item 2", "Item 3"],
     },
   ];
-  //Paginación
-  const itemsPerPage = 3; // Número de elementos por página
-  const [activePage, setActivePage] = useState(1); //Cuál es la primers página en aparecer
 
-  // Calcula los datos a mostrar en la página actual
-  const indexOfLastItem = activePage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = cardData.slice(indexOfFirstItem, indexOfLastItem);
+  const itemsPerPage = 3;
+  const [activePage, setActivePage] = useState(1);
 
-  // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber);
   };
 
-  //Modal de agregar fichas
+  const startIdx = (activePage - 1) * itemsPerPage;
+  const visibleCards = cardData.slice(startIdx, startIdx + itemsPerPage);
+
   const [modalGroups, setModalGroups] = useState(false);
   const modalAddGroups = () => {
     setModalGroups(!modalGroups);
   };
 
+  const [loading, setLoading] = useState(true);
+
   return (
     <>
-      {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={"Agregar Fichas"} />}
+      {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={<section className="text-2xl font-semibold">Agregar Fichas</section>} />}
 
-      <main className="containerGroup">
+      <main className="flex">
         <Sliderbar />
-        <section className="groupCentent">
-          <header className="groupHeader">
-            <Search   placeholder={"Buscar ficha"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+        <section className="w-screen">
+          <header className="p-[1.5rem] flex justify-center">
+            <section className="w-[40%]">
+              <Search placeholder={"Buscar ficha"} icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+            </section>
           </header>
-          <section className="bodyGroup">
-            {cardData.map((card) => (
-              <section className="card-content">
-                <Link to={"/students"}>
+          <section className="flex flex-wrap justify-center gap-8 ">
+            {visibleCards.map((card) => (
+                <Link to={"/students"} key={card.id}>
                   <Card
                     flip
-                    key={card.id}
                     frontContent={
-                      <section>
-                        <p className="id">{card.id}</p>
-                        <p>{card.frontContent}</p>
+                      <section className="p-[1rem] w-full ">
+                        <p className="text-[16px] bg-blue-200 grid  rounded-xl w-full place-items-center">{card.id}</p>
+                        <p className="">{card.frontContent}</p>
                       </section>
                     }
                     backContent={card.backContent.map((item, index) => (
-                      <li key={index}>{item}</li>
+                      <li className="relative top-3 left-4" key={index}>
+                        {item}
+                      </li>
                     ))}
                   />
                 </Link>
-              </section>
-            ))}
-            <section className="grid place-items-center">
-              <Pagination className="relative top-[.5rem]" total={10} initialPage={1} color={"primary"} totalitemscount={cardData.length} onChange={handlePageChange} />
-            </section>
+              ))}
+            
           </section>
-          <section className="agregar" onClick={modalAddGroups}>
-            <button className="add">+</button>
+          <section className="grid place-items-center">
+            <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={cardData.length} onChange={handlePageChange} />
+          </section>
+          <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
+            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative">+</button>
           </section>
           <Footer />
         </section>
@@ -96,3 +96,11 @@ const Groups = () => {
 };
 
 export { Groups };
+
+const SkeletonLoading = () => {
+  return (
+    <div>
+      <Skeleton width={"100%"} height={"100%"} />
+    </div>
+  );
+};

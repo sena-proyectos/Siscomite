@@ -6,6 +6,7 @@ import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
+import { Modal } from "../Utils/Modal/Modal";
 
 const Requests = () => {
   const data = [
@@ -24,6 +25,7 @@ const Requests = () => {
     { id: 13, name: "Sebastián del Campo Yepes", date: "02/10/2021", value: "Aprobado" },
   ];
 
+  // Paginación
   const itemsPerPage = 9; // Número de elementos por página
   const [activePage, setActivePage] = useState(1); //Cuál es la primers página en aparecer
 
@@ -37,6 +39,7 @@ const Requests = () => {
     setActivePage(pageNumber);
   };
 
+  // Colores de la tabla dependiendo del estado de aprobación
   const getStatusColorClass = (status) => {
     const statusColorMap = {
       Aprobado: "bg-[#45d48383] text-success rounded-2xl  ",
@@ -46,43 +49,55 @@ const Requests = () => {
     return statusColorMap[status] || "";
   };
 
+  // Modal
+  const [modalRequest, setModalDetails] = useState(false);
+  const modalDetails = () => {
+    setModalDetails(!modalRequest);
+  };
+
   return (
-    <main className="h-screen flex">
-      <Sliderbar />
-      <section className="w-full ">
-        <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
-          <Search placeholder={"Buscar solicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]"/>} />
-        </header>
-        <section className="px-[2rem] top-[1.5rem] relative mr-auto">
-          <Table>
-            <TableHeader>
-              <TableColumn>N°</TableColumn>
-              <TableColumn>Solicitud</TableColumn>
-              <TableColumn>Fecha solicitud</TableColumn>
-              <TableColumn>Estado</TableColumn>
-              <TableColumn>Detalles</TableColumn>
-            </TableHeader>
-            <TableBody emptyContent={"No rows to display."}>
-              {currentItems.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>{item.id}</TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.date}</TableCell>
-                  <TableCell className={` flex justify-center items-center w-[5.5rem] py-[0] relative top-[.5rem] ${getStatusColorClass(item.value)}`}>{item.value}</TableCell>
-                  <TableCell>
-                    <Button className="h-[1.5rem]" variant="shadow" color="primary" size="sm">Ver más</Button>{" "}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <section className="grid place-items-center">
-            <Pagination className="relative top-[.5rem]" total={10} initialPage={1} color={"primary"} totalitemscount={data.length} onChange={handlePageChange} />
+    <>
+      {modalRequest && <Modal modalDetails cerrarModal={modalDetails} titulo={<section className="font-semibold text-2xl">Detalle de solicitud</section>} />}
+
+      <main className="h-screen flex">
+        <Sliderbar />
+        <section className="w-full ">
+          <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
+            <Search placeholder={"Buscar solicitud"} icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+          </header>
+          <section className="px-[2rem] top-[1.5rem] relative mr-auto">
+            <Table>
+              <TableHeader>
+                <TableColumn>N°</TableColumn>
+                <TableColumn>Solicitud</TableColumn>
+                <TableColumn>Fecha solicitud</TableColumn>
+                <TableColumn>Estado</TableColumn>
+                <TableColumn>Detalles</TableColumn>
+              </TableHeader>
+              <TableBody emptyContent={"No hay información disponible."}>
+                {currentItems.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.id}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.date}</TableCell>
+                    <TableCell className={` flex justify-center items-center w-[5.5rem] py-[0] relative top-[.5rem] ${getStatusColorClass(item.value)}`}>{item.value}</TableCell>
+                    <TableCell>
+                      <Button className="h-[1.5rem]" variant="shadow" color="primary" size="sm" onClick={modalDetails}>
+                        Ver más
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <section className="grid place-items-center">
+              <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={data.length} onChange={handlePageChange} />
+            </section>
           </section>
+          <Footer />
         </section>
-        <Footer />
-      </section>
-    </main>
+      </main>
+    </>
   );
 };
 

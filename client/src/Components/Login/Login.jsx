@@ -19,9 +19,9 @@ export const Login = () => {
   const navigate = useNavigate()
 
   const sendData = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     const dataValue = {
       numero_documento: numeroDocumento,
@@ -29,22 +29,22 @@ export const Login = () => {
     }
 
     try {
-      const res = await login(dataValue)
-      const response = res.data.response.info.token
-      Cookie.set('token', response, { expires: 2, secure: true, sameSite: 'None', path: '/' })
-      setError(null)
-      navigate('/home')
+      const res = await login(dataValue);
+      const response = res.data.response.info.token;
+      Cookie.set("token", response, { expires: 2, secure: true, sameSite: "None", path: "/" });
+      setError(null);
+      navigate("/home");
     } catch (error) {
-      const message = error.response.data.message
-      setError(message)
+      const message = error.response.data.message;
+      setError(message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const closed = () => {
-    setError(null)
-  }
+    setError(null);
+  };
 
   const positions = ['outside']
 
@@ -65,7 +65,7 @@ export const Login = () => {
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
               <Input type="text" label="Número documento" labelPlacement={'outside'} autoComplete="off" value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
             </div>
-            <div className="flex  flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
+            <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
               <Input
                 label="Contraseña"
                 autoComplete="off"
@@ -85,7 +85,7 @@ export const Login = () => {
             <p className="text-sm">¿Olvidaste tu contraseña?</p>
             <button className="bg-[#3c3c3c] text-white w-full cursor-pointer rounded-md font-light text-xs py-3" disabled={isLoading}>
               {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
-              {isLoading ? 'Cargando...' : 'Iniciar sesión'}
+              {isLoading ? "Cargando..." : "Iniciar sesión"}
             </button>
             <p className="text-sm">
               ¿Nuevo usuario?
@@ -98,5 +98,5 @@ export const Login = () => {
       </section>
       <Footer />
     </main>
-  )
-}
+  );
+};
