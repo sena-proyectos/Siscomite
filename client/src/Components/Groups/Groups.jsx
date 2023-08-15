@@ -65,7 +65,7 @@ const Groups = () => {
                 <Card
                   flip
                   frontContent={
-                    <section className="p-[1rem] w-full ">
+                    <section className="p-[1rem] w-full " >
                       <p className="text-[16px] bg-blue-200 grid  rounded-xl w-full place-items-center">{card.id}</p>
                       <p className="">{card.frontContent}</p>
                     </section>

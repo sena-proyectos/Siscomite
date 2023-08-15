@@ -62,7 +62,7 @@ export const Login = () => {
           <h2 className="text-[1.5rem] font-bold mb-7">Iniciar Sesión</h2>
           <section className="grid w-[80%] gap-8  ">
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-              <Input type="text" label="Número documento" labelPlacement={'outside'} autoComplete="off" ref={numero_documento} />
+              <Input type="text" label="Número documento" labelPlacement={'outside'}  autoComplete="off" ref={numero_documento} />
             </div>
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
               <Input

@@ -33,7 +33,7 @@ const Create = () => {
     {
       id: "3",
       label: "Otro",
-      content: <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px]"  />
+      content: <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descripción" className="max-w-[300px]"  />
       
     },
   ];
@@ -71,10 +71,15 @@ const Create = () => {
         </header>
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
           <section className="w-[85%] ml-[3rem]" >
-            <section className=" relative ">
-              <Search className="relative " placeholder={"Buscar Instructor"} icon={<i class="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
-              <section className="bg-[#2E323E] w-[97%]  h-[4rem] relative shadow-lg top-[.5rem] rounded-xl grid justify-center">
-                <h3 className="text-white justify-center  border-b-white">Sin seleccionar aprendices</h3>
+          <section className="relative">
+              <Search className="relative w-[100%]  " placeholder={"Buscar Instructor"} icon={<i class="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
+              <section className="bg-[#2E323E] w-[97%]  relative shadow-lg top-[.5rem] rounded-xl  ">
+                <h3 className="text-white grid justify-center ">Sin seleccionar Aprendices</h3>
+                <p className="text-white relative mx-5  w-[90%]  border-t-2 border-blue-500">
+                  <ul className="flex justify-between text-[13px] py-[.5rem]">
+                    <li></li>
+                  </ul>
+                </p>
               </section>
             </section>
             <section className="relative top-[3rem]">
@@ -91,7 +96,7 @@ const Create = () => {
             </section>
             <section className="py-[2rem] relative top-[2.5rem] flex gap-4 justify-between items-center  ">
               <section className=" w-[55%]">
-                <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px] " />
+                <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descripción" className="max-w-[300px] " />
               </section>
               <section className="">
                 <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">

@@ -74,7 +74,7 @@ const Requests = () => {
                 <TableColumn>Estado</TableColumn>
                 <TableColumn>Detalles</TableColumn>
               </TableHeader>
-              <TableBody emptyContent={"No rows to display."}>
+              <TableBody emptyContent={"No hay información disponible."}>
                 {currentItems.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>{item.id}</TableCell>
