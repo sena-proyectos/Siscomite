@@ -28,6 +28,7 @@ CREATE TABLE `aprendices` (
   `id_aprendiz` int NOT NULL AUTO_INCREMENT,
   `nombres_aprendiz` varchar(100) NOT NULL,
   `apellidos_aprendiz` varchar(100) NOT NULL,
+  `numero_documento_aprendiz` varchar(45) NOT NULL,
   `email_aprendiz_sena` varchar(300) NOT NULL,
   `email_aprendiz_personal` varchar(300) NOT NULL,
   `celular_aprendiz` varchar(20) NOT NULL,
@@ -39,7 +40,7 @@ CREATE TABLE `aprendices` (
   KEY `id_ficha` (`id_ficha`),
   CONSTRAINT `aprendices_ibfk_1` FOREIGN KEY (`id_documento`) REFERENCES `documentos` (`id_documento`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `aprendices_ibfk_2` FOREIGN KEY (`id_ficha`) REFERENCES `fichas` (`id_ficha`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,6 +49,7 @@ CREATE TABLE `aprendices` (
 
 LOCK TABLES `aprendices` WRITE;
 /*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
+INSERT INTO `aprendices` VALUES (1,'Cristian D','Bedoya T','','torres23torres@soy.sena.edu','torres23torres@gamil.com','3007030424','4512461',1,1),(3,'Juan Carlos','Prasca','','prasca@soy.sena.edu.co','parasca85@gmail.com','30124242555',NULL,1,1),(4,'Juan Guillermo','Gomez','','jggomez319@soy.sena.edu.co','jggomez016@gmail.com','3195910996',NULL,1,1),(5,'Cristian David ','Bedoya T','1027944969','torres23torresTo@soy.sena.edu','torres23torresTo@gamil.com','3007030424',NULL,1,1);
 /*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +66,7 @@ CREATE TABLE `articulos` (
   `prohibicion_articulo` varchar(10) NOT NULL,
   `descripcion_articulo` varchar(500) NOT NULL,
   PRIMARY KEY (`id_articulo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,6 +75,7 @@ CREATE TABLE `articulos` (
 
 LOCK TABLES `articulos` WRITE;
 /*!40000 ALTER TABLE `articulos` DISABLE KEYS */;
+INSERT INTO `articulos` VALUES (2,'9','1','Esto es una prueba');
 /*!40000 ALTER TABLE `articulos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +96,7 @@ CREATE TABLE `causas` (
   PRIMARY KEY (`id_causa`),
   KEY `id_articulo` (`id_articulo`),
   CONSTRAINT `causas_ibfk_1` FOREIGN KEY (`id_articulo`) REFERENCES `articulos` (`id_articulo`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,6 +105,7 @@ CREATE TABLE `causas` (
 
 LOCK TABLES `causas` WRITE;
 /*!40000 ALTER TABLE `causas` DISABLE KEYS */;
+INSERT INTO `causas` VALUES (2,'Academica','grave','no respondio con los trabajos','No se tienen',2);
 /*!40000 ALTER TABLE `causas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +151,7 @@ CREATE TABLE `fichas` (
   PRIMARY KEY (`id_ficha`),
   KEY `id_modalidad` (`id_modalidad`),
   CONSTRAINT `fichas_ibfk_1` FOREIGN KEY (`id_modalidad`) REFERENCES `modalidades` (`id_modalidad`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -156,6 +160,7 @@ CREATE TABLE `fichas` (
 
 LOCK TABLES `fichas` WRITE;
 /*!40000 ALTER TABLE `fichas` DISABLE KEYS */;
+INSERT INTO `fichas` VALUES (1,'2473196','ADSO','Mañana','Lectiva','4',1);
 /*!40000 ALTER TABLE `fichas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +175,7 @@ CREATE TABLE `modalidades` (
   `id_modalidad` int NOT NULL AUTO_INCREMENT,
   `nombre_modalidad` varchar(100) NOT NULL,
   PRIMARY KEY (`id_modalidad`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,6 +184,7 @@ CREATE TABLE `modalidades` (
 
 LOCK TABLES `modalidades` WRITE;
 /*!40000 ALTER TABLE `modalidades` DISABLE KEYS */;
+INSERT INTO `modalidades` VALUES (1,'Presencial'),(2,'Virtual');
 /*!40000 ALTER TABLE `modalidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -219,18 +225,17 @@ CREATE TABLE `solicitud` (
   `nombre_coordinacion` varchar(200) NOT NULL,
   `id_causa` int NOT NULL,
   `id_usuario_solicitante` int NOT NULL,
-  `id_usuario_receptor` int NOT NULL,
   `id_aprendiz` int NOT NULL,
+  `estado` varchar(45) NOT NULL,
+  `fecha_creacion` datetime DEFAULT NULL,
   PRIMARY KEY (`id_solicitud`),
   KEY `fk_solicitud_1` (`id_usuario_solicitante`),
-  KEY `fk_solicitud_2` (`id_usuario_receptor`),
   KEY `id_causa` (`id_causa`),
   KEY `id_aprendiz` (`id_aprendiz`),
   CONSTRAINT `fk_solicitud_1` FOREIGN KEY (`id_usuario_solicitante`) REFERENCES `usuarios` (`id_usuario`),
-  CONSTRAINT `fk_solicitud_2` FOREIGN KEY (`id_usuario_receptor`) REFERENCES `usuarios` (`id_usuario`),
   CONSTRAINT `solicitud_ibfk_1` FOREIGN KEY (`id_causa`) REFERENCES `causas` (`id_causa`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `solicitud_ibfk_2` FOREIGN KEY (`id_aprendiz`) REFERENCES `aprendices` (`id_aprendiz`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -239,6 +244,7 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
+INSERT INTO `solicitud` VALUES (1,'Individual','Marianela Henao',2,5,5,'aprobado','2023-08-14 17:12:28');
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -47,9 +47,11 @@ const Groups = () => {
     setModalGroups(!modalGroups);
   };
 
+  const [loading, setLoading] = useState(true);
+
   return (
     <>
-      {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={<section className="font-semibold text-2xl">Agregar Fichas</section>} />}
+      {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={<section className="text-2xl font-semibold">Agregar Fichas</section>} />}
 
       <main className="flex">
         <Sliderbar />
@@ -61,27 +63,30 @@ const Groups = () => {
           </header>
           <section className="flex flex-wrap justify-center gap-8 ">
             {visibleCards.map((card) => (
-              <Link to={"/students"} key={card.id}>
-                <Card
-                  flip
-                  frontContent={
-                    <section className="p-[1rem] w-full ">
-                      <p className="text-[16px] bg-blue-200 grid  rounded-xl w-full place-items-center">{card.id}</p>
-                      <p className="">{card.frontContent}</p>
-                    </section>
+                <Link to={"/students"} key={card.id}>
+                  <Card
+                    flip
+                    frontContent={
+                      <section className="p-[1rem] w-full ">
+                        <p className="text-[16px] bg-blue-200 grid  rounded-xl w-full place-items-center">{card.id}</p>
+                        <p className="">{card.frontContent}</p>
+                      </section>
                     }
-                  backContent={card.backContent.map((item, index) => (
-                    <li className="relative top-3 left-4" key={index}>{item}</li>
+                    backContent={card.backContent.map((item, index) => (
+                      <li className="relative top-3 left-4" key={index}>
+                        {item}
+                      </li>
                     ))}
-                />
-              </Link>
-            ))}
+                  />
+                </Link>
+              ))}
+            
           </section>
           <section className="grid place-items-center">
             <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={cardData.length} onChange={handlePageChange} />
           </section>
-          <section className="agregar" onClick={modalAddGroups}>
-            <button className="add">+</button>
+          <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
+            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative">+</button>
           </section>
           <Footer />
         </section>
@@ -91,3 +96,11 @@ const Groups = () => {
 };
 
 export { Groups };
+
+const SkeletonLoading = () => {
+  return (
+    <div>
+      <Skeleton width={"100%"} height={"100%"} />
+    </div>
+  );
+};

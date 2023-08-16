@@ -12,13 +12,13 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
         )}
       </header>
       <section className="card_Body">
-
         {inside && (
-
-          <section className="cardHome">
-            <section className="cardImage">
-              <img className="fondoCard" src={image} alt="Imágen" lazyloading/>
-              <div className="textoImagen">
+          <section className="w-full">
+            <section className="w-48 h-44">
+              <span className="object-contain w-44">
+                <img className="fondoCard" src={image} alt="Imágen" loading="lazy" />
+              </span>
+              <div className="w-full h-auto absolute top-[90.5%] left-1/2 rounded-b-[10px] bg-[#ffffffcc] shadow-lg p-4" style={{ transform: "translate(-50%, -50%)" }}>
                 <h4>{titleHome}</h4>
                 <p className="bodyText">{descripciónHome}</p>
               </div>
@@ -27,11 +27,10 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
         )}
         <p className="bodyText">{descripción}</p>
 
-        
         {flip && (
           <section className="card_flip">
             <section className="front ">{frontContent}</section>
-            <section className="back border-2 border-blue-200 ">
+            <section className="border-2 border-blue-200 back ">
               <ul className="list">
                 {backContent.map((item, index) => (
                   <li key={index} className="listItem ">

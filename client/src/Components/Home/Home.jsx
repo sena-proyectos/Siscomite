@@ -2,49 +2,32 @@ import "./Home.css";
 import { Card } from "../Utils/Card/Card";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Footer } from "../Footer/Footer";
-import { Link, useNavigate } from "react-router-dom";
-import { Skeleton } from "@nextui-org/react";
-import image from "../../assets/image/solicitudes.jpg";
-import image2 from "../../assets/image/solicitud.jpg";
-import image3 from "../../assets/image/fichas.jpg";
-import image4 from "../../assets/image/reglamento.jpg";
-import image5 from "../../assets/image/aprendiz.jpg";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-  return (
-    <main className="containerHome">
-      <Sliderbar />
-      <section className="homeContent">
-        <header className="headerTitle">
-          <h1 className="titleHome">Siscomite</h1>
-        </header>
-        <section className="cardBody">
-          <Link to={"/requests"}>
-            <section className="cardHome">
-              <Card inside image={image} titleHome={"Solicitudes"} descripciónHome={"Aquí podrás ver las solicitudes que se han realizado y su estado de aprobación."} />
-            </section>
-          </Link>
-          <Link to={"/create"}>
-            <section className="cardHome">
-              <Card inside image={image2} titleHome={"Crear Solicitud"} descripciónHome={"Aquí podrás crear una solicitud para un comité de evalución."} />
-            </section>
-          </Link>
-          <Link to={"/groups"}>
-            <section className="cardHome">
-              <Card inside image={image3} titleHome={"Fichas"} descripciónHome={"Aquí podrás visualizar las fichas del CTM."} />
-            </section>
-          </Link>
+  const data = [
+    { titleHome: "Solicitudes", image: "/image/solicitudes.webp", descripciónHome: "Aquí podrás ver las solicitudes que se han realizado y su estado de aprobación.", Link: "/requests" },
+    { titleHome: "Crear solicitud", image: "/image/solicitud.webp", descripciónHome: "Aquí podrás crear una solicitud para un comité de evalución..", Link: "/create" },
+    { titleHome: "Fichas", image: "/image/fichas.webp", descripciónHome: "Aquí podrás visualizar las fichas del CTM.", Link: "/groups" },
+    { titleHome: "Reglamento", image: "/image/reglamento.webp", descripciónHome: "Aquí podrás ver el reglamento para consultar los artículos necesarios.", Link: "/requests" },
+    { titleHome: "Agregar aprendiz", image: "/image/aprendiz.webp", descripciónHome: "Aquí podrás ver y agregar aprendices", Link: "/students" },
+  ];
 
-          <Link>
-            <section className="cardHome">
-              <Card inside image={image4} titleHome={"Reglamento"} descripciónHome={"Aquí podrás ver el reglamento para consultar los artículos necesarios."} />
-            </section>
-          </Link>
-          <Link to={"/students"}>
-            <section className="cardHome">
-              <Card inside image={image5} titleHome={"Agregar Aprendiz"} descripciónHome={"Aquí podrás Agregar aprendices."} />
-            </section>
-          </Link>
+  return (
+    <main className="flex flex-row h-screen">
+      <Sliderbar />
+      <section className="justify-center h-screen  w-full">
+        <header className="p-8 grid place-items-center text-[23px]">
+          <h1 className="w-80 grid place-items-center border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
+        </header>
+        <section className="h-[80vh] flex-wrap flex items-center justify-center gap-x-20">
+          {data.map((x, i) => (
+            <Link to={x.Link} key={i}>
+              <section className="h-[28%] text-black cardHome" style={{ transition: "0.4s ease-in-out" }}>
+                <Card inside image={x.image} titleHome={x.titleHome} descripciónHome={x.descripciónHome} />
+              </section>
+            </Link>
+          ))}
         </section>
         <Footer />
       </section>
@@ -53,3 +36,13 @@ const Home = () => {
 };
 
 export { Home };
+
+const SkeletonCard = () => (
+  <section className="w-44 h-44 relative">
+    <Skeleton className="w-full h-full rounded-lg shadow-lg" />
+    <section className="bg-[#ffffffcc] h-3/6 absolute -bottom-1 z-10 w-full flex flex-col  justify-center px-4 rounded-b-[10px]">
+      <Skeleton />
+      <Skeleton height={13} />
+    </section>
+  </section>
+);

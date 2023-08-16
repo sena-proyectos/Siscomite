@@ -1,14 +1,27 @@
-@import "@flaticon/flaticon-uicons/css/all/all";
+@import '@flaticon/flaticon-uicons/css/all/all';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+::-webkit-scrollbar {
+  width: 10px; 
+} 
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 5px; 
+}
 
 * {
   margin: 0;
   padding: 0;
   font-family: 'Quicksand', sans-serif;
 }
-body{
-  background-color: #EBEBEB;
+body {
+  background-color: #ebebeb;
 }
-
