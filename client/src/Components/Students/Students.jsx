@@ -86,8 +86,8 @@ const Students = () => {
           <section className="flex flex-wrap gap-5 items-center justify-center p-2 ">
             {currentItems.map((item) => {
               return (
-                <Card className="w-[340px] z-0 shadow-lg" key={item.title}>
-                  <CardHeader className="justify-between pb-0 ">
+                <Card className="w-[340px] z-0 shadow-lg"  onClick={infoStudent} key={item.title}>
+                  <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
                     <div className="flex gap-5 ">
                       <i class="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
                       <div className="flex flex-col gap-1 items-start justify-center ">
@@ -99,7 +99,7 @@ const Students = () => {
                       </div>
                     </div>
                   </CardHeader>
-                  <CardBody className="relarive  text-black text-small">
+                  <CardBody onClick={infoStudent} className="relarive  text-default-400 text-small cursor-pointer">
                     <p className="relative bottom-1 ">{item.correo}</p>
                   </CardBody>
                 </Card>
