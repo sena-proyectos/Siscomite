@@ -4,7 +4,7 @@ import { Search } from "../Search/Search";
 import { Card, CardHeader, CardBody, CardFooter, Avatar, Button } from "@nextui-org/react";
 import { Footer } from "../Footer/Footer";
 import React, { useState } from "react";
-import Pagination from "react-js-pagination";
+import {Pagination} from "@nextui-org/react";
 import { Modal } from "../Utils/Modal/Modal";
 
 const Students = () => {
@@ -23,7 +23,7 @@ const Students = () => {
 
   const [isFollowed, setIsFollowed] = React.useState(false);
 
-  const itemsPerPage = 8; // Número de elementos por página
+  const itemsPerPage = 9; // Número de elementos por página
   const [activePage, setActivePage] = useState(1);
 
   // Calcula los datos a mostrar en la página actual
@@ -79,7 +79,7 @@ const Students = () => {
               <Search placeholder={"Buscar soicitud"} icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-            <section className=" relative grid justify-end px-[4.5rem]">
+            <section className=" relative grid justify-end px-[4.5rem] py-0">
               <p className="font-semibold text-lg">Análisis y desarrollo de software</p>
               <p className="grid justify-end ">2473196</p>
             </section>
@@ -87,26 +87,27 @@ const Students = () => {
             {currentItems.map((item) => {
               return (
                 <Card className="w-[340px] z-0 shadow-lg" key={item.title}>
-                  <CardHeader className="justify-between">
-                    <div className="flex gap-5">
+                  <CardHeader className="justify-between pb-0 ">
+                    <div className="flex gap-5 ">
                       <i class="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
-                      <div className="flex flex-col gap-1 items-start justify-center">
+                      <div className="flex flex-col gap-1 items-start justify-center ">
                         <h4 className="text-small font-semibold leading-none text-default-600">{item.title}</h4>
-                        <h5 className="text-small tracking-tight text-default-400">
-                          {item.document} {item.descripción}
+                        <h5 className="text-small tracking-tight text-default-400 flex">
+                          <p className="px-[4px]">{item.document}</p>  
+                          <p className="px-[4px]">{item.descripción}</p>
                         </h5>
                       </div>
                     </div>
                   </CardHeader>
-                  <CardBody className="relarive flex text-black text-small py-0 items-center">
+                  <CardBody className="relarive  text-black text-small">
                     <p className="relative bottom-1 ">{item.correo}</p>
                   </CardBody>
                 </Card>
               ); 
             })}
           </section>
-          <section className="aStudents">
-            <Pagination activePage={activePage} itemsCountPerPage={itemsPerPage} totalItemsCount={cards.length} pageRangeDisplayed={5} onChange={handlePageChange} />
+          <section className="grid place-items-center">
+            <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={cards.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8">
             <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative cursor-pointer outline-none border-none add" onClick={modalAdd}>
