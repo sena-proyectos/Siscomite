@@ -37,7 +37,7 @@ const Sliderbar = () => {
         <ul className="center">
           <Link to={"/home"} className="line">
             <li className={`part ${selectedIcon === 0 ? "active" : ""}`} onClick={() => setSelectedIcon(0)}>
-              <i className="fi fi-rr-home" id="icon" title="Inicio" />
+              <i className="fi fi-rr-home " id="icon" title="Inicio" />
               <span className="slideText">Inicio</span>
             </li>
           </Link>

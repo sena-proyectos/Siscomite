@@ -1,67 +1,108 @@
-import './Students.css'
-import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Search } from '../Search/Search'
-import { Card } from '../Utils/Card/Card'
-import { Footer } from '../Footer/Footer'
-import React, { useState } from 'react'
-import Pagination from 'react-js-pagination'
-import { Modal } from '../Utils/Modal/Modal'
+import "./Students.css";
+import { Sliderbar } from "../Sliderbar/Sliderbar";
+import { Search } from "../Search/Search";
+import { Card, CardHeader, CardBody, CardFooter, Avatar, Button } from "@nextui-org/react";
+import { Footer } from "../Footer/Footer";
+import React, { useState } from "react";
+import Pagination from "react-js-pagination";
+import { Modal } from "../Utils/Modal/Modal";
 
 const Students = () => {
   const cards = [
-    { title: 'Angie Tatiana Mosquera Arco', document: 'CC', descripción: 1027150354 },
-    { title: 'Mariano Lore Florez Azul', document: 'TI', descripción: 24567877 },
-    { title: 'Guillermo Stiven Bejumeda Morales', document: 'CE', descripción: 34567876 },
-    { title: 'Lorena Quiceno Giraldo', document: 'CC', descripción: 49878787 },
-    { title: 'Juan Guillermo Gomez Zapata', document: 'CC', descripción: 57656787 },
-    { title: 'Mariano Lopez Robledo Estrada', document: 'TI', descripción: 655676 },
-    { title: 'Mariana Lucia Perez Carol', document: 'CC', descripción: 79876787 },
-    { title: 'Estaban Quito Romero Suarez', document: 'CC', descripción: 8766567 },
-    { title: 'Luna Lunera Roble Maria', document: 'CE', descripción: 98765786 },
-    { title: 'Carla María Tibetano De Espana', document: 'PE', descripción: 1076567766 },
-  ]
+    { title: "Angie Tatiana Mosquera Arco", document: "C.C", descripción: 1027150354, correo: "atmosquera45@soy.sena.edu.co"},
+    { title: "Mariano Lore Florez Azul", document: "T.I", descripción: 24567877, correo: "atmosquera45@soy.sena.edu.co" },
+    { title: "Guillermo Stiven Bejumeda Morales", document: "C.E", descripción: 34567876, correo: "atmosquera45@soy.sena.edu.co" },
+    { title: "Lorena Quiceno Giraldo", document: "C.C", descripción: 49878787, correo: "amosquera45@soy.sena.edu.co" },
+    { title: "Juan Guillermo Gomez Zapata", document: "C.C", descripción: 57656787, correo: "atmosquera45@soy.sena.edu.co" },
+    { title: "Mariano Lopez Robledo Estrada", document: "T.I", descripción: 655676, correo: "atmosquera45@soy.sena.edu.co" },
+    { title: "Mariana Lucia Perez Carol", document: "C.C", descripción: 79876787, correo: "atmosquera45@soy.sena.edu.co" },
+    { title: "Estaban Quito Romero Suarez", document: "C.C", descripción: 8766567, correo: "atquera45@soy.sena.edu.co" },
+    { title: "Luna Lunera Roble Maria", document: "C.E", descripción: 98765786, correo: "atquera45@soy.sena.edu.co" },
+    { title: "Carla María Tibetano De Espana", document: "C.E", descripción: 1076567766, correo: "atmosquera45@soy.sena.edu.co" },
+  ];
 
-  const itemsPerPage = 8 // Número de elementos por página
-  const [activePage, setActivePage] = useState(1)
+  const [isFollowed, setIsFollowed] = React.useState(false);
+
+  const itemsPerPage = 8; // Número de elementos por página
+  const [activePage, setActivePage] = useState(1);
 
   // Calcula los datos a mostrar en la página actual
-  const indexOfLastItem = activePage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = cards.slice(indexOfFirstItem, indexOfLastItem)
+  const indexOfLastItem = activePage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = cards.slice(indexOfFirstItem, indexOfLastItem);
 
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
-    setActivePage(pageNumber)
-  }
+    setActivePage(pageNumber);
+  };
 
-  const [modalStudent, setModalStudent] = useState(false)
+  const [modalStudent, setModalStudent] = useState(false);
   const modalAdd = () => {
-    setModalStudent(!modalStudent)
-  }
+    setModalStudent(!modalStudent);
+  };
 
-  const [infoStudents, setInfoStudents] = useState(false)
+  const [infoStudents, setInfoStudents] = useState(false);
   const infoStudent = () => {
-    setInfoStudents(!infoStudents)
-  }
+    setInfoStudents(!infoStudents);
+  };
 
   return (
     <>
-      {modalStudent && <Modal modalAdd cerrarModal={modalAdd} titulo={<section className="text-2xl font-semibold">Agregar Estudiantes</section>} />}
-      {infoStudents && <Modal modalInfo cerrarModal={infoStudent} titulo={<section className="text-2xl font-semibold">Información</section>} />}
+      {modalStudent && (
+        <Modal
+          modalAdd
+          cerrarModal={modalAdd}
+          titulo={
+            <section className="text-2xl font-semibold">
+              <i class="fi fi-rr-user-add text-green-500 px-3"></i>Agregar Estudiantes
+            </section>
+          }
+        />
+      )}
+      {infoStudents && (
+        <Modal
+          modalInfo
+          cerrarModal={infoStudent}
+          titulo={
+            <section className="text-2xl font-semibold">
+              <i class="fi fi-rs-file-user text-blue-600 px-3"></i>Información
+            </section>
+          }
+        />
+      )}
 
       <main className="flex h-screen">
         <Sliderbar />
-        <section className="w-full h-screen">
-          <header className="grid p-6 place-items-center">
-            <Search className="student_Bar" icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem] " />} placeholder={'Busca un aprendiz'} />
+        <section className="w-full h-screen overflow-auto">
+          <header className="p-[1.5rem] flex justify-center">
+            <section className="w-[40%]">
+              <Search placeholder={"Buscar soicitud"} icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+            </section>
           </header>
-          <section className="flex flex-wrap items-center justify-center p-2">
+            <section className=" relative grid justify-end px-[4.5rem]">
+              <p className="font-semibold text-lg">Análisis y desarrollo de software</p>
+              <p className="grid justify-end ">2473196</p>
+            </section>
+          <section className="flex flex-wrap gap-5 items-center justify-center p-2 ">
             {currentItems.map((item) => {
               return (
-                <section className="w-[170px] rounded-md overflow-hidden ml-12 mb-12 p-4 bg-[#e0e0e0] cursor-pointer" style={{ boxShadow: '5px 5px 10px #969696, -5px -5px 10px #ffffff' }} key={item.title}>
-                  <Card header click={infoStudent} title={item.title} document={item.document} descripción={item.descripción} />
-                </section>
-              )
+                <Card className="w-[340px] z-0 shadow-lg" key={item.title}>
+                  <CardHeader className="justify-between">
+                    <div className="flex gap-5">
+                      <i class="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                      <div className="flex flex-col gap-1 items-start justify-center">
+                        <h4 className="text-small font-semibold leading-none text-default-600">{item.title}</h4>
+                        <h5 className="text-small tracking-tight text-default-400">
+                          {item.document} {item.descripción}
+                        </h5>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardBody className="relarive flex text-black text-small py-0 items-center">
+                    <p className="relative bottom-1 ">{item.correo}</p>
+                  </CardBody>
+                </Card>
+              ); 
             })}
           </section>
           <section className="aStudents">
@@ -78,7 +119,7 @@ const Students = () => {
         </section>
       </main>
     </>
-  )
-}
+  );
+};
 
-export { Students }
+export { Students };
