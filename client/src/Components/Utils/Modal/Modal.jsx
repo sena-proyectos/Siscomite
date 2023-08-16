@@ -45,10 +45,10 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className=" h-[60vh] relative top-2 ">
+              <section className=" h-[60vh] relative top-2 overflow-autoÑ">
                 <section className="relative flex flex-wrap justify-center gap-x-7 top-8 gap-y-8 ">
                   <section className="modalInput ">
-                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                    <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                       <Input size="md" type="text" label="Nombre" labelPlacement={"outside"} variant={"flat"} />
                     </div>
                   </section>
@@ -94,7 +94,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative top-[4rem] flex justify-center gap-5 ">
                   <section className="modalInput">
                     <label className="cursor-pointer inline-block text-[white] bg-red-700 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90">
-                      <i class="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
+                      <i className="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
                       Subir Excel
                       <input className="hidden" type="file" name="archivo" />
                     </label>
@@ -224,26 +224,26 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 </section>
                 <section className="relative py-[1.5rem]">
                   <Accordion isCompact variant="bordered">
-                    <AccordionItem aria-label="Accordion 1" startContent={<i class="fi fi-rr-refresh text-green-500"></i>} title="Actualizar Información">
+                    <AccordionItem aria-label="Accordion 1" startContent={<i className="fi fi-rr-refresh text-green-500"></i>} title="Actualizar Información">
                       <section className="w-full grid grid-cols-12  gap-4">
                         <Textarea variant={"faded"} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-10 mb-6 md:mb-0" />
                       </section>
                       <section className="flex gap-4 relative py-[5px]">
                         <section className="">
                           <Button color="primary">
-                            <i class="fi fi-br-check"></i>
+                            <i className="fi fi-br-check"></i>
                             Guardar
                           </Button>
                         </section>
                         <section className=" ">
                           <Button color="warning" variant="bordered">
-                            <i class="fi fi-rr-pencil"></i>
+                            <i className="fi fi-rr-pencil"></i>
                             Editar
                           </Button>
                         </section>
                       </section>
                     </AccordionItem>
-                    <AccordionItem aria-label="Accordion 2" startContent={<i class="fi fi-rr-user text-purple-500"></i>} title="Información Instructor">
+                    <AccordionItem aria-label="Accordion 2" startContent={<i className="fi fi-rr-user text-purple-500"></i>} title="Información Instructor">
                       <section className="flex flex-wrap gap-4 justify-center">
                         <label for="nombre" className="text-[13px] block">
                           Nombre
@@ -275,7 +275,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                         </section>
                       </section>
                     </AccordionItem>
-                    <AccordionItem aria-label="Accordion 3" startContent={<i class="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
+                    <AccordionItem aria-label="Accordion 3" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
                       <section className="font-semibold text-[20px] ">
                         <h1>Información Solicitud</h1>
                       </section>

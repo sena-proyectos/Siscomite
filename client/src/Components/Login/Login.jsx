@@ -1,6 +1,5 @@
 import './Login.css'
 import { Footer } from '../Footer/Footer'
-import Image from '../../assets/image/logoSena.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { useRef, useState } from 'react' // Agregamos useState para manejar el estado de carga
 import { login } from '../../api/httpRequest'
@@ -55,7 +54,7 @@ export const Login = () => {
   return (
     <main className="h-screen ">
       <section className="absolute top-11 left-11 " style={{ animation: 'show 0.8s ease-in-out' }}>
-        <img src={Image} alt="Sena" className="w-[4rem]" />
+        <img src='image/logoSena.webp' alt="Sena" className="w-[4rem]" />
       </section>
       {error && <Toast message={error} typeToast={'error'} onClose={closed} />}
       <section className="grid place-items-center  h-screen " style={{ animation: 'show 0.8s ease-in-out' }}>

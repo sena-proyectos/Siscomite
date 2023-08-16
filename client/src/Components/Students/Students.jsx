@@ -53,7 +53,7 @@ const Students = () => {
         <Sliderbar />
         <section className="w-full h-screen">
           <header className="grid p-6 place-items-center">
-            <Search className="student_Bar" icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem] " />} placeholder={'Busca un aprendiz'} />
+            <Search className="student_Bar" icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem] " />} placeholder={'Busca un aprendiz'} />
           </header>
           <section className="flex flex-wrap items-center justify-center p-2">
             {currentItems.map((item) => {
