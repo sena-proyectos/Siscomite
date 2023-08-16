@@ -46,7 +46,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
               >
                 <section className="relative grid grid-cols-2 gap-10 justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
                   <section className="modalInput ">
-                    <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+                    <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                       <Input size="md" type="text" label="Nombre" labelPlacement={"outside"} variant={"flat"} />
                     </div>
                   </section>

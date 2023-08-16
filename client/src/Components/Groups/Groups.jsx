@@ -58,7 +58,7 @@ const Groups = () => {
         <section className="w-screen">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
-              <Search placeholder={"Buscar ficha"} icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={"Buscar ficha"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
           <section className="flex flex-wrap justify-center gap-8 ">
@@ -83,7 +83,7 @@ const Groups = () => {
             
           </section>
           <section className="grid place-items-center">
-            <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={cardData.length} onChange={handlePageChange} />
+            <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalitemscount={cardData.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
             <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative">+</button>

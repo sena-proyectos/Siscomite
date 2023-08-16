@@ -35,6 +35,14 @@ export const getApprenticesByName = (nombres) => {
   return response
 }
 
+/* Get apprentices by ID */
+export const getApprenticesById = (userId) => {
+  const URL = `${BaseUrl}${api}/aprendiz/${userId}`
+  const response = axios.get(URL)
+
+  return response
+}
+
 /* Create Request */
 export const createRequest = (data) => {
   const URL = `${BaseUrl}${api}/createSolicitud`
