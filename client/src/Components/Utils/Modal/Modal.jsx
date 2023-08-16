@@ -1,6 +1,7 @@
 import "./Modal.css";
 import React, { useState } from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Link } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
 import { Textarea } from "@nextui-org/react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
@@ -42,8 +43,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="relative  py-[1rem] overflow-auto h-[25rem] "
-              >
+              <section className="relative  py-[1rem] overflow-auto h-[25rem] ">
                 <section className="relative grid grid-cols-2 gap-10 justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
@@ -208,75 +208,134 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative py-[1.5rem]">
                   <Accordion isCompact variant="bordered">
                     <AccordionItem aria-label="Accordion 1" startContent={<i class="fi fi-rr-user text-purple-500"></i>} title="Información Instructor">
-                      <section className="flex flex-wrap gap-4 justify-center">
-                        <label for="nombre" className="text-[13px] block">
-                          Nombre
-                          <input type="text" id="nombre" value="Adelaida" readonly className=" bg-[#80808036]  text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block " />
-                        </label>
+                      <section className="grid-cols-2 gap-2  grid max-h-[200px] justify-center overflow-auto">
+                        <section className=" ">
+                          <label for="nombre" className="text-[13px] block">
+                            Nombre
+                            <input type="text" id="nombre" value="Adelaida" readonly className=" bg-[#80808036]  text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block " />
+                          </label>
+                        </section>
                         <section>
                           <label for="apellidp" className="text-[13px] block">
                             Apellido
-                            <input type="text" id="apellido" value="Cano" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                            <input type="text" id="apellido" value="Cano" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
                           </label>
                         </section>
                         <section>
                           <label for="tipo" className="text-[13px] block">
                             Tipo documento
-                            <input type="text" id="tipo" value="Cádula ciudadanía" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                            <input type="text" id="tipo" value="Cádula ciudadanía" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
                           </label>
                         </section>
                         <section>
                           <label for="documento" className="text-[13px] block">
                             Documento
-                            <input type="text" id="docuemento" value="45555543" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                            <input type="text" id="docuemento" value="45555543" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
                           </label>
                         </section>
                         <section>
                           <label for="email" className="text-[13px] block">
                             Correo
-                            <input type="text" id="email" value="acanom@soy.sena.edu.co" readonly className=" bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                            <input type="email" id="email" value="acanom@soy.sena.edu.co" readonly className=" bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                          </label>
+                        </section>
+                        <section>
+                          <label for="number" className="text-[13px] block">
+                            Número
+                            <input type="text" id="number" value="3154567878" readonly className=" bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
                           </label>
                         </section>
                       </section>
                     </AccordionItem>
-                    <AccordionItem aria-label="Accordion 2" startContent={<i class="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
-                      <section className="flex flex-wrap max-h-[200px] overflow-auto">
+                    <AccordionItem aria-label="Accordion 2" startContent={<i class="fi fi-rs-book-alt text-red-500"></i>} title="Información Aprendiz">
+                      <section className="grid grid-cols-2 gap-2 max-h-[200px] overflow-auto">
                         <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Cordinador" defaultValue="Marianela Henao" isReadOnly />
+                          <Input type="text" variant="underlined" label="Nombre" defaultValue="Juan Manuel " isReadOnly />
                         </div>
+                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Apellido" defaultValue="Robledo Sanchez" isReadOnly />
+                        </div>
+                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Tipo  documento" defaultValue="Tarjeta identidad" isReadOnly />
+                        </div>
+                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Documento" defaultValue="2345434" isReadOnly />
+                        </div>
+                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Correo" defaultValue="juan@soy.sena.edu.co" isReadOnly />
+                        </div>
+                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Número" defaultValue="344555553" isReadOnly />
+                        </div>
+                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Ficha" defaultValue="2373196" isReadOnly />
+                        </div>
+                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Programa" defaultValue="Análisis y Desarrollo de Software" isReadOnly />
+                        </div>
+                      </section>
+                    </AccordionItem>
+                    <AccordionItem aria-label="Accordion 3" startContent={<i class="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
+                      <section className="grid grid-cols-2 gap-2 max-h-[200px] overflow-auto">
                         <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue="Individual" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Categoría causa" defaultValue="Acádemica" isReadOnly />
+                          <Input type="text" variant="underlined" label="Coordinador" defaultValue="Marianela Henao" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Calificación causa" defaultValue="Leve" isReadOnly />
+                          <Input type="text" variant="underlined" label="Categoría causa" defaultValue="Académica" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Descripción" defaultValue="No ha respondido con los trabajos asignados" isReadOnly />
+                          <Input type="text" variant="underlined" label="Calificación causa" defaultValue="Grave" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue=" " isReadOnly />
+                          <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
                         </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
-                        </div>
+                        <section className="flex pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Popover
+                            showArrow
+                            backdrop="opaque"
+                            placement="top"
+                            classNames={{
+                              base: "py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50",
+                              arrow: "bg-default-200",
+                            }}
+                          >
+                            <PopoverTrigger>
+                              <Button color="primary" variant="flat">Descripción caso</Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="px-1 py-2">
+                                <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </section>
+                        <section className="flex  pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Popover
+                            showArrow
+                            backdrop="opaque"
+                            placement="top"
+                            classNames={{
+                              base: "py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50",
+                              arrow: "bg-default-200",
+                            }}
+                          >
+                            <PopoverTrigger>
+                              <Button color="primary" variant="flat">Descripción artículo</Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="px-1 py-2">
+                                <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </section>
+                        
                       </section>
                     </AccordionItem>
                   </Accordion>

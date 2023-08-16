@@ -18,7 +18,7 @@ const Home = () => {
       <Sliderbar />
       <section className="justify-center h-screen  w-full">
         <header className="p-8 grid place-items-center text-[23px]">
-          <h1 className="w-80 grid place-items-center border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
+          <h1 className="w-80 grid text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
         </header>
         <section className="h-[80vh] flex-wrap flex items-center justify-center gap-x-20">
           {data.map((x, i) => (

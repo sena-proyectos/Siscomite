@@ -192,6 +192,8 @@
                             <React.Fragment>
                               <li>{item.numero_documento}</li>
                               <li>{item.nombres + ' ' + item.apellidos}</li>
+                              <li><i class="fi fi-rr-user-add text-green-500 text-[1rem]"></i></li>
+
                             </React.Fragment>
                           </ul>
                         ))}
@@ -214,6 +216,7 @@
                             <React.Fragment>
                               <li>{item.numero_documento_aprendiz}</li>
                               <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
+                              <li><i class="fi fi-rr-user-add text-green-500 text-[1rem]"></i></li>
                             </React.Fragment>
                           </ul>
                         ))}
@@ -222,8 +225,9 @@
                             <React.Fragment>
                               <li>{item.numero_documento_aprendiz}</li>
                               <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
-                              <li>X</li>
+                              <li><i class="fi fi-br-remove-user text-red-500 text-[1rem]"></i></li>
                             </React.Fragment>
+      
                           </ul>
                         ))}
                       </>
@@ -266,7 +270,7 @@
               </div>
             </section>
 
-            <section className=" absolute top-[25rem] ">
+            <section className="  absolute top-[27rem] ">
               <Button className="" size="lg" color="primary" onClick={sendData}>
                 Enviar
                 <i className="fi fi-br-check"></i>
