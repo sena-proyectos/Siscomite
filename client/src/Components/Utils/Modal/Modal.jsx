@@ -42,8 +42,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="relative py-[1rem] overflow-auto ">
-                <section className="relative flex flex-wrap justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
+              <section className="relative  py-[1rem] overflow-auto h-[25rem] "
+              >
+                <section className="relative grid grid-cols-2 gap-10 justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                       <Input size="md" type="text" label="Nombre" labelPlacement={"outside"} variant={"flat"} />
@@ -55,7 +56,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none">
+                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
                       <option value="">Tipo de documento</option>
                       <option value="">CC</option>
                       <option value="">TI</option>
@@ -256,7 +257,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                           <Input type="text" variant="underlined" label="Descripción" defaultValue="No ha respondido con los trabajos asignados" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue=" "  isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue=" " isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
