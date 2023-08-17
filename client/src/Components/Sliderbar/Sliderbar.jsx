@@ -3,11 +3,22 @@ import "./Sliderbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import Cookie from "js-cookie";
 import jwt from "jwt-decode";
+import { useLocation } from "react-router-dom";
+
+// Para poner color al icon al seleccionarlo
+
+// Función para saber si la ruta esta activa
+const isActiveRoute = (currentPath, targetPath) => {
+  return currentPath === targetPath;
+};
 
 const Sliderbar = () => {
   const [selectedIcon, setSelectedIcon] = useState(0);
   const navigate = useNavigate();
   const [nombreCompleto, setNombreCompleto] = useState(null);
+
+  //Para poner color al icon al seleccionarlo
+  const location = useLocation(); // Importa useLocation
 
   useEffect(() => {
     getInformation();
@@ -36,32 +47,34 @@ const Sliderbar = () => {
       <section className="pages absolute top-[35%]  w-full flex justify-center">
         <ul className="p-0">
           <Link to={"/home"} className="line">
-            <li className="relative mb-[15px]  rounded-xl " >
-              <i className="fi fi-rr-home " id="icon" title="Inicio" />
+            <li className="relative mb-[15px] rounded-xl">
+              <i className={`fi fi-rr-home ${isActiveRoute(location.pathname, "/home") ? "text-red-500" : ""}`} title="Inicio" />
               <span className="slideText ml-[10px]">Inicio</span>
             </li>
           </Link>
-          <Link className="line" to={"/requests"}>
+
+          <Link to={"/requests"} className="line">
             <li className="relative mb-[15px] rounded-xl ">
-              <i className="fi fi-rs-file" id="icon" title="Solicitudes" />
+              <i className={`fi fi-rs-file ${isActiveRoute(location.pathname, "/requests") ? "text-red-500" : ""}`} title="Solicitudes" />
               <span className="slideText ml-[10px]"> Solicitudes </span>
             </li>
           </Link>
+
           <Link className="line" to={"/create"}>
             <li className="relative mb-[15px] rounded-xl ">
-              <i className="fi fi-rs-add-document" id="icon" title="Crear solicitud" />
+              <i className={`fi fi-rs-add-document ${isActiveRoute(location.pathname, "/create") ? "text-red-500" : ""}`} title="Crear solicitud" />
               <span className="slideText ml-[10px]">Crear solicitud</span>
             </li>
           </Link>
           <Link className="line" to={"/groups"}>
             <li className="relative mb-[15px] rounded-xl ">
-              <i className="fi fi-rr-users" id="icon" title="Fichas" />
+              <i className={`fi fi-rr-users ${isActiveRoute(location.pathname, "/groups") ? "text-red-500" : ""}`} title="Fichas" />
               <span className="slideText ml-[10px]">Fichas</span>
             </li>
           </Link>
-          <Link to={"/rules"} className="line">
+          <Link className="line" to={"/rules"}>
             <li className="relative mb-[15px] rounded-xl ">
-              <i className="fi fi-rs-document" id="icon" title="Reglamento" />
+              <i className={`fi fi-rs-document ${isActiveRoute(location.pathname, "/rules") ? "text-red-500" : ""}`} title="Reglamento" />
               <span className="slideText ml-[10px]">Reglamento</span>
             </li>
           </Link>

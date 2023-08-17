@@ -139,8 +139,8 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             )}
             {/* Agregar Fichas */}
             {modalAddGroups && (
-              <section className="mt-[1rem]">
-                <section className="relative flex flex-wrap justify-center top-5 gap-x-7 gap-y-6">
+              <section className="mt-[2rem]">
+                <section className="relative grid grid-cols-2 justify-center gap-8">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                       <Input size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} />
@@ -152,7 +152,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none">
+                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
                       <option value="">Jornada</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
@@ -162,14 +162,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" required onChange={handleEtapaChange}>
+                    <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required onChange={handleEtapaChange}>
                       <option value="">Etapa</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" required disabled={!isTrimestreEnabled}>
+                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required disabled={!isTrimestreEnabled}>
                       <option value="">Trimestre lectivo</option>
                       <option value="lectiva">1</option>
                       <option value="practica">2</option>
@@ -179,7 +179,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <option value="practica">6</option>
                     </select>
                   </section>
-                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" required>
+                  <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required>
                     <option value="">Modalidad</option>
                     <option value="vitual">Vitual</option>
                     <option value="presencial">Presencial</option>
@@ -187,13 +187,13 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     <option value="distancia">A distancia</option>
                     <option value="virtual">Virtual</option>
                   </select>
-                  <section className="relative">
-                    <Button variant="shadow" color="primary" id="iconSave">
+                </section>
+                  <section className="grid place-items-center">
+                    <Button variant="shadow" color="primary" className="mt-[1rem] ">
                       <p className="tracking-wide text-15px">Guardar</p>
                       <i className="fi fi-br-check text-[15px]" />
                     </Button>
                   </section>
-                </section>
               </section>
             )}
             {/* Ver detalles Solicitudes */}
@@ -252,25 +252,25 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                         <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Nombre" defaultValue="Juan Manuel " isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Apellido" defaultValue="Robledo Sanchez" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Tipo  documento" defaultValue="Tarjeta identidad" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Documento" defaultValue="2345434" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Correo" defaultValue="juan@soy.sena.edu.co" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Número" defaultValue="344555553" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Ficha" defaultValue="2373196" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Programa" defaultValue="Análisis y Desarrollo de Software" isReadOnly />
                         </div>
                       </section>
@@ -362,7 +362,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                 </section>
                 <section className="w-full grid grid-cols-12  gap-4 py-4">
-                  <Textarea variant={"faded"} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-10 mb-6 md:mb-0" />
+                  <Textarea variant={"faded"} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className=" col-span-12 md:col-span-10 mb-6 md:mb-0" />
                 </section>
                 <section className="flex gap-4 relative py-[5px]">
                   <section className="">

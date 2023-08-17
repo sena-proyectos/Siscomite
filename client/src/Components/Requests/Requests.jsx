@@ -68,13 +68,13 @@ const Requests = () => {
 
       <main className="h-screen flex">
         <Sliderbar />
-        <section className="w-full ">
+        <section className="w-full overflow-auto ">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
               <Search placeholder={"Buscar soicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className="px-[2rem] top-[1.5rem] relative mr-auto">
+          <section className="px-[2rem] top-[.5rem] relative mr-auto">
             <Table>
               <TableHeader>
                 <TableColumn>N°</TableColumn>

@@ -53,9 +53,9 @@ const Groups = () => {
     <>
       {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={<section className="text-2xl font-semibold"><i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas</section>} />}
 
-      <main className="flex">
+      <main className="flex h-screen">
         <Sliderbar />
-        <section className="w-screen">
+        <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
               <Search placeholder={"Buscar ficha"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
