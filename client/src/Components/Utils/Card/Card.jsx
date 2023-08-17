@@ -14,7 +14,7 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
       <section className="card_Body">
         {inside && (
           <section className="w-full">
-            <section className="w-52 h-44">
+            <section className="w-48 h-44">
               <span className="object-contain w-44">
                 <img className="fondoCard" src={image} alt="Imágen" loading="lazy" />
               </span>

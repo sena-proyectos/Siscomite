@@ -28,56 +28,56 @@ const Sliderbar = () => {
   };
 
   return (
-    <main className="sliderbar">
-      <section className="top">
-        <h3>{nombreCompleto}</h3>
+    <main className="sliderbar bg-[#2e323e] m-[1rem] w-[18%]  h-[95vh] relative rounded-2xl text-white flex-col flex items-center ">
+      <section className="top flex flex-col items-center p-[30px] text-center w-full">
+        <h3 className="mt-[1rem] text-[17px] font-bold">{nombreCompleto}</h3>
         <p>Coordinador</p>
       </section>
-      <section className="pages">
-        <ul className="center">
+      <section className="pages absolute top-[35%]  w-full flex justify-center">
+        <ul className="p-0">
           <Link to={"/home"} className="line">
-            <li className={`part ${selectedIcon === 0 ? "active" : ""}`} onClick={() => setSelectedIcon(0)}>
+            <li className="relative mb-[15px]  rounded-xl " >
               <i className="fi fi-rr-home " id="icon" title="Inicio" />
-              <span className="slideText">Inicio</span>
+              <span className="slideText ml-[10px]">Inicio</span>
             </li>
           </Link>
           <Link className="line" to={"/requests"}>
-            <li className={`part ${selectedIcon === 2 ? "active" : ""}`} onClick={() => setSelectedIcon(2)}>
+            <li className="relative mb-[15px] rounded-xl ">
               <i className="fi fi-rs-file" id="icon" title="Solicitudes" />
-              <span className="slideText"> Solicitudes </span>
+              <span className="slideText ml-[10px]"> Solicitudes </span>
             </li>
           </Link>
           <Link className="line" to={"/create"}>
-            <li className={`part ${selectedIcon === 3 ? "active" : ""}`} onClick={() => setSelectedIcon(3)}>
+            <li className="relative mb-[15px] rounded-xl ">
               <i className="fi fi-rs-add-document" id="icon" title="Crear solicitud" />
-              <span className="slideText">Crear solicitud</span>
+              <span className="slideText ml-[10px]">Crear solicitud</span>
             </li>
           </Link>
           <Link className="line" to={"/groups"}>
-            <li className={`part ${selectedIcon === 4 ? "active" : ""}`} onClick={() => setSelectedIcon(4)}>
+            <li className="relative mb-[15px] rounded-xl ">
               <i className="fi fi-rr-users" id="icon" title="Fichas" />
-              <span className="slideText">Fichas</span>
+              <span className="slideText ml-[10px]">Fichas</span>
             </li>
           </Link>
-          <Link className="line">
-            <li className="part">
+          <Link to={"/rules"} className="line">
+            <li className="relative mb-[15px] rounded-xl ">
               <i className="fi fi-rs-document" id="icon" title="Reglamento" />
-              <span className="slideText">Reglamento</span>
+              <span className="slideText ml-[10px]">Reglamento</span>
             </li>
           </Link>
         </ul>
       </section>
-      <section className="end">
-        <ul className="down">
+      <section className="absolute bottom-[0.5em]">
+        <ul className="p-0 flex flex-col items-center justify-end mb-[20px]">
           <Link className="line">
-            <li className="part">
+            <li className=" mb-[15px]">
               <i className="fi fi-rr-gears" id="icon" title="Configuración" />
-              <span className="slideText">Configuración</span>
+              <span className="slideText ml-[10px]">Configuración</span>
             </li>
           </Link>
           <li className="part" onClick={logout}>
             <i className="fi fi-rs-exit" id="icon" title="Cerrar sesión" />
-            <span className="slideText">Cerrar sesión</span>
+            <span className="slideText ml-[10px] cursor-pointer">Cerrar sesión</span>
           </li>
         </ul>
       </section>

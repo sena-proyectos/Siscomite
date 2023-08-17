@@ -53,8 +53,8 @@ const Students = () => {
           modalAdd
           cerrarModal={modalAdd}
           titulo={
-            <section className="text-2xl font-semibold">
-              <i class="fi fi-rr-user-add text-green-500 px-3"></i>Agregar Estudiantes
+            <section className="text-2xl  font-semibold">
+              <i className="fi fi-rr-user-add text-green-500 px-3"></i>Agregar Estudiantes
             </section>
           }
         />
@@ -65,7 +65,7 @@ const Students = () => {
           cerrarModal={infoStudent}
           titulo={
             <section className="text-2xl font-semibold">
-              <i class="fi fi-rs-file-user text-blue-600 px-3"></i>Información
+              <i className ="fi fi-rs-file-user text-blue-600 px-3"></i>Información
             </section>
           }
         />
@@ -76,7 +76,7 @@ const Students = () => {
         <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
-              <Search placeholder={"Buscar soicitud"} icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={"Buscar soicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
             <section className=" relative grid justify-end px-[4.5rem] py-0">
@@ -89,7 +89,7 @@ const Students = () => {
                 <Card className="w-[340px] z-0 shadow-lg"  onClick={infoStudent} key={item.title}>
                   <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
                     <div className="flex gap-5 ">
-                      <i class="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                      <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
                       <div className="flex flex-col gap-1 items-start justify-center ">
                         <h4 className="text-small font-semibold leading-none text-default-600">{item.title}</h4>
                         <h5 className="text-small tracking-tight text-default-400 flex">
@@ -107,7 +107,7 @@ const Students = () => {
             })}
           </section>
           <section className="grid place-items-center">
-            <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={cards.length} onChange={handlePageChange} />
+            <Pagination className=" z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={cards.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8">
             <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative cursor-pointer outline-none border-none add" onClick={modalAdd}>

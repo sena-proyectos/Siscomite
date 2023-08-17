@@ -43,8 +43,8 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="relative  py-[1rem] overflow-auto h-[25rem] ">
-                <section className="relative grid grid-cols-2 gap-10 justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
+              <section className="relative h-[25rem] ">
+                <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                       <Input size="md" type="text" label="Nombre" labelPlacement={"outside"} variant={"flat"} />
@@ -139,7 +139,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             )}
             {/* Agregar Fichas */}
             {modalAddGroups && (
-              <section className="modalGruop ">
+              <section className="mt-[1rem]">
                 <section className="relative flex flex-wrap justify-center top-5 gap-x-7 gap-y-6">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
@@ -162,14 +162,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange}>
+                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" required onChange={handleEtapaChange}>
                       <option value="">Etapa</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled}>
+                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" required disabled={!isTrimestreEnabled}>
                       <option value="">Trimestre lectivo</option>
                       <option value="lectiva">1</option>
                       <option value="practica">2</option>
@@ -179,7 +179,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <option value="practica">6</option>
                     </select>
                   </section>
-                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required>
+                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" required>
                     <option value="">Modalidad</option>
                     <option value="vitual">Vitual</option>
                     <option value="presencial">Presencial</option>

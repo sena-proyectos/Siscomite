@@ -51,7 +51,7 @@ const Groups = () => {
 
   return (
     <>
-      {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={<section className="text-2xl font-semibold">Agregar Fichas</section>} />}
+      {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={<section className="text-2xl font-semibold"><i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas</section>} />}
 
       <main className="flex">
         <Sliderbar />
