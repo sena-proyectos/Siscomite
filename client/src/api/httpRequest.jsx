@@ -91,3 +91,12 @@ export const getFichas = () => {
   return response
 }
 
+/* Create apprentices */
+export const createApprentices = (data) => {
+  const URL = `${BaseUrl}${api}/createAprendices`
+  const response = axios.post(URL, data)
+  
+  return response
+}
+
+

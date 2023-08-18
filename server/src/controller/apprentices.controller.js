@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { pool } from '../db.js'
 
 //CONSULTAR TODOS LOS APRENDICES
 /**
@@ -11,13 +11,16 @@ import { pool } from "../db.js";
  * cliente. Es una instancia del objeto de respuesta Express.
  */
 export const getApprentices = async (req, res) => {
-    const {idFicha} = req.query
-    try {
-        const [result] = await pool.query('SELECT * FROM aprendices WHERE id_ficha = ?', [idFicha]);
-        res.status(200).send({ result })
-    } catch (error) {
-        res.status(500).send({ message: 'Error al listar los aprendices' })
-    }
+  const { idFicha } = req.query
+  try {
+    const [result] = await pool.query('SELECT * FROM aprendices WHERE id_ficha = ?', [idFicha])
+
+    if(result.length === 0) return res.status(200).send({ message : "No hay aprendices registrados en la ficha" })
+
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al listar los aprendices' })
+  }
 }
 
 //CONSULTAR UN APRENDIZ
@@ -26,17 +29,17 @@ export const getApprentices = async (req, res) => {
  * datos en función de su ID y envía una respuesta con el resultado.
  */
 export const getApprenticeById = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const [result] = await pool.query('SELECT * FROM aprendices WHERE id_aprendiz = ?', [id]);
-        if (result.length === 0) {
-            res.status(404).send({ message: `No se pudo encontrar al aprendiz con id ${id}` })
-        } else {
-            res.status(200).send({ result })
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al obtener el aprendiz' })
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('SELECT * FROM aprendices WHERE id_aprendiz = ?', [id])
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se pudo encontrar al aprendiz con id ${id}` })
+    } else {
+      res.status(200).send({ result })
     }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener el aprendiz' })
+  }
 }
 
 //CREAR UN NUEVO APRENDIZ
@@ -45,13 +48,13 @@ export const getApprenticeById = async (req, res) => {
  * de base de datos y envía una respuesta con un mensaje de éxito o un mensaje de error.
  */
 export const createApprentices = async (req, res) => {
-    const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
-    try {
+  const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
+  try {
     await pool.query('INSERT INTO aprendices (nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha])
     res.status(201).send({ message: 'Aprendiz creado exitosamente' })
-    } catch (error) {
+  } catch (error) {
     res.status(500).send({ message: 'Error al crear el aprenndiz' })
-    }
+  }
 }
 
 //ACTUALIZAR UN APRENDIZ
@@ -60,18 +63,28 @@ export const createApprentices = async (req, res) => {
  * la identificación proporcionada.
  */
 export const updateApprentice = async (req, res) => {
-    const { id } = req.params;
-    const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body;
-    try {
-        const [result] = await pool.query('UPDATE aprendices SET nombres_aprendiz=?, apellidos_aprendiz=?, numero_documento_aprendiz=?, email_aprendiz_sena=?, email_aprendiz_personal=?, celular_aprendiz=?, id_documento=?, id_ficha=? WHERE id_aprendiz=?', [nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha, id]);
-        if (result.affectedRows === 0) {
-            res.status(404).send({ message: `No se pudo encontrar al aprendiz con id ${id}` })
-        } else {
-            res.status(200).send({ message: `Aprendiz con id ${id} actualizado exitosamente` })
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al actualizar el aprendiz' })
+  const { id } = req.params
+  const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
+  try {
+    const [result] = await pool.query('UPDATE aprendices SET nombres_aprendiz=?, apellidos_aprendiz=?, numero_documento_aprendiz=?, email_aprendiz_sena=?, email_aprendiz_personal=?, celular_aprendiz=?, id_documento=?, id_ficha=? WHERE id_aprendiz=?', [
+      nombres_aprendiz,
+      apellidos_aprendiz,
+      numero_documento_aprendiz,
+      email_aprendiz_sena,
+      email_aprendiz_personal,
+      celular_aprendiz,
+      id_documento,
+      id_ficha,
+      id,
+    ])
+    if (result.affectedRows === 0) {
+      res.status(404).send({ message: `No se pudo encontrar al aprendiz con id ${id}` })
+    } else {
+      res.status(200).send({ message: `Aprendiz con id ${id} actualizado exitosamente` })
     }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al actualizar el aprendiz' })
+  }
 }
 
 //ELIMINAR UN APRENDIZ
@@ -80,15 +93,15 @@ export const updateApprentice = async (req, res) => {
  * de datos en función de su ID.
  */
 export const deleteApprentice = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const [result] = await pool.query('DELETE FROM aprendices WHERE id_aprendiz = ?', [id]);
-        if (result.affectedRows === 0) {
-            res.status(404).send({ message: `No se pudo encontrar al aprendiz con id ${id}` })
-        } else {
-            res.status(200).send({ message: `Aprendiz con id ${id} eliminado exitosamente` })
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al eliminar el aprendiz' })
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('DELETE FROM aprendices WHERE id_aprendiz = ?', [id])
+    if (result.affectedRows === 0) {
+      res.status(404).send({ message: `No se pudo encontrar al aprendiz con id ${id}` })
+    } else {
+      res.status(200).send({ message: `Aprendiz con id ${id} eliminado exitosamente` })
     }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al eliminar el aprendiz' })
+  }
 }

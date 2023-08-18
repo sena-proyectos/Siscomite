@@ -26,7 +26,7 @@ const Groups = () => {
     getFicha()
   }, [fichas])
 
-  const itemsPerPage = 6
+  const itemsPerPage = 9
   const [activePage, setActivePage] = useState(1)
 
   const handlePageChange = (pageNumber) => {
@@ -35,6 +35,7 @@ const Groups = () => {
 
   const startIdx = (activePage - 1) * itemsPerPage
   const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage)
+  const totalPages = Math.ceil(fichas.length / itemsPerPage);
 
   const [modalGroups, setModalGroups] = useState(false)
   const modalAddGroups = () => {
@@ -53,7 +54,7 @@ const Groups = () => {
               <Search placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className="flex flex-wrap justify-center gap-8 ">
+          <section className="flex flex-wrap align-center justify-center gap-8 studentsstyle">
             {visibleCards.map((card) => (
               <Link to={`/students/${card.id_ficha}`} key={card.id_ficha}>
                 <Card
@@ -75,7 +76,7 @@ const Groups = () => {
             ))}
           </section>
           <section className="grid place-items-center">
-            <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={'primary'} totalitemscount={fichas.length} onChange={handlePageChange} />
+            <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
             <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative">+</button>
