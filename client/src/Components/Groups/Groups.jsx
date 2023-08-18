@@ -82,11 +82,11 @@ const Groups = () => {
               ))}
             
           </section>
-          <section className="grid place-items-center">
-            <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalitemscount={cardData.length} onChange={handlePageChange} />
+          <section className="grid place-items-center w-full">
+            <Pagination className="bottom-7 fixed" total={10} initialPage={1} color={"primary"} totalitemscount={cardData.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
-            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative">+</button>
+            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>
           </section>
           <Footer />
         </section>

@@ -47,33 +47,33 @@ const Sliderbar = () => {
       <section className="pages absolute top-[35%]  w-full flex justify-center">
         <ul className="p-0">
           <Link to={"/home"} className="line">
-            <li className="relative mb-[15px] rounded-xl">
+            <li className="relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]">
               <i className={`fi fi-rr-home ${isActiveRoute(location.pathname, "/home") ? "text-red-500" : ""}`} title="Inicio" />
               <span className="slideText ml-[10px]">Inicio</span>
             </li>
           </Link>
 
           <Link to={"/requests"} className="line">
-            <li className="relative mb-[15px] rounded-xl ">
+            <li className="relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]">
               <i className={`fi fi-rs-file ${isActiveRoute(location.pathname, "/requests") ? "text-red-500" : ""}`} title="Solicitudes" />
               <span className="slideText ml-[10px]"> Solicitudes </span>
             </li>
           </Link>
 
           <Link className="line" to={"/create"}>
-            <li className="relative mb-[15px] rounded-xl ">
+            <li className="relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]">
               <i className={`fi fi-rs-add-document ${isActiveRoute(location.pathname, "/create") ? "text-red-500" : ""}`} title="Crear solicitud" />
               <span className="slideText ml-[10px]">Crear solicitud</span>
             </li>
           </Link>
           <Link className="line" to={"/groups"}>
-            <li className="relative mb-[15px] rounded-xl ">
+            <li className="relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]">
               <i className={`fi fi-rr-users ${isActiveRoute(location.pathname, "/groups") ? "text-red-500" : ""}`} title="Fichas" />
               <span className="slideText ml-[10px]">Fichas</span>
             </li>
           </Link>
           <Link className="line" to={"/rules"}>
-            <li className="relative mb-[15px] rounded-xl ">
+            <li className="relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]">
               <i className={`fi fi-rs-document ${isActiveRoute(location.pathname, "/rules") ? "text-red-500" : ""}`} title="Reglamento" />
               <span className="slideText ml-[10px]">Reglamento</span>
             </li>
@@ -83,12 +83,12 @@ const Sliderbar = () => {
       <section className="absolute bottom-[0.5em]">
         <ul className="p-0 flex flex-col items-center justify-end mb-[20px]">
           <Link className="line">
-            <li className=" mb-[15px]">
+            <li className=" relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]">
               <i className="fi fi-rr-gears" id="icon" title="Configuración" />
               <span className="slideText ml-[10px]">Configuración</span>
             </li>
           </Link>
-          <li className="part" onClick={logout}>
+          <li className="part relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]" onClick={logout}>
             <i className="fi fi-rs-exit" id="icon" title="Cerrar sesión" />
             <span className="slideText ml-[10px] cursor-pointer">Cerrar sesión</span>
           </li>

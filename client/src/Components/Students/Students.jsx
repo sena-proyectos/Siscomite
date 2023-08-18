@@ -1,10 +1,12 @@
 import "./Students.css";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Search } from "../Search/Search";
-import { Card, CardHeader, CardBody, CardFooter, Avatar, Button } from "@nextui-org/react";
+import { Link } from "react-router-dom";
+import { Card, CardHeader, CardBody } from "@nextui-org/react";
 import { Footer } from "../Footer/Footer";
 import React, { useState } from "react";
 import { Pagination } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { Modal } from "../Utils/Modal/Modal";
 
 const Students = () => {
@@ -76,17 +78,24 @@ const Students = () => {
         <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
-              <Search placeholder={"Buscar soicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={"Buscar aprendiz"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className=" relative grid justify-end px-[4.5rem] py-0">
-            <p className="font-semibold text-lg ">Análisis y desarrollo de software</p>
-            <p className="grid justify-end ">2473196</p>
+          <section className=" flex justify-between  px-[4rem] ">
+            <Link to={"/groups"}>
+              <Button color="primary" variant="flat" className="">
+                <i className="fi fi-rr-arrow-left mt-[.5rem]"></i>Volver
+              </Button>
+            </Link>
+            <section>
+              <p className="font-semibold text-lg ">Análisis y desarrollo de software</p>
+              <p className="flex justify-end">2473196</p>
+            </section>
           </section>
-          <section className="flex flex-wrap gap-5 items-center justify-center p- ">
+          <section className="grid grid-cols-3 gap-6 items-center justify-center px-[1rem] ">
             {currentItems.map((item) => {
               return (
-                <Card className="w-[340px] z-0 shadow-lg" onClick={infoStudent} key={item.title}>
+                <Card className="w-full z-0 shadow-lg" onClick={infoStudent} key={item.title}>
                   <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
                     <div className="flex gap-5 ">
                       <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
@@ -107,11 +116,11 @@ const Students = () => {
             })}
           </section>
 
-          <section className="grid place-items-center">
-            <Pagination className="py-[2rem] z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={cards.length} onChange={handlePageChange} />
+          <section className="grid place-items-center w-full  ">
+            <Pagination className="bottom-7 fixed" total={10} initialPage={1} color={"primary"} totalItemsCount={cards.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8">
-            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative cursor-pointer outline-none border-none add" onClick={modalAdd}>
+            <button className="w-[60px] h-[60px] rounded-full text-white shadow-2xl text-3xl bg-[#2e323e] relative cursor-pointer outline-none border-none add" onClick={modalAdd}>
               +
             </button>
           </section>
