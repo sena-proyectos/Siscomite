@@ -1,13 +1,14 @@
 import './Students.css'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Search } from '../Search/Search'
-import { Card, CardHeader, CardBody, CardFooter, Avatar, Button } from '@nextui-org/react'
+import { Card, CardHeader, CardBody } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import React, { useEffect, useState } from 'react'
 import { Pagination } from '@nextui-org/react'
 import { Modal } from '../Utils/Modal/Modal'
+import { Button } from '@nextui-org/react'
 
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { getApprenticesByIdFicha } from '../../api/httpRequest'
 
 const Students = () => {
@@ -88,11 +89,18 @@ const Students = () => {
               <Search placeholder={'Buscar soicitud'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className=" relative grid justify-end px-[4.5rem] py-0">
-            <p className="font-semibold text-lg">Análisis y desarrollo de software</p>
-            <p className="grid justify-end ">2473196</p>
+          <section className=" flex justify-between  px-[4rem] ">
+            <Link to={'/groups'}>
+              <Button color="primary" variant="flat" className="">
+                <i className="fi fi-rr-arrow-left mt-[.5rem]"></i>Volver
+              </Button>
+            </Link>
+            <section>
+              <p className="font-semibold text-lg ">Análisis y desarrollo de software</p>
+              <p className="flex justify-end">2473196</p>
+            </section>
           </section>
-          <section className="grid grid-cols-3 gap-6 items-center justify-center px-[1rem]">
+          <section className="grid grid-cols-3 gap-6 items-center justify-center px-[1rem] ">
             {message ? (
               <h1>{message}</h1>
             ) : (

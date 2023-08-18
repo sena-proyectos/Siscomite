@@ -224,7 +224,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
+                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
                       <option value="">Jornada</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
@@ -233,14 +233,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
+                    <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
                       <option value="">Etapa</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
+                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
                       <option value="">Trimestre lectivo</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -250,20 +250,20 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <option value="6">6</option>
                     </select>
                   </section>
-                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
+                  <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
                     <option value="">Modalidad</option>
                     <option value="1">Presencial</option>
                     <option value="2">Virtual</option>
                     <option value="3">Media técnica</option>
                     <option value="4">A distancia</option>
                   </select>
-                  <section className="relative">
+                </section>
+                  <section className="relative grid place-items-center mt-[1rem]">
                     <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataFichas}>
                       <p className="tracking-wide text-15px">Guardar</p>
                       <i className="fi fi-br-check text-[15px]" />
                     </Button>
                   </section>
-                </section>
               </section>
             )}
             {/* Ver detalles Solicitudes */}
