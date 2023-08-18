@@ -38,8 +38,7 @@ const Students = () => {
   const indexOfLastItem = activePage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = apprentices && apprentices.length > 0 ? apprentices.slice(indexOfFirstItem, indexOfLastItem) : []
-  const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage);
-
+  const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
 
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
@@ -125,7 +124,7 @@ const Students = () => {
             <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8">
-            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative cursor-pointer outline-none border-none add" onClick={modalAdd}>
+            <button className="w-[60px] h-[60px] rounded-full text-white shadow-2xl text-3xl bg-[#2e323e] relative cursor-pointer outline-none border-none add" onClick={modalAdd}>
               +
             </button>
           </section>

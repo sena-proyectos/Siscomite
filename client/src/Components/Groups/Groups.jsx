@@ -35,7 +35,7 @@ const Groups = () => {
 
   const startIdx = (activePage - 1) * itemsPerPage
   const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage)
-  const totalPages = Math.ceil(fichas.length / itemsPerPage);
+  const totalPages = Math.ceil(fichas.length / itemsPerPage)
 
   const [modalGroups, setModalGroups] = useState(false)
   const modalAddGroups = () => {
@@ -44,7 +44,17 @@ const Groups = () => {
 
   return (
     <>
-      {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={<section className="text-2xl font-semibold"><i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas</section>} />}
+      {modalGroups && (
+        <Modal
+          modalAddGroups
+          cerrarModal={modalAddGroups}
+          titulo={
+            <section className="text-2xl font-semibold">
+              <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
+            </section>
+          }
+        />
+      )}
 
       <main className="flex h-screen">
         <Sliderbar />
@@ -66,7 +76,7 @@ const Groups = () => {
                     </section>
                   }
                   backContent={
-                    <ul className='list'>
+                    <ul className="list">
                       <li className="relative top-3 left-4 listItem">{card.jornada}</li>
                       <li className="relative top-3 left-4 listItem">{card.etapa_programa}</li>
                     </ul>
@@ -75,11 +85,11 @@ const Groups = () => {
               </Link>
             ))}
           </section>
-          <section className="grid place-items-center">
-            <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
+          <section className="grid place-items-center w-full">
+            <Pagination className="bottom-7 fixed" total={10} initialPage={1} color={'primary'} totalitemscount={cardData.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
-            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-2xl bg-[#2e323e] relative">+</button>
+            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>
           </section>
           <Footer />
         </section>
@@ -89,11 +99,3 @@ const Groups = () => {
 }
 
 export { Groups }
-
-const SkeletonLoading = () => {
-  return (
-    <div>
-      <Skeleton width={'100%'} height={'100%'} />
-    </div>
-  )
-}
