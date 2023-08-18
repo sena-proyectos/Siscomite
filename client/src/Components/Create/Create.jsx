@@ -193,7 +193,7 @@ const Create = () => {
                             <li>{item.numero_documento}</li>
                             <li>{item.nombres + ' ' + item.apellidos}</li>
                             <li>
-                              <i class="fi fi-rr-user-add text-green-500 text-[1rem]"></i>
+                              <i className="fi fi-rr-user-add text-green-500 text-[1rem]"></i>
                             </li>
                           </React.Fragment>
                         </ul>
@@ -218,7 +218,7 @@ const Create = () => {
                             <li>{item.numero_documento_aprendiz}</li>
                             <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
-                              <i class="fi fi-rr-user-add text-green-500 text-[1rem]"></i>
+                              <i className="fi fi-rr-user-add text-green-500 text-[1rem]"></i>
                             </li>
                           </React.Fragment>
                         </ul>
@@ -229,7 +229,7 @@ const Create = () => {
                             <li>{item.numero_documento_aprendiz}</li>
                             <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
-                              <i class="fi fi-br-remove-user text-red-500 text-[1rem]"></i>
+                              <i className="fi fi-br-remove-user text-red-500 text-[1rem]"></i>
                             </li>
                           </React.Fragment>
                         </ul>
