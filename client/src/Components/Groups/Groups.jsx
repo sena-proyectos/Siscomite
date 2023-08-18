@@ -64,7 +64,7 @@ const Groups = () => {
               <Search placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className="flex flex-wrap align-center justify-center gap-8 studentsstyle">
+          <section className="flex flex-wrap align-center justify-center gap-8 h-[69vh]">
             {visibleCards.map((card) => (
               <Link to={`/students/${card.id_ficha}`} key={card.id_ficha}>
                 <Card
@@ -85,8 +85,8 @@ const Groups = () => {
               </Link>
             ))}
           </section>
-          <section className="grid place-items-center w-full">
-            <Pagination className="bottom-7 fixed" total={10} initialPage={1} color={'primary'} totalitemscount={cardData.length} onChange={handlePageChange} />
+          <section className="grid place-items-center">
+            <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
             <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>
@@ -99,3 +99,11 @@ const Groups = () => {
 }
 
 export { Groups }
+
+const SkeletonLoading = () => {
+  return (
+    <div>
+      <Skeleton width={'100%'} height={'100%'} />
+    </div>
+  )
+}

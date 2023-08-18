@@ -77,7 +77,6 @@ const Create = () => {
     const infoUser = Cookie.get('token')
     const decoded = jwtDecode(infoUser)
     setUserID(decoded.id_usuario)
-    // console.log("hola");
   }, [])
 
   const sendData = () => {
@@ -98,7 +97,6 @@ const Create = () => {
   }
 
   const handleUserClick = async (userId) => {
-    // console.log('ID del aprendiz:', userId)
     try {
       const response = await getApprenticesById(userId)
       const res = response.data.result

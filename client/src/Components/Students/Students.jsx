@@ -92,13 +92,13 @@ const Students = () => {
             <p className="font-semibold text-lg">Análisis y desarrollo de software</p>
             <p className="grid justify-end ">2473196</p>
           </section>
-          <section className="flex flex-wrap gap-5 items-center justify-center p-2 studentsstyle">
+          <section className="grid grid-cols-3 gap-6 items-center justify-center px-[1rem]">
             {message ? (
               <h1>{message}</h1>
             ) : (
               <>
                 {currentItems.map((item) => (
-                  <Card className="w-[340px] z-0 shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
+                  <Card className="w-full z-0 shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
                     <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
                       <div className="flex gap-5">
                         <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>

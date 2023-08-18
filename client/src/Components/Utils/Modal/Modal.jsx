@@ -69,10 +69,6 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
       }
-      if (dataValue.id_modalidad === 'Presencial') dataValue.id_modalidad = '1'
-      if (dataValue.id_modalidad === 'Virtual') dataValue.id_modalidad = '2'
-      if (dataValue.id_modalidad === 'Media técnica') dataValue.id_modalidad = '3'
-      if (dataValue.id_modalidad === 'A distancia') dataValue.id_modalidad = '4'
 
       const response = await createFicha(dataValue)
       const res = response.data.message
@@ -256,10 +252,10 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
                     <option value="">Modalidad</option>
-                    <option value="Presencial">Presencial</option>
-                    <option value="Media_tecnica">Media técnica</option>
-                    <option value="A distancia">A distancia</option>
-                    <option value="Virtual">Virtual</option>
+                    <option value="1">Presencial</option>
+                    <option value="2">Virtual</option>
+                    <option value="3">Media técnica</option>
+                    <option value="4">A distancia</option>
                   </select>
                   <section className="relative">
                     <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataFichas}>
