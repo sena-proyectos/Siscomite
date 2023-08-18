@@ -108,8 +108,8 @@ const Students = () => {
             ) : (
               <>
                 {currentItems.map((item) => (
-                  <Card className="w-[340px] z-0 shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
-                    <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
+                  <Card className="w-full shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
+                    <CardHeader onClick={infoStudent} className="justify-between pb-0 z-0 cursor-pointer">
                       <div className="flex gap-5">
                         <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
                         <div className="flex flex-col gap-1 items-start justify-center">

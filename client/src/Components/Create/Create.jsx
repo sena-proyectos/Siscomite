@@ -9,6 +9,7 @@ import { RadioGroup, Radio } from "@nextui-org/react";
 import { Tabs, Tab, Card, CardBody, CardHeader } from "@nextui-org/react";
 import { Textarea } from "@nextui-org/react";
 import { Search } from "../Search/Search";
+import {CheckboxGroup, Checkbox} from "@nextui-org/react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import { getTeacherByName, getApprenticesByName, getApprenticesById } from "../../api/httpRequest";
 
@@ -179,7 +180,7 @@ const Create = () => {
           </section>
         </header>
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
-          <section className="w-[85%] ml-[3rem]">
+          <section className="w-[85%] ml-[3rem] h-full ">
             <section className=" relative ">
               <Search className="relative " placeholder={"Buscar Instructor"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
@@ -205,7 +206,7 @@ const Create = () => {
                 </section>
               </section>
             </section>
-            <section className="relative top-[1rem]">
+            <section className="relative top-[1rem] ">
               <Search className="relative w-[100%]  " placeholder={"Buscar aprendiz"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl">
                 <h3 className="text-white grid justify-center">Aprendices</h3>
@@ -262,13 +263,14 @@ const Create = () => {
                   <Tab key={item.id} title={item.label}>
                     <Card className="overflow-auto h-[25rem] ">
                       <CardBody className="gap-1">
-                        {/* <CheckboxGroup >
-                          <Checkbox value="rules">{item.content}</Checkbox>
-                        </CheckboxGroup> */}
-                        <label htmlFor="">
-                          <input type="checkbox" className="rounded-full" />
+                        <CheckboxGroup  >
+                          <Checkbox value="rules"  className="flex  items-start">{item.content}</Checkbox>
+                          <Checkbox value="tati"  className="flex  items-start">{item.content}</Checkbox>
+                        </CheckboxGroup>
+                        {/* <label htmlFor="">
+                          <input type="checkbox" className="rounded-full " />
                           {item.content}
-                        </label>
+                        </label> */}
                       </CardBody>
                     </Card>
                   </Tab>
@@ -276,13 +278,12 @@ const Create = () => {
               </Tabs>
             </div>
           </section>
-
-          <section className=" grid place-items-center relative top-[2rem] ">
-            <Button className="" size="md" color="primary" onClick={sendData}>
-              Enviar
-              <i className="fi fi-br-check"></i>
-            </Button>
-          </section>
+        </section>
+        <section className="grid place-items-center relative top-[2rem] ">
+          <Button className="" size="md" color="primary" onClick={sendData}>
+            Enviar
+            <i className="fi fi-br-check"></i>
+          </Button>
         </section>
         <Footer />
       </section>
