@@ -19,6 +19,7 @@ function App() {
       <Route path="/requests" element={<Requests />} />
       <Route path="/create" element={<Create />} />
       <Route path="/groups" element={<Groups />} />
+      <Route path="/rules" element={<Rules />} />
     </Routes>
   )
 }

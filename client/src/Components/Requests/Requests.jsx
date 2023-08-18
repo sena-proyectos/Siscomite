@@ -63,18 +63,18 @@ const Requests = () => {
 
   return (
     <>
-      {modalRequest && <Modal modalDetails cerrarModal={modalDetails} titulo={ <section className="font-semibold text-2xl"><i class="fi fi-rr-file-circle-info text-gray-500 px-3"></i>Detalle de solicitud </section>} />}
-      {modalRequestEdit && <Modal modalDetailsEdit cerrarModal={modalDetailsEdit} titulo={<section className="font-semibold text-2xl"><i class="fi fi-rr-refresh text-green-500 px-3"/>Editar información</section>} />}
+      {modalRequest && <Modal modalDetails cerrarModal={modalDetails} titulo={ <section className="font-semibold text-2xl"><i className="fi fi-rr-file-circle-info text-gray-500 px-3"></i>Detalle de solicitud </section>} />}
+      {modalRequestEdit && <Modal modalDetailsEdit cerrarModal={modalDetailsEdit} titulo={<section className="font-semibold text-2xl"><i className="fi fi-rr-refresh text-green-500 px-3"/>Editar información</section>} />}
 
       <main className="h-screen flex">
         <Sliderbar />
-        <section className="w-full ">
+        <section className="w-full overflow-auto ">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
-              <Search placeholder={"Buscar soicitud"} icon={<i class="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={"Buscar soicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className="px-[2rem] top-[1.5rem] relative mr-auto">
+          <section className="px-[2rem] top-[.5rem] relative mr-auto">
             <Table>
               <TableHeader>
                 <TableColumn>N°</TableColumn>
@@ -91,8 +91,8 @@ const Requests = () => {
                     <TableCell>{item.date}</TableCell>
                     <TableCell className={` flex justify-center items-center w-[5.5rem] py-[0] relative top-[.5rem] ${getStatusColorClass(item.value)}`}>{item.value}</TableCell>
                     <TableCell>
-                      <i class="fi fi-rr-edit px-3 text-xl cursor-pointer hover:text-yellow-300" onClick={modalDetailsEdit}/>
-                      <i class="fi fi-rs-eye text-xl cursor-pointer  hover:text-green-600 active:opacity-50" onClick={modalDetails}/>
+                      <i className="fi fi-rr-edit px-3 text-xl cursor-pointer hover:text-yellow-300" onClick={modalDetailsEdit}/>
+                      <i className="fi fi-rs-eye text-xl cursor-pointer  hover:text-green-600 active:opacity-50" onClick={modalDetails}/>
                     </TableCell>
                   </TableRow>
                 ))}

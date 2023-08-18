@@ -118,8 +118,8 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="relative  py-[1rem] overflow-auto h-[25rem] ">
-                <section className="relative grid grid-cols-2 gap-10 justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
+              <section className="relative h-[25rem] ">
+                <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                       <Input size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
@@ -215,8 +215,8 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             )}
             {/* Agregar Fichas */}
             {modalAddGroups && (
-              <section className="modalGruop ">
-                <section className="relative flex flex-wrap justify-center top-5 gap-x-7 gap-y-6">
+              <section className="mt-[2rem]">
+                <section className="relative grid grid-cols-2 justify-center gap-8">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                       <Input size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
@@ -267,7 +267,6 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <i className="fi fi-br-check text-[15px]" />
                     </Button>
                   </section>
-                </section>
               </section>
             )}
             {/* Ver detalles Solicitudes */}
@@ -326,25 +325,25 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                         <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Nombre" defaultValue="Juan Manuel " isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Apellido" defaultValue="Robledo Sanchez" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Tipo  documento" defaultValue="Tarjeta identidad" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Documento" defaultValue="2345434" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Correo" defaultValue="juan@soy.sena.edu.co" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Número" defaultValue="344555553" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Ficha" defaultValue="2373196" isReadOnly />
                         </div>
-                        <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Programa" defaultValue="Análisis y Desarrollo de Software" isReadOnly />
                         </div>
                       </section>

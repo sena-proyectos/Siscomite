@@ -81,7 +81,7 @@ export const Login = () => {
               />
             </div>
 
-            <p className="text-sm">¿Olvidaste tu contraseña?</p>
+            <p className="text-sm cursor-pointer">¿Olvidaste tu contraseña?</p>
             <button className="bg-[#3c3c3c] text-white w-full cursor-pointer rounded-md font-light text-xs py-3" disabled={isLoading}>
               {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
               {isLoading ? "Cargando..." : "Iniciar sesión"}

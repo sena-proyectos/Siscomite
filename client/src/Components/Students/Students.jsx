@@ -120,6 +120,7 @@ const Students = () => {
               </>
             )}
           </section>
+
           <section className="grid place-items-center">
             <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
