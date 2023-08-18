@@ -14,13 +14,13 @@ const Home = () => {
   ];
 
   return (
-    <main className="flex flex-row h-screen">
+    <main className="flex h-screen w-ful">
       <Sliderbar />
-      <section className="justify-center h-screen  w-full">
-        <header className="p-8 grid place-items-center text-[23px]">
-          <h1 className="w-80 grid place-items-center border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
+      <section className="w-full  overflow-auto">
+        <header className="p-8 flex justify-center text-[23px]">
+          <h1 className=" text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
         </header>
-        <section className="h-[80vh] flex-wrap flex items-center justify-center gap-x-20">
+        <section className="flex-wrap flex items-center justify-center gap-20">
           {data.map((x, i) => (
             <Link to={x.Link} key={i}>
               <section className="h-[28%] text-black cardHome" style={{ transition: "0.4s ease-in-out" }}>
@@ -37,12 +37,4 @@ const Home = () => {
 
 export { Home };
 
-const SkeletonCard = () => (
-  <section className="w-44 h-44 relative">
-    <Skeleton className="w-full h-full rounded-lg shadow-lg" />
-    <section className="bg-[#ffffffcc] h-3/6 absolute -bottom-1 z-10 w-full flex flex-col  justify-center px-4 rounded-b-[10px]">
-      <Skeleton />
-      <Skeleton height={13} />
-    </section>
-  </section>
-);
+

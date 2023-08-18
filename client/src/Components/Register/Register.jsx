@@ -66,7 +66,7 @@ export const Register = () => {
       <section className="flex items-center justify-center w-full h-screen" style={{ animation: 'show 0.8s ease-in-out' }}>
         <form className="relative grid p-4 rounded-xl bg-white shadow-md text-center place-items-center " onSubmit={sendData}>
           <h2 className="font-semibold text-[1.5rem]">Crear una cuenta</h2>
-          <section className="relative w-[90%] top-[1rem] grid gap-8  ">
+          <section className="relative w-[90%] top-[1.5rem] grid gap-8  ">
             <section className="w-full flex justify-between gap-2">
               <div className="flex flex-wrap items-end w-full gap-4 mb-6 p md:flex-nowrap md:mb-0">
                 <Input type="text" label="Nombre" labelPlacement={'outside'} autoComplete="off" value={nombres} onChange={(e) => setNombres(e.target.value)} />

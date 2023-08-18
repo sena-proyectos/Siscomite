@@ -10,8 +10,9 @@ import React from 'react'
 import { transform } from 'framer-motion'
 
 export const Login = () => {
-  const numero_documento = useRef()
-  const contrasena = useRef()
+  const [numeroDocumento, setNumeroDocumento] = useState('')
+  const [contrasena, setContrasena] = useState('')
+
   const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
   const [error, setError] = useState(null) // Estado para manejar los errores
   const navigate = useNavigate()
@@ -22,8 +23,8 @@ export const Login = () => {
     setIsLoading(true)
 
     const dataValue = {
-      numero_documento: numero_documento.current.value,
-      contrasena: contrasena.current.value,
+      numero_documento: numeroDocumento,
+      contrasena,
     }
 
     try {
@@ -53,21 +54,22 @@ export const Login = () => {
   return (
     <main className="h-screen ">
       <section className="absolute top-11 left-11 " style={{ animation: 'show 0.8s ease-in-out' }}>
-        <img src="/image/logoSena.webp" alt="Sena" className="w-[4rem]" />
+        <img src="image/logoSena.webp" alt="Sena" className="w-[4rem]" />
       </section>
       {error && <Toast message={error} typeToast={'error'} onClose={closed} />}
-      <section className="grid h-screen place-items-center " style={{ animation: 'show 0.8s ease-in-out' }}>
+      <section className="grid place-items-center  h-screen " style={{ animation: 'show 0.8s ease-in-out' }}>
         <form className="relative w-[400px] bg-white  p-[1rem] rounded-xl grid text-center shadow-lg place-items-center" onSubmit={sendData}>
           <h2 className="text-[1.5rem] font-bold mb-7">Iniciar Sesión</h2>
           <section className="grid w-[80%] gap-8  ">
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-              <Input type="text" label="Número documento" labelPlacement={'outside'} autoComplete="off" ref={numero_documento} />
+              <Input type="text" label="Número documento" labelPlacement={'outside'} autoComplete="off" value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
             </div>
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
               <Input
                 label="Contraseña"
                 autoComplete="off"
-                ref={contrasena}
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
                 labelPlacement={'outside'}
                 endContent={
                   <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
@@ -79,7 +81,7 @@ export const Login = () => {
               />
             </div>
 
-            <p className="text-sm">¿Olvidaste tu contraseña?</p>
+            <p className="text-sm cursor-pointer">¿Olvidaste tu contraseña?</p>
             <button className="bg-[#3c3c3c] text-white w-full cursor-pointer rounded-md font-light text-xs py-3" disabled={isLoading}>
               {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
               {isLoading ? 'Cargando...' : 'Iniciar sesión'}

@@ -27,9 +27,25 @@ export const getTeacherByName = (nombres) => {
   return response
 }
 
-/* Get apprentices by name */
+/* Get user by name */
 export const getApprenticesByName = (nombres) => {
   const URL = `${BaseUrl}${api}/searchUser?nombres=${nombres}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* Get appretices by id_ficha */
+export const getApprenticesByIdFicha = (idFicha) => {
+  const URL = `${BaseUrl}${api}/aprendices?idFicha=${idFicha}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* Get apprentices by ID */
+export const getApprenticesById = (userId) => {
+  const URL = `${BaseUrl}${api}/aprendiz/${userId}`
   const response = axios.get(URL)
 
   return response
@@ -39,7 +55,7 @@ export const getApprenticesByName = (nombres) => {
 export const createRequest = (data) => {
   const URL = `${BaseUrl}${api}/createSolicitud`
   const response = axios.post(URL, data)
-
+  
   return response
 }
 
@@ -47,7 +63,7 @@ export const createRequest = (data) => {
 export const login = (data) => {
   const URL = `${BaseUrl}${api}/login`
   const response = axios.post(URL, data)
-
+  
   return response
 }
 
@@ -55,6 +71,32 @@ export const login = (data) => {
 export const register = (data) => {
   const URL = `${BaseUrl}${api}/register`
   const response = axios.post(URL, data)
+  
+  return response
+}
+
+/* Create ficha */
+export const createFicha = (data) => {
+  const URL = `${BaseUrl}${api}/createFicha`
+  const response = axios.post(URL, data)
+  
+  return response
+}
+
+/* get fichas */
+export const getFichas = () => {
+  const URL = `${BaseUrl}${api}/fichas`
+  const response = axios.get(URL)
 
   return response
 }
+
+/* Create apprentices */
+export const createApprentices = (data) => {
+  const URL = `${BaseUrl}${api}/createAprendices`
+  const response = axios.post(URL, data)
+  
+  return response
+}
+
+
