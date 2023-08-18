@@ -1,4 +1,4 @@
-import "./Card.css";
+import './Card.css'
 
 export const Card = ({ title, descripciónHome, titleHome, descripción, image, icon, flip = false, header = false, click, inside = false, frontContent, backContent }) => {
   return (
@@ -18,7 +18,7 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
               <span className="object-contain w-44">
                 <img className="fondoCard" src={image} alt="Imágen" loading="lazy" />
               </span>
-              <div className="w-full h-auto absolute top-[90.5%] left-1/2 rounded-b-[10px] bg-[#ffffffcc] shadow-lg p-4" style={{ transform: "translate(-50%, -50%)" }}>
+              <div className="w-full h-auto absolute top-[90.5%] left-1/2 rounded-b-[10px] bg-[#ffffffcc] shadow-lg p-4" style={{ transform: 'translate(-50%, -50%)' }}>
                 <h4>{titleHome}</h4>
                 <p className="bodyText">{descripciónHome}</p>
               </div>
@@ -31,17 +31,11 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
           <section className="card_flip">
             <section className="front ">{frontContent}</section>
             <section className="border-2 border-blue-200 back ">
-              <ul className="list">
-                {backContent.map((item, index) => (
-                  <li key={index} className="listItem ">
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <ul className="list">{backContent}</ul>
             </section>
           </section>
         )}
       </section>
     </main>
-  );
-};
+  )
+}

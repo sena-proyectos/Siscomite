@@ -11,8 +11,9 @@ import { pool } from "../db.js";
  * cliente. Es una instancia del objeto de respuesta Express.
  */
 export const getApprentices = async (req, res) => {
+    const {idFicha} = req.query
     try {
-        const [result] = await pool.query('SELECT * FROM aprendices');
+        const [result] = await pool.query('SELECT * FROM aprendices WHERE id_ficha = ?', [idFicha]);
         res.status(200).send({ result })
     } catch (error) {
         res.status(500).send({ message: 'Error al listar los aprendices' })

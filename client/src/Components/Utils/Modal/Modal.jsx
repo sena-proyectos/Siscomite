@@ -1,41 +1,78 @@
-import "./Modal.css";
-import React, { useState } from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
-import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
-import { Input } from "@nextui-org/react";
-import { Textarea } from "@nextui-org/react";
-import { Accordion, AccordionItem } from "@nextui-org/react";
-
+import './Modal.css'
+import React, { useState } from 'react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
+import { Popover, PopoverTrigger, PopoverContent } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
+import { Textarea } from '@nextui-org/react'
+import { Accordion, AccordionItem } from '@nextui-org/react'
+import { createFicha } from '../../../api/httpRequest'
+import { useNavigate } from 'react-router-dom'
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false }) => {
   const closeModal = () => {
-    cerrarModal();
-  };
+    cerrarModal()
+  }
+
+  const [numeroFicha, setNumeroFicha] = useState('')
+  const [nombrePrograma, setNombrePrograma] = useState('')
+  const [jornada, setJornada] = useState('')
+  const [etapaPrograma, setEtapaPrograma] = useState('')
+  const [numeroTrimestre, setNumeroTrimestre] = useState('')
+  const [idModalidad, setIdmodalidad] = useState('')
+
+  const navigate = useNavigate()
 
   //Condiciones de agregar ficha
-  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
+  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
 
   const handleEtapaChange = (event) => {
-    const selectedValue = event.target.value;
-    setIsTrimestreEnabled(selectedValue === "lectiva");
-  };
+    const selectedValue = event.target.value
+    setEtapaPrograma(selectedValue)
+    setIsTrimestreEnabled(selectedValue === 'lectiva')
+  }
 
   // Dropdown detalles de solicitud
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Estado"]));
-  const selectedValueDetails = React.useMemo(() => Array.from(selectedKeys).join(", ").replaceAll("_", " "), [selectedKeys]);
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Estado']))
+  const selectedValueDetails = React.useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
 
   const getStatusColorClass = (status) => {
     const statusColorMap = {
-      Aprobado: "bg-green-200 text-success rounded-2xl", // Clase CSS para aprobado
-      Rechazado: "bg-red-200 text-danger rounded-2xl", // Clase CSS para rechazado
-      Pendiente: "bg-yellow-200 text-warning rounded-2xl", // Clase CSS para pendiente
-    };
-    return statusColorMap[status] || "text-black"; // Clase CSS por defecto (negro) si el estado no está en el mapa
-  };
+      Aprobado: 'bg-green-200 text-success rounded-2xl', // Clase CSS para aprobado
+      Rechazado: 'bg-red-200 text-danger rounded-2xl', // Clase CSS para rechazado
+      Pendiente: 'bg-yellow-200 text-warning rounded-2xl', // Clase CSS para pendiente
+    }
+    return statusColorMap[status] || 'text-black' // Clase CSS por defecto (negro) si el estado no está en el mapa
+  }
+
+  const sendData = async (e) => {
+    e.preventDefault()
+
+    try {
+      const dataValue = {
+        numero_ficha: numeroFicha,
+        nombre_programa: nombrePrograma,
+        jornada,
+        etapa_programa: etapaPrograma,
+        numero_trimestre: numeroTrimestre,
+        id_modalidad: idModalidad,
+      }
+      if (dataValue.id_modalidad === 'Presencial') dataValue.id_modalidad = '1'
+      if (dataValue.id_modalidad === 'Virtual') dataValue.id_modalidad = '2'
+      if (dataValue.id_modalidad === 'Media técnica') dataValue.id_modalidad = '3'
+      if (dataValue.id_modalidad === 'A distancia') dataValue.id_modalidad = '4'
+
+      const response = await createFicha(dataValue)
+      const res = response.data.message
+
+      cerrarModal()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
-        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] w-[35%] rounded-2xl overflow-auto" style={{ animation: "bounce 0.8s ease-in-out" }}>
+        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] w-[35%] rounded-2xl overflow-auto" style={{ animation: 'bounce 0.8s ease-in-out' }}>
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
             <i className="fi fi-br-cross relative left-[20%]" onClick={closeModal} />
@@ -47,12 +84,12 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative grid grid-cols-2 gap-10 justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Apellido" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section>
@@ -65,27 +102,27 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Documento" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo alterno" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número alterno" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Número alterno" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                 </section>
@@ -143,52 +180,50 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative flex flex-wrap justify-center top-5 gap-x-7 gap-y-6">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none">
+                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
                       <option value="">Jornada</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
                       <option value="Noche">Noche</option>
                       <option value="Noche">Fines de semana</option>
-                      <option value="Noche">Virtual</option>
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange}>
+                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
                       <option value="">Etapa</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled}>
+                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
                       <option value="">Trimestre lectivo</option>
-                      <option value="lectiva">1</option>
-                      <option value="practica">2</option>
-                      <option value="practica">3</option>
-                      <option value="practica">4</option>
-                      <option value="practica">5</option>
-                      <option value="practica">6</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
                     </select>
                   </section>
-                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required>
+                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
                     <option value="">Modalidad</option>
-                    <option value="vitual">Vitual</option>
-                    <option value="presencial">Presencial</option>
-                    <option value="media_tecnica">Media Técnica</option>
-                    <option value="distancia">A distancia</option>
-                    <option value="virtual">Virtual</option>
+                    <option value="Presencial">Presencial</option>
+                    <option value="Media_tecnica">Media técnica</option>
+                    <option value="A distancia">A distancia</option>
+                    <option value="Virtual">Virtual</option>
                   </select>
                   <section className="relative">
-                    <Button variant="shadow" color="primary" id="iconSave">
+                    <Button variant="shadow" color="primary" id="iconSave" onClick={sendData}>
                       <p className="tracking-wide text-15px">Guardar</p>
                       <i className="fi fi-br-check text-[15px]" />
                     </Button>
@@ -301,12 +336,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                             backdrop="opaque"
                             placement="top"
                             classNames={{
-                              base: "py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50",
-                              arrow: "bg-default-200",
+                              base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
+                              arrow: 'bg-default-200',
                             }}
                           >
                             <PopoverTrigger>
-                              <Button color="primary" variant="flat">Descripción caso</Button>
+                              <Button color="primary" variant="flat">
+                                Descripción caso
+                              </Button>
                             </PopoverTrigger>
                             <PopoverContent>
                               <div className="px-1 py-2">
@@ -321,12 +358,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                             backdrop="opaque"
                             placement="top"
                             classNames={{
-                              base: "py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50",
-                              arrow: "bg-default-200",
+                              base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
+                              arrow: 'bg-default-200',
                             }}
                           >
                             <PopoverTrigger>
-                              <Button color="primary" variant="flat">Descripción artículo</Button>
+                              <Button color="primary" variant="flat">
+                                Descripción artículo
+                              </Button>
                             </PopoverTrigger>
                             <PopoverContent>
                               <div className="px-1 py-2">
@@ -335,7 +374,6 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                             </PopoverContent>
                           </Popover>
                         </section>
-                        
                       </section>
                     </AccordionItem>
                   </Accordion>
@@ -362,7 +400,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                 </section>
                 <section className="w-full grid grid-cols-12  gap-4 py-4">
-                  <Textarea variant={"faded"} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-10 mb-6 md:mb-0" />
+                  <Textarea variant={'faded'} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-10 mb-6 md:mb-0" />
                 </section>
                 <section className="flex gap-4 relative py-[5px]">
                   <section className="">
@@ -384,5 +422,5 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         </section>
       </main>
     </>
-  );
-};
+  )
+}
