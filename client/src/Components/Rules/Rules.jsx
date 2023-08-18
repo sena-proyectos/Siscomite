@@ -1,5 +1,5 @@
-import { Sliderbar } from "../Sliderbar/Sliderbar";
-import { Footer } from "../Footer/Footer";
+import { Sliderbar } from '../Sliderbar/Sliderbar'
+import { Footer } from '../Footer/Footer'
 
 const Rules = () => {
   return (
@@ -11,7 +11,7 @@ const Rules = () => {
         <Footer />
       </section>
     </main>
-  );
-};
+  )
+}
 
-export { Rules };
+export { Rules }

@@ -267,6 +267,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <i className="fi fi-br-check text-[15px]" />
                     </Button>
                   </section>
+                </section>
               </section>
             )}
             {/* Ver detalles Solicitudes */}
