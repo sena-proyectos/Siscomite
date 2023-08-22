@@ -122,17 +122,17 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
+                      <Input  isRequired size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} value={apellidosAprendiz} onChange={(e) => setApellidosAprendiz(e.target.value)} />
+                      <Input  isRequired size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} value={apellidosAprendiz} onChange={(e) => setApellidosAprendiz(e.target.value)} />
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={tipoDocumento} onChange={(e) => setTipoDocumento(e.target.value)}>
-                      <option value="">Tipo de documento</option>
+                    <select   className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={tipoDocumento} onChange={(e) => setTipoDocumento(e.target.value)}>
+                      <option selected>Tipo de documento*</option>
                       <option value="1">C.C</option>
                       <option value="2">C.E</option>
                       <option value="3">T.I</option>
@@ -141,12 +141,12 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
+                      <Input  isRequired size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
+                      <Input  isRequired size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
@@ -156,7 +156,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
+                      <Input  isRequired size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
@@ -219,17 +219,17 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative grid grid-cols-2 justify-center gap-8">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
+                      <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
+                      <Input isRequired size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
-                      <option value="">Jornada</option>
+                    <select className=" bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
+                      <option selected >Jornada*</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
                       <option value="Noche">Noche</option>
@@ -238,14 +238,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section>
                     <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
-                      <option value="">Etapa</option>
+                      <option selected>Etapa*</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
                   <section>
                     <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
-                      <option value="">Trimestre lectivo</option>
+                      <option selected>Trimestre lectivo</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -255,7 +255,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </select>
                   </section>
                   <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
-                    <option value="">Modalidad</option>
+                    <option selected>Modalidad*</option>
                     <option value="Presencial">Presencial</option>
                     <option value="Media_tecnica">Media técnica</option>
                     <option value="A distancia">A distancia</option>

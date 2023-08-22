@@ -84,10 +84,10 @@ const Students = () => {
 
       <main className="flex h-screen">
         <Sliderbar />
-        <section className="w-full h-screen overflow-auto ">
+        <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
-              <Search placeholder={'Buscar soicitud'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={'Buscar aprendiz'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
 
@@ -102,7 +102,7 @@ const Students = () => {
               <p className="flex justify-end">2473196</p>
             </section>
           </section>
-          <section className="grid grid-cols-3 gap-6 items-center justify-center px-[1rem] ">
+          <section className="grid grid-cols-3 gap-6 items-center justify-center px-[1rem]">
             {message ? (
               <h1>{message}</h1>
             ) : (
@@ -138,7 +138,7 @@ const Students = () => {
               +
             </button>
           </section>
-          <section className="relative">
+          <section className="relative h-0">
             <Footer />
           </section>
         </section>
