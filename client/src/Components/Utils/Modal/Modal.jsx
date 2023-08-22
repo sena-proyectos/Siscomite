@@ -1,40 +1,61 @@
-import "./Modal.css";
-import React, { useState } from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Link } from "@nextui-org/react";
-import { Input } from "@nextui-org/react";
-import { Textarea } from "@nextui-org/react";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import './Modal.css'
+import Swal from 'sweetalert2'
+import React, { useRef, useState } from 'react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Link } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
+import { Textarea } from '@nextui-org/react'
+import { Accordion, AccordionItem } from '@nextui-org/react'
+import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false }) => {
+  const excelFileRef = useRef(null)
+
   const closeModal = () => {
-    cerrarModal();
-  };
+    cerrarModal()
+  }
 
   //Condiciones de agregar ficha
-  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
+  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
 
   const handleEtapaChange = (event) => {
-    const selectedValue = event.target.value;
-    setIsTrimestreEnabled(selectedValue === "lectiva");
-  };
+    const selectedValue = event.target.value
+    setIsTrimestreEnabled(selectedValue === 'lectiva')
+  }
 
   // Dropdown detalles de solicitud
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Estado"]));
-  const selectedValueDetails = React.useMemo(() => Array.from(selectedKeys).join(", ").replaceAll("_", " "), [selectedKeys]);
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Estado']))
+  const selectedValueDetails = React.useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
 
   const getStatusColorClass = (status) => {
     const statusColorMap = {
-      Aprobado: "bg-green-200 text-success rounded-2xl", // Clase CSS para aprobado
-      Rechazado: "bg-red-200 text-danger rounded-2xl", // Clase CSS para rechazado
-      Pendiente: "bg-yellow-200 text-warning rounded-2xl", // Clase CSS para pendiente
-    };
-    return statusColorMap[status] || "text-black"; // Clase CSS por defecto (negro) si el estado no está en el mapa
-  };
+      Aprobado: 'bg-green-200 text-success rounded-2xl', // Clase CSS para aprobado
+      Rechazado: 'bg-red-200 text-danger rounded-2xl', // Clase CSS para rechazado
+      Pendiente: 'bg-yellow-200 text-warning rounded-2xl' // Clase CSS para pendiente
+    }
+    return statusColorMap[status] || 'text-black' // Clase CSS por defecto (negro) si el estado no está en el mapa
+  }
+
+  const handleExcelFile = () => {
+    const currentFile = excelFileRef.current.files[0]
+
+    const checkFile = excelFileRef.current.files[0].name.split('.')
+    if (checkFile[1] !== 'xlsx' && checkFile[1] !== 'xls') {
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: 'Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!',
+        footer: '.xlsx, .xls'
+      })
+      excelFileRef.current.value = ''
+      return
+    }
+    readExcelFile(currentFile)
+  }
 
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
-        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] w-[35%] rounded-2xl overflow-auto" style={{ animation: "bounce 0.8s ease-in-out" }}>
+        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] w-[35%] rounded-2xl overflow-auto" style={{ animation: 'bounce 0.8s ease-in-out' }}>
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
             <i className="fi fi-br-cross relative left-[20%]" onClick={closeModal} />
@@ -42,17 +63,16 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="relative  py-[1rem] overflow-auto h-[25rem] "
-              >
+              <section className="relative  py-[1rem] overflow-auto h-[25rem] ">
                 <section className="relative grid grid-cols-2 gap-10 justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Apellido" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section>
@@ -65,35 +85,35 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Documento" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo alterno" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número alterno" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Número alterno" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                 </section>
                 <section className="flex justify-center gap-5">
                   <label className="cursor-pointer inline-block text-[white] bg-red-700 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90">
-                    <i class="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
+                    <i className="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
                     Subir Excel
-                    <input className="hidden" type="file" name="archivo" />
+                    <input className="hidden" type="file" name="archivo" ref={excelFileRef} accept=".xlsx, .xls" onChange={handleExcelFile} />
                   </label>
                   <section className="relative grid text  ">
                     <Button variant="shadow" color="primary" id="iconSave">
@@ -143,12 +163,12 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative flex flex-wrap justify-center top-5 gap-x-7 gap-y-6">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section className="modalInput">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={"outside"} variant={"flat"} />
+                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} />
                     </div>
                   </section>
                   <section>
@@ -207,7 +227,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 </section>
                 <section className="relative py-[1.5rem]">
                   <Accordion isCompact variant="bordered">
-                    <AccordionItem aria-label="Accordion 1" startContent={<i class="fi fi-rr-user text-purple-500"></i>} title="Información Instructor">
+                    <AccordionItem aria-label="Accordion 1" startContent={<i className="fi fi-rr-user text-purple-500"></i>} title="Información Instructor">
                       <section className="flex flex-wrap gap-4 justify-center">
                         <label for="nombre" className="text-[13px] block">
                           Nombre
@@ -239,7 +259,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                         </section>
                       </section>
                     </AccordionItem>
-                    <AccordionItem aria-label="Accordion 2" startContent={<i class="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
+                    <AccordionItem aria-label="Accordion 2" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
                       <section className="flex flex-wrap max-h-[200px] overflow-auto">
                         <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Cordinador" defaultValue="Marianela Henao" isReadOnly />
@@ -260,22 +280,22 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                           <Input type="text" variant="underlined" label="Evidencias" defaultValue=" " isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={""}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
                         </div>
                       </section>
                     </AccordionItem>
@@ -303,18 +323,18 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                 </section>
                 <section className="w-full grid grid-cols-12  gap-4 py-4">
-                  <Textarea variant={"faded"} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-10 mb-6 md:mb-0" />
+                  <Textarea variant={'faded'} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-10 mb-6 md:mb-0" />
                 </section>
                 <section className="flex gap-4 relative py-[5px]">
                   <section className="">
                     <Button color="primary">
-                      <i class="fi fi-br-check"></i>
+                      <i className="fi fi-br-check"></i>
                       Guardar
                     </Button>
                   </section>
                   <section className=" ">
                     <Button color="warning" variant="bordered">
-                      <i class="fi fi-rr-pencil"></i>
+                      <i className="fi fi-rr-pencil"></i>
                       Editar
                     </Button>
                   </section>
@@ -325,5 +345,5 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         </section>
       </main>
     </>
-  );
-};
+  )
+}
