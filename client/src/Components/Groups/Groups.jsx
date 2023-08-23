@@ -56,7 +56,7 @@ const Groups = () => {
           </header>
           <section className="flex flex-wrap align-center justify-center gap-8 studentsstyle">
             {visibleCards.map((card) => (
-              <Link to={`/students/${card.id_ficha}`} key={card.id_ficha}>
+              <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className='cardI'>
                 <Card
                   flip
                   frontContent={

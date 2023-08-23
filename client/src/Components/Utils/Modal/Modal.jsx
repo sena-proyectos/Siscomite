@@ -6,6 +6,8 @@ import { Input } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
+import { useParams, useNavigate  } from 'react-router-dom' 
+import { createApprentices, createFicha } from '../../../api/httpRequest'
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false }) => {
   const excelFileRef = useRef(null)
