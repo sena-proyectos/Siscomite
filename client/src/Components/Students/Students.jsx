@@ -8,11 +8,12 @@ import { Pagination } from '@nextui-org/react'
 import { Modal } from '../Utils/Modal/Modal'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { getApprenticesByIdFicha } from '../../api/httpRequest'
+import { getApprenticesByIdFicha, getFichasById } from '../../api/httpRequest'
 
 const Students = () => {
   const { id_ficha } = useParams()
   const [apprentices, setApprentices] = useState([])
+  const [informationGruops, setInformationGruops] = useState([])
   const [message, setMessage] = useState()
 
   const navigate = useNavigate()
@@ -28,8 +29,25 @@ const Students = () => {
         console.log(error)
       }
     }
+
+    if(apprentices != undefined){
+      console.log("hola")
+    }
     getApprentices()
   }, [apprentices])
+
+  useEffect(() => {
+    const getFichasByIdFicha = async () => {
+      try {
+        const response = await getFichasById(id_ficha)
+        const res = response.data.result[0]
+        setInformationGruops(res)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getFichasByIdFicha()
+  }, [])
 
   const [isFollowed, setIsFollowed] = React.useState(false)
 
@@ -95,8 +113,8 @@ const Students = () => {
             </Button>
 
             <section>
-              <p className="font-semibold text-lg ">Análisis y desarrollo de software</p>
-              <p className="flex justify-end">2473196</p>
+              <p className="font-semibold text-lg ">{informationGruops.nombre_programa}</p>
+              <p className="flex justify-end">{informationGruops.numero_ficha}</p>
             </section>
           </section>
           <section className="flex flex-wrap gap-5 items-center justify-center p-2 studentsstyle">
