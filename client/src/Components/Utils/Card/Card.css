@@ -7,37 +7,13 @@
   cursor: pointer;
 }
 
-.fondoCard {
-  border-radius: 10px;
-  height: 10rem;
-  max-width: 100%;
-  box-shadow: 5px 5px 10px #96969666;
-}
 
-.cardImage {
-  width: 100%;
-  max-width: 14.5rem;
-  object-fit: cover;
-  position: relative;
-}
 
-.textoImagen {
-  width: 85.5%;
-  height: auto;
-  position: absolute;
-  top: 79.5%;
-  left: 50%;
-  border-radius: 10px;
-  transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 5px 5px 10px #96969666;
-  padding: 1rem;
-}
 
-.bodyText {
-  font-size: 12px;
-  color: #333;
-}
+
+
+
+
 
 /* Estilos de las card giratorias */
 .card_flip {

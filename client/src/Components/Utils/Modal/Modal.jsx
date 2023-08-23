@@ -14,11 +14,33 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     cerrarModal()
   }
 
+  const { id_ficha } = useParams()
+
+  /* aprendices values */
+  const [nombresAprendiz, setNombresAprendiz] = useState('')
+  const [apellidosAprendiz, setApellidosAprendiz] = useState('')
+  const [tipoDocumento, setTipoDocumento] = useState('')
+  const [numeroDocumento, setNumeroDocumento] = useState('')
+  const [emailSena, setEmailSena] = useState('')
+  const [emailAlterno, setEmailAlterno] = useState('')
+  const [numeroCelular, setNumeroCelular] = useState('')
+
+  /* fichas values */
+  const [numeroFicha, setNumeroFicha] = useState('')
+  const [nombrePrograma, setNombrePrograma] = useState('')
+  const [jornada, setJornada] = useState('')
+  const [etapaPrograma, setEtapaPrograma] = useState('')
+  const [numeroTrimestre, setNumeroTrimestre] = useState('')
+  const [idModalidad, setIdmodalidad] = useState('')
+
+  const navigate = useNavigate()
+
   //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
 
   const handleEtapaChange = (event) => {
     const selectedValue = event.target.value
+    setEtapaPrograma(selectedValue)
     setIsTrimestreEnabled(selectedValue === 'lectiva')
   }
 
@@ -52,6 +74,57 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     readExcelFile(currentFile)
   }
 
+  /* Enviar datos de las fichas */
+  const sendDataFichas = async (e) => {
+    e.preventDefault()
+
+    try {
+      const dataValue = {
+        numero_ficha: numeroFicha,
+        nombre_programa: nombrePrograma,
+        jornada,
+        etapa_programa: etapaPrograma,
+        numero_trimestre: numeroTrimestre,
+        id_modalidad: idModalidad,
+      }
+      if (dataValue.id_modalidad === 'Presencial') dataValue.id_modalidad = '1'
+      if (dataValue.id_modalidad === 'Virtual') dataValue.id_modalidad = '2'
+      if (dataValue.id_modalidad === 'Media técnica') dataValue.id_modalidad = '3'
+      if (dataValue.id_modalidad === 'A distancia') dataValue.id_modalidad = '4'
+
+      const response = await createFicha(dataValue)
+      const res = response.data.message
+
+      cerrarModal()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /* enviar datos de aprendiz */
+  const sendDataApprentices = async (e) => {
+    e.preventDefault()
+
+    try {
+      const dataValue = {
+        nombres_aprendiz: nombresAprendiz,
+        apellidos_aprendiz: apellidosAprendiz,
+        numero_documento_aprendiz: numeroDocumento,
+        email_aprendiz_sena: emailSena,
+        email_aprendiz_personal: emailAlterno,
+        celular_aprendiz: numeroCelular,
+        id_documento: tipoDocumento,
+        id_ficha,
+      }
+
+      const response = await createApprentices(dataValue)
+      // TODO: mostrar mensaje por pantalla
+      const res = response.data.message
+      cerrarModal()
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
@@ -63,44 +136,45 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="relative  py-[1rem] overflow-auto h-[25rem] ">
-                <section className="relative grid grid-cols-2 gap-10 justify-center gap-x-7 py-5 gap-y-8 overflow-auto ">
+              <section className="relative h-[25rem] ">
+                <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} value={apellidosAprendiz} onChange={(e) => setApellidosAprendiz(e.target.value)} />
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
+                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={tipoDocumento} onChange={(e) => setTipoDocumento(e.target.value)}>
                       <option value="">Tipo de documento</option>
-                      <option value="">CC</option>
-                      <option value="">TI</option>
-                      <option value="">PE</option>
+                      <option value="1">C.C</option>
+                      <option value="2">C.E</option>
+                      <option value="3">T.I</option>
+                      <option value="4">PEP</option>
                     </select>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} value={emailAlterno} onChange={(e) => setEmailAlterno(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
@@ -116,7 +190,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     <input className="hidden" type="file" name="archivo" ref={excelFileRef} accept=".xlsx, .xls" onChange={handleExcelFile} />
                   </label>
                   <section className="relative grid text  ">
-                    <Button variant="shadow" color="primary" id="iconSave">
+                    <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataApprentices}>
                       <p className="tracking-wide text-15px">Guardar</p>
                       <i className="fi fi-br-check text-[15px]" />
                     </Button>
@@ -159,56 +233,54 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             )}
             {/* Agregar Fichas */}
             {modalAddGroups && (
-              <section className="modalGruop ">
-                <section className="relative flex flex-wrap justify-center top-5 gap-x-7 gap-y-6">
+              <section className="mt-[2rem]">
+                <section className="relative grid grid-cols-2 justify-center gap-8">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none">
+                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
                       <option value="">Jornada</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
                       <option value="Noche">Noche</option>
                       <option value="Noche">Fines de semana</option>
-                      <option value="Noche">Virtual</option>
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange}>
+                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
                       <option value="">Etapa</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled}>
+                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
                       <option value="">Trimestre lectivo</option>
-                      <option value="lectiva">1</option>
-                      <option value="practica">2</option>
-                      <option value="practica">3</option>
-                      <option value="practica">4</option>
-                      <option value="practica">5</option>
-                      <option value="practica">6</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
                     </select>
                   </section>
-                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required>
+                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
                     <option value="">Modalidad</option>
-                    <option value="vitual">Vitual</option>
-                    <option value="presencial">Presencial</option>
-                    <option value="media_tecnica">Media Técnica</option>
-                    <option value="distancia">A distancia</option>
-                    <option value="virtual">Virtual</option>
+                    <option value="Presencial">Presencial</option>
+                    <option value="Media_tecnica">Media técnica</option>
+                    <option value="A distancia">A distancia</option>
+                    <option value="Virtual">Virtual</option>
                   </select>
                   <section className="relative">
-                    <Button variant="shadow" color="primary" id="iconSave">
+                    <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataFichas}>
                       <p className="tracking-wide text-15px">Guardar</p>
                       <i className="fi fi-br-check text-[15px]" />
                     </Button>
@@ -228,56 +300,89 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative py-[1.5rem]">
                   <Accordion isCompact variant="bordered">
                     <AccordionItem aria-label="Accordion 1" startContent={<i className="fi fi-rr-user text-purple-500"></i>} title="Información Instructor">
-                      <section className="flex flex-wrap gap-4 justify-center">
-                        <label for="nombre" className="text-[13px] block">
-                          Nombre
-                          <input type="text" id="nombre" value="Adelaida" readonly className=" bg-[#80808036]  text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block " />
-                        </label>
+                      <section className="grid-cols-2 gap-2  grid max-h-[200px] justify-center overflow-auto">
+                        <section className=" ">
+                          <label for="nombre" className="text-[13px] block">
+                            Nombre
+                            <input type="text" id="nombre" value="Adelaida" readonly className=" bg-[#80808036]  text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block " />
+                          </label>
+                        </section>
                         <section>
                           <label for="apellidp" className="text-[13px] block">
                             Apellido
-                            <input type="text" id="apellido" value="Cano" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                            <input type="text" id="apellido" value="Cano" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
                           </label>
                         </section>
                         <section>
                           <label for="tipo" className="text-[13px] block">
                             Tipo documento
-                            <input type="text" id="tipo" value="Cádula ciudadanía" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                            <input type="text" id="tipo" value="Cádula ciudadanía" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
                           </label>
                         </section>
                         <section>
                           <label for="documento" className="text-[13px] block">
                             Documento
-                            <input type="text" id="docuemento" value="45555543" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                            <input type="text" id="docuemento" value="45555543" readonly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
                           </label>
                         </section>
                         <section>
                           <label for="email" className="text-[13px] block">
                             Correo
-                            <input type="text" id="email" value="acanom@soy.sena.edu.co" readonly className=" bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                            <input type="email" id="email" value="acanom@soy.sena.edu.co" readonly className=" bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
+                          </label>
+                        </section>
+                        <section>
+                          <label for="number" className="text-[13px] block">
+                            Número
+                            <input type="text" id="number" value="3154567878" readonly className=" bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-[full] text-small gap-3 rounded-medium h-unit-10 outline-none block" />
                           </label>
                         </section>
                       </section>
                     </AccordionItem>
-                    <AccordionItem aria-label="Accordion 2" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
-                      <section className="flex flex-wrap max-h-[200px] overflow-auto">
+                    <AccordionItem aria-label="Accordion 2" startContent={<i className="fi fi-rs-book-alt text-red-500"></i>} title="Información Aprendiz">
+                      <section className="grid grid-cols-2 gap-2 max-h-[200px] overflow-auto">
                         <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Cordinador" defaultValue="Marianela Henao" isReadOnly />
+                          <Input type="text" variant="underlined" label="Nombre" defaultValue="Juan Manuel " isReadOnly />
                         </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Apellido" defaultValue="Robledo Sanchez" isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Tipo  documento" defaultValue="Tarjeta identidad" isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Documento" defaultValue="2345434" isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Correo" defaultValue="juan@soy.sena.edu.co" isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Número" defaultValue="344555553" isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Ficha" defaultValue="2373196" isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Programa" defaultValue="Análisis y Desarrollo de Software" isReadOnly />
+                        </div>
+                      </section>
+                    </AccordionItem>
+                    <AccordionItem aria-label="Accordion 3" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
+                      <section className="grid grid-cols-2 gap-2 max-h-[200px] overflow-auto">
                         <div className="flex w-[9rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue="Individual" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Categoría causa" defaultValue="Acádemica" isReadOnly />
+                          <Input type="text" variant="underlined" label="Coordinador" defaultValue="Marianela Henao" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Calificación causa" defaultValue="Leve" isReadOnly />
+                          <Input type="text" variant="underlined" label="Categoría causa" defaultValue="Académica" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Descripción" defaultValue="No ha respondido con los trabajos asignados" isReadOnly />
+                          <Input type="text" variant="underlined" label="Calificación causa" defaultValue="Grave" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue=" " isReadOnly />
+                          <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />

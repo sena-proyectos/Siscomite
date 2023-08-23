@@ -68,11 +68,13 @@ const Requests = () => {
 
       <main className="h-screen flex">
         <Sliderbar />
-        <section className="w-full ">
-          <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
-            <Search placeholder={"Buscar solicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+        <section className="w-full overflow-auto ">
+          <header className="p-[1.5rem] flex justify-center">
+            <section className="w-[40%]">
+              <Search placeholder={"Buscar soicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+            </section>
           </header>
-          <section className="px-[2rem] top-[1.5rem] relative mr-auto">
+          <section className="px-[2rem] top-[.5rem] relative mr-auto">
             <Table>
               <TableHeader>
                 <TableColumn>N°</TableColumn>
@@ -96,8 +98,8 @@ const Requests = () => {
                 ))}
               </TableBody>
             </Table>
-            <section className="grid place-items-center">
-              <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalitemscount={data.length} onChange={handlePageChange} />
+            <section className="grid place-items-center ">
+              <Pagination className="relative top-[.5rem] z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={data.length} onChange={handlePageChange} />
             </section>
           </section>
           <Footer />
