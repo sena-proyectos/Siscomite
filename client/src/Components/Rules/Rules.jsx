@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Footer } from "../Footer/Footer";
-import { Input } from "@nextui-org/react";
+import { Textarea, Button, Input } from "@nextui-org/react";
 import { Card, CardBody } from "@nextui-org/react";
-import { Textarea } from "@nextui-org/react";
-import { Button } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 
@@ -13,6 +11,7 @@ const Rules = () => {
   const [inputVisibleArt, setInputVisibleArt] = useState(false);
   const [inputVisibleNumeral, setInputVisibleNumeral] = useState(false);
   const [inputVisibleParagrafos, setInputVisibleParagrafos] = useState(false);
+
 
   // Modal
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -89,8 +88,8 @@ const Rules = () => {
                         </Button>
                       </section>
                     </section>
-                    <section className={`w-full pt-2 rounded-[13px] ${inputVisibleCap ? "" : "hidden"}`}>
-                      <Input type="text" labelPlacement="outside" label="Agregar capítulo" color="primary" variant="faded" />
+                    <section className={`w-full pt-2 ${inputVisibleCap ? "" : "hidden"}`}>
+                      <Input type="text" size="sm" label="Agregar capítulo" color="primary" variant="faded" />
                       <Textarea name="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                     </section>
                   </section>
@@ -115,7 +114,7 @@ const Rules = () => {
                       </section>
                     </section>
                     <section className={`w-full pt-2 rounded-[13px] ${inputVisibleArt ? "" : "hidden"}`}>
-                      <Input type="text" labelPlacement="outside" label="Agregar artículo" color="primary" variant="faded" />
+                      <Input type="text" size="sm" label="Agregar artículo" color="primary" variant="faded" />
                       <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                     </section>
                   </section>
@@ -139,8 +138,8 @@ const Rules = () => {
                         </Button>
                       </section>
                     </section>
-                    <section className={`w-full pt-2 rounded-[13px] ${inputVisibleParagrafos ? "" : "hidden"}`}>
-                      <Input type="text" labelPlacement="outside" label="Agregar paragrafo" color="primary" variant="faded" />
+                    <section className={`w-full pt-2 rounded-[13px]  ${inputVisibleParagrafos ? "" : "hidden"}`}>
+                      <Input type="text" size="sm" label="Agregar paragrafo" color="primary" variant="faded" />
                       <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                     </section>
                   </section>
@@ -155,7 +154,7 @@ const Rules = () => {
                       </section>
                     </section>
                     <section className={`w-full pt-2 rounded-[13px] ${inputVisibleNumeral ? "" : "hidden"}`}>
-                      <Input type="number" labelPlacement="outside" label="Agregar numeral" color="primary" variant="faded" />
+                      <Input type="number" size="sm" label="Agregar numeral" color="primary" variant="faded" />
                       <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                     </section>
                   </section>
@@ -184,10 +183,10 @@ const Rules = () => {
                 Editar reglamento
               </Button>
             </section>
-            <section className="p-[1rem]">
-              <Card className="h-[92vh] ">
-                <CardBody>
-                  <p>Hola</p>
+            <section className="p-[1rem] ">
+              <Card className="h-[92vh] flex ">
+                <CardBody className="">
+                  <p>sad</p>
                 </CardBody>
               </Card>
             </section>

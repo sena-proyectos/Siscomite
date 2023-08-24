@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Pagination } from "@nextui-org/react";
+import { Pagination, Tooltip, Button } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Modal } from "../Utils/Modal/Modal";
-import { Card } from "../Utils/Card/Card";
 import "./Groups.css";
 import { getFichas } from "../../api/httpRequest";
 
@@ -26,7 +26,7 @@ const Groups = () => {
     getFicha();
   }, [fichas]);
 
-  const itemsPerPage = 9;
+  const itemsPerPage = 6;
   const [activePage, setActivePage] = useState(1);
 
   const handlePageChange = (pageNumber) => {
@@ -40,6 +40,25 @@ const Groups = () => {
   const [modalGroups, setModalGroups] = useState(false);
   const modalAddGroups = () => {
     setModalGroups(!modalGroups);
+  };
+
+  // Hover cards
+  const [hoveredCards, setHoveredCards] = useState({});
+
+  // Función para activar el hover en una card
+  const handleCardHover = (id) => {
+    setHoveredCards((prevHovered) => ({
+      ...prevHovered,
+      [id]: true,
+    }));
+  };
+
+  // Función para desactivar el hover en una card
+  const handleCardLeave = (id) => {
+    setHoveredCards((prevHovered) => ({
+      ...prevHovered,
+      [id]: false,
+    }));
   };
 
   return (
@@ -59,35 +78,40 @@ const Groups = () => {
       <main className="flex h-screen">
         <Sliderbar />
         <section className="w-screen overflow-auto">
-          <header className="p-[1.5rem] flex justify-center">
+          <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
               <Search placeholder={"Buscar ficha"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className="grid grid-cols-4 gap-5 justify-center ">
-            {visibleCards.map((card) => (
-              <Link to={`/students/${card.id_ficha}`} key={card.id_ficha}>
-                <section className="flex justify-center">
-                  <Card
-                    flip
-                    frontContent={
-                      <section className="p-[1rem] w-full ">
-                        <p className="text-[16px] bg-blue-200 grid  rounded-xl w-full place-items-center">{card.numero_ficha}</p>
-                        <p className="">{card.nombre_programa}</p>
+
+          <section className="containerGroup grid place-items-center h-[75vh] ">
+            <section className="contentGroup mx-auto gap-5 grid grid-cols-3 w-[80%]  max-w-[1000px] ">
+              {visibleCards.map((card) => (
+                <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
+                  <Card className={`card w-full border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? "hovered" : ""}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
+                    <CardHeader className="gap-3 flex justify-center z-0">
+                      <section className="flex bg-blue-200 py-2 justify-center rounded-xl w-full">
+                        <p className="text-xl font-bold ">{card.numero_ficha}</p>
                       </section>
-                    }
-                    backContent={
-                      <ul className="list">
-                        <li className="relative top-3 left-4 listItem font-extrabold">{card.jornada}</li>
-                        <li className="relative top-3 left-4 listItem font-extrabold">{card.etapa_programa}</li>
-                      </ul>
-                    }
-                  />
-                </section>
-              </Link>
-            ))}
+                    </CardHeader>
+                    <CardBody className="h-full">
+                      <p className="text-lg">{card.nombre_programa}</p>
+                    </CardBody>
+
+                    <CardFooter>
+                      <p className="text-gray-500 text-md"> Marianela Henao</p>
+                    </CardFooter>
+                  </Card>
+
+                  <section className={`animate-appearance-in absolute mt-[-11rem] ml-[2.5rem] z-10 p-4 w-[14rem] shadow-lg rounded-xl bg-blue-300 text-white  ${hoveredCards[card.id_ficha] ? "" : "hidden"}`}>
+                    <p className="font-bold">Jornada: <span className="font-normal">{card.jornada}</span></p>
+                    <p className="font-bold">Etapa: <span className="font-normal">{card.etapa_programa}</span></p>
+                  </section>
+                </Link>
+              ))}
+            </section>
           </section>
-          <section className="grid place-items-center  mt-[1rem] ">
+          <section className="grid place-items-center  mt-[.5rem] ">
             <Pagination className="relative z-0" total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
@@ -101,11 +125,3 @@ const Groups = () => {
 };
 
 export { Groups };
-
-const SkeletonLoading = () => {
-  return (
-    <div>
-      <Skeleton width={"100%"} height={"100%"} />
-    </div>
-  );
-};

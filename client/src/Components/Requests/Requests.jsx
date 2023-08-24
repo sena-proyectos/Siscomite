@@ -73,7 +73,7 @@ const Requests = () => {
               <Search placeholder={"Buscar solicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className="px-[2rem] top-[.5rem] relative mr-auto ">
+          <section className="px-[2rem] top-[.5rem] relative mr-auto h-[75vh] ">
             <Table className="h-full">
               <TableHeader>
                 <TableColumn>N°</TableColumn>
