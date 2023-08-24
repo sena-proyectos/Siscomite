@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import { google } from 'googleapis'
 import indexRoutes from './routes/index.routes.js'
 import userRoutes from './routes/user.routes.js'
 import fichasRoutes from './routes/fichas.routes.js'
@@ -27,6 +28,14 @@ app.use('/api', requestsRoutes)
 app.use('/api', documentsRoutes)
 app.use('/api', modalitiesRouter)
 
+const oauth2Client = new google.auth.OAuth2(
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
+  process.env.GOOGLE_REDIRECT_URL,
+  process.env.GOOGLE_REFRESH_TOKEN
+)
+
+oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
 
 app.use((req, res) => {
   res.status(404).send({

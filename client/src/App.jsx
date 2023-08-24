@@ -6,7 +6,7 @@ import { Students } from './Components/Students/Students'
 import { Requests } from './Components/Requests/Requests'
 import { Create } from './Components/Create/Create'
 import { Groups } from './Components/Groups/Groups'
-import { Rules } from './Components/Rules/Rules' 
+import { Rules } from './Components/Rules/Rules'
 import './App.css'
 
 function App() {
@@ -16,7 +16,6 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/home" element={<Home />} />
       <Route path="/students/:id_ficha" element={<Students />} />
-
       <Route path="/requests" element={<Requests />} />
       <Route path="/create" element={<Create />} />
       <Route path="/groups" element={<Groups />} />
