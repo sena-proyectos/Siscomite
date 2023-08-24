@@ -1,21 +1,20 @@
 import './Modal.css'
-import Swal from 'sweetalert2'
 import React, { useRef, useState } from 'react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Link } from '@nextui-org/react'
-import { Input } from '@nextui-org/react'
-import { Textarea } from '@nextui-org/react'
+import { useParams, useNavigate } from 'react-router-dom'
+
+import { createApprentices, createFicha } from '../../../api/httpRequest'
+
+import Swal from 'sweetalert2'
+import { Toaster, toast } from 'sonner'
+
 import { Accordion, AccordionItem } from '@nextui-org/react'
 import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
-import { useParams, useNavigate  } from 'react-router-dom' 
-import { createApprentices, createFicha } from '../../../api/httpRequest'
+import { Textarea } from '@nextui-org/react'
+import { Input } from '@nextui-org/react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Link } from '@nextui-org/react'
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false }) => {
   const excelFileRef = useRef(null)
-
-  const closeModal = () => {
-    cerrarModal()
-  }
-
   const { id_ficha } = useParams()
 
   /* aprendices values */
@@ -35,7 +34,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   const [numeroTrimestre, setNumeroTrimestre] = useState('')
   const [idModalidad, setIdmodalidad] = useState('')
 
-  const navigate = useNavigate()
+  const closeModal = () => {
+    cerrarModal()
+  }
 
   //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
@@ -54,7 +55,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     const statusColorMap = {
       Aprobado: 'bg-green-200 text-success rounded-2xl', // Clase CSS para aprobado
       Rechazado: 'bg-red-200 text-danger rounded-2xl', // Clase CSS para rechazado
-      Pendiente: 'bg-yellow-200 text-warning rounded-2xl' // Clase CSS para pendiente
+      Pendiente: 'bg-yellow-200 text-warning rounded-2xl', // Clase CSS para pendiente
     }
     return statusColorMap[status] || 'text-black' // Clase CSS por defecto (negro) si el estado no está en el mapa
   }
@@ -68,7 +69,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         icon: 'error',
         title: '¡Error!',
         text: 'Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!',
-        footer: '.xlsx, .xls'
+        footer: '.xlsx, .xls',
       })
       excelFileRef.current.value = ''
       return
@@ -89,13 +90,20 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
       }
-      
+
       const response = await createFicha(dataValue)
       const res = response.data.message
-
-      cerrarModal()
+      toast.success('Genial!!', {
+        description: res,
+      })
+      setTimeout(() => {
+        cerrarModal()
+      }, 1000)
     } catch (error) {
-      console.log(error)
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message,
+      })
     }
   }
 
@@ -116,16 +124,25 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
       }
 
       const response = await createApprentices(dataValue)
-      // TODO: mostrar mensaje por pantalla
+
       const res = response.data.message
-      cerrarModal()
+      toast.success('Genial!!', {
+        description: res,
+      })
+      setTimeout(() => {
+        cerrarModal()
+      }, 1500)
     } catch (error) {
-      console.log(error)
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message,
+      })
     }
   }
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
+        <Toaster position="top-right" closeButton richColors />
         <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] w-[35%] rounded-2xl overflow-auto" style={{ animation: 'bounce 0.8s ease-in-out' }}>
           <header className="flex justify-center ">
             <h3>{titulo}</h3>

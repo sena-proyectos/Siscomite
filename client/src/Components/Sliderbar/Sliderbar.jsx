@@ -16,6 +16,7 @@ const Sliderbar = () => {
   const [selectedIcon, setSelectedIcon] = useState(0);
   const navigate = useNavigate();
   const [nombreCompleto, setNombreCompleto] = useState(null);
+  const [rol, setRol] = useState(null);
 
   //Para poner color al icon al seleccionarlo
   const location = useLocation(); // Importa useLocation
@@ -29,6 +30,11 @@ const Sliderbar = () => {
     const information = jwt(token);
     const nombres = information.nombres;
     const apellidos = information.apellidos;
+    
+    if(information.id_rol === 1) information.id_rol = "Coordinador"
+    if(information.id_rol === 2) information.id_rol = "Instructor"
+    if(information.id_rol === 3) information.id_rol = "Administrador"
+    setRol(information.id_rol)
 
     setNombreCompleto(`${nombres}  ${apellidos}`);
   };
@@ -42,7 +48,7 @@ const Sliderbar = () => {
     <main className="sliderbar bg-[#2e323e] m-[1rem] w-[18%]  h-[95vh] relative rounded-2xl text-white flex-col flex items-center ">
       <section className="top flex flex-col items-center p-[30px] text-center w-full">
         <h3 className="mt-[1rem] text-[17px] font-bold">{nombreCompleto}</h3>
-        <p>Coordinador</p>
+        <p>{rol}</p>
       </section>
       <section className="pages absolute top-[35%]  w-full flex justify-center">
         <ul className="p-0">

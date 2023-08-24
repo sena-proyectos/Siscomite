@@ -106,6 +106,7 @@ export const createToken = async (req, res, next) => {
       email_sena: userExist[0].email_sena,
       numero_celular: userExist[0].numero_celular,
       id_documento: userExist[0].id_documento,
+      id_rol: userExist[0].id_rol,
       numero_documento: userExist[0].numero_documento,
     }
     const token = jwt.sign(payload, 'secret-keY', { expiresIn: 2 })
