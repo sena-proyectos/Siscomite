@@ -1,14 +1,17 @@
 import './Modal.css'
-import React, { useState } from 'react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
-import { Popover, PopoverTrigger, PopoverContent } from '@nextui-org/react'
+import Swal from 'sweetalert2'
+import React, { useRef, useState } from 'react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Link } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
 import { Accordion, AccordionItem } from '@nextui-org/react'
+import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
+import { useParams, useNavigate  } from 'react-router-dom' 
 import { createApprentices, createFicha } from '../../../api/httpRequest'
-import { useParams, useNavigate } from 'react-router-dom'
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false }) => {
+  const excelFileRef = useRef(null)
+
   const closeModal = () => {
     cerrarModal()
   }
@@ -51,9 +54,26 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     const statusColorMap = {
       Aprobado: 'bg-green-200 text-success rounded-2xl', // Clase CSS para aprobado
       Rechazado: 'bg-red-200 text-danger rounded-2xl', // Clase CSS para rechazado
-      Pendiente: 'bg-yellow-200 text-warning rounded-2xl', // Clase CSS para pendiente
+      Pendiente: 'bg-yellow-200 text-warning rounded-2xl' // Clase CSS para pendiente
     }
     return statusColorMap[status] || 'text-black' // Clase CSS por defecto (negro) si el estado no está en el mapa
+  }
+
+  const handleExcelFile = () => {
+    const currentFile = excelFileRef.current.files[0]
+
+    const checkFile = excelFileRef.current.files[0].name.split('.')
+    if (checkFile[1] !== 'xlsx' && checkFile[1] !== 'xls') {
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: 'Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!',
+        footer: '.xlsx, .xls'
+      })
+      excelFileRef.current.value = ''
+      return
+    }
+    readExcelFile(currentFile)
   }
 
   /* Enviar datos de las fichas */
@@ -165,7 +185,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   <label className="cursor-pointer inline-block text-[white] bg-red-700 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90">
                     <i className="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
                     Subir Excel
-                    <input className="hidden" type="file" name="archivo" />
+                    <input className="hidden" type="file" name="archivo" ref={excelFileRef} accept=".xlsx, .xls" onChange={handleExcelFile} />
                   </label>
                   <section className="relative grid text  ">
                     <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataApprentices}>
@@ -363,52 +383,23 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                           <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
                         </div>
-                        <section className="flex pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Popover
-                            showArrow
-                            backdrop="opaque"
-                            placement="top"
-                            classNames={{
-                              base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
-                              arrow: 'bg-default-200',
-                            }}
-                          >
-                            <PopoverTrigger>
-                              <Button color="primary" variant="flat">
-                                Descripción caso
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <div className="px-1 py-2">
-                                <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                        </section>
-                        <section className="flex  pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Popover
-                            showArrow
-                            backdrop="opaque"
-                            placement="top"
-                            classNames={{
-                              base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
-                              arrow: 'bg-default-200',
-                            }}
-                          >
-                            <PopoverTrigger>
-                              <Button color="primary" variant="flat">
-                                Descripción artículo
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent>
-                              <div className="px-1 py-2">
-                                <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                        </section>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
                       </section>
                     </AccordionItem>
                   </Accordion>

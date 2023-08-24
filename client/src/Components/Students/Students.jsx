@@ -7,13 +7,16 @@ import React, { useEffect, useState } from 'react'
 import { Pagination } from '@nextui-org/react'
 import { Modal } from '../Utils/Modal/Modal'
 
-import { useParams, Link } from 'react-router-dom'
-import { getApprenticesByIdFicha } from '../../api/httpRequest'
+import { useParams, useNavigate } from 'react-router-dom'
+import { getApprenticesByIdFicha, getFichasById } from '../../api/httpRequest'
 
 const Students = () => {
   const { id_ficha } = useParams()
   const [apprentices, setApprentices] = useState([])
+  const [informationGruops, setInformationGruops] = useState([])
   const [message, setMessage] = useState()
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getApprentices = async () => {
@@ -26,8 +29,25 @@ const Students = () => {
         console.log(error)
       }
     }
+
+    if(apprentices != undefined){
+      console.log("hola")
+    }
     getApprentices()
   }, [apprentices])
+
+  useEffect(() => {
+    const getFichasByIdFicha = async () => {
+      try {
+        const response = await getFichasById(id_ficha)
+        const res = response.data.result[0]
+        setInformationGruops(res)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getFichasByIdFicha()
+  }, [])
 
   const [isFollowed, setIsFollowed] = React.useState(false)
 
@@ -38,8 +58,7 @@ const Students = () => {
   const indexOfLastItem = activePage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = apprentices && apprentices.length > 0 ? apprentices.slice(indexOfFirstItem, indexOfLastItem) : []
-  const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage);
-
+  const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
 
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
@@ -55,7 +74,6 @@ const Students = () => {
   const infoStudent = () => {
     setInfoStudents(!infoStudents)
   }
-
   return (
     <>
       {modalStudent && (
@@ -89,9 +107,15 @@ const Students = () => {
               <Search placeholder={'Buscar soicitud'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className=" relative grid justify-end px-[4.5rem] py-0">
-            <p className="font-semibold text-lg">Análisis y desarrollo de software</p>
-            <p className="grid justify-end ">2473196</p>
+          <section className=" flex justify-between  px-[4rem] ">
+            <Button color="primary" variant="flat" className="" onClick={() => navigate('/groups')}>
+              <i className="fi fi-rr-arrow-left mt-[.5rem]"></i>Volver
+            </Button>
+
+            <section>
+              <p className="font-semibold text-lg ">{informationGruops.nombre_programa}</p>
+              <p className="flex justify-end">{informationGruops.numero_ficha}</p>
+            </section>
           </section>
           <section className="flex flex-wrap gap-5 items-center justify-center p-2 studentsstyle">
             {message ? (

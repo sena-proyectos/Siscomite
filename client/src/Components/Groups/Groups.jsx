@@ -19,11 +19,13 @@ const Groups = () => {
         const res = response.data.result
         setFichas(res)
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
 
-    getFicha()
+    if (fichas.length >= 0) {
+      getFicha()
+    }
   }, [fichas])
 
   const itemsPerPage = 9
@@ -35,7 +37,7 @@ const Groups = () => {
 
   const startIdx = (activePage - 1) * itemsPerPage
   const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage)
-  const totalPages = Math.ceil(fichas.length / itemsPerPage);
+  const totalPages = Math.ceil(fichas.length / itemsPerPage)
 
   const [modalGroups, setModalGroups] = useState(false)
   const modalAddGroups = () => {
@@ -44,7 +46,17 @@ const Groups = () => {
 
   return (
     <>
-      {modalGroups && <Modal modalAddGroups cerrarModal={modalAddGroups} titulo={<section className="text-2xl font-semibold"><i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas</section>} />}
+      {modalGroups && (
+        <Modal
+          modalAddGroups
+          cerrarModal={modalAddGroups}
+          titulo={
+            <section className="text-2xl font-semibold">
+              <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
+            </section>
+          }
+        />
+      )}
 
       <main className="flex h-screen">
         <Sliderbar />
@@ -56,7 +68,7 @@ const Groups = () => {
           </header>
           <section className="flex flex-wrap align-center justify-center gap-8 studentsstyle">
             {visibleCards.map((card) => (
-              <Link to={`/students/${card.id_ficha}`} key={card.id_ficha}>
+              <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="cardI">
                 <Card
                   flip
                   frontContent={
@@ -66,7 +78,7 @@ const Groups = () => {
                     </section>
                   }
                   backContent={
-                    <ul className='list'>
+                    <ul className="list">
                       <li className="relative top-3 left-4 listItem">{card.jornada}</li>
                       <li className="relative top-3 left-4 listItem">{card.etapa_programa}</li>
                     </ul>
