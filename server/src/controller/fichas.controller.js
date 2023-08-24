@@ -40,6 +40,7 @@ export const createFicha = async (req, res) => {
 
     res.status(201).send({ message: 'Ficha creada exitosamente' })
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: 'Error al crear ficha' })
   }
 }
