@@ -57,7 +57,7 @@ const Rules = () => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className=" border-t-[4px] border-[#2e323e]">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}  size="2xl" className=" border-t-[4px] border-[#2e323e] backdrop-blur-[3px]">
         <ModalContent>
           {(onClose) => (
             <>
@@ -88,7 +88,7 @@ const Rules = () => {
                         </Button>
                       </section>
                     </section>
-                    <section className={`w-full pt-2 ${inputVisibleCap ? "" : "hidden"}`}>
+                    <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleCap ? "" : "hidden"}`}>
                       <Input type="text" size="sm" label="Agregar capítulo" color="primary" variant="faded" />
                       <Textarea name="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                     </section>
@@ -113,7 +113,7 @@ const Rules = () => {
                         </Button>
                       </section>
                     </section>
-                    <section className={`w-full pt-2 rounded-[13px] ${inputVisibleArt ? "" : "hidden"}`}>
+                    <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleArt ? "" : "hidden"}`}>
                       <Input type="text" size="sm" label="Agregar artículo" color="primary" variant="faded" />
                       <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                     </section>
@@ -138,7 +138,7 @@ const Rules = () => {
                         </Button>
                       </section>
                     </section>
-                    <section className={`w-full pt-2 rounded-[13px]  ${inputVisibleParagrafos ? "" : "hidden"}`}>
+                    <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleParagrafos ? "" : "hidden"}`}>
                       <Input type="text" size="sm" label="Agregar paragrafo" color="primary" variant="faded" />
                       <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                     </section>
@@ -153,7 +153,7 @@ const Rules = () => {
                         </Button>
                       </section>
                     </section>
-                    <section className={`w-full pt-2 rounded-[13px] ${inputVisibleNumeral ? "" : "hidden"}`}>
+                    <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleNumeral ? "" : "hidden"}`}>
                       <Input type="number" size="sm" label="Agregar numeral" color="primary" variant="faded" />
                       <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                     </section>
@@ -162,9 +162,9 @@ const Rules = () => {
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="bordered" onPress={onClose}>
-                  Close
+                  Cerrar
                 </Button>
-                <Button color="success" variant="flat" onPress={onClose}>
+                <Button color="success" variant="flat">
                   <i className="fi fi-br-check"></i>
                   Guardar
                 </Button>
@@ -179,7 +179,7 @@ const Rules = () => {
         <section className="w-full h-screen overflow-auto ">
           <section className="grid h-screen grid-cols-2 ">
             <section className="grid place-items-center">
-              <Button size="lg" onPress={onOpen} color="primary">
+              <Button size="lg" onPress={onOpen} color="primary" variant="shadow">
                 Editar reglamento
               </Button>
             </section>

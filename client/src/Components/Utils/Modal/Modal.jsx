@@ -68,6 +68,10 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
       }
+      if (dataValue.id_modalidad === 'Presencial') dataValue.id_modalidad = '1'
+      if (dataValue.id_modalidad === 'Virtual') dataValue.id_modalidad = '2'
+      if (dataValue.id_modalidad === 'Media técnica') dataValue.id_modalidad = '3'
+      if (dataValue.id_modalidad === 'A distancia') dataValue.id_modalidad = '4'
 
       const response = await createFicha(dataValue)
       const res = response.data.message
@@ -105,16 +109,18 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
-        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] w-[35%] rounded-2xl overflow-auto" style={{ animation: 'bounce 0.8s ease-in-out' }}>
+        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in">
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
-            <i className="fi fi-br-cross relative left-[20%]" onClick={closeModal} />
+            <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full">
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" onClick={closeModal} />
+            </section>
           </header>
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="relative h-[25rem] ">
-                <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 overflow-auto ">
+              <section className="relative w-[28rem] max-md:w-[20rem]">
+                <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 max-md:gap-y-5 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                       <Input isRequired size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
@@ -177,7 +183,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             )}
             {/* Información Aprendices */}
             {modalInfo && (
-              <section className="mt-[1rem] overflow-hidden min-w-[50%]">
+              <section className="mt-[1rem] w-[25rem] overflow-hidden ">
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Nombre completo</span>
                   <p>Mariana Lopez Robledo Estrada</p>
@@ -257,6 +263,13 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     <option value="4">A distancia</option>
                   </select>
                 </section>
+                <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
+                  <option selected>Coordinador*</option>
+                  <option value="Marianela Henao Atehortua">Marianela Henao Atehortua</option>
+                  <option value="Jaime León Vergara Areiza">Jaime León Vergara Areiza</option>
+                  <option value="Sergio Soto Henao">Sergio Soto Henao</option>
+                  <option value="Mauro Isaías Arango Vanegas">Mauro Isaías Arango Vanegas</option>
+                </select>
                 <section className="relative grid place-items-center mt-[1rem]">
                   <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataFichas}>
                     <p className="tracking-wide text-15px">Guardar</p>
@@ -267,7 +280,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             )}
             {/* Ver detalles Solicitudes */}
             {modalDetails && (
-              <section className="relative top-[1.6rem]   ">
+              <section className="relative top-[1.6rem] w-[30rem]">
                 <section className="  place-items-center gap-4 flex justify-between">
                   <Button className="bg-green-200 text-success rounded-2xl ">Aprobado</Button>
                   <section>
@@ -414,8 +427,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 </section>
               </section>
             )}
+            {/* Editar fichas */}
             {modalDetailsEdit && (
-              <section className="mt-[1.5rem]">
+              <section className="mt-[1.5rem] w-[30rem]">
                 <section className="place-items-center gap-4 flex justify-between">
                   <Dropdown>
                     <DropdownTrigger>
