@@ -1,11 +1,9 @@
 @media screen and (max-width: 1000px) {
-    .contentStudent{
-        grid-template-columns: repeat(2, 1fr);
-        max-height: none;
-    
-    }
-    .containerStudent{
-        height: 100vh;
-    }
-
+  .contentStudent {
+    grid-template-columns: repeat(2, 1fr);
+    max-height: none;
+  }
+  .containerStudent {
+    height: 100vh;
+  }
 }

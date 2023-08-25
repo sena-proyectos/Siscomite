@@ -19,11 +19,13 @@ const Groups = () => {
         const res = response.data.result;
         setFichas(res);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
-    getFicha();
+    if (fichas.length >= 0) {
+      getFicha();
+    }
   }, [fichas]);
 
   const itemsPerPage = 6;
@@ -104,8 +106,12 @@ const Groups = () => {
                   </Card>
 
                   <section className={`animate-appearance-in absolute mt-[-11rem] ml-[2.5rem] z-10 p-4 w-[14rem] shadow-lg rounded-xl bg-blue-300 text-white  ${hoveredCards[card.id_ficha] ? "" : "hidden"}`}>
-                    <p className="font-bold">Jornada: <span className="font-normal">{card.jornada}</span></p>
-                    <p className="font-bold">Etapa: <span className="font-normal">{card.etapa_programa}</span></p>
+                    <p className="font-bold">
+                      Jornada: <span className="font-normal">{card.jornada}</span>
+                    </p>
+                    <p className="font-bold">
+                      Etapa: <span className="font-normal">{card.etapa_programa}</span>
+                    </p>
                   </section>
                 </Link>
               ))}

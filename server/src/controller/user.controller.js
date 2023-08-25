@@ -18,6 +18,15 @@ export const getTeacher = async (req, res) => {
   }
 }
 
+export const getCoordination = async (req, res) => {
+  try {
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_roles = 1')
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al listar los coordinadores' })
+  }
+}
+
 export const registerUser = async (req, res) => {
   const { nombres, apellidos, email_sena, numero_celular, id_documento, numero_documento, contrasena } = req.body
   try {
@@ -61,8 +70,20 @@ export const searchTeacher = async (req, res) => {
   const { nombres } = req.query
 
   try {
-    const [user] = await pool.query('SELECT * FROM usuarios WHERE CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
+    const [user] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 2 AND CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
     if (user.length === 0) return res.status(401).send({ message: 'No se encontró ningún instructor' })
+    res.status(200).send({ user })
+  } catch (error) {
+    res.status(401).send({ message: 'ah ocurrido un error inesperado' })
+  }
+}
+
+export const searchCoordination = async (req, res) => {
+  const { nombres } = req.query
+
+  try {
+    const [user] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 1 AND CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
+    if (user.length === 0) return res.status(401).send({ message: 'No se encontró ningún coordinador' })
     res.status(200).send({ user })
   } catch (error) {
     res.status(401).send({ message: 'ah ocurrido un error inesperado' })

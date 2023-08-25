@@ -1,17 +1,9 @@
 @media screen and (max-width: 1000px) {
-    .contentGroup{
-        grid-template-columns: repeat(2, 1fr);
-        max-height: none;
-    
-    }
-    .containerGroup{
-        height: 100vh;
-    }
-
-    /* .card{
-        height: 11rem;
-    } */
-
+  .contentGroup {
+    grid-template-columns: repeat(2, 1fr);
+    max-height: none;
+  }
+  .containerGroup {
+    height: 100vh;
+  }
 }
-
-
