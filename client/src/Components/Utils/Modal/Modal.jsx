@@ -1,16 +1,14 @@
+import './Modal.css'
 import React, { useState } from 'react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Textarea, Button } from '@nextui-org/react'
 import { createApprentices, createFicha } from '../../../api/httpRequest'
 import { useParams, useNavigate } from 'react-router-dom'
-// Notificaciones
-import Swal from 'sweetalert2'
-import { Toaster, toast } from 'sonner'
-// Excel
-import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
-// NextUI
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Link, Input, Textarea, Accordion, AccordionItem } from '@nextui-org/react'
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false }) => {
-  const excelFileRef = useRef(null)
+  const closeModal = () => {
+    cerrarModal()
+  }
+
   const { id_ficha } = useParams()
 
   /* aprendices values */
@@ -30,9 +28,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   const [numeroTrimestre, setNumeroTrimestre] = useState('')
   const [idModalidad, setIdmodalidad] = useState('')
 
-  const closeModal = () => {
-    cerrarModal()
-  }
+  const navigate = useNavigate()
 
   //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
@@ -56,23 +52,6 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     return statusColorMap[status] || 'text-black' // Clase CSS por defecto (negro) si el estado no está en el mapa
   }
 
-  const handleExcelFile = () => {
-    const currentFile = excelFileRef.current.files[0]
-
-    const checkFile = excelFileRef.current.files[0].name.split('.')
-    if (checkFile[1] !== 'xlsx' && checkFile[1] !== 'xls') {
-      Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: 'Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!',
-        footer: '.xlsx, .xls',
-      })
-      excelFileRef.current.value = ''
-      return
-    }
-    readExcelFile(currentFile)
-  }
-
   /* Enviar datos de las fichas */
   const sendDataFichas = async (e) => {
     e.preventDefault()
@@ -86,20 +65,17 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
       }
+      if (dataValue.id_modalidad === 'Presencial') dataValue.id_modalidad = '1'
+      if (dataValue.id_modalidad === 'Virtual') dataValue.id_modalidad = '2'
+      if (dataValue.id_modalidad === 'Media técnica') dataValue.id_modalidad = '3'
+      if (dataValue.id_modalidad === 'A distancia') dataValue.id_modalidad = '4'
 
       const response = await createFicha(dataValue)
       const res = response.data.message
-      toast.success('Genial!!', {
-        description: res,
-      })
-      setTimeout(() => {
-        cerrarModal()
-      }, 1000)
+
+      cerrarModal()
     } catch (error) {
-      const message = error.response.data.message
-      toast.error('Opss!!', {
-        description: message,
-      })
+      console.log(error)
     }
   }
 
@@ -120,25 +96,16 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
       }
 
       const response = await createApprentices(dataValue)
-
+      // TODO: mostrar mensaje por pantalla
       const res = response.data.message
-      toast.success('Genial!!', {
-        description: res,
-      })
-      setTimeout(() => {
-        cerrarModal()
-      }, 1500)
+      cerrarModal()
     } catch (error) {
-      const message = error.response.data.message
-      toast.error('Opss!!', {
-        description: message,
-      })
+      console.log(error)
     }
   }
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
-        <Toaster position="top-right" closeButton richColors />
         <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in">
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
@@ -163,7 +130,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section>
                     <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={tipoDocumento} onChange={(e) => setTipoDocumento(e.target.value)}>
-                      <option selected>Tipo de documento*</option>
+                      <option value="">Tipo de documento*</option>
                       <option value="1">C.C</option>
                       <option value="2">C.E</option>
                       <option value="3">T.I</option>
@@ -200,7 +167,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   <label className="cursor-pointer inline-block text-[white] bg-red-700 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90">
                     <i className="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
                     Subir Excel
-                    <input className="hidden" type="file" name="archivo" ref={excelFileRef} accept=".xlsx, .xls" onChange={handleExcelFile} />
+                    <input className="hidden" type="file" name="archivo" />
                   </label>
                   <section className="relative grid text  ">
                     <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataApprentices}>
@@ -217,6 +184,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Nombre completo</span>
                   <p>Mariana Lopez Robledo Estrada</p>
+                  {/* <Input disabled size="md" type="text" label="Mariana Lopez Robledo Estrada" labelPlacement={"outside"} variant={"underlined"} /> */}
                 </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Tipo de documento</span>
@@ -260,23 +228,23 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section>
                     <select className=" bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
-                      <option selected>Jornada*</option>
+                      <option value="">Jornada*</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
                       <option value="Noche">Noche</option>
-                      <option value="Fines de semana">Fines de semana</option>
+                      <option value="Noche">Fines de semana</option>
                     </select>
                   </section>
                   <section>
                     <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
-                      <option selected>Etapa*</option>
-                      <option value="lectiva">Lectiva</option>
-                      <option value="practica">Práctica</option>
+                      <option value="">Etapa*</option>
+                      <option value="Lectiva">Lectiva</option>
+                      <option value="Práctica">Práctica</option>
                     </select>
                   </section>
                   <section>
                     <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
-                      <option selected>Trimestre lectivo</option>
+                      <option value="">Trimestre lectivo</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -286,15 +254,15 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </select>
                   </section>
                   <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
-                    <option value="">Modalidad</option>
-                    <option value="1">Presencial</option>
-                    <option value="2">Virtual</option>
-                    <option value="3">Media técnica</option>
-                    <option value="4">A distancia</option>
+                    <option value="">Modalidad*</option>
+                    <option value="Presencial">Presencial</option>
+                    <option value="Media_tecnica">Media técnica</option>
+                    <option value="A distancia">A distancia</option>
+                    <option value="Virtual">Virtual</option>
                   </select>
                 </section>
-                <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
-                  <option selected>Coordinador*</option>
+                <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
+                  <option value="">Coordinador*</option>
                   <option value="Marianela Henao Atehortua">Marianela Henao Atehortua</option>
                   <option value="Jaime León Vergara Areiza">Jaime León Vergara Areiza</option>
                   <option value="Sergio Soto Henao">Sergio Soto Henao</option>
@@ -405,23 +373,52 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                           <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
                         </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
+                        <section className="flex pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Popover
+                            showArrow
+                            backdrop="opaque"
+                            placement="top"
+                            classNames={{
+                              base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
+                              arrow: 'bg-default-200',
+                            }}
+                          >
+                            <PopoverTrigger>
+                              <Button color="primary" variant="flat">
+                                Descripción caso
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="px-1 py-2">
+                                <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </section>
+                        <section className="flex  pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Popover
+                            showArrow
+                            backdrop="opaque"
+                            placement="top"
+                            classNames={{
+                              base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
+                              arrow: 'bg-default-200',
+                            }}
+                          >
+                            <PopoverTrigger>
+                              <Button color="primary" variant="flat">
+                                Descripción artículo
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="px-1 py-2">
+                                <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </section>
                       </section>
                     </AccordionItem>
                   </Accordion>
@@ -470,6 +467,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
           </section>
         </section>
       </main>
+          
     </>
   )
 }

@@ -7,6 +7,7 @@
     .containerStudent{
         height: 100vh;
     }
+}
 
 .add:active {
   transform: scale(0.9);
@@ -39,6 +40,3 @@
 
 
 
-.studentsstyle {
-  height: 66vh;
-}

@@ -28,14 +28,14 @@ app.use('/api', requestsRoutes)
 app.use('/api', documentsRoutes)
 app.use('/api', modalitiesRouter)
 
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.GOOGLE_REDIRECT_URL,
-  process.env.GOOGLE_REFRESH_TOKEN
-)
+// const oauth2Client = new google.auth.OAuth2(
+//   process.env.GOOGLE_CLIENT_ID,
+//   process.env.GOOGLE_CLIENT_SECRET,
+//   process.env.GOOGLE_REDIRECT_URL,
+//   process.env.GOOGLE_REFRESH_TOKEN
+// )
 
-oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
+// oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
 
 app.use((req, res) => {
   res.status(404).send({

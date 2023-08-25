@@ -31,9 +31,9 @@ const Students = () => {
       }
     }
 
-    if (apprentices != undefined) {
-      console.log('hola')
-    }
+    // if (apprentices != undefined) {
+    //   console.log('hola')
+    // }
     getApprentices()
   }, [apprentices])
 
@@ -118,34 +118,35 @@ const Students = () => {
               <p className="flex justify-end">{informationGruops.numero_ficha}</p>
             </section>
           </section>
-          <section className="flex flex-wrap gap-5 items-center justify-center p-2 studentsstyle">
-            {message ? (
-              <h1>{message}</h1>
-            ) : (
-              <>
-                {currentItems.map((item) => (
-                  <Card className="w-[340px] z-0 shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
-                    <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
-                      <div className="flex gap-5">
-                        <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
-                        <div className="flex flex-col gap-1 items-start justify-center">
-                          <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz}</h4>
-                          <h5 className="text-small tracking-tight text-default-400 flex">
-                            <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
-                            {/* <p className="px-[4px]">{item.descripción}</p> */}
-                          </h5>
+          <section className="containerStudent h-[68vh]">
+            <section className="grid grid-cols-3 gap-6 items-center justify-center px-[1rem] ">
+              {message ? (
+                <h1>{message}</h1>
+              ) : (
+                <>
+                  {currentItems.map((item) => (
+                    <Card className="w-full shadow-lg z-0" onClick={infoStudent} key={item.id_aprendiz}>
+                      <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
+                        <div className="flex gap-5">
+                          <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                          <div className="flex flex-col gap-1 items-start justify-center">
+                            <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz}</h4>
+                            <h5 className="text-small tracking-tight text-default-400 flex">
+                              <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
+                              {/* <p className="px-[4px]">{item.descripción}</p> */}
+                            </h5>
+                          </div>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardBody onClick={infoStudent} className="relarive  text-default-400 text-small cursor-pointer">
-                      <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
-                    </CardBody>
-                  </Card>
-                ))}
-              </>
-            )}
+                      </CardHeader>
+                      <CardBody onClick={infoStudent} className="relarive  text-default-400 text-small cursor-pointer">
+                        <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
+                      </CardBody>
+                    </Card>
+                  ))}
+                </>
+              )}
+            </section>
           </section>
-
           <section className="grid place-items-center">
             <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
