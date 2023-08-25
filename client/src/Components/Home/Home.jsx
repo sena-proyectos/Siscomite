@@ -18,6 +18,9 @@ const Home = () => {
       <section className="w-full  overflow-auto">
         <header className="p-8 flex justify-center text-[23px]">
           <h1 className=" text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
+          <section className="relative left-[20rem] pt-2 px-3 rounded-full">
+            <i className="fi fi-rs-envelope-dot cursor-pointer"></i>
+          </section>
         </header>
         <section className="flex-wrap flex items-center justify-center gap-20">
           {data.map((x, i) => (

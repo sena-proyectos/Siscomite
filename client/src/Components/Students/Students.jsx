@@ -83,10 +83,10 @@ const Students = () => {
 
       <main className="flex h-screen">
         <Sliderbar />
-        <section className="w-full h-screen overflow-auto ">
+        <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
-              <Search placeholder={'Buscar soicitud'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={'Buscar aprendiz'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
           <section className=" flex justify-between  px-[4rem] ">
@@ -100,34 +100,35 @@ const Students = () => {
               <p className="flex justify-end">2473196</p>
             </section>
           </section>
-          <section className="grid grid-cols-3 gap-6 items-center justify-center px-[1rem] ">
-            {message ? (
-              <h1>{message}</h1>
-            ) : (
-              <>
-                {currentItems.map((item) => (
-                  <Card className="w-full z-0 shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
-                    <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
-                      <div className="flex gap-5">
-                        <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
-                        <div className="flex flex-col gap-1 items-start justify-center">
-                          <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz}</h4>
-                          <h5 className="text-small tracking-tight text-default-400 flex">
-                            <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
-                            {/* <p className="px-[4px]">{item.descripción}</p> */}
-                          </h5>
+          <section className="containerStudent h-[68vh]">
+            <section className="contentStudent grid grid-cols-3 gap-6 items-center justify-center px-[1rem]">
+              {message ? (
+                <h1>{message}</h1>
+              ) : (
+                <>
+                  {currentItems.map((item) => (
+                    <Card className="w-full shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
+                      <CardHeader onClick={infoStudent} className="justify-between pb-0 z-0 cursor-pointer">
+                        <div className="flex gap-5">
+                          <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                          <div className="flex flex-col gap-1 items-start justify-center">
+                            <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz}</h4>
+                            <h5 className="text-small tracking-tight text-default-400 flex">
+                              <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
+                              {/* <p className="px-[4px]">{item.descripción}</p> */}
+                            </h5>
+                          </div>
                         </div>
-                      </div>
-                    </CardHeader>
-                    <CardBody onClick={infoStudent} className="relarive  text-default-400 text-small cursor-pointer">
-                      <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
-                    </CardBody>
-                  </Card>
-                ))}
-              </>
-            )}
+                      </CardHeader>
+                      <CardBody onClick={infoStudent} className="relarive  text-default-400 text-small cursor-pointer">
+                        <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
+                      </CardBody>
+                    </Card>
+                  ))}
+                </>
+              )}
+            </section>
           </section>
-
           <section className="grid place-items-center">
             <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
@@ -136,7 +137,7 @@ const Students = () => {
               +
             </button>
           </section>
-          <section className="relative">
+          <section className="relative h-0">
             <Footer />
           </section>
         </section>

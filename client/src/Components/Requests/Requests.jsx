@@ -5,7 +5,6 @@ import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
-import { Button } from "@nextui-org/react";
 import { Modal } from "../Utils/Modal/Modal";
 
 const Requests = () => {
@@ -74,8 +73,8 @@ const Requests = () => {
               <Search placeholder={"Buscar solicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className="px-[2rem] top-[.5rem] relative mr-auto">
-            <Table>
+          <section className="px-[2rem] top-[.5rem] relative mr-auto h-[75vh] ">
+            <Table className="h-full">
               <TableHeader>
                 <TableColumn>N°</TableColumn>
                 <TableColumn>Solicitud</TableColumn>
@@ -98,9 +97,10 @@ const Requests = () => {
                 ))}
               </TableBody>
             </Table>
-            <section className="grid place-items-center w-full">
-              <Pagination className="bottom-7 fixed" total={10} initialPage={1} color={"primary"} totalItemsCount={data.length} onChange={handlePageChange} />
+            <section className="grid place-items-center w-full mt-[.5rem] ">
+              <Pagination className="z-0" total={10} initialPage={1} color={"primary"} totalItemsCount={data.length} onChange={handlePageChange} />
             </section>
+          
           </section>
           <Footer />
         </section>

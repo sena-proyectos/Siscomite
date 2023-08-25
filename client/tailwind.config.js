@@ -26,6 +26,9 @@ module.exports = {
       },
     },
   },
+  variants: {
+    borderWidth: ['responsive', 'hover', 'focus'],
+  },
   darkMode: 'class',
   plugins: [
     nextui({

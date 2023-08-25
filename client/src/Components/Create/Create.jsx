@@ -6,12 +6,13 @@ import Cookie from 'js-cookie'
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { RadioGroup, Radio } from '@nextui-org/react'
-import { Tabs, Tab, Card, CardBody, CardHeader } from '@nextui-org/react'
+import { Card, CardBody } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { CheckboxGroup, Checkbox } from '@nextui-org/react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import { getTeacherByName, getApprenticesByName, getApprenticesById } from '../../api/httpRequest'
+
 const Create = () => {
   const [selectedAprendizOption, setSelectedAprendizOption] = useState(null)
 
@@ -31,11 +32,6 @@ const Create = () => {
   const selectedValueFalta = React.useMemo(() => Array.from(selectedFalta).join(', ').replaceAll('_', ' '), [selectedFalta])
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
-  // const
-
-  const handleAprendizOptionClick = (option) => {
-    setSelectedAprendizOption(option)
-  }
 
   const getTeacher = async (nombres) => {
     try {
@@ -107,24 +103,6 @@ const Create = () => {
       console.error('Error obteniendo detalles del aprendiz:', error)
     }
   }
-
-  let tabs = [
-    {
-      id: '1 ',
-      label: 'Académicas',
-      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    },
-    {
-      id: '2',
-      label: 'Disciplinarios',
-      content: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-    },
-    {
-      id: '3',
-      label: 'Otro',
-      content: <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descipción" className="max-w-[300px]" />,
-    },
-  ]
 
   return (
     <main className="relative h-screen flex ">
@@ -255,28 +233,21 @@ const Create = () => {
 
           <section className="mr-[3.1rem] w-[85%] h-full">
             <div className="flex w-full  flex-col">
-              <Tabs aria-label="Dynamic tabs" items={tabs}>
-                {(item) => (
-                  <Tab key={item.id} title={item.label}>
-                    <Card className="overflow-auto h-[25rem] ">
-                      <CardBody className="gap-1">
-                        <CheckboxGroup>
-                          <Checkbox value="rules" className="flex  items-start">
-                            {item.content}
-                          </Checkbox>
-                          <Checkbox value="tati" className="flex  items-start">
-                            {item.content}
-                          </Checkbox>
-                        </CheckboxGroup>
-                        {/* <label htmlFor="">
-                          <input type="checkbox" className="rounded-full " />
-                          {item.content}
-                        </label> */}
-                      </CardBody>
-                    </Card>
-                  </Tab>
-                )}
-              </Tabs>
+              <Card className="overflow-auto h-[25rem] ">
+                <section className="px-[3rem] py-[.5rem] bg-slate-500 ">
+                  <Search placeholder={'Buscar'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
+                </section>
+                <CardBody className="gap-1">
+                  <CheckboxGroup>
+                    <Checkbox value="rules" className="flex  items-start">
+                      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla sunt animi voluptatibus recusandae eaque, maxime at voluptatum minima quod illo officia, nihil illum minus possimus perferendis esse nobis, perspiciatis rerum?
+                    </Checkbox>
+                    <Checkbox value="tati" className="flex  items-start">
+                      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla sunt animi voluptatibus recusandae eaque, maxime at voluptatum minima quod illo officia, nihil illum minus possimus perferendis esse nobis, perspiciatis rerum?
+                    </Checkbox>
+                  </CheckboxGroup>
+                </CardBody>
+              </Card>
             </div>
           </section>
         </section>

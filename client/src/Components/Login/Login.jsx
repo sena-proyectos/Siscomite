@@ -7,7 +7,6 @@ import { Toast } from '../toast/toast'
 import Cookie from 'js-cookie'
 import { Input } from '@nextui-org/react'
 import React from 'react'
-import { transform } from 'framer-motion'
 
 export const Login = () => {
   const [numeroDocumento, setNumeroDocumento] = useState('')
@@ -45,8 +44,6 @@ export const Login = () => {
     setError(null)
   }
 
-  const positions = ['outside']
-
   const [isVisible, setIsVisible] = React.useState(false)
 
   const toggleVisibility = () => setIsVisible(!isVisible)
@@ -61,10 +58,10 @@ export const Login = () => {
         <form className="relative w-[400px] bg-white  p-[1rem] rounded-xl grid text-center shadow-lg place-items-center" onSubmit={sendData}>
           <h2 className="text-[1.5rem] font-bold mb-7">Iniciar Sesión</h2>
           <section className="grid w-[80%] gap-8  ">
-            <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+            <section className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
               <Input type="text" label="Número documento" labelPlacement={'outside'} autoComplete="off" value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
-            </div>
-            <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
+            </section>
+            <section className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
               <Input
                 label="Contraseña"
                 autoComplete="off"
@@ -79,7 +76,7 @@ export const Login = () => {
                 type={isVisible ? 'text' : 'password'}
                 className="max-w-xs"
               />
-            </div>
+            </section>
 
             <p className="text-sm cursor-pointer">¿Olvidaste tu contraseña?</p>
             <button className="bg-[#3c3c3c] text-white w-full cursor-pointer rounded-md font-light text-xs py-3" disabled={isLoading}>
