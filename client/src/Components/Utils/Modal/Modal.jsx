@@ -112,7 +112,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in">
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
-            <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full">
+            <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal} >
               <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" onClick={closeModal} />
             </section>
           </header>
@@ -133,7 +133,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section>
                     <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={tipoDocumento} onChange={(e) => setTipoDocumento(e.target.value)}>
-                      <option selected>Tipo de documento*</option>
+                      <option value="">Tipo de documento*</option>
                       <option value="1">C.C</option>
                       <option value="2">C.E</option>
                       <option value="3">T.I</option>
@@ -187,6 +187,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Nombre completo</span>
                   <p>Mariana Lopez Robledo Estrada</p>
+                  {/* <Input disabled size="md" type="text" label="Mariana Lopez Robledo Estrada" labelPlacement={"outside"} variant={"underlined"} /> */}
                 </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Tipo de documento</span>
@@ -230,7 +231,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section>
                     <select className=" bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
-                      <option selected>Jornada*</option>
+                      <option value="">Jornada*</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
                       <option value="Noche">Noche</option>
@@ -239,14 +240,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section>
                     <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
-                      <option selected>Etapa*</option>
+                      <option value="">Etapa*</option>
                       <option value="lectiva">Lectiva</option>
                       <option value="practica">Práctica</option>
                     </select>
                   </section>
                   <section>
                     <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
-                      <option selected>Trimestre lectivo</option>
+                      <option value="">Trimestre lectivo</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
@@ -256,15 +257,15 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </select>
                   </section>
                   <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
-                    <option selected>Modalidad*</option>
+                    <option value="">Modalidad*</option>
                     <option value="Presencial">Presencial</option>
                     <option value="Media_tecnica">Media técnica</option>
                     <option value="A distancia">A distancia</option>
                     <option value="Virtual">Virtual</option>
                   </select>
                 </section>
-                <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
-                  <option selected>Coordinador*</option>
+                <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
+                  <option value="">Coordinador*</option>
                   <option value="Marianela Henao Atehortua">Marianela Henao Atehortua</option>
                   <option value="Jaime León Vergara Areiza">Jaime León Vergara Areiza</option>
                   <option value="Sergio Soto Henao">Sergio Soto Henao</option>
