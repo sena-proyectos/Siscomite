@@ -302,8 +302,8 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   <section>
                     <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
                       <option value="">Etapa*</option>
-                      <option value="lectiva">Lectiva</option>
-                      <option value="practica">Práctica</option>
+                      <option value="Lectiva">Lectiva</option>
+                      <option value="Práctica">Práctica</option>
                     </select>
                   </section>
                   <section>

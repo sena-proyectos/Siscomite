@@ -10,7 +10,6 @@ const Home = () => {
     { titleHome: "Crear solicitud", image: "/image/solicitud.webp", descripciónHome: "Aquí podrás crear una solicitud para un comité de evalución..", Link: "/create" },
     { titleHome: "Fichas", image: "/image/fichas.webp", descripciónHome: "Aquí podrás visualizar las fichas del CTM.", Link: "/groups" },
     { titleHome: "Reglamento", image: "/image/reglamento.webp", descripciónHome: "Aquí podrás ver el reglamento para consultar los artículos necesarios.", Link: "/requests" },
-    { titleHome: "Agregar aprendiz", image: "/image/aprendiz.webp", descripciónHome: "Aquí podrás ver y agregar aprendices", Link: "/students" },
   ];
 
   return (
