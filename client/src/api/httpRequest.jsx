@@ -91,6 +91,14 @@ export const getFichas = () => {
   return response
 }
 
+/* get fichas by id */
+export const getFichasById = (id) => {
+  const URL = `${BaseUrl}${api}/fichas/${id}`
+  const response = axios.get(URL)
+
+  return response
+}
+
 /* Create apprentices */
 export const createApprentices = (data) => {
   const URL = `${BaseUrl}${api}/createAprendices`

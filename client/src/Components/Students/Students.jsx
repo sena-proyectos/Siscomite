@@ -8,13 +8,16 @@ import { Pagination } from '@nextui-org/react'
 import { Modal } from '../Utils/Modal/Modal'
 import { Button } from '@nextui-org/react'
 
-import { useParams, Link } from 'react-router-dom'
-import { getApprenticesByIdFicha } from '../../api/httpRequest'
+import { useParams, useNavigate } from 'react-router-dom'
+import { getApprenticesByIdFicha, getFichasById } from '../../api/httpRequest'
 
 const Students = () => {
   const { id_ficha } = useParams()
   const [apprentices, setApprentices] = useState([])
+  const [informationGruops, setInformationGruops] = useState([])
   const [message, setMessage] = useState()
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getApprentices = async () => {
@@ -27,8 +30,25 @@ const Students = () => {
         console.log(error)
       }
     }
+
+    if (apprentices != undefined) {
+      console.log('hola')
+    }
     getApprentices()
   }, [apprentices])
+
+  useEffect(() => {
+    const getFichasByIdFicha = async () => {
+      try {
+        const response = await getFichasById(id_ficha)
+        const res = response.data.result[0]
+        setInformationGruops(res)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getFichasByIdFicha()
+  }, [])
 
   const [isFollowed, setIsFollowed] = React.useState(false)
 
@@ -55,7 +75,6 @@ const Students = () => {
   const infoStudent = () => {
     setInfoStudents(!infoStudents)
   }
-
   return (
     <>
       {modalStudent && (
@@ -86,49 +105,47 @@ const Students = () => {
         <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
-              <Search placeholder={'Buscar aprendiz'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={'Buscar soicitud'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
           <section className=" flex justify-between  px-[4rem] ">
-            <Link to={'/groups'}>
-              <Button color="primary" variant="flat" className="">
-                <i className="fi fi-rr-arrow-left mt-[.5rem]"></i>Volver
-              </Button>
-            </Link>
+            <Button color="primary" variant="flat" className="" onClick={() => navigate('/groups')}>
+              <i className="fi fi-rr-arrow-left mt-[.5rem]"></i>Volver
+            </Button>
+
             <section>
-              <p className="font-semibold text-lg ">Análisis y desarrollo de software</p>
-              <p className="flex justify-end">2473196</p>
+              <p className="font-semibold text-lg ">{informationGruops.nombre_programa}</p>
+              <p className="flex justify-end">{informationGruops.numero_ficha}</p>
             </section>
           </section>
-          <section className="containerStudent h-[68vh]">
-            <section className="contentStudent grid grid-cols-3 gap-6 items-center justify-center px-[1rem]">
-              {message ? (
-                <h1>{message}</h1>
-              ) : (
-                <>
-                  {currentItems.map((item) => (
-                    <Card className="w-full shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
-                      <CardHeader onClick={infoStudent} className="justify-between pb-0 z-0 cursor-pointer">
-                        <div className="flex gap-5">
-                          <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
-                          <div className="flex flex-col gap-1 items-start justify-center">
-                            <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz}</h4>
-                            <h5 className="text-small tracking-tight text-default-400 flex">
-                              <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
-                              {/* <p className="px-[4px]">{item.descripción}</p> */}
-                            </h5>
-                          </div>
+          <section className="flex flex-wrap gap-5 items-center justify-center p-2 studentsstyle">
+            {message ? (
+              <h1>{message}</h1>
+            ) : (
+              <>
+                {currentItems.map((item) => (
+                  <Card className="w-[340px] z-0 shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
+                    <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
+                      <div className="flex gap-5">
+                        <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                        <div className="flex flex-col gap-1 items-start justify-center">
+                          <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz}</h4>
+                          <h5 className="text-small tracking-tight text-default-400 flex">
+                            <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
+                            {/* <p className="px-[4px]">{item.descripción}</p> */}
+                          </h5>
                         </div>
-                      </CardHeader>
-                      <CardBody onClick={infoStudent} className="relarive  text-default-400 text-small cursor-pointer">
-                        <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
-                      </CardBody>
-                    </Card>
-                  ))}
-                </>
-              )}
-            </section>
+                      </div>
+                    </CardHeader>
+                    <CardBody onClick={infoStudent} className="relarive  text-default-400 text-small cursor-pointer">
+                      <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
+                    </CardBody>
+                  </Card>
+                ))}
+              </>
+            )}
           </section>
+
           <section className="grid place-items-center">
             <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>

@@ -1,20 +1,23 @@
 import './Login.css'
 import { Footer } from '../Footer/Footer'
 import { Link, useNavigate } from 'react-router-dom'
-import { useRef, useState } from 'react' // Agregamos useState para manejar el estado de carga
+import { useState } from 'react' // Agregamos useState para manejar el estado de carga
 import { login } from '../../api/httpRequest'
-import { Toast } from '../toast/toast'
 import Cookie from 'js-cookie'
 import { Input } from '@nextui-org/react'
 import React from 'react'
+import { Toaster, toast } from 'sonner'
 
 export const Login = () => {
   const [numeroDocumento, setNumeroDocumento] = useState('')
   const [contrasena, setContrasena] = useState('')
 
   const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
-  const [error, setError] = useState(null) // Estado para manejar los errores
+  const [isVisible, setIsVisible] = useState(false)
+
   const navigate = useNavigate()
+
+  const toggleVisibility = () => setIsVisible(!isVisible)
 
   const sendData = async (e) => {
     e.preventDefault()
@@ -30,30 +33,23 @@ export const Login = () => {
       const res = await login(dataValue)
       const response = res.data.response.info.token
       Cookie.set('token', response, { expires: 2, secure: true, sameSite: 'None', path: '/' })
-      setError(null)
       navigate('/home')
     } catch (error) {
       const message = error.response.data.message
-      setError(message)
+      toast.error('Opss!!', {
+        description: message,
+      })
     } finally {
       setIsLoading(false)
     }
   }
-
-  const closed = () => {
-    setError(null)
-  }
-
-  const [isVisible, setIsVisible] = React.useState(false)
-
-  const toggleVisibility = () => setIsVisible(!isVisible)
 
   return (
     <main className="h-screen ">
       <section className="absolute top-11 left-11 " style={{ animation: 'show 0.8s ease-in-out' }}>
         <img src="image/logoSena.webp" alt="Sena" className="w-[4rem]" />
       </section>
-      {error && <Toast message={error} typeToast={'error'} onClose={closed} />}
+      <Toaster position="top-right" closeButton richColors  />
       <section className="grid place-items-center  h-screen " style={{ animation: 'show 0.8s ease-in-out' }}>
         <form className="relative w-[400px] bg-white  p-[1rem] rounded-xl grid text-center shadow-lg place-items-center" onSubmit={sendData}>
           <h2 className="text-[1.5rem] font-bold mb-7">Iniciar Sesión</h2>
@@ -84,7 +80,7 @@ export const Login = () => {
               {isLoading ? 'Cargando...' : 'Iniciar sesión'}
             </button>
             <p className="text-sm">
-              ¿Nuevo usuario?
+              ¿Nuevo usuario?{' '}
               <Link className="text-sm text-[#587fff]" to={'/Register'}>
                 Registrate
               </Link>

@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { updateFicha, createFicha, getFichas, getFichaBynumFicha } from '../controller/fichas.controller.js'
+import { updateFicha, createFicha, getFichas, getFichaBynumFicha, getFichasById } from '../controller/fichas.controller.js'
 import { createDataFicha, checkFichaExist } from '../middlewares/fichas.middleware.js'
 
 const router = Router()
@@ -8,6 +8,7 @@ const router = Router()
 // GET FICHAS
 
 router.get('/fichas', getFichas)
+router.get('/fichas/:id', getFichasById)
 router.get('/fichasbynum', getFichaBynumFicha)
 
 

@@ -1,23 +1,20 @@
-import './Register.css'
-import { Link } from 'react-router-dom'
-import React, { useState, useRef } from 'react'
-import { register } from '../../api/httpRequest'
-import { Toast } from '../toast/toast'
-import { Footer } from '../Footer/Footer'
-import { Input } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
+import "./Register.css";
+import { Link } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { register } from "../../api/httpRequest";
+import { Footer } from "../Footer/Footer";
+import { Input } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Toaster, toast } from 'sonner'
 
 export const Register = () => {
-  const [nombres, setNombres] = useState('')
-  const [apellidos, setApellidos] = useState('')
-  const [emailSena, setEmailSena] = useState('')
-  const [numeroCelular, setNumeroCelular] = useState('')
-  const [numeroDocumento, setNumeroDocumento] = useState('')
-  const [contrasena, setContrasena] = useState('')
-
-  const [error, setError] = useState()
-  const [message, setMessage] = useState()
-  const [selectedTipoDocumento, setSelectedTipoDocumento] = useState('')
+  const [nombres, setNombres] = useState("");
+  const [apellidos, setApellidos] = useState("");
+  const [emailSena, setEmailSena] = useState("");
+  const [numeroCelular, setNumeroCelular] = useState("");
+  const [numeroDocumento, setNumeroDocumento] = useState("");
+  const [contrasena, setContrasena] = useState("");
+  const [selectedTipoDocumento, setSelectedTipoDocumento] = useState("");
 
   const documentoOptions = {
     'C.C': '1',
@@ -36,31 +33,29 @@ export const Register = () => {
       id_documento: documentoOptions[selectedTipoDocumento],
       numero_documento: numeroDocumento,
       contrasena: contrasena,
-    }
+    };
     try {
-      const res = await register(dataValue)
-      const response = res.data.message
-      setMessage(response)
+      const res = await register(dataValue);
+      const response = res.data.message;
+      setMessage(response);
+      toast.success('Genial!!',{
+        description: response
+      })
     } catch (error) {
-      const message = error.response.data.message
-      setError(message)
+      const message = error.response.data.message;
+      toast.success('Opss!!',{
+        description: message
+      })
     }
-  }
-
-  const closed = () => {
-    setError(null)
-    setMessage(null)
-  }
-
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Tipo documento']))
-  const [isVisible, setIsVisible] = React.useState(false)
-  const toggleVisibility = () => setIsVisible(!isVisible)
+  };
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Tipo documento"]));
+  const [isVisible, setIsVisible] = React.useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   return (
     <main className="h-screen">
-      {error && <Toast message={error} typeToast="warnning" onClose={closed} />}
-      {message && <Toast message={message} typeToast="success" onClose={closed} />}
-      <section className="absolute top-11 left-11" style={{ animation: 'show 0.8s ease-in-out' }}>
+      <Toaster position="top-right" closeButton richColors  />
+      <section className="absolute top-11 left-11" style={{ animation: "show 0.8s ease-in-out" }}>
         <img src="/image/logoSena.webp" alt="Sena" className="w-[4rem]" />
       </section>
       <section className="flex items-center justify-center w-full h-screen" style={{ animation: 'show 0.8s ease-in-out' }}>
