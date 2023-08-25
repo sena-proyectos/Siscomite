@@ -8,13 +8,16 @@ import { Pagination } from '@nextui-org/react'
 import { Modal } from '../Utils/Modal/Modal'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { getApprenticesByIdFicha, getFichasById } from '../../api/httpRequest'
+import { getApprenticesById, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
 
 const Students = () => {
   const { id_ficha } = useParams()
   const [apprentices, setApprentices] = useState([])
   const [informationGruops, setInformationGruops] = useState([])
   const [message, setMessage] = useState()
+  const [idStudent, setIdStudent] = useState()
+  const [apprenticesSearch, setApprenticesSearch] = useState([])
+  const [error, setError] = useState(null)
 
   const navigate = useNavigate()
 
@@ -30,9 +33,9 @@ const Students = () => {
       }
     }
 
-    if(apprentices != undefined){
-      console.log("hola")
-    }
+    // if(apprentices != undefined){
+    //   console.log("hola")
+    // }
     getApprentices()
   }, [apprentices])
 
@@ -74,6 +77,31 @@ const Students = () => {
   const infoStudent = () => {
     setInfoStudents(!infoStudents)
   }
+
+  const apprenticeId = (id) => {
+    setInfoStudents(!infoStudents)
+    setIdStudent(id)
+  }
+
+  const searchApprentices = async (nombres) => {
+    const idFicha = id_ficha
+    try {
+      if (nombres.trim() === '') {
+        setApprenticesSearch([])
+        setError(null)
+        return
+      } else {
+        // setErrorUser(null)
+        const response = await searchApprenticesByIdFicha(idFicha, nombres)
+        setApprenticesSearch(response.data.result)
+      }
+    } catch (error) {
+      const message = error.response.data.message
+      console.log(message)
+      setError(message)
+      setApprenticesSearch([])
+    }
+  }
   return (
     <>
       {modalStudent && (
@@ -96,6 +124,7 @@ const Students = () => {
               <i className="fi fi-rs-file-user text-blue-600 px-3"></i>Información
             </section>
           }
+          infoStudents={idStudent}
         />
       )}
 
@@ -104,7 +133,7 @@ const Students = () => {
         <section className="w-full h-screen overflow-auto ">
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
-              <Search placeholder={'Buscar soicitud'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
           <section className=" flex justify-between  px-[4rem] ">
@@ -118,29 +147,56 @@ const Students = () => {
             </section>
           </section>
           <section className="flex flex-wrap gap-5 items-center justify-center p-2 studentsstyle">
-            {message ? (
-              <h1>{message}</h1>
+            {error ? (
+              <h1>{error}</h1>
             ) : (
               <>
-                {currentItems.map((item) => (
-                  <Card className="w-[340px] z-0 shadow-lg" onClick={infoStudent} key={item.id_aprendiz}>
-                    <CardHeader onClick={infoStudent} className="justify-between pb-0 cursor-pointer">
-                      <div className="flex gap-5">
-                        <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
-                        <div className="flex flex-col gap-1 items-start justify-center">
-                          <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz}</h4>
-                          <h5 className="text-small tracking-tight text-default-400 flex">
-                            <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
-                            {/* <p className="px-[4px]">{item.descripción}</p> */}
-                          </h5>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardBody onClick={infoStudent} className="relarive  text-default-400 text-small cursor-pointer">
-                      <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
-                    </CardBody>
-                  </Card>
-                ))}
+                {message && <h1>{message}</h1>}
+                {apprenticesSearch.length > 0 ? (
+                  <>
+                    {apprenticesSearch.map((item) => (
+                      <Card className="w-[340px] z-0 shadow-lg" onClick={() => apprenticeId(item.id_aprendiz)} key={item.id_aprendiz}>
+                        <CardHeader onClick={() => apprenticeId(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
+                          <div className="flex gap-5">
+                            <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                            <div className="flex flex-col gap-1 items-start justify-center">
+                              <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
+                              <h5 className="text-small tracking-tight text-default-400 flex">
+                                <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
+                                {/* <p className="px-[4px]">{item.descripción}</p> */}
+                              </h5>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardBody onClick={() => apprenticeId(item.id_aprendiz)} className="relarive  text-default-400 text-small cursor-pointer">
+                          <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
+                        </CardBody>
+                      </Card>
+                    ))}
+                  </>
+                ) : (
+                  <>
+                    {currentItems.map((item) => (
+                      <Card className="w-[340px] z-0 shadow-lg" onClick={() => apprenticeId(item.id_aprendiz)} key={item.id_aprendiz}>
+                        <CardHeader onClick={() => apprenticeId(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
+                          <div className="flex gap-5">
+                            <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                            <div className="flex flex-col gap-1 items-start justify-center">
+                              <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
+                              <h5 className="text-small tracking-tight text-default-400 flex">
+                                <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
+                                {/* <p className="px-[4px]">{item.descripción}</p> */}
+                              </h5>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardBody onClick={() => apprenticeId(item.id_aprendiz)} className="relarive  text-default-400 text-small cursor-pointer">
+                          <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
+                        </CardBody>
+                      </Card>
+                    ))}
+                  </>
+                )}
               </>
             )}
           </section>

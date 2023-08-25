@@ -1,8 +1,8 @@
 import './Modal.css'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 
-import { createApprentices, createFicha } from '../../../api/httpRequest'
+import { createApprentices, createFicha, getApprenticesById } from '../../../api/httpRequest'
 
 import Swal from 'sweetalert2'
 import { Toaster, toast } from 'sonner'
@@ -13,7 +13,7 @@ import { Textarea } from '@nextui-org/react'
 import { Input } from '@nextui-org/react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Link } from '@nextui-org/react'
 
-export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false }) => {
+export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents }) => {
   const excelFileRef = useRef(null)
   const { id_ficha } = useParams()
 
@@ -40,6 +40,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
 
   //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
+  const [dataInfoStudent, setDataInfoStudent] = useState([])
 
   const handleEtapaChange = (event) => {
     const selectedValue = event.target.value
@@ -139,6 +140,23 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
       })
     }
   }
+
+  useEffect(() => {
+    const infoStudent = async () => {
+      try {
+        const response = await getApprenticesById(infoStudents)
+        const res = response.data.result
+        if(res[0].id_documento === 1) res[0].id_documento = "C.C"
+        if(res[0].id_documento === 2) res[0].id_documento = "C.E"
+        if(res[0].id_documento === 3) res[0].id_documento = "T.I"
+        if(res[0].id_documento === 4) res[0].id_documento = "PEP"
+        if(res[0].id_documento === 5) res[0].id_documento = "Registro Civil"
+        setDataInfoStudent(res)
+      } catch (error) {}
+    }
+    infoStudent()
+  }, [])
+
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
@@ -214,38 +232,48 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
               </section>
             )}
             {/* Información Aprendices */}
-            {modalInfo && (
+            {dataInfoStudent.map((item) => {
+              return (
+                <section className="mt-[1rem] overflow-hidden min-w-[50%]" key={item.id_aprendiz}>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Nombre completo</span>
+                    <p>{item.nombres_aprendiz}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Tipo de documento</span>
+                    <p>{item.id_documento}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Número de documento</span>
+                    <p>{item.numero_documento_aprendiz}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Correo institucional</span>
+                    <p>{item.email_aprendiz_sena}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Correo Alterno</span>
+                    <p>{item.email_aprendiz_personal}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Número</span>
+                    <p>{item.celular_aprendiz}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Número alteno</span>
+                    <p>{item.fijo_aprendiz}</p>
+                  </section>
+                </section>
+              )
+            })}
+            {/* {modalInfo && (
               <section className="mt-[1rem] overflow-hidden min-w-[50%]">
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Nombre completo</span>
-                  <p>Mariana Lopez Robledo Estrada</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Tipo de documento</span>
-                  <p>Cédula de ciudadanía</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Número de documento</span>
-                  <p>12345678</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Correo institucional</span>
-                  <p>mariana34@soy.sena.edu.co</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Correo Alterno</span>
-                  <p>marinalopez@gmail.com</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Número</span>
-                  <p>3245555555</p>
-                </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Número alteno</span>
                   <p>6666666</p>
                 </section>
               </section>
-            )}
+            )} */}
             {/* Agregar Fichas */}
             {modalAddGroups && (
               <section className="mt-[2rem]">
