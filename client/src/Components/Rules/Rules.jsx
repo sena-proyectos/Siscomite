@@ -57,7 +57,7 @@ const Rules = () => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className=" border-t-[4px] border-[#2e323e]">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}  size="2xl" className=" border-t-[4px] border-[#2e323e] backdrop-blur-[3px]">
         <ModalContent>
           {(onClose) => (
             <>
@@ -162,9 +162,9 @@ const Rules = () => {
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="bordered" onPress={onClose}>
-                  Close
+                  Cerrar
                 </Button>
-                <Button color="success" variant="flat" onPress={onClose}>
+                <Button color="success" variant="flat">
                   <i className="fi fi-br-check"></i>
                   Guardar
                 </Button>
