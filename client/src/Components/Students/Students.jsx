@@ -93,6 +93,7 @@ const Students = () => {
       } else {
         const response = await searchApprenticesByIdFicha(idFicha, nombres)
         setApprenticesSearch(response.data.result)
+        setError(null)
       }
     } catch (error) {
       const message = error.response.data.message
