@@ -91,13 +91,11 @@ const Students = () => {
         setError(null)
         return
       } else {
-        // setErrorUser(null)
         const response = await searchApprenticesByIdFicha(idFicha, nombres)
         setApprenticesSearch(response.data.result)
       }
     } catch (error) {
       const message = error.response.data.message
-      console.log(message)
       setError(message)
       setApprenticesSearch([])
     }
