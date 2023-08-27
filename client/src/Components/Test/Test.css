@@ -1,0 +1,5 @@
+.pdf-container {
+  max-height: 83vh; /* Ajusta esta altura según tu preferencia */
+  overflow: auto; /* Añade un scroll si el contenido excede la altura máxima */
+}
+

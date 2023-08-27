@@ -31,7 +31,7 @@ export const createDataAprendiz = (req, res, next) => {
 
 export const checkName = (req, res, next) => {
     const { nombres } = req.query
-    const nameSchema = Joi.object({ nombres: Joi.string().required().min(0).max(100) })
+    const nameSchema = Joi.object({ nombres: Joi.string().required().max(100) })
     try {
       const { error } = nameSchema.validate({ nombres })
       if (error !== undefined) return res.status(400).send({ message: 'El nombre ingresado no es válido.' })

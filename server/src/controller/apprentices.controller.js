@@ -15,7 +15,7 @@ export const getApprentices = async (req, res) => {
   try {
     const [result] = await pool.query('SELECT * FROM aprendices WHERE id_ficha = ?', [idFicha])
 
-    if (result.length === 0) return res.status(200).send({ message: 'No hay aprendices registrados en la ficha' })
+    if (result.length === 0) return res.status(400).send({ message: 'No hay aprendices registrados en la ficha' })
 
     res.status(200).send({ result })
   } catch (error) {
@@ -28,7 +28,7 @@ export const searchApprenticesByGroups = async (req, res) => {
   try {
     const [result] = await pool.query('SELECT * FROM aprendices WHERE id_ficha = ? AND CONCAT(nombres_aprendiz, " ", apellidos_aprendiz) LIKE ?', [idFicha, `%${nombres}%`])
 
-    if (result.length === 0) return res.status(200).send({ message: 'El aprendiz no se encuentra registrado' })
+    if (result.length === 0) return res.status(400).send({ message: 'El aprendiz no se encuentra registrado' })
 
     res.status(200).send({ result })
   } catch (error) {
