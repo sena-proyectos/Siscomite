@@ -6,8 +6,8 @@ import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Modal } from "../Utils/Modal/Modal";
-import "./Groups.css";
 import { getFichas } from "../../api/httpRequest";
+import "./Groups.css";
 
 const Groups = () => {
   const [fichas, setFichas] = useState([]);
@@ -86,8 +86,8 @@ const Groups = () => {
             </section>
           </header>
 
-          <section className="containerGroup grid place-items-center h-[75vh] ">
-            <section className="contentGroup mx-auto gap-5 grid grid-cols-3 w-[80%]  max-w-[1000px] ">
+          <section className="grid place-items-center h-[75vh] max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5">
+            <section className="mx-auto gap-5 grid grid-cols-3 w-[80%] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1  ">
               {visibleCards.map((card) => (
                 <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
                   <Card className={`card w-full border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? "hovered" : ""}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
@@ -118,7 +118,7 @@ const Groups = () => {
             </section>
           </section>
           <section className="grid place-items-center  mt-[.5rem] ">
-            <Pagination className="relative z-0" total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={totalPages} onChange={handlePageChange} />
+            <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
             <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>

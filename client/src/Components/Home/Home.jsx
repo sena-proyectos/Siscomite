@@ -1,5 +1,6 @@
 import "./Home.css";
 import { Card } from "../Utils/Card/Card";
+import { Chip } from "@nextui-org/react";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Footer } from "../Footer/Footer";
 import { Link } from "react-router-dom";
@@ -18,8 +19,11 @@ const Home = () => {
       <section className="w-full  overflow-auto">
         <header className="p-8 flex justify-center text-[23px]">
           <h1 className=" text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
-          <section className="relative left-[20%] pt-2 px-3 rounded-full">
-            <i className="fi fi-rs-envelope-dot cursor-pointer"></i>
+          <section className="relative left-[20%] cursor-pointer">
+            <Chip variant="flat" color="secondary" id="campana" >
+              Mensajes
+              <i class="fi fi-ss-bell pl-[.5rem]"/>
+            </Chip>
           </section>
         </header>
         <section className="flex-wrap flex items-center justify-center gap-20">

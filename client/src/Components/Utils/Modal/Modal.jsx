@@ -1,17 +1,14 @@
 import './Modal.css'
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-
 import { createApprentices, createFicha, getApprenticesById } from '../../../api/httpRequest'
-
 import Swal from 'sweetalert2'
-import { Toaster, toast } from 'sonner'
-
+import { Toaster, toast} from 'sonner'
 import { Accordion, AccordionItem } from '@nextui-org/react'
+import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/react";
 import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
-import { Textarea } from '@nextui-org/react'
-import { Input } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Link } from '@nextui-org/react'
+import { Textarea, Input, Button } from '@nextui-org/react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from '@nextui-org/react'
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents }) => {
   const excelFileRef = useRef(null)
@@ -209,7 +206,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input isRequired size="md" type="text" label="Número" labelPlacement={"outside"} variant={"flat"} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
+                      <Input isRequired maxLength={"10"} size="md" type="text" label="Número" labelPlacement={"outside"} variant={"flat"} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
@@ -236,10 +233,10 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             {/* Información Aprendices */}
             {dataInfoStudent.map((item) => {
               return (
-                <section className="mt-[1rem] overflow-hidden min-w-[50%]" key={item.id_aprendiz}>
+                <section className="mt-[1rem] overflow-hidden w-[30rem] min-w-[50%]" key={item.id_aprendiz}>
                   <section className="mt-[10px] border-b-2  border-[#0799b6]">
                     <span className="font-bold text-[17px]">Nombre completo</span>
-                    <p>{item.nombres_aprendiz}</p>
+                    <p>{item.nombres_aprendiz} {item.apellidos_aprendiz}</p>
                   </section>
                   <section className="mt-[10px] border-b-2  border-[#0799b6]">
                     <span className="font-bold text-[17px]">Tipo de documento</span>
@@ -437,22 +434,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                           <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
                         </div>
                         <section className="flex pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Popover

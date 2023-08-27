@@ -134,7 +134,7 @@ const Rules = () => {
                       </Dropdown>
                       <section className="px-3">
                         <Button isIconOnly color="primary" onClick={ParagrafosAddButtonClick}>
-                          {changeButtonArt ? "-" : "+"}
+                          {changeButtonParagrafos ? "-" : "+"}
                         </Button>
                       </section>
                     </section>
@@ -149,7 +149,7 @@ const Rules = () => {
                       <Input type="number" labelPlacement="outside" label="Seleccionar numeral" variant="faded" />
                       <section className="px-3">
                         <Button isIconOnly color="primary" onClick={NumeralAddButtonClick}>
-                          {changeButtonArt ? "-" : "+"}
+                          {changeButtonNumeral ? "-" : "+"}
                         </Button>
                       </section>
                     </section>
