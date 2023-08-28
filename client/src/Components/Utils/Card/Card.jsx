@@ -13,7 +13,7 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
       </header>
       <section className="card_Body">
         {inside && (
-          <section className="w-full">
+          <section className="relative">
             <section className="w-48 h-44">
               <span className="object-contain w-44">
                 <img className="rounded-[10px]" src={image} alt="Imágen" loading="lazy" />
@@ -28,10 +28,10 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
         <p className="text-[12px]">{descripción}</p>
 
         {flip && (
-          <section className="card_flip">
+          <section className="card_flip ">
             <section className="front ">{frontContent}</section>
             <section className="border-2 border-blue-200 back ">
-              <ul className="list">{backContent}</ul>
+              <ul className="list text-lg">{backContent}</ul>
             </section>
           </section>
         )}

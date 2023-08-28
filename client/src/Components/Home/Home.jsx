@@ -1,5 +1,6 @@
 import "./Home.css";
 import { Card } from "../Utils/Card/Card";
+import { Chip } from "@nextui-org/react";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Footer } from "../Footer/Footer";
 import { Link } from "react-router-dom";
@@ -10,15 +11,20 @@ const Home = () => {
     { titleHome: "Crear solicitud", image: "/image/solicitud.webp", descripciónHome: "Aquí podrás crear una solicitud para un comité de evalución..", Link: "/create" },
     { titleHome: "Fichas", image: "/image/fichas.webp", descripciónHome: "Aquí podrás visualizar las fichas del CTM.", Link: "/groups" },
     { titleHome: "Reglamento", image: "/image/reglamento.webp", descripciónHome: "Aquí podrás ver el reglamento para consultar los artículos necesarios.", Link: "/requests" },
-    { titleHome: "Agregar aprendiz", image: "/image/aprendiz.webp", descripciónHome: "Aquí podrás ver y agregar aprendices", Link: "/students" },
   ];
 
   return (
-    <main className="flex h-screen w-ful">
+    <main className="flex h-screen w-full">
       <Sliderbar />
       <section className="w-full  overflow-auto">
         <header className="p-8 flex justify-center text-[23px]">
           <h1 className=" text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
+          <section className="relative left-[20%] cursor-pointer">
+            <Chip variant="flat" color="secondary" id="campana" >
+              Mensajes
+              <i class="fi fi-ss-bell pl-[.5rem]"/>
+            </Chip>
+          </section>
         </header>
         <section className="flex-wrap flex items-center justify-center gap-20">
           {data.map((x, i) => (
@@ -36,5 +42,3 @@ const Home = () => {
 };
 
 export { Home };
-
-

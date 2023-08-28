@@ -1,38 +1,35 @@
 import './Modal.css'
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-
 import { createApprentices, createFicha, getApprenticesById } from '../../../api/httpRequest'
-
 import Swal from 'sweetalert2'
-import { Toaster, toast } from 'sonner'
-
+import { Toaster, toast} from 'sonner'
 import { Accordion, AccordionItem } from '@nextui-org/react'
+import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/react";
 import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
-import { Textarea } from '@nextui-org/react'
-import { Input } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Link } from '@nextui-org/react'
+import { Textarea, Input, Button } from '@nextui-org/react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from '@nextui-org/react'
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents }) => {
   const excelFileRef = useRef(null)
   const { id_ficha } = useParams()
 
   /* aprendices values */
-  const [nombresAprendiz, setNombresAprendiz] = useState('')
-  const [apellidosAprendiz, setApellidosAprendiz] = useState('')
-  const [tipoDocumento, setTipoDocumento] = useState('')
-  const [numeroDocumento, setNumeroDocumento] = useState('')
-  const [emailSena, setEmailSena] = useState('')
-  const [emailAlterno, setEmailAlterno] = useState('')
-  const [numeroCelular, setNumeroCelular] = useState('')
+  const [nombresAprendiz, setNombresAprendiz] = useState("");
+  const [apellidosAprendiz, setApellidosAprendiz] = useState("");
+  const [tipoDocumento, setTipoDocumento] = useState("");
+  const [numeroDocumento, setNumeroDocumento] = useState("");
+  const [emailSena, setEmailSena] = useState("");
+  const [emailAlterno, setEmailAlterno] = useState("");
+  const [numeroCelular, setNumeroCelular] = useState("");
 
   /* fichas values */
-  const [numeroFicha, setNumeroFicha] = useState('')
-  const [nombrePrograma, setNombrePrograma] = useState('')
-  const [jornada, setJornada] = useState('')
-  const [etapaPrograma, setEtapaPrograma] = useState('')
-  const [numeroTrimestre, setNumeroTrimestre] = useState('')
-  const [idModalidad, setIdmodalidad] = useState('')
+  const [numeroFicha, setNumeroFicha] = useState("");
+  const [nombrePrograma, setNombrePrograma] = useState("");
+  const [jornada, setJornada] = useState("");
+  const [etapaPrograma, setEtapaPrograma] = useState("");
+  const [numeroTrimestre, setNumeroTrimestre] = useState("");
+  const [idModalidad, setIdmodalidad] = useState("");
 
   const closeModal = () => {
     cerrarModal()
@@ -43,23 +40,23 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   const [dataInfoStudent, setDataInfoStudent] = useState([])
 
   const handleEtapaChange = (event) => {
-    const selectedValue = event.target.value
-    setEtapaPrograma(selectedValue)
-    setIsTrimestreEnabled(selectedValue === 'lectiva')
-  }
+    const selectedValue = event.target.value;
+    setEtapaPrograma(selectedValue);
+    setIsTrimestreEnabled(selectedValue === "lectiva");
+  };
 
   // Dropdown detalles de solicitud
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Estado']))
-  const selectedValueDetails = React.useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Estado"]));
+  const selectedValueDetails = React.useMemo(() => Array.from(selectedKeys).join(", ").replaceAll("_", " "), [selectedKeys]);
 
   const getStatusColorClass = (status) => {
     const statusColorMap = {
-      Aprobado: 'bg-green-200 text-success rounded-2xl', // Clase CSS para aprobado
-      Rechazado: 'bg-red-200 text-danger rounded-2xl', // Clase CSS para rechazado
-      Pendiente: 'bg-yellow-200 text-warning rounded-2xl', // Clase CSS para pendiente
-    }
-    return statusColorMap[status] || 'text-black' // Clase CSS por defecto (negro) si el estado no está en el mapa
-  }
+      Aprobado: "bg-green-200 text-success rounded-2xl", // Clase CSS para aprobado
+      Rechazado: "bg-red-200 text-danger rounded-2xl", // Clase CSS para rechazado
+      Pendiente: "bg-yellow-200 text-warning rounded-2xl", // Clase CSS para pendiente
+    };
+    return statusColorMap[status] || "text-black"; // Clase CSS por defecto (negro) si el estado no está en el mapa
+  };
 
   const handleExcelFile = () => {
     const currentFile = excelFileRef.current.files[0]
@@ -80,7 +77,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
 
   /* Enviar datos de las fichas */
   const sendDataFichas = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       const dataValue = {
@@ -106,11 +103,11 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         description: message,
       })
     }
-  }
+  };
 
   /* enviar datos de aprendiz */
   const sendDataApprentices = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       const dataValue = {
@@ -122,7 +119,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         celular_aprendiz: numeroCelular,
         id_documento: tipoDocumento,
         id_ficha,
-      }
+      };
 
       const response = await createApprentices(dataValue)
 
@@ -161,29 +158,31 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
         <Toaster position="top-right" closeButton richColors />
-        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] w-[35%] rounded-2xl overflow-auto" style={{ animation: 'bounce 0.8s ease-in-out' }}>
+        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in">
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
-            <i className="fi fi-br-cross relative left-[20%]" onClick={closeModal} />
+            <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal} >
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" onClick={closeModal} />
+            </section>
           </header>
           <section className="bodyModal">
             {/* Agregar aprendices */}
             {modalAdd && (
-              <section className="relative h-[25rem] ">
-                <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 overflow-auto ">
+              <section className="relative w-[28rem] max-md:w-[20rem]">
+                <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 max-md:gap-y-5 overflow-auto ">
                   <section className="modalInput ">
                     <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
+                      <Input isRequired size="md" type="text" label="Nombre" labelPlacement={"outside"} variant={"flat"} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} value={apellidosAprendiz} onChange={(e) => setApellidosAprendiz(e.target.value)} />
+                      <Input isRequired size="md" type="text" label="Apellido" labelPlacement={"outside"} variant={"flat"} value={apellidosAprendiz} onChange={(e) => setApellidosAprendiz(e.target.value)} />
                     </div>
                   </section>
                   <section>
                     <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={tipoDocumento} onChange={(e) => setTipoDocumento(e.target.value)}>
-                      <option value="">Tipo de documento</option>
+                      <option value="">Tipo de documento*</option>
                       <option value="1">C.C</option>
                       <option value="2">C.E</option>
                       <option value="3">T.I</option>
@@ -192,27 +191,27 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
+                      <Input isRequired size="md" type="text" label="Documento" labelPlacement={"outside"} variant={"flat"} value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
+                      <Input isRequired size="md" type="text" label="Correo Institucional" labelPlacement={"outside"} variant={"flat"} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} value={emailAlterno} onChange={(e) => setEmailAlterno(e.target.value)} />
+                      <Input size="md" type="text" label="Correo alterno" labelPlacement={"outside"} variant={"flat"} value={emailAlterno} onChange={(e) => setEmailAlterno(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
+                      <Input isRequired maxLength={"10"} size="md" type="text" label="Número" labelPlacement={"outside"} variant={"flat"} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número alterno" labelPlacement={'outside'} variant={'flat'} />
+                      <Input size="md" type="text" label="Número alterno" labelPlacement={"outside"} variant={"flat"} />
                     </div>
                   </section>
                 </section>
@@ -234,10 +233,10 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
             {/* Información Aprendices */}
             {dataInfoStudent.map((item) => {
               return (
-                <section className="mt-[1rem] overflow-hidden min-w-[50%]" key={item.id_aprendiz}>
+                <section className="mt-[1rem] overflow-hidden w-[30rem] min-w-[50%]" key={item.id_aprendiz}>
                   <section className="mt-[10px] border-b-2  border-[#0799b6]">
                     <span className="font-bold text-[17px]">Nombre completo</span>
-                    <p>{item.nombres_aprendiz}</p>
+                    <p>{item.nombres_aprendiz} {item.apellidos_aprendiz}</p>
                   </section>
                   <section className="mt-[10px] border-b-2  border-[#0799b6]">
                     <span className="font-bold text-[17px]">Tipo de documento</span>
@@ -280,17 +279,17 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="relative grid grid-cols-2 justify-center gap-8">
                   <section className="modalInput ">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
+                      <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                     </div>
                   </section>
                   <section className="modalInput">
                     <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                      <Input size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
+                      <Input isRequired size="md" type="text" label="Nombre del programa" labelPlacement={"outside"} variant={"flat"} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
                     </div>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
-                      <option value="">Jornada</option>
+                    <select className=" bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={jornada} onChange={(e) => setJornada(e.target.value)}>
+                      <option value="">Jornada*</option>
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
                       <option value="Noche">Noche</option>
@@ -298,14 +297,14 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100  px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
-                      <option value="">Etapa</option>
-                      <option value="lectiva">Lectiva</option>
-                      <option value="practica">Práctica</option>
+                    <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
+                      <option value="">Etapa*</option>
+                      <option value="Lectiva">Lectiva</option>
+                      <option value="Práctica">Práctica</option>
                     </select>
                   </section>
                   <section>
-                    <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
+                    <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
                       <option value="">Trimestre lectivo</option>
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -322,18 +321,25 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     <option value="3">Media técnica</option>
                     <option value="4">A distancia</option>
                   </select>
-                  <section className="relative">
-                    <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataFichas}>
-                      <p className="tracking-wide text-15px">Guardar</p>
-                      <i className="fi fi-br-check text-[15px]" />
-                    </Button>
-                  </section>
+                </section>
+                <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
+                  <option value="">Coordinador*</option>
+                  <option value="Marianela Henao Atehortua">Marianela Henao Atehortua</option>
+                  <option value="Jaime León Vergara Areiza">Jaime León Vergara Areiza</option>
+                  <option value="Sergio Soto Henao">Sergio Soto Henao</option>
+                  <option value="Mauro Isaías Arango Vanegas">Mauro Isaías Arango Vanegas</option>
+                </select>
+                <section className="relative grid place-items-center mt-[1rem]">
+                  <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataFichas}>
+                    <p className="tracking-wide text-15px">Guardar</p>
+                    <i className="fi fi-br-check text-[15px]" />
+                  </Button>
                 </section>
               </section>
             )}
             {/* Ver detalles Solicitudes */}
             {modalDetails && (
-              <section className="relative top-[1.6rem]   ">
+              <section className="relative top-[1.6rem] w-[30rem]">
                 <section className="  place-items-center gap-4 flex justify-between">
                   <Button className="bg-green-200 text-success rounded-2xl ">Aprobado</Button>
                   <section>
@@ -428,31 +434,61 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                           <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
                         </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
-                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
-                        </div>
+                        <section className="flex pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Popover
+                            showArrow
+                            backdrop="opaque"
+                            placement="top"
+                            classNames={{
+                              base: "py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50",
+                              arrow: "bg-default-200",
+                            }}
+                          >
+                            <PopoverTrigger>
+                              <Button color="primary" variant="flat">
+                                Descripción caso
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="px-1 py-2">
+                                <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </section>
+                        <section className="flex  pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Popover
+                            showArrow
+                            backdrop="opaque"
+                            placement="top"
+                            classNames={{
+                              base: "py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50",
+                              arrow: "bg-default-200",
+                            }}
+                          >
+                            <PopoverTrigger>
+                              <Button color="primary" variant="flat">
+                                Descripción artículo
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                              <div className="px-1 py-2">
+                                <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        </section>
                       </section>
                     </AccordionItem>
                   </Accordion>
                 </section>
               </section>
             )}
+            {/* Editar fichas */}
             {modalDetailsEdit && (
-              <section className="mt-[1.5rem]">
+              <section className="mt-[1.5rem] w-[30rem]">
                 <section className="place-items-center gap-4 flex justify-between">
                   <Dropdown>
                     <DropdownTrigger>
@@ -471,7 +507,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   </section>
                 </section>
                 <section className="w-full grid grid-cols-12  gap-4 py-4">
-                  <Textarea variant={'faded'} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-10 mb-6 md:mb-0" />
+                  <Textarea variant={"faded"} label="Ingresar descripción" labelPlacement="outside" placeholder="Descripción" className="col-span-12 md:col-span-10 mb-6 md:mb-0" />
                 </section>
                 <section className="flex gap-4 relative py-[5px]">
                   <section className="">
@@ -493,5 +529,5 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         </section>
       </main>
     </>
-  )
-}
+  );
+};

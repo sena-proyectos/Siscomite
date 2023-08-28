@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
 import "./Sliderbar.css";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookie from "js-cookie";
 import jwt from "jwt-decode";

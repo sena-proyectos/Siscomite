@@ -119,7 +119,7 @@ export const Register = () => {
                   </button>
                 }
                 type={isVisible ? "text" : "password"}
-                className="max-w-xs"
+                className="max-full"
                 autoComplete="off"
                 value={contrasena}
                 onChange={(e) => setContrasena(e.target.value)}

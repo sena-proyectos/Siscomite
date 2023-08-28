@@ -1,4 +1,4 @@
-@keyframes bounce {
+/* @keyframes bounce {
   0% {
     transform: translateY(-50%);
     animation-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -9,19 +9,6 @@
     animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
 }
+ */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 

@@ -1,48 +1,67 @@
-import { Link } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
-import { Pagination } from '@nextui-org/react'
-import { Search } from '../Search/Search'
-import { Footer } from '../Footer/Footer'
-import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Modal } from '../Utils/Modal/Modal'
-import { Card } from '../Utils/Card/Card'
-import './Groups.css'
-import { getFichas } from '../../api/httpRequest'
+import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Pagination, Tooltip, Button } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { Search } from "../Search/Search";
+import { Footer } from "../Footer/Footer";
+import { Sliderbar } from "../Sliderbar/Sliderbar";
+import { Modal } from "../Utils/Modal/Modal";
+import { getFichas } from "../../api/httpRequest";
+import "./Groups.css";
 
 const Groups = () => {
-  const [fichas, setFichas] = useState([])
+  const [fichas, setFichas] = useState([]);
 
   useEffect(() => {
     const getFicha = async () => {
       try {
-        const response = await getFichas()
-        const res = response.data.result
-        setFichas(res)
+        const response = await getFichas();
+        const res = response.data.result;
+        setFichas(res);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
+    };
 
     if (fichas.length >= 0) {
-      getFicha()
+      getFicha();
     }
-  }, [fichas])
+  }, [fichas]);
 
-  const itemsPerPage = 9
-  const [activePage, setActivePage] = useState(1)
+  const itemsPerPage = 6;
+  const [activePage, setActivePage] = useState(1);
 
   const handlePageChange = (pageNumber) => {
-    setActivePage(pageNumber)
-  }
+    setActivePage(pageNumber);
+  };
 
-  const startIdx = (activePage - 1) * itemsPerPage
-  const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage)
-  const totalPages = Math.ceil(fichas.length / itemsPerPage)
+  const startIdx = (activePage - 1) * itemsPerPage;
+  const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage);
+  const totalPages = Math.ceil(fichas.length / itemsPerPage);
 
-  const [modalGroups, setModalGroups] = useState(false)
+  const [modalGroups, setModalGroups] = useState(false);
   const modalAddGroups = () => {
-    setModalGroups(!modalGroups)
-  }
+    setModalGroups(!modalGroups);
+  };
+
+  // Hover cards
+  const [hoveredCards, setHoveredCards] = useState({});
+
+  // Función para activar el hover en una card
+  const handleCardHover = (id) => {
+    setHoveredCards((prevHovered) => ({
+      ...prevHovered,
+      [id]: true,
+    }));
+  };
+
+  // Función para desactivar el hover en una card
+  const handleCardLeave = (id) => {
+    setHoveredCards((prevHovered) => ({
+      ...prevHovered,
+      [id]: false,
+    }));
+  };
 
   return (
     <>
@@ -61,34 +80,45 @@ const Groups = () => {
       <main className="flex h-screen">
         <Sliderbar />
         <section className="w-screen overflow-auto">
-          <header className="p-[1.5rem] flex justify-center">
+          <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search placeholder={"Buscar ficha"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
           </header>
-          <section className="flex flex-wrap align-center justify-center gap-8 studentsstyle">
-            {visibleCards.map((card) => (
-              <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="cardI">
-                <Card
-                  flip
-                  frontContent={
-                    <section className="p-[1rem] w-full ">
-                      <p className="text-[16px] bg-blue-200 grid  rounded-xl w-full place-items-center">{card.numero_ficha}</p>
-                      <p className="">{card.nombre_programa}</p>
-                    </section>
-                  }
-                  backContent={
-                    <ul className="list">
-                      <li className="relative top-3 left-4 listItem">{card.jornada}</li>
-                      <li className="relative top-3 left-4 listItem">{card.etapa_programa}</li>
-                    </ul>
-                  }
-                />
-              </Link>
-            ))}
+
+          <section className="grid place-items-center h-[75vh] max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5">
+            <section className="mx-auto gap-5 grid grid-cols-3 w-[80%] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1  ">
+              {visibleCards.map((card) => (
+                <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
+                  <Card className={`card w-full border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? "hovered" : ""}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
+                    <CardHeader className="gap-3 flex justify-center z-0">
+                      <section className="flex bg-blue-200 py-2 justify-center rounded-xl w-full">
+                        <p className="text-xl font-bold ">{card.numero_ficha}</p>
+                      </section>
+                    </CardHeader>
+                    <CardBody className="h-full">
+                      <p className="text-lg">{card.nombre_programa}</p>
+                    </CardBody>
+
+                    <CardFooter>
+                      <p className="text-gray-500 text-md"> Marianela Henao</p>
+                    </CardFooter>
+                  </Card>
+
+                  <section className={`animate-appearance-in absolute mt-[-11rem] ml-[2.5rem] z-10 p-4 w-[14rem] shadow-lg rounded-xl bg-blue-300 text-white  ${hoveredCards[card.id_ficha] ? "" : "hidden"}`}>
+                    <p className="font-bold">
+                      Jornada: <span className="font-normal">{card.jornada}</span>
+                    </p>
+                    <p className="font-bold">
+                      Etapa: <span className="font-normal">{card.etapa_programa}</span>
+                    </p>
+                  </section>
+                </Link>
+              ))}
+            </section>
           </section>
-          <section className="grid place-items-center">
-            <Pagination className="relative top-[.5rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
+          <section className="grid place-items-center  mt-[.5rem] ">
+            <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
             <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>
@@ -97,15 +127,7 @@ const Groups = () => {
         </section>
       </main>
     </>
-  )
-}
+  );
+};
 
-export { Groups }
-
-const SkeletonLoading = () => {
-  return (
-    <div>
-      <Skeleton width={'100%'} height={'100%'} />
-    </div>
-  )
-}
+export { Groups };
