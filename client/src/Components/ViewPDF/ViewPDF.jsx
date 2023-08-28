@@ -4,9 +4,9 @@ import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
 import { Button, Card } from '@nextui-org/react'
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`
 
-export const Test = () => {
+export const ViewPdf = () => {
   const [numPages, setNumPages] = useState(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [pdfFile, setPdfFile] = useState(null)
@@ -28,7 +28,7 @@ export const Test = () => {
   return (
     <main className={'p-4 h-screen flex justify-center items-center'}>
       <label className={pdfFile ? 'hidden' : 'cursor-pointer inline-block text-[white] bg-indigo-500 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90 transition duration-150 ease-in-out h-12'}>
-        <i className="fi fi-rr-folder-upload text-[18px] mr-[10px]"/>
+        <i className="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
         Subir reglamento
         <input className="hidden" type="file" accept="application/pdf" onChange={handleFileChange} />
       </label>
@@ -40,7 +40,7 @@ export const Test = () => {
                 <Page pageNumber={pageNumber} />
               </Document>
             </section>
-            <p className='text-center'>
+            <p className="text-center">
               Página {pageNumber} de {numPages}
             </p>
             <section className="w-full flex justify-center gap-4 p-4">

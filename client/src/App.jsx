@@ -8,7 +8,6 @@ import { Create } from './Components/Create/Create'
 import { Groups } from './Components/Groups/Groups'
 import { Rules } from './Components/Rules/Rules'
 import './App.css'
-import { Test } from './Components/Test/Test'
 
 function App() {
   return (
@@ -21,7 +20,6 @@ function App() {
       <Route path="/create" element={<Create />} />
       <Route path="/groups" element={<Groups />} />
       <Route path="/rules" element={<Rules />} />
-      <Route path="/test" element={<Test />} />
     </Routes>
   )
 }
