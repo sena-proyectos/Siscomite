@@ -27,9 +27,9 @@ export const ViewPdf = () => {
 
   return (
     <main className={'h-screen flex justify-center items-center'}>
-      <label className={pdfFile ? 'hidden' : 'cursor-pointer inline-block text-[white] bg-indigo-500 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90 transition duration-150 ease-in-out h-12'}>
-        <i className="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
-        Subir reglamento
+      <label className={pdfFile ? 'hidden' : 'cursor-pointer text-[white] bg-indigo-500 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90 transition duration-150 ease-in-out h-28 flex flex-col'}>
+        <p className='mt-7'>Subir reglamento</p>
+        <i className="fi fi-rr-folder-upload text-[18px] " />
         <input className="hidden" type="file" accept="application/pdf" onChange={handleFileChange} />
       </label>
       {pdfFile && (

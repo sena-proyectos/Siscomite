@@ -22,7 +22,7 @@ const Home = () => {
           <section className="relative left-[20%] cursor-pointer">
             <Chip variant="flat" color="secondary" id="campana" >
               Mensajes
-              <i class="fi fi-ss-bell pl-[.5rem]"/>
+              <i className="fi fi-ss-bell pl-[.5rem]"/>
             </Chip>
           </section>
         </header>
