@@ -57,7 +57,7 @@ const Rules = () => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className=" border-t-[4px] border-[#2e323e] backdrop-blur-[3px]">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className=" border-t-[4px] border-[#2e323e] backdrop-blur-[3px] ">
         <ModalContent>
           {(onClose) => (
             <>
@@ -68,7 +68,7 @@ const Rules = () => {
                 </p>
               </ModalHeader>
               <ModalBody>
-                <section className=" grid grid-cols-2">
+                <section className=" grid grid-cols-2 ">
                   <section className="relative p-[1rem] ">
                     <section className="pr-[1rem] flex">
                       <Dropdown>
@@ -176,19 +176,15 @@ const Rules = () => {
 
       <main className="h-screen flex">
         <Sliderbar />
-        <section className="w-full h-screen overflow-auto ">
+        <section className="w-full h-screen overflow-auto">
           <section className="grid h-screen grid-cols-2 ">
             <section className="grid place-items-center">
               <Button size="lg" onPress={onOpen} color="primary" variant="shadow">
                 Editar reglamento
               </Button>
             </section>
-            <section className="p-[1rem] ">
-              <Card className="h-[92vh] flex ">
-                <CardBody className="">
-                  <p>sad</p>
-                </CardBody>
-              </Card>
+            <section className="">
+              <ViewPdf></ViewPdf>
             </section>
           </section>
 
