@@ -1,79 +1,76 @@
-import { ViewPdf } from '../ViewPDF/ViewPDF'
-import React, { useState } from 'react'
-import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Footer } from '../Footer/Footer'
-import { Textarea, Button, Input } from '@nextui-org/react'
-import { Card, CardBody } from '@nextui-org/react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { ViewPdf } from "../ViewPDF/ViewPDF";
+import React, { useState } from "react";
+import { Sliderbar } from "../Sliderbar/Sliderbar";
+import { Footer } from "../Footer/Footer";
+import { Textarea, Button, Input } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 
 const Rules = () => {
-  const [inputVisibleCap, setInputVisibleCap] = useState(false)
-  const [inputVisibleArt, setInputVisibleArt] = useState(false)
-  const [inputVisibleNumeral, setInputVisibleNumeral] = useState(false)
-  const [inputVisibleParagrafos, setInputVisibleParagrafos] = useState(false)
+  const [inputVisibleCap, setInputVisibleCap] = useState(false);
+  const [inputVisibleArt, setInputVisibleArt] = useState(false);
+  const [inputVisibleNumeral, setInputVisibleNumeral] = useState(false);
+  const [inputVisibleParagrafos, setInputVisibleParagrafos] = useState(false);
 
   // Modal
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
   // Drop capítulo
-  const [selectedKeysCaps, setSelectedKeysCaps] = React.useState(new Set(['Seleccionar capítulos']))
-  const selectedValueCaps = React.useMemo(() => Array.from(selectedKeysCaps).join(', ').replaceAll('_', ' '), [selectedKeysCaps])
+  const [selectedKeysCaps, setSelectedKeysCaps] = React.useState(new Set(["Seleccionar capítulos"]));
+  const selectedValueCaps = React.useMemo(() => Array.from(selectedKeysCaps).join(", ").replaceAll("_", " "), [selectedKeysCaps]);
 
-  const [changeButtonCap, setChangeButtonCap] = useState(false)
+  const [changeButtonCap, setChangeButtonCap] = useState(false);
 
   const CapAddButtonClick = () => {
-    setInputVisibleCap(!inputVisibleCap)
-    setChangeButtonCap(!changeButtonCap)
-  }
+    setInputVisibleCap(!inputVisibleCap);
+    setChangeButtonCap(!changeButtonCap);
+  };
   // Drop artículo
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Seleccionar artículos']))
-  const selectedValue = React.useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Seleccionar artículos"]));
+  const selectedValue = React.useMemo(() => Array.from(selectedKeys).join(", ").replaceAll("_", " "), [selectedKeys]);
 
-  const [changeButtonArt, setChangeButtonArt] = useState(false)
+  const [changeButtonArt, setChangeButtonArt] = useState(false);
 
   const ArtAddButtonClick = () => {
-    setInputVisibleArt(!inputVisibleArt)
-    setChangeButtonArt(!changeButtonArt)
-  }
+    setInputVisibleArt(!inputVisibleArt);
+    setChangeButtonArt(!changeButtonArt);
+  };
   // Drop parágrafo
-  const [selectedKeysParagrafos, setSelectedKeysParagrafos] = React.useState(new Set(['Seleccionar parágrafos']))
-  const selectedValueParagrafos = React.useMemo(() => Array.from(selectedKeysParagrafos).join(', ').replaceAll('_', ' '), [selectedKeysParagrafos])
+  const [selectedKeysParagrafos, setSelectedKeysParagrafos] = React.useState(new Set(["Seleccionar parágrafos"]));
+  const selectedValueParagrafos = React.useMemo(() => Array.from(selectedKeysParagrafos).join(", ").replaceAll("_", " "), [selectedKeysParagrafos]);
 
-  const [changeButtonParagrafos, setChangeButtonParagrafos] = useState(false)
+  const [changeButtonParagrafos, setChangeButtonParagrafos] = useState(false);
 
   const ParagrafosAddButtonClick = () => {
-    setInputVisibleParagrafos(!inputVisibleParagrafos)
-    setChangeButtonParagrafos(!changeButtonParagrafos)
-  }
+    setInputVisibleParagrafos(!inputVisibleParagrafos);
+    setChangeButtonParagrafos(!changeButtonParagrafos);
+  };
 
   // Input numeral
-  const [changeButtonNumeral, setChangeButtonNumeral] = useState(false)
+  const [changeButtonNumeral, setChangeButtonNumeral] = useState(false);
 
   const NumeralAddButtonClick = () => {
-    setInputVisibleNumeral(!inputVisibleNumeral)
-    setChangeButtonNumeral(!changeButtonNumeral)
-  }
+    setInputVisibleNumeral(!inputVisibleNumeral);
+    setChangeButtonNumeral(!changeButtonNumeral);
+  };
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOpenEditModal = () => {
-    setIsEditModalOpen(true)
-  }
+    setIsEditModalOpen(true);
+  };
 
   const handleCloseEditModal = () => {
-    setIsEditModalOpen(false)
-  }
+    setIsEditModalOpen(false);
+  };
 
   const handleSave = () => {
-    setIsLoading(true)
+    setIsLoading(true);
     // Simular un proceso de guardado
     setTimeout(() => {
-      setIsLoading(false)
-      setIsEditModalOpen(false)
-    }, 2000)
-  }
+      setIsLoading(false);
+      setIsEditModalOpen(false);
+    }, 2000);
+  };
 
   return (
     <>
@@ -102,11 +99,11 @@ const Rules = () => {
                   </Dropdown>
                   <section className="pl-3">
                     <Button isIconOnly color="primary" onClick={CapAddButtonClick}>
-                      {changeButtonCap ? '-' : '+'}
+                      {changeButtonCap ? "-" : "+"}
                     </Button>
                   </section>
                 </section>
-                <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleCap ? '' : 'hidden'}`}>
+                <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleCap ? "" : "hidden"}`}>
                   <Input type="text" size="sm" label="Agregar capítulo" color="primary" variant="faded" />
                   <Textarea name="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                 </section>
@@ -127,11 +124,11 @@ const Rules = () => {
                   </Dropdown>
                   <section className="px-3">
                     <Button isIconOnly color="primary" onClick={ArtAddButtonClick}>
-                      {changeButtonArt ? '-' : '+'}
+                      {changeButtonArt ? "-" : "+"}
                     </Button>
                   </section>
                 </section>
-                <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleArt ? '' : 'hidden'}`}>
+                <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleArt ? "" : "hidden"}`}>
                   <Input type="text" size="sm" label="Agregar artículo" color="primary" variant="faded" />
                   <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                 </section>
@@ -152,11 +149,11 @@ const Rules = () => {
                   </Dropdown>
                   <section className="px-3">
                     <Button isIconOnly color="primary" onClick={ParagrafosAddButtonClick}>
-                      {changeButtonParagrafos ? '-' : '+'}
+                      {changeButtonParagrafos ? "-" : "+"}
                     </Button>
                   </section>
                 </section>
-                <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleParagrafos ? '' : 'hidden'}`}>
+                <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleParagrafos ? "" : "hidden"}`}>
                   <Input type="text" size="sm" label="Agregar paragrafo" color="primary" variant="faded" />
                   <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                 </section>
@@ -167,33 +164,23 @@ const Rules = () => {
                   <Input type="number" labelPlacement="outside" label="Seleccionar numeral" variant="faded" />
                   <section className="px-3">
                     <Button isIconOnly color="primary" onClick={NumeralAddButtonClick}>
-                      {changeButtonNumeral ? '-' : '+'}
+                      {changeButtonNumeral ? "-" : "+"}
                     </Button>
                   </section>
                 </section>
-                <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleNumeral ? '' : 'hidden'}`}>
+                <section className={`w-full pt-2 rounded-[13px] animate-appearance-in ${inputVisibleNumeral ? "" : "hidden"}`}>
                   <Input type="number" size="sm" label="Agregar numeral" color="primary" variant="faded" />
                   <Textarea name="" id="" cols="30" rows="10" placeholder="Ingresar descripción"></Textarea>
                 </section>
               </section>
             </section>
-           
-            <ModalFooter className="flex justify-between">
-                <Button color="warning" variant="flat" >
-                  <i className="fi fi-br-plus"></i>
-                  Aplicar
-                </Button>
-                <section className="w-[13rem] flex justify-between">
-                  <Button color="danger" variant="bordered" onPress={onClose}>
-                    Cerrar
-                  </Button>
-                  <Button color="success" variant="flat" onClick={handleSave}>
-                    <i className="fi fi-br-check"></i>
-                    Guardar
-                  </Button>
-                </section>
-              </ModalFooter>
 
+            <ModalFooter>
+              <Button color="success" variant="flat" onClick={handleSave}>
+                <i className="fi fi-br-check"></i>
+                Guardar
+              </Button>
+            </ModalFooter>
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -225,7 +212,7 @@ const Rules = () => {
         </ModalContent>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export { Rules }
+export { Rules };

@@ -96,7 +96,7 @@ const Groups = () => {
                         <p className="text-xl font-bold ">{card.numero_ficha}</p>
                       </section>
                     </CardHeader>
-                    <CardBody className="">
+                    <CardBody className="h-[5rem]">
                       <p className="text-lg">{card.nombre_programa}</p>
                     </CardBody>
 
