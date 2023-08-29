@@ -72,7 +72,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
       excelFileRef.current.value = ''
       return
     }
-    readExcelFile(currentFile)
+    readExcelFile(currentFile, id_ficha)
   }
 
   /* Enviar datos de las fichas */
@@ -143,9 +143,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
       try {
         const response = await getApprenticesById(infoStudents)
         const res = response.data.result
-        if(res[0].id_documento === 1) res[0].id_documento = "C.C"
-        if(res[0].id_documento === 2) res[0].id_documento = "C.E"
-        if(res[0].id_documento === 3) res[0].id_documento = "T.I"
+        if(res[0].id_documento === 1) res[0].id_documento = "CC"
+        if(res[0].id_documento === 2) res[0].id_documento = "CE"
+        if(res[0].id_documento === 3) res[0].id_documento = "TI"
         if(res[0].id_documento === 4) res[0].id_documento = "PEP"
         if(res[0].id_documento === 5) res[0].id_documento = "Registro Civil"
         setDataInfoStudent(res)
@@ -183,9 +183,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   <section>
                     <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" value={tipoDocumento} onChange={(e) => setTipoDocumento(e.target.value)}>
                       <option value="">Tipo de documento*</option>
-                      <option value="1">C.C</option>
-                      <option value="2">C.E</option>
-                      <option value="3">T.I</option>
+                      <option value="1">CC</option>
+                      <option value="2">CE</option>
+                      <option value="3">TI</option>
                       <option value="4">PEP</option>
                     </select>
                   </section>
