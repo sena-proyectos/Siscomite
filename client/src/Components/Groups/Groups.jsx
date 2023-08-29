@@ -8,6 +8,8 @@ import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Modal } from '../Utils/Modal/Modal'
 import './Groups.css'
 import { getFichas } from '../../api/httpRequest'
+import Swal from 'sweetalert2'
+import { Toaster, toast } from 'sonner'
 
 const Groups = () => {
   const [fichas, setFichas] = useState([])

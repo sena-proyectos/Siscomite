@@ -1,14 +1,16 @@
 import './Modal.css'
-import React, { useState } from 'react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Textarea, Button } from '@nextui-org/react'
-import { createApprentices, createFicha } from '../../../api/httpRequest'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { createApprentices, createFicha, getApprenticesById } from '../../../api/httpRequest'
+import Swal from 'sweetalert2'
+import { Toaster, toast } from 'sonner'
+import { Accordion, AccordionItem } from '@nextui-org/react'
+import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
+import { Textarea, Input, Button } from '@nextui-org/react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from '@nextui-org/react'
 
-export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false }) => {
-  const closeModal = () => {
-    cerrarModal()
-  }
-
+export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents }) => {
+  const excelFileRef = useRef(null)
   const { id_ficha } = useParams()
 
   /* aprendices values */
@@ -28,10 +30,13 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   const [numeroTrimestre, setNumeroTrimestre] = useState('')
   const [idModalidad, setIdmodalidad] = useState('')
 
-  const navigate = useNavigate()
+  const closeModal = () => {
+    cerrarModal()
+  }
 
   //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
+  const [dataInfoStudent, setDataInfoStudent] = useState([])
 
   const handleEtapaChange = (event) => {
     const selectedValue = event.target.value
@@ -52,6 +57,23 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     return statusColorMap[status] || 'text-black' // Clase CSS por defecto (negro) si el estado no está en el mapa
   }
 
+  const handleExcelFile = () => {
+    const currentFile = excelFileRef.current.files[0]
+
+    const checkFile = excelFileRef.current.files[0].name.split('.')
+    if (checkFile[1] !== 'xlsx' && checkFile[1] !== 'xls') {
+      Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: 'Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!',
+        footer: '.xlsx, .xls',
+      })
+      excelFileRef.current.value = ''
+      return
+    }
+    readExcelFile(currentFile)
+  }
+
   /* Enviar datos de las fichas */
   const sendDataFichas = async (e) => {
     e.preventDefault()
@@ -65,17 +87,20 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
       }
-      if (dataValue.id_modalidad === 'Presencial') dataValue.id_modalidad = '1'
-      if (dataValue.id_modalidad === 'Virtual') dataValue.id_modalidad = '2'
-      if (dataValue.id_modalidad === 'Media técnica') dataValue.id_modalidad = '3'
-      if (dataValue.id_modalidad === 'A distancia') dataValue.id_modalidad = '4'
 
       const response = await createFicha(dataValue)
       const res = response.data.message
-
-      cerrarModal()
+      toast.success('Genial!!', {
+        description: res,
+      })
+      setTimeout(() => {
+        cerrarModal()
+      }, 1000)
     } catch (error) {
-      console.log(error)
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message,
+      })
     }
   }
 
@@ -96,16 +121,42 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
       }
 
       const response = await createApprentices(dataValue)
-      // TODO: mostrar mensaje por pantalla
+
       const res = response.data.message
-      cerrarModal()
+      toast.success('Genial!!', {
+        description: res,
+      })
+      setTimeout(() => {
+        cerrarModal()
+      }, 1500)
     } catch (error) {
-      console.log(error)
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message,
+      })
     }
   }
+
+  useEffect(() => {
+    const infoStudent = async () => {
+      try {
+        const response = await getApprenticesById(infoStudents)
+        const res = response.data.result
+        if (res[0].id_documento === 1) res[0].id_documento = 'C.C'
+        if (res[0].id_documento === 2) res[0].id_documento = 'C.E'
+        if (res[0].id_documento === 3) res[0].id_documento = 'T.I'
+        if (res[0].id_documento === 4) res[0].id_documento = 'PEP'
+        if (res[0].id_documento === 5) res[0].id_documento = 'Registro Civil'
+        setDataInfoStudent(res)
+      } catch (error) {}
+    }
+    infoStudent()
+  }, [])
+
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
+        <Toaster position="top-right" closeButton richColors />
         <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in">
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
@@ -167,7 +218,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                   <label className="cursor-pointer inline-block text-[white] bg-red-700 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90">
                     <i className="fi fi-rr-folder-upload text-[18px] mr-[10px]" />
                     Subir Excel
-                    <input className="hidden" type="file" name="archivo" />
+                    <input className="hidden" type="file" name="archivo" ref={excelFileRef} accept=".xlsx, .xls" onChange={handleExcelFile} />
                   </label>
                   <section className="relative grid text  ">
                     <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataApprentices}>
@@ -179,39 +230,48 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
               </section>
             )}
             {/* Información Aprendices */}
-            {modalInfo && (
-              <section className="mt-[1rem] w-[25rem] overflow-hidden ">
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Nombre completo</span>
-                  <p>Mariana Lopez Robledo Estrada</p>
-                  {/* <Input disabled size="md" type="text" label="Mariana Lopez Robledo Estrada" labelPlacement={"outside"} variant={"underlined"} /> */}
+            {dataInfoStudent.map((item) => {
+              return (
+                <section className="mt-[1rem] overflow-hidden min-w-[50%]" key={item.id_aprendiz}>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Nombre completo</span>
+                    <p>{item.nombres_aprendiz}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Tipo de documento</span>
+                    <p>{item.id_documento}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Número de documento</span>
+                    <p>{item.numero_documento_aprendiz}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Correo institucional</span>
+                    <p>{item.email_aprendiz_sena}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Correo Alterno</span>
+                    <p>{item.email_aprendiz_personal}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Número</span>
+                    <p>{item.celular_aprendiz}</p>
+                  </section>
+                  <section className="mt-[10px] border-b-2  border-[#0799b6]">
+                    <span className="font-bold text-[17px]">Número alteno</span>
+                    <p>{item.fijo_aprendiz}</p>
+                  </section>
                 </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Tipo de documento</span>
-                  <p>Cédula de ciudadanía</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Número de documento</span>
-                  <p>12345678</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Correo institucional</span>
-                  <p>mariana34@soy.sena.edu.co</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Correo Alterno</span>
-                  <p>marinalopez@gmail.com</p>
-                </section>
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Número</span>
-                  <p>3245555555</p>
-                </section>
+              )
+            })}
+            {/* {modalInfo && (
+              <section className="mt-[1rem] overflow-hidden min-w-[50%]">
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Número alteno</span>
                   <p>6666666</p>
                 </section>
               </section>
-            )}
+            )} */}
             {/* Agregar Fichas */}
             {modalAddGroups && (
               <section className="mt-[2rem]">
@@ -232,7 +292,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <option value="Mañana">Mañana</option>
                       <option value="Tarde">Tarde</option>
                       <option value="Noche">Noche</option>
-                      <option value="Noche">Fines de semana</option>
+                      <option value="Fines de semana">Fines de semana</option>
                     </select>
                   </section>
                   <section>
@@ -253,12 +313,12 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                       <option value="6">6</option>
                     </select>
                   </section>
-                  <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
-                    <option value="">Modalidad*</option>
-                    <option value="Presencial">Presencial</option>
-                    <option value="Media_tecnica">Media técnica</option>
-                    <option value="A distancia">A distancia</option>
-                    <option value="Virtual">Virtual</option>
+                  <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
+                    <option value="">Modalidad</option>
+                    <option value="1">Presencial</option>
+                    <option value="2">Virtual</option>
+                    <option value="3">Media técnica</option>
+                    <option value="4">A distancia</option>
                   </select>
                 </section>
                 <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
@@ -373,7 +433,22 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                           <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
                         </div>
                         <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                          <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
+                        </div>
+                        <div className="flex w-[10rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                          <Input type="text" variant="underlined" label="Evidencias" defaultValue={<Link to={''}>Link evidencias</Link>} isReadOnly />
                         </div>
                         <section className="flex pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                           <Popover
