@@ -3,6 +3,7 @@ import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Footer } from "../Footer/Footer";
 import { Textarea, Button, Input } from "@nextui-org/react";
 import { Card, CardBody } from "@nextui-org/react";
+import { Test } from "../Test/Test";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@nextui-org/react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 
@@ -11,7 +12,6 @@ const Rules = () => {
   const [inputVisibleArt, setInputVisibleArt] = useState(false);
   const [inputVisibleNumeral, setInputVisibleNumeral] = useState(false);
   const [inputVisibleParagrafos, setInputVisibleParagrafos] = useState(false);
-
 
   // Modal
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -57,7 +57,7 @@ const Rules = () => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}  size="2xl" className=" border-t-[4px] border-[#2e323e] backdrop-blur-[3px]">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="2xl" className=" border-t-[4px] border-[#2e323e] backdrop-blur-[3px]">
         <ModalContent>
           {(onClose) => (
             <>
@@ -160,14 +160,20 @@ const Rules = () => {
                   </section>
                 </section>
               </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="bordered" onPress={onClose}>
-                  Cerrar
+              <ModalFooter className="flex justify-between">
+                <Button color="warning" variant="flat" >
+                  <i className="fi fi-br-plus"></i>
+                  Aplicar
                 </Button>
-                <Button color="success" variant="flat">
-                  <i className="fi fi-br-check"></i>
-                  Guardar
-                </Button>
+                <section className="w-[13rem] flex justify-between">
+                  <Button color="danger" variant="bordered" onPress={onClose}>
+                    Cerrar
+                  </Button>
+                  <Button color="success" variant="flat">
+                    <i className="fi fi-br-check"></i>
+                    Guardar
+                  </Button>
+                </section>
               </ModalFooter>
             </>
           )}
@@ -178,15 +184,15 @@ const Rules = () => {
         <Sliderbar />
         <section className="w-full h-screen overflow-auto ">
           <section className="grid h-screen grid-cols-2 ">
-            <section className="grid place-items-center">
+            <section className="grid place-items-center ">
               <Button size="lg" onPress={onOpen} color="primary" variant="shadow">
                 Editar reglamento
               </Button>
             </section>
-            <section className="p-[1rem] ">
+            <section className="p-[1rem] w-full ">
               <Card className="h-[92vh] flex ">
                 <CardBody className="">
-                  <p>sad</p>
+                  <Test></Test>
                 </CardBody>
               </Card>
             </section>

@@ -90,7 +90,7 @@ const Groups = () => {
             <section className="mx-auto gap-5 grid grid-cols-3 w-[80%] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1  ">
               {visibleCards.map((card) => (
                 <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
-                  <Card className={`card w-full border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? "hovered" : ""}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
+                  <Card className={`card w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? "hovered" : ""}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
                     <CardHeader className="gap-3 flex justify-center z-0">
                       <section className="flex bg-blue-200 py-2 justify-center rounded-xl w-full">
                         <p className="text-xl font-bold ">{card.numero_ficha}</p>

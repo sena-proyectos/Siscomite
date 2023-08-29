@@ -2,6 +2,11 @@
   transform: scale(1.1);
 }
 
+.hola {
+  animation: swing 1s ease infinite;
+  transition: all 0.2s ease-in-out ;
+}
+
 @keyframes swing {
   15% {
     transform: translateX(5px);
@@ -22,11 +27,3 @@
     transform: translateX(0);
   }
 }
-
-#campana {
-  animation: swing 1s ease infinite;
-  transition: all 0.2s ease-in-out  infinite;
-}
-/* #campana {
-  transition: all 0.2s ease-in-out ;
-} */
