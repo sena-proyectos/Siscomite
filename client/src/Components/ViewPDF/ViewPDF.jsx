@@ -54,6 +54,7 @@ export const ViewPdf = () => {
           </Card>
         </section>
       )}
+      
     </main>
   )
 }

@@ -1,18 +1,19 @@
 import * as XLSX from 'xlsx'
 import Swal from 'sweetalert2'
 import jwtdecoded from 'jwt-decode'
-// import { mapValues } from '../mapeo/Map'
+import { mapValues } from '../Map/Map'
+import { ModalExcel } from '../Utils/Modal/ModalExcel'
 // import { GetClassByNumber, InscriptionApprentice } from '../api/httpRequest'
 // import { GetTeacherByName } from '../api/httpRequest'
 
-export const readExcelFile = async (file) => {
+export const readExcelFile = async (file, id_ficha) => {
   if (!file) return
   const reader = new FileReader()
 
   reader.onload = async (e) => {
     const data = new Uint8Array(e.target.result)
     const workbook = XLSX.read(data, { type: 'array' })
-    // const dataMap = mapValues()
+    const dataMap = mapValues()
 
     workbook.SheetNames.forEach(async (sheetName) => {
       const worksheet = workbook.Sheets[sheetName]
@@ -33,31 +34,19 @@ export const readExcelFile = async (file) => {
       console.log(result)
 
       for (let i = 0; i < result.length; i++) {
-        // const nameTeacher = result[i].nombre_instructor_lider_inscripcion
-        // const classNumber = result[i].id_ficha_inscripcion
-        // const res = await GetTeacherByName(nameTeacher)
-        // const response = await GetClassByNumber(classNumber)
-
-        // const idUsuario = res.data.data[0].id_usuario
-        // const numFicha = response.data.data[0].id_ficha
-
-        // result[i].nombre_instructor_lider_inscripcion = `${idUsuario}`
-        // result[i].numero_ficha_inscripcion = `${numFicha}`
-        // result[i].id_usuario_responsable_inscripcion = `${id}`
-
-        // if (result[i].modalidad_inscripcion === 'Pasantía') result[i].modalidad_inscripcion = '1'
-        // if (result[i].modalidad_inscripcion === 'Contrato de aprendizaje') result[i].modalidad_inscripcion = '2'
-        // if (result[i].modalidad_inscripcion === 'Proyecto Productivo') result[i].modalidad_inscripcion = '3'
-        // if (result[i].modalidad_inscripcion === 'Monitoria') result[i].modalidad_inscripcion = '4'
-        // if (result[i].modalidad_inscripcion === 'Vinculación laboral') result[i].modalidad_inscripcion = '5'
+        result[i].id_ficha = `${id_ficha}`
+        if (result[i].id_documento === 'C.C') result[i].id_documento = '1'
+        if (result[i].id_documento === 'C.E') result[i].id_documento = '2'
+        if (result[i].id_documento === 'T.I') result[i].id_documento = '3'
+        if (result[i].id_documento === 'PEP') result[i].id_documento = '4'
       }
 
-      if (result.length > 2) {
+      if (result.length >= 2) {
         const showModal = async () => {
           const responseModal = await Swal.fire({
             icon: 'question',
             title: '¡Aviso!',
-            text: 'Se ha detectado más de 2 registros en el archivo excel. ¿Desea directamente guardar todos los registros?',
+            text: 'Se ha detectado 2 o más registros. ¿Desea guardar los registros?',
             confirmButtonText: 'Guardar registros',
             confirmButtonColor: '#39A900',
             denyButtonText: 'No guardar registros',
@@ -81,7 +70,7 @@ export const readExcelFile = async (file) => {
               })
             }
           } else if (responseModal.isDenied) {
-            //* terminar
+            console.log('bueno')
           }
         }
         showModal()
@@ -107,4 +96,5 @@ export const readExcelFile = async (file) => {
   }
 
   reader.readAsArrayBuffer(file)
+  return <ModalExcel></ModalExcel>
 }
