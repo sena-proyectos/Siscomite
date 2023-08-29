@@ -4,13 +4,28 @@ import { pool } from '../db.js'
 /**
  * La función `getFichas` recupera todos los registros de la tabla `fichas` y los envía como respuesta.
  */
-  export const getFichas = async (req, res) => {
-    try {
-        const [result] = await pool.query('SELECT * FROM fichas');
-        res.status(200).send({ result })
-    } catch (error) {
-        res.status(500).send({ message: 'Error al listar las fichas' })
-    }
+export const getFichas = async (req, res) => {
+  try {
+    const [result] = await pool.query('SELECT * FROM fichas')
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al listar las fichas' })
+  }
+}
+
+//CONSULTAR LA FICHA POR ID
+/**
+ * La función `getFichasById` recupera todos el registro de la tabla `fichas` y los envía como respuesta.
+ */
+export const getFichasById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('SELECT * FROM fichas WHERE id_ficha = ?', [id])
+    if (!result[0]) return res.status(400).send({ message: 'No hay registros existentes de esa ficha' })
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener la ficha' })
+  }
 }
 
 //CREAR UNA NUEVA FICHA

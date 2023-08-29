@@ -1,13 +1,16 @@
 import { Router } from 'express'
-import { checkUserExistRegister, checkUserExistLogin, hashPassword, checkRegisterData, comparePassword, checkLoginData, createToken } from '../middlewares/user.middleware.js'
-import { registerUser, getUser, loginUser, getTeacher, searchUser } from '../controller/user.controller.js'
+import { checkUserExistRegister, checkUserExistLogin, hashPassword, checkRegisterData, comparePassword, checkLoginData, createToken, checkName } from '../middlewares/user.middleware.js'
+import { registerUser, getUser, loginUser, getTeacher, searchUser, searchTeacher, getCoordination, searchCoordination } from '../controller/user.controller.js'
 
 const router = Router()
 
 router.get('/users', getUser)
 router.get('/teachers', getTeacher)
-router.get('/searchUser', searchUser)
+router.get('/coordination', getCoordination)
 
+router.get('/searchUser', checkName, searchUser)
+router.get('/searchTeacher', checkName, searchTeacher)
+router.get('/searchCoordination', checkName, searchCoordination)
 
 router.post('/register', checkRegisterData, checkUserExistRegister, hashPassword, registerUser)
 router.post('/login', checkLoginData, checkUserExistLogin, comparePassword, createToken, loginUser)

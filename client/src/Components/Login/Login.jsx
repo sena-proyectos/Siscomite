@@ -1,19 +1,23 @@
 import './Login.css'
 import { Footer } from '../Footer/Footer'
-import Image from '../../assets/image/logoSena.png'
 import { Link, useNavigate } from 'react-router-dom'
-import { useRef, useState } from 'react' // Agregamos useState para manejar el estado de carga
+import { useState } from 'react' // Agregamos useState para manejar el estado de carga
 import { login } from '../../api/httpRequest'
-import { Toast } from '../toast/toast'
 import Cookie from 'js-cookie'
 import { Input } from '@nextui-org/react'
+import React from 'react'
+import { Toaster, toast } from 'sonner'
 
 export const Login = () => {
-  const numero_documento = useRef()
-  const contrasena = useRef()
+  const [numeroDocumento, setNumeroDocumento] = useState('')
+  const [contrasena, setContrasena] = useState('')
+
   const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
-  const [error, setError] = useState(null) // Estado para manejar los errores
+  const [isVisible, setIsVisible] = useState(false)
+
   const navigate = useNavigate()
+
+  const toggleVisibility = () => setIsVisible(!isVisible)
 
   const sendData = async (e) => {
     e.preventDefault()
@@ -21,54 +25,63 @@ export const Login = () => {
     setIsLoading(true)
 
     const dataValue = {
-      numero_documento: numero_documento.current.value,
-      contrasena: contrasena.current.value,
+      numero_documento: numeroDocumento,
+      contrasena,
     }
 
     try {
       const res = await login(dataValue)
       const response = res.data.response.info.token
       Cookie.set('token', response, { expires: 2, secure: true, sameSite: 'None', path: '/' })
-      setError(null)
       navigate('/home')
     } catch (error) {
       const message = error.response.data.message
-      setError(message)
+      toast.error('Opss!!', {
+        description: message,
+      })
     } finally {
       setIsLoading(false)
     }
   }
 
-  const closed = () => {
-    setError(null)
-  }
-
   return (
-    <main className="container">
-      <section className="logo">
-        <img src={Image} alt="Sena" />
+    <main className="h-screen ">
+      <section className="absolute top-11 left-11 " style={{ animation: 'show 0.8s ease-in-out' }}>
+        <img src="image/logoSena.webp" alt="Sena" className="w-[4rem]" />
       </section>
-      {error && <Toast message={error} typeToast={'error'} onClose={closed} />}
+      <Toaster position="top-right" closeButton richColors  />
+      <section className="grid place-items-center  h-screen " style={{ animation: 'show 0.8s ease-in-out' }}>
+        <form className="relative w-[400px] bg-white  p-[1rem] rounded-xl grid text-center shadow-lg place-items-center" onSubmit={sendData}>
+          <h2 className="text-[1.5rem] font-bold mb-7">Iniciar Sesión</h2>
+          <section className="grid w-[80%] gap-8  ">
+            <section className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
+              <Input type="text" label="Número documento" labelPlacement={'outside'} autoComplete="off" value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
+            </section>
+            <section className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
+              <Input
+                label="Contraseña"
+                autoComplete="off"
+                value={contrasena}
+                onChange={(e) => setContrasena(e.target.value)}
+                labelPlacement={'outside'}
+                endContent={
+                  <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
+                    {isVisible ? <i className="fi fi-rs-crossed-eye"></i> : <i className="fi fi-rr-eye"></i>}
+                  </button>
+                }
+                type={isVisible ? 'text' : 'password'}
+                className="max-w-xs"
+              />
+            </section>
 
-      <section className="main">
-        <form className="loginForm" onSubmit={sendData}>
-          <h2 className="title">Iniciar Sesión</h2>
-          <section className="formContainer">
-            <section className="inp">
-              <Input type="text" name="document" label="Número de documento" ref={numero_documento} autoComplete="off" className="bg-gray" />
-            </section>
-            <section className="inp">
-              <Input type="password" name="password" label="Contraseña" ref={contrasena} />
-            </section>
-            <p className="text">¿Olvidaste tu contraseña?</p>
-            <button className="btn" disabled={isLoading}>
-              {' '}
+            <p className="text-sm cursor-pointer">¿Olvidaste tu contraseña?</p>
+            <button className="bg-[#3c3c3c] text-white w-full cursor-pointer rounded-md font-light text-xs py-3" disabled={isLoading}>
               {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
               {isLoading ? 'Cargando...' : 'Iniciar sesión'}
             </button>
-            <p className="textForm">
+            <p className="text-sm">
               ¿Nuevo usuario?{' '}
-              <Link className="text" to={'/Register'}>
+              <Link className="text-sm text-[#587fff]" to={'/Register'}>
                 Registrate
               </Link>
             </p>

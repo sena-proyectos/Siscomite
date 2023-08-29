@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getApprentices,getApprenticeById, createApprentices, updateApprentice, deleteApprentice } from "../controller/apprentices.controller.js";
-import { checkApprenticeExist, createDataAprendiz } from "../middlewares/apprentices.middlewares.js";
+import { getApprentices,getApprenticeById, createApprentices, updateApprentice, deleteApprentice, searchApprenticesByGroups } from "../controller/apprentices.controller.js";
+import { checkApprenticeExist, checkName, createDataAprendiz } from "../middlewares/apprentices.middlewares.js";
 
 const router = Router();
 
@@ -8,6 +8,9 @@ const router = Router();
 aprendices. */
 //GET aprendices
 router.get('/aprendices', getApprentices)
+
+//GET aprendices
+router.get('/aprendicesByGroups',checkName, searchApprenticesByGroups)
 // GETBYID  aprendiz
 router.get('/aprendiz/:id', getApprenticeById)
 //POST aprendices

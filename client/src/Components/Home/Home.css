@@ -1,44 +1,29 @@
-/* Estilos de la sección de inicio */
-.containerHome {
-  height: 100vh;
-}
-
-.homeContent {
-  justify-content: center;
-  height: 100vh;
-  margin-left: 12.7rem;
-}
-
-.headerTitle {
-  padding: 2rem;
-  display: grid;
-  place-items: center;
-  font-size: 23px;
-}
-
-.titleHome {
-  width: 20rem;
-  display: grid;
-  place-items: center;
-  border-bottom: 1.5px #0799b6 solid;
-}
-
-/* Estilos para las tarjetas de contenido */
-.cardBody {
-  height: 80vh;
-  flex-wrap: wrap;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0rem 5rem;
-}
-
-.cardHome {
-  height: 28%;
-  color: black;
-  transition: 0.4s ease-in-out;
-}
-
 .cardHome:hover {
   transform: scale(1.1);
+}
+
+.hola {
+  animation: swing 1s ease infinite;
+  transition: all 0.2s ease-in-out ;
+}
+
+@keyframes swing {
+  15% {
+    transform: translateX(5px);
+  }
+  30% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  65% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }

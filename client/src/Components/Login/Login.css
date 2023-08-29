@@ -1,12 +1,3 @@
-.container {
-  display: flex; /* Usar flexbox en lugar de grid para centrar */
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh; /* Usar 'min-height' para evitar que el contenedor se encoja */
-  background-color: #f0f0f0; /* Agregar un color de fondo */
-}
-
-/* Animación */
 @keyframes show {
   from {
     opacity: 0;
@@ -18,117 +9,11 @@
   }
 }
 
-.main {
-  width: 30rem;
-  max-width: 100%; /* Evitar que el elemento se desborde en pantallas pequeñas */
-  padding: 3rem; /* Aumentar un poco el espacio interno */
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); /* Ajustar la sombra */
-  text-align: center;
-  animation: show 0.8s ease-in-out forwards; /* Aplicar la animación con 'forwards' */
-}
-
-/* Estilos para el contenido interno */
-.main h1 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-}
-
-.main p {
-  font-size: 1rem;
-  color: #555;
-}
-
-/* Estilos adicionales si es necesario */
-
-.loginForm .title {
-  font-size: 1.5rem;
-  margin-bottom: 0.2em;
-}
-
-.formContainer {
-  margin-top: 2em;
-  display: grid;
-  gap: 1em;
-  width: 100%;
-}
-
-.inp {
-  position: relative;
-  color: black;
-}
-
-.formInput {
-  width: 90%;
-  background-color: rgba(128, 128, 128, 0.374);
-  font-size: 1em;
-  padding: 0.5em;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-}
-
-.formInput:focus + .formLabel,
-.formInput:not(:placeholder-shown) + .formLabel {
-  transform: translateY(-9px) scale(0.9);
-  transform-origin: left top;
-  color: rgb(0, 0, 0);
-}
-
-.formLabel {
-  cursor: pointer;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 20px;
-  background-color: transparent;
-  transform: translateY(12px);
-  transition: transform 0.5s;
-  font-size: 12px;
-}
-
-.btn {
-  background-color: #3c3c3c;
-  color: white;
-  font-size: 0.8rem;
-  font-weight: 300;
-  width: 100%;
-  padding: 0.8em 0 1em 0;
-  border: none;
-  border-radius: 1em;
-  cursor: pointer;
-}
-
 .btn:active {
   transform: scale(0.9);
-}
-
-.text {
-  color: #587fff;
-  font-size: 12px;
-}
-
-.textForm {
-  font-size: 12px;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  animation: show 0.8s ease-in-out;
-}
-
-.container .logo {
-  position: absolute;
-  top: 2.5rem;
-  left: 3rem;
-}
-
-.logo > img {
-  width: 3rem;
 }
 
 .sena {
   font-size: 15px;
 }
+

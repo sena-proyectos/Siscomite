@@ -1,51 +1,8 @@
-/* Estilos generales */
-.containerCard {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: auto;
-  cursor: pointer;
-}
-
-.fondoCard {
-  border-radius: 10px;
-  height: 10rem;
-  max-width: 100%;
-  box-shadow: 5px 5px 10px #96969666;
-}
-
-.cardImage {
-  width: 100%;
-  max-width: 14.5rem;
-  object-fit: cover;
-  position: relative;
-}
-
-.textoImagen {
-  width: 85.5%;
-  height: auto;
-  position: absolute;
-  top: 79.5%;
-  left: 50%;
-  border-radius: 0 0 10px 10px;
-  transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 5px 5px 10px #96969666;
-  padding: 1rem;
-}
-
-.bodyText {
-  height: 40px;
-  font-size: 12px;
-  color: #333;
-}
-
 /* Estilos de las card giratorias */
 .card_flip {
   position: relative;
   width: 200px;
   height: 100px;
-  color: black;
 }
 
 .front,
@@ -56,20 +13,18 @@
   backface-visibility: hidden;
   transition: transform 0.6s;
   border-radius: 10px;
-  justify-content: center;
-  align-items: center;
 }
 
 .front {
-  background-color: #d9d3d3;
+  background-color: white;
   font-size: 14px;
   box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.2);
   display: flex;
 }
 
 .back {
-  background-color: #3498db;
-  color: #fff;
+  background-color: white;
+  color: white;
   font-size: 18px;
   transform: rotateY(180deg);
   display: flex;
@@ -93,5 +48,4 @@
   margin-bottom: 5px;
   font-size: 14px;
   color: #333;
-  /* Agrega cualquier otro estilo que desees para la lista */
 }
