@@ -107,4 +107,12 @@ export const createApprentices = (data) => {
   return response
 }
 
+/* Search appretices by id_ficha */
+export const searchApprenticesByIdFicha = (idFicha, nombres) => {
+  const URL = `${BaseUrl}${api}/aprendicesByGroups?idFicha=${idFicha}&nombres=${nombres}`
+  const response = axios.get(URL)
+
+  return response
+}
+
 

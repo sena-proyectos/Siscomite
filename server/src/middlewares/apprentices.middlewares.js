@@ -1,5 +1,6 @@
 import { createAprendiz } from '../schemas/apprentices.schema.js'
 import { pool } from '../db.js'
+import Joi from 'joi'
 
 export const checkApprenticeExist = async (req, res, next) => {
     const { numero_documento_aprendiz } = req.body
@@ -27,4 +28,16 @@ export const createDataAprendiz = (req, res, next) => {
     return res.status(500).json({ message: 'Error inesperado' })
     }
 }
+
+export const checkName = (req, res, next) => {
+    const { nombres } = req.query
+    const nameSchema = Joi.object({ nombres: Joi.string().required().max(100) })
+    try {
+      const { error } = nameSchema.validate({ nombres })
+      if (error !== undefined) return res.status(400).send({ message: 'El nombre ingresado no es válido.' })
+      next()
+    } catch (error) {
+      return res.status(500).json({ message: 'Error inesperado' })
+    }
+  }
 

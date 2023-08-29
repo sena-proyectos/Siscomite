@@ -1,16 +1,15 @@
 import './Create.css'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 import Cookie from 'js-cookie'
 
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { RadioGroup, Radio } from '@nextui-org/react'
+import { Search } from '../Search/Search'
 import { Card, CardBody } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
-import { Search } from '../Search/Search'
 import { CheckboxGroup, Checkbox } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio } from '@nextui-org/react'
 import { getTeacherByName, getApprenticesByName, getApprenticesById } from '../../api/httpRequest'
 
 const Create = () => {
@@ -102,6 +101,14 @@ const Create = () => {
     } catch (error) {
       console.error('Error obteniendo detalles del aprendiz:', error)
     }
+  }
+
+  const removeApprentices = (apprenticeId) => {
+    setSelectedApprentice((prevApprentices) => prevApprentices.filter((apprentice) => apprentice.id_aprendiz !== apprenticeId))
+    console.log('Aprendiz eliminado:', apprenticeId)
+
+    // Imprime el estado después de eliminar para verificar si se actualiza correctamente
+    console.log('Aprendices seleccionados después de eliminar:', selectedApprentice)
   }
 
   return (
@@ -205,7 +212,7 @@ const Create = () => {
                             <li>{item.numero_documento_aprendiz}</li>
                             <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
-                              <i className="fi fi-br-remove-user text-red-500 text-[1rem]"></i>
+                              <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeApprentices(item.id_aprendiz)}></i>
                             </li>
                           </React.Fragment>
                         </ul>
