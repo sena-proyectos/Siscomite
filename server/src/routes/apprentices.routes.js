@@ -11,9 +11,9 @@ router.get('/aprendices', getApprentices)
 // GETBYID  aprendiz
 router.get('/aprendiz/:id', getApprenticeById)
 //POST aprendices
-router.post('/createAprendices', checkApprenticeExist, createDataAprendiz, createApprentices)
+router.post('/createAprendiz', checkApprenticeExist, createDataAprendiz, createApprentices)
 //PUT aprendices
-router.put('/updateAprendiz/:id', updateApprentice)
+router.put('/updateAprendiz/:id', checkApprenticeExist, createDataAprendiz, updateApprentice)
 //DELETE aprendices
 router.delete('/deleteAprendiz/:id', deleteApprentice)
 
