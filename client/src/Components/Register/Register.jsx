@@ -17,9 +17,9 @@ export const Register = () => {
   const [selectedTipoDocumento, setSelectedTipoDocumento] = useState("");
 
   const documentoOptions = {
-    "C.C": "1",
-    "T.I": "2",
-    "C.E": "3",
+    "CC": "1",
+    "TI": "2",
+    "CE": "3",
     PEP: "4",
   };
 
@@ -97,9 +97,9 @@ export const Register = () => {
                     setSelectedTipoDocumento(Array.from(keys)[0]);
                   }}
                 >
-                  <DropdownItem key="C.C">C.C</DropdownItem>
-                  <DropdownItem key="T.I">T.I</DropdownItem>
-                  <DropdownItem key="C.E">C.E</DropdownItem>
+                  <DropdownItem key="CC">CC</DropdownItem>
+                  <DropdownItem key="TI">TI</DropdownItem>
+                  <DropdownItem key="CE">CE</DropdownItem>
                   <DropdownItem key="PEP">PEP</DropdownItem>
                 </DropdownMenu>
               </Dropdown>

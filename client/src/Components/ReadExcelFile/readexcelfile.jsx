@@ -17,16 +17,14 @@ export const readExcelFile = async (file, id_ficha) => {
 
     workbook.SheetNames.forEach(async (sheetName) => {
       const worksheet = workbook.Sheets[sheetName]
-      const jsonData = XLSX.utils.sheet_to_csv(worksheet, { header: 1, blankrows: false })
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range: 4 })
 
-      const lines = jsonData.split('\n')
-      const headers = lines[0].trim().split(',')
-      const result = lines.slice(1).map((line) => {
-        const fields = line.trim().split(',')
+      const headers = jsonData[0].map((header) => header.trim())
+      const result = jsonData.slice(1).map((row) => {
         const obj = {}
         headers.forEach((header, index) => {
           const fieldName = dataMap[header]
-          obj[fieldName] = fields[index] === '' ? null : fields[index]
+          obj[fieldName] = row[index] === '' ? null : row[index]
         })
         return obj
       })
@@ -35,9 +33,9 @@ export const readExcelFile = async (file, id_ficha) => {
 
       for (let i = 0; i < result.length; i++) {
         result[i].id_ficha = `${id_ficha}`
-        if (result[i].id_documento === 'C.C') result[i].id_documento = '1'
-        if (result[i].id_documento === 'C.E') result[i].id_documento = '2'
-        if (result[i].id_documento === 'T.I') result[i].id_documento = '3'
+        if (result[i].id_documento === 'CC') result[i].id_documento = '1'
+        if (result[i].id_documento === 'CE') result[i].id_documento = '2'
+        if (result[i].id_documento === 'TI') result[i].id_documento = '3'
         if (result[i].id_documento === 'PEP') result[i].id_documento = '4'
       }
 
@@ -50,7 +48,7 @@ export const readExcelFile = async (file, id_ficha) => {
             confirmButtonText: 'Guardar registros',
             confirmButtonColor: '#39A900',
             denyButtonText: 'No guardar registros',
-            showDenyButton: true,
+            showDenyButton: true
           })
           if (responseModal.isConfirmed) {
             try {
@@ -60,13 +58,13 @@ export const readExcelFile = async (file, id_ficha) => {
               Swal.fire({
                 icon: 'success',
                 title: '¡Éxito!',
-                text: 'Se han guardado todos los registros exitosamente',
+                text: 'Se han guardado todos los registros exitosamente'
               })
             } catch (error) {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Ha ocurrido un error al guardar los registros',
+                text: 'Ha ocurrido un error al guardar los registros'
               })
             }
           } else if (responseModal.isDenied) {
@@ -82,13 +80,13 @@ export const readExcelFile = async (file, id_ficha) => {
           Swal.fire({
             icon: 'success',
             title: '¡Éxito!',
-            text: 'Se han guardado todos los registros exitosamente',
+            text: 'Se han guardado todos los registros exitosamente'
           })
         } catch (error) {
           Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Ha ocurrido un error al guardar los registros',
+            text: 'Ha ocurrido un error al guardar los registros'
           })
         }
       }
