@@ -72,15 +72,18 @@ $ npm run dev
 # El servidor se iniciará en el <http://localhost:3000>
 ```
 
+En la carpeta del Servidor (`/src/db`), encontrará la Base de Datos, esta debe ser importada en un sistema de gestión de bases de datos compatible. Recomendación: MySQL Workbench.
+La importación de la base de datos se realiza para el correcto uso del aplicativo.
+
 ```sh
 En server crear un archivo llamado: .env que tenga la siguiente forma:
 
-PORT=3000 // Ruta del servidor de express
-DB_USER=root // Usuario del usuario MySQL
-DB_PASSWORD=passwordRoot123 // Contraseña del usuario MySQL
-DB_HOST=localhost // Host del usuario MySQL
-DB_DATABASE=db_root // nombre de la base de datos MySQL
-DB_PORT=3306 // Puerto de conexión de SQL
+PORT=3000 # Ruta del servidor de express
+DB_USER=root # Usuario del usuario MySQL
+DB_PASSWORD=passwordRoot123 # Contraseña del usuario MySQL
+DB_HOST=localhost # Host del usuario MySQL
+DB_DATABASE=db_root # nombre de la base de datos MySQL
+DB_PORT=3306 # Puerto de conexión de SQL
 ```
 
 ## 📃 Licencia
