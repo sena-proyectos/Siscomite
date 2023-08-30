@@ -15,6 +15,7 @@ const Home = () => {
     { titleHome: "Reglamento", image: "/image/reglamento.webp", descripciónHome: "Aquí podrás ver el reglamento para consultar los artículos necesarios.", Link: "/requests" },
   ];
 
+  // Barra de notificaciones
   const [notifyOpen, setNotifyOpen] = useState(false);
 
   const toggleNotify = () => {
@@ -27,15 +28,15 @@ const Home = () => {
         <Sliderbar />
         <section className="w-full overflow-auto ">
           <section className="flex max-w-[100%]">
-            <section className="w-full">
-              <header className=" p-8 flex justify-center text-[23px]">
+            <section className="w-full h-screen ">
+              <header className="mt-8 flex justify-center text-[23px]">
                 <h1 className=" text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
-                <section className="relative left-[20%] cursor-pointer ">
+                <section className="absolute right-[15%] cursor-pointer ">
                   {notifyOpen ? (
                     <></>
                   ) : (
                     <>
-                      <Button className="hola" radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                      <Button className="muve"  radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
                         Mensajes
                         <i className="fi fi-ss-bell pl-[.5rem]" />
                       </Button>
@@ -43,7 +44,7 @@ const Home = () => {
                   )}
                 </section>
               </header>
-              <section className="flex-wrap flex items-center justify-center gap-20 px-[1rem]">
+              <section className="flex-wrap flex h-[85%]  items-center  justify-center gap-20 px-[1rem]">
                 {data.map((x, i) => (
                   <Link to={x.Link} key={i}>
                     <section className="h-[28%] text-black cardHome " style={{ transition: "0.4s ease-in-out" }}>
@@ -54,7 +55,7 @@ const Home = () => {
               </section>
               <Footer />
             </section>
-            <section className=" ">
+            <section className="fixed  w-[20rem] right-0">
               <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
             </section>
           </section>

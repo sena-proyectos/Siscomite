@@ -1,18 +1,18 @@
-import './Modal.css'
-import React, { useEffect, useRef, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { createApprentices, createFicha, getApprenticesById } from '../../../api/httpRequest'
-import Swal from 'sweetalert2'
-import { Toaster, toast} from 'sonner'
-import { Accordion, AccordionItem } from '@nextui-org/react'
-import {Popover, PopoverTrigger, PopoverContent} from "@nextui-org/react";
-import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
-import { Textarea, Input, Button } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from '@nextui-org/react'
+import "./Modal.css";
+import React, { useEffect, useRef, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { createApprentices, createFicha, getApprenticesById } from "../../../api/httpRequest";
+import Swal from "sweetalert2";
+import { Toaster, toast } from "sonner";
+import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
+import { readExcelFile } from "../../ReadExcelFile/readexcelfile";
+import { Textarea, Input, Button } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from "@nextui-org/react";
 
-export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents }) => {
-  const excelFileRef = useRef(null)
-  const { id_ficha } = useParams()
+export const Modal = ({isOpen, cerrarModal, titulo, modalAdd = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents }) => {
+  const excelFileRef = useRef(null);
+  const { id_ficha } = useParams();
 
   /* aprendices values */
   const [nombresAprendiz, setNombresAprendiz] = useState("");
@@ -32,17 +32,17 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   const [idModalidad, setIdmodalidad] = useState("");
 
   const closeModal = () => {
-    cerrarModal()
-  }
+    cerrarModal();
+  };
 
   //Condiciones de agregar ficha
-  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
-  const [dataInfoStudent, setDataInfoStudent] = useState([])
+  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
+  const [dataInfoStudent, setDataInfoStudent] = useState([]);
 
   const handleEtapaChange = (event) => {
     const selectedValue = event.target.value;
     setEtapaPrograma(selectedValue);
-    setIsTrimestreEnabled(selectedValue === "lectiva");
+    setIsTrimestreEnabled(selectedValue === "Lectiva");
   };
 
   // Dropdown detalles de solicitud
@@ -59,21 +59,21 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   };
 
   const handleExcelFile = () => {
-    const currentFile = excelFileRef.current.files[0]
+    const currentFile = excelFileRef.current.files[0];
 
-    const checkFile = excelFileRef.current.files[0].name.split('.')
-    if (checkFile[1] !== 'xlsx' && checkFile[1] !== 'xls') {
+    const checkFile = excelFileRef.current.files[0].name.split(".");
+    if (checkFile[1] !== "xlsx" && checkFile[1] !== "xls") {
       Swal.fire({
-        icon: 'error',
-        title: '¡Error!',
-        text: 'Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!',
-        footer: '.xlsx, .xls',
-      })
-      excelFileRef.current.value = ''
-      return
+        icon: "error",
+        title: "¡Error!",
+        text: "Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!",
+        footer: ".xlsx, .xls",
+      });
+      excelFileRef.current.value = "";
+      return;
     }
-    readExcelFile(currentFile, id_ficha)
-  }
+    readExcelFile(currentFile, id_ficha);
+  };
 
   /* Enviar datos de las fichas */
   const sendDataFichas = async (e) => {
@@ -87,21 +87,21 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         etapa_programa: etapaPrograma,
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
-      }
+      };
 
-      const response = await createFicha(dataValue)
-      const res = response.data.message
-      toast.success('Genial!!', {
+      const response = await createFicha(dataValue);
+      const res = response.data.message;
+      toast.success("Genial!!", {
         description: res,
-      })
+      });
       setTimeout(() => {
-        cerrarModal()
-      }, 1000)
+        cerrarModal();
+      }, 1000);
     } catch (error) {
-      const message = error.response.data.message
-      toast.error('Opss!!', {
+      const message = error.response.data.message;
+      toast.error("Opss!!", {
         description: message,
-      })
+      });
     }
   };
 
@@ -121,47 +121,47 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
         id_ficha,
       };
 
-      const response = await createApprentices(dataValue)
+      const response = await createApprentices(dataValue);
 
-      const res = response.data.message
-      toast.success('Genial!!', {
+      const res = response.data.message;
+      toast.success("Genial!!", {
         description: res,
-      })
+      });
       setTimeout(() => {
-        cerrarModal()
-      }, 1500)
+        cerrarModal();
+      }, 1500);
     } catch (error) {
-      const message = error.response.data.message
-      toast.error('Opss!!', {
+      const message = error.response.data.message;
+      toast.error("Opss!!", {
         description: message,
-      })
+      });
     }
-  }
+  };
 
   useEffect(() => {
     const infoStudent = async () => {
       try {
-        const response = await getApprenticesById(infoStudents)
-        const res = response.data.result
-        if(res[0].id_documento === 1) res[0].id_documento = "CC"
-        if(res[0].id_documento === 2) res[0].id_documento = "CE"
-        if(res[0].id_documento === 3) res[0].id_documento = "TI"
-        if(res[0].id_documento === 4) res[0].id_documento = "PEP"
-        if(res[0].id_documento === 5) res[0].id_documento = "Registro Civil"
-        setDataInfoStudent(res)
+        const response = await getApprenticesById(infoStudents);
+        const res = response.data.result;
+        if (res[0].id_documento === 1) res[0].id_documento = "CC";
+        if (res[0].id_documento === 2) res[0].id_documento = "CE";
+        if (res[0].id_documento === 3) res[0].id_documento = "TI";
+        if (res[0].id_documento === 4) res[0].id_documento = "PEP";
+        if (res[0].id_documento === 5) res[0].id_documento = "Registro Civil";
+        setDataInfoStudent(res);
       } catch (error) {}
-    }
-    infoStudent()
-  }, [])
+    };
+    infoStudent();
+  }, []);
 
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
         <Toaster position="top-right" closeButton richColors />
-        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in">
+        <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
-            <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal} >
+            <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
               <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" onClick={closeModal} />
             </section>
           </header>
@@ -236,7 +236,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 <section className="mt-[1rem] overflow-hidden w-[30rem] min-w-[50%]" key={item.id_aprendiz}>
                   <section className="mt-[10px] border-b-2  border-[#0799b6]">
                     <span className="font-bold text-[17px]">Nombre completo</span>
-                    <p>{item.nombres_aprendiz} {item.apellidos_aprendiz}</p>
+                    <p>
+                      {item.nombres_aprendiz} {item.apellidos_aprendiz}
+                    </p>
                   </section>
                   <section className="mt-[10px] border-b-2  border-[#0799b6]">
                     <span className="font-bold text-[17px]">Tipo de documento</span>
@@ -263,17 +265,9 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                     <p>{item.fijo_aprendiz}</p>
                   </section>
                 </section>
-              )
+              );
             })}
-            {/* {modalInfo && (
-              <section className="mt-[1rem] overflow-hidden min-w-[50%]">
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Número alteno</span>
-                  <p>6666666</p>
-                </section>
-              </section>
-            )} */}
-            {/* Agregar Fichas */}
+            {/* Agregar grupos */}
             {modalAddGroups && (
               <section className="mt-[2rem]">
                 <section className="relative grid grid-cols-2 justify-center gap-8">

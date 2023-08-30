@@ -14,8 +14,8 @@ export const Notify = ({ isOpen, toggleNotify }) => {
   const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
   return (
-    <main  className="flex h-screen  ">
-      <section className={`p-[1rem] h-screen animate w-[20rem] bg-white shadow-md  ${isOpen ? "visible" : "hidden"} `}>
+    <main  >
+      <section className={`p-[1rem] h-[95vh] rounded-2xl m-[1rem] fixed top-0 right-0 w-[20rem] bg-white shadow-md   ${isOpen ? "visible " : "opacity-0 out" } `}>
         <header className="flex">
           <section className="cursor-pointer" onClick={toggleNotify}>
             <i class="fi fi-sr-angle-circle-right text-xl"></i>
@@ -47,7 +47,11 @@ export const Notify = ({ isOpen, toggleNotify }) => {
         </section>
         <section className="mt-5">
           <p className="font-extrabold">Nuevos mensajes</p>
-          <section className="overflow-auto mb-1"></section>
+          <section className="overflow-auto mb-1 bg-red-600">
+            {/* <section>
+              hola
+            </section> */}
+          </section>
         </section>
       </section>
     </main>
