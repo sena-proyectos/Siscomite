@@ -18,25 +18,29 @@ const Students = () => {
   const [idStudent, setIdStudent] = useState()
   const [apprenticesSearch, setApprenticesSearch] = useState([])
   const [error, setError] = useState(null)
+  const [reloadFetch, setReloadFetch] = useState(false)
 
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const getApprentices = async () => {
-      try {
-        const response = await getApprenticesByIdFicha(id_ficha)
-        const res = response.data.result
-        setApprentices(res)
-      } catch (error) {
-        setMessage(error.response.data.message)
-      }
+  const getApprentices = async () => {
+    try {
+      const response = await getApprenticesByIdFicha(id_ficha)
+      const res = response.data.result
+      setApprentices(res)
+    } catch (error) {
+      setMessage(error.response.data.message)
     }
-
+  }
+  useEffect(() => {
     // if(apprentices != undefined){
     //   console.log("hola")
     // }
     getApprentices()
-  }, [apprentices])
+    if (reloadFetch === true) {
+      setMessage([])
+      setReloadFetch(false)
+    }
+  }, [apprentices, reloadFetch])
 
   useEffect(() => {
     const getFichasByIdFicha = async () => {
@@ -51,7 +55,7 @@ const Students = () => {
     getFichasByIdFicha()
   }, [])
 
-  const [isFollowed, setIsFollowed] = React.useState(false)
+  const [isFollowed, setIsFollowed] = useState(false)
 
   const itemsPerPage = 9 // Número de elementos por página
   const [activePage, setActivePage] = useState(1)
@@ -106,6 +110,7 @@ const Students = () => {
         <Modal
           modalAdd
           cerrarModal={modalAdd}
+          reloadFetchState={setReloadFetch}
           titulo={
             <section className="text-2xl font-semibold">
               <i className="fi fi-rr-user-add text-green-500 px-3"></i>Agregar Estudiantes

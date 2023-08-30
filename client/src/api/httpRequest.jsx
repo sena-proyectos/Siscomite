@@ -55,7 +55,7 @@ export const getApprenticesById = (userId) => {
 export const createRequest = (data) => {
   const URL = `${BaseUrl}${api}/createSolicitud`
   const response = axios.post(URL, data)
-  
+
   return response
 }
 
@@ -63,7 +63,7 @@ export const createRequest = (data) => {
 export const login = (data) => {
   const URL = `${BaseUrl}${api}/login`
   const response = axios.post(URL, data)
-  
+
   return response
 }
 
@@ -71,7 +71,7 @@ export const login = (data) => {
 export const register = (data) => {
   const URL = `${BaseUrl}${api}/register`
   const response = axios.post(URL, data)
-  
+
   return response
 }
 
@@ -79,7 +79,7 @@ export const register = (data) => {
 export const createFicha = (data) => {
   const URL = `${BaseUrl}${api}/createFicha`
   const response = axios.post(URL, data)
-  
+
   return response
 }
 
@@ -103,7 +103,7 @@ export const getFichasById = (id) => {
 export const createApprentices = (data) => {
   const URL = `${BaseUrl}${api}/createAprendices`
   const response = axios.post(URL, data)
-  
+
   return response
 }
 
@@ -114,5 +114,3 @@ export const searchApprenticesByIdFicha = (idFicha, nombres) => {
 
   return response
 }
-
-
