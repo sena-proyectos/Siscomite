@@ -124,13 +124,11 @@ const Create = () => {
     <main className="relative h-screen flex ">
       <Sliderbar />
       <section className="w-full overflow-auto">
-        <section className="fixed z-20 w-[20rem] right-0">
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
-        </section>
+        <section className="fixed z-20 w-[20rem] right-0">{/* <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} /> */}</section>
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
           <section className="flex">
             <h1 className="text-2xl font-semibold">Crear solicitud</h1>
-            <section className="absolute right-[15%] cursor-pointer ">
+            {/* <section className="absolute right-[15%] cursor-pointer ">
               {notifyOpen ? (
                 <></>
               ) : (
@@ -141,7 +139,7 @@ const Create = () => {
                   </Button>
                 </>
               )}
-            </section>
+            </section> */}
           </section>
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>
