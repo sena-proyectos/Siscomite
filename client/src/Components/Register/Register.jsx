@@ -43,7 +43,7 @@ export const Register = () => {
       })
     } catch (error) {
       const message = error.response.data.message
-      toast.success('Opss!!', {
+      toast.error('Opss!!', {
         description: message,
       })
     }

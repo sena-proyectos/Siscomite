@@ -10,7 +10,7 @@ import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
 import { Textarea, Input, Button } from '@nextui-org/react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from '@nextui-org/react'
 
-export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents }) => {
+export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents, reloadFetchState }) => {
   const excelFileRef = useRef(null)
   const { id_ficha } = useParams()
 
@@ -63,6 +63,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
 
     const checkFile = excelFileRef.current.files[0].name.split('.')
     if (checkFile[1] !== 'xlsx' && checkFile[1] !== 'xls') {
+      reloadFetchState(true)
       Swal.fire({
         icon: 'error',
         title: '¡Error!',
@@ -127,6 +128,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
       toast.success('Genial!!', {
         description: res,
       })
+      reloadFetchState(true)
       setTimeout(() => {
         cerrarModal()
       }, 1500)
