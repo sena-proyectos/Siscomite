@@ -34,8 +34,8 @@ export const ViewPdf = () => {
       </label>
       {pdfFile && (
         <section>
-          <Card className="w-full">
-            <section className="max-h-[83vh] overflow-auto ">
+          <Card className={'w-full'}>
+            <section className="max-h-[80vh] overflow-auto ">
               <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess} className={'document'}>
                 <Page pageNumber={pageNumber} />
               </Document>
