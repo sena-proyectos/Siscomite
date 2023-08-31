@@ -1,0 +1,53 @@
+/* Animación para abrir y cerrar la barra de notoficaciones */
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes appearance-out {
+  0% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.out {
+  animation: appearance-out 0.5s ease-in normal both;
+}
+
+.visible {
+  animation: slideIn 0.5s ease-in-out;
+}
+
+/* Animación del botón para abror las notificaciones */
+@keyframes swing {
+  15% {
+    transform: translateX(5px);
+  }
+  30% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(3px);
+  }
+  65% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.muve {
+  animation: swing 1s ease infinite;
+  transition: all 0.2s ease-in-out;
+}

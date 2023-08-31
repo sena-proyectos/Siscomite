@@ -1,15 +1,16 @@
 import './Create.css'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 import Cookie from 'js-cookie'
 
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Search } from '../Search/Search'
+import { RadioGroup, Radio } from '@nextui-org/react'
 import { Card, CardBody } from '@nextui-org/react'
 import { Textarea } from '@nextui-org/react'
+import { Search } from '../Search/Search'
 import { CheckboxGroup, Checkbox } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio } from '@nextui-org/react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import { getTeacherByName, getApprenticesByName, getApprenticesById } from '../../api/httpRequest'
 
 const Create = () => {
@@ -72,6 +73,7 @@ const Create = () => {
     const infoUser = Cookie.get('token')
     const decoded = jwtDecode(infoUser)
     setUserID(decoded.id_usuario)
+    // console.log("hola");
   }, [])
 
   const sendData = () => {
@@ -111,12 +113,36 @@ const Create = () => {
     console.log('Aprendices seleccionados después de eliminar:', selectedApprentice)
   }
 
+  // Barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false)
+
+  const toggleNotify = () => {
+    setNotifyOpen(!notifyOpen)
+  }
+
   return (
     <main className="relative h-screen flex ">
       <Sliderbar />
       <section className="w-full overflow-auto">
+        <section className="fixed z-20 w-[20rem] right-0">
+          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+        </section>
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
-          <h1 className="text-2xl font-semibold">Toda la información debe ser la registrada en Sofía Plus</h1>
+          <section className="flex">
+            <h1 className="text-2xl font-semibold">Crear solicitud</h1>
+            <section className="absolute right-[15%] cursor-pointer ">
+              {notifyOpen ? (
+                <></>
+              ) : (
+                <>
+                  <Button radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                    Mensajes
+                    <i className="fi fi-ss-bell pl-[.5rem]" />
+                  </Button>
+                </>
+              )}
+            </section>
+          </section>
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>
               <RadioGroup orientation="horizontal" onChange={(e) => setTipoSolicitud(e.target.value)}>

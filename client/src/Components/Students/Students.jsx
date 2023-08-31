@@ -1,12 +1,10 @@
 import './Students.css'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Search } from '../Search/Search'
-import { Card, CardHeader, CardBody } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, Avatar, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import React, { useEffect, useState } from 'react'
-import { Pagination } from '@nextui-org/react'
 import { Modal } from '../Utils/Modal/Modal'
-import { Button } from '@nextui-org/react'
 
 import { useParams, useNavigate } from 'react-router-dom'
 import { getApprenticesById, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
@@ -56,7 +54,7 @@ const Students = () => {
     getFichasByIdFicha()
   }, [])
 
-  const [isFollowed, setIsFollowed] = useState(false)
+  const [isFollowed, setIsFollowed] = React.useState(false)
 
   const itemsPerPage = 9 // Número de elementos por página
   const [activePage, setActivePage] = useState(1)
@@ -105,6 +103,14 @@ const Students = () => {
       setApprenticesSearch([])
     }
   }
+
+  // Barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false)
+
+  const toggleNotify = () => {
+    setNotifyOpen(!notifyOpen)
+  }
+
   return (
     <>
       {modalStudent && (
@@ -138,6 +144,18 @@ const Students = () => {
           <header className="p-[1.5rem] flex justify-center">
             <section className="w-[40%]">
               <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+            </section>
+            <section className="absolute right-[15%] cursor-pointer ">
+              {notifyOpen ? (
+                <></>
+              ) : (
+                <>
+                  <Button radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                    Mensajes
+                    <i className="fi fi-ss-bell pl-[.5rem]" />
+                  </Button>
+                </>
+              )}
             </section>
           </header>
 
@@ -216,9 +234,8 @@ const Students = () => {
               +
             </button>
           </section>
-          <section className="relative h-0">
-            <Footer />
-          </section>
+          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+          <Footer />
         </section>
       </main>
     </>

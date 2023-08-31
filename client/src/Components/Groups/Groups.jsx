@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
-import { Pagination } from '@nextui-org/react'
-import { Card, CardHeader, CardBody, CardFooter } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Button } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
+import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Modal } from '../Utils/Modal/Modal'
 import { getFichas } from '../../api/httpRequest'
@@ -63,6 +63,13 @@ const Groups = () => {
     }))
   }
 
+  // Barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false)
+
+  const toggleNotify = () => {
+    setNotifyOpen(!notifyOpen)
+  }
+
   return (
     <>
       {modalGroups && (
@@ -83,6 +90,18 @@ const Groups = () => {
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
               <Search placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+            </section>
+            <section className="absolute right-[15%] cursor-pointer ">
+              {notifyOpen ? (
+                <></>
+              ) : (
+                <>
+                  <Button radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                    Mensajes
+                    <i className="fi fi-ss-bell pl-[.5rem]" />
+                  </Button>
+                </>
+              )}
             </section>
           </header>
 
@@ -123,6 +142,8 @@ const Groups = () => {
           <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
             <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>
           </section>
+          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+
           <Footer />
         </section>
       </main>

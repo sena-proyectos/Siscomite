@@ -4,11 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { createApprentices, createFicha, getApprenticesById } from '../../../api/httpRequest'
 import Swal from 'sweetalert2'
 import { Toaster, toast } from 'sonner'
-import { Accordion, AccordionItem } from '@nextui-org/react'
-import { Popover, PopoverTrigger, PopoverContent } from '@nextui-org/react'
+import { Accordion, AccordionItem, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link, Popover, PopoverTrigger, PopoverContent } from '@nextui-org/react'
 import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
-import { Textarea, Input, Button } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Link } from '@nextui-org/react'
 
 export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false, modalAddGroups = false, modalDetails = false, modalDetailsEdit = false, infoStudents, reloadFetchState }) => {
   const excelFileRef = useRef(null)
@@ -160,7 +157,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
         <Toaster position="top-right" closeButton richColors />
-        <section className="bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in">
+        <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
             <h3>{titulo}</h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
@@ -269,15 +266,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
                 </section>
               )
             })}
-            {/* {modalInfo && (
-              <section className="mt-[1rem] overflow-hidden min-w-[50%]">
-                <section className="mt-[10px] border-b-2  border-[#0799b6]">
-                  <span className="font-bold text-[17px]">Número alteno</span>
-                  <p>6666666</p>
-                </section>
-              </section>
-            )} */}
-            {/* Agregar Fichas */}
+            {/* Agregar grupos */}
             {modalAddGroups && (
               <section className="mt-[2rem]">
                 <section className="relative grid grid-cols-2 justify-center gap-8">
