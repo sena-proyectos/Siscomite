@@ -137,7 +137,7 @@ const Create = () => {
                     <></>
                   ) : (
                     <>
-                      <Button  radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                      <Button  radius="full" variant="flat" color="success" onClick={toggleNotify}>
                         Mensajes
                         <i className="fi fi-ss-bell pl-[.5rem]" />
                       </Button>

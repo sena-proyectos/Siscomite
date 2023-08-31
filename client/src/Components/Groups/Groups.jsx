@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Pagination, Button } from "@nextui-org/react";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Button } from "@nextui-org/react";
 import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
 import { Notify } from "../Utils/NotifyBar/NotifyBar";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
-import { Modal } from "../Utils/Modal/Modal";
+import { ModalAddGroups } from "../Utils/Modals/ModalAddGroup";
 import { getFichas } from "../../api/httpRequest";
 import "./Groups.css";
 
 const Groups = () => {
+  const [isOpen] = useState(false);
   const [fichas, setFichas] = useState([]);
 
   useEffect(() => {
@@ -40,11 +40,6 @@ const Groups = () => {
   const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage);
   const totalPages = Math.ceil(fichas.length / itemsPerPage);
 
-  const [modalGroups, setModalGroups] = useState(false);
-  const modalAddGroups = () => {
-    setModalGroups(!modalGroups);
-  };
-
   // Hover cards
   const [hoveredCards, setHoveredCards] = useState({});
 
@@ -64,6 +59,12 @@ const Groups = () => {
     }));
   };
 
+   // Modal detalles
+   const [modalGroups, setModalGroups] = useState(false);
+   const modalAddGroups = () => {
+     setModalGroups(!modalGroups);
+   };
+
   // Barra de notificaciones
   const [notifyOpen, setNotifyOpen] = useState(false);
 
@@ -73,17 +74,7 @@ const Groups = () => {
 
   return (
     <>
-      {modalGroups && (
-        <Modal
-          modalAddGroups
-          cerrarModal={modalAddGroups}
-          titulo={
-            <section className="text-2xl font-semibold">
-              <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
-            </section>
-          }
-        />
-      )}
+      {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} />}
 
       <main className="flex h-screen">
         <Sliderbar />
@@ -97,7 +88,7 @@ const Groups = () => {
                 <></>
               ) : (
                 <>
-                  <Button radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                  <Button radius="full" variant="flat" color="success" onClick={toggleNotify}>
                     Mensajes
                     <i className="fi fi-ss-bell pl-[.5rem]" />
                   </Button>
@@ -117,7 +108,7 @@ const Groups = () => {
                       </section>
                     </CardHeader>
                     <CardBody className="h-[5rem]">
-                      <p className="text-lg">{card.nombre_programa}</p>
+                      <p className="text-[16px]">{card.nombre_programa}</p>
                     </CardBody>
 
                     <CardFooter>

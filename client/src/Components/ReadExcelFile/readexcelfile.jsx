@@ -1,7 +1,7 @@
 import * as XLSX from 'xlsx'
 import Swal from 'sweetalert2'
 import { mapValues } from '../Map/Map'
-import { ModalExcel } from '../Utils/Modal/ModalExcel'
+import { ModalExcel } from '../Utils/Modals/ModalExcel'
 import { Toaster, toast } from 'sonner'
 import { createApprentices } from '../../api/httpRequest'
 

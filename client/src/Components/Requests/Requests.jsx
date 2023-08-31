@@ -5,10 +5,12 @@ import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react";
-import { Modal } from "../Utils/Modal/Modal";
 import { Notify } from "../Utils/NotifyBar/NotifyBar";
+import { ModalEditRequest } from "../Utils/Modals/ModalEditRequest";
+import { ModalRequest } from "../Utils/Modals/ModalRequest";
 
 const Requests = () => {
+  const [isOpen] = useState(false);
   const data = [
     { id: 1, name: "Azul Andres Velez Romero", date: "02/10/2023", value: "Aprobado" },
     { id: 2, name: "Carlos Perez Falcó", date: "02/10/2020", value: "Rechazado" },
@@ -69,30 +71,10 @@ const Requests = () => {
   };
   return (
     <>
-      {modalRequest && (
-        <Modal
-          modalDetails
-          cerrarModal={modalDetails}
-          titulo={
-            <section className="font-semibold text-2xl">
-              <i className="fi fi-rr-file-circle-info text-gray-500 px-3"></i>Detalle de solicitud{" "}
-            </section>
-          }
-        />
-      )}
-      {modalRequestEdit && (
-        <Modal
-          modalDetailsEdit
-          cerrarModal={modalDetailsEdit}
-          titulo={
-            <section className="font-semibold text-2xl">
-              <i className="fi fi-rr-refresh text-green-500 px-3" />
-              Editar información
-            </section>
-          }
-        />
-      )}
+      {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} />}
+      {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} />}
 
+     
       <main className="h-screen flex">
         <Sliderbar />
         <section className="w-full overflow-auto ">
@@ -105,7 +87,7 @@ const Requests = () => {
                 <></>
               ) : (
                 <>
-                  <Button radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                  <Button className="muve" radius="full" variant="flat" color="success" onClick={toggleNotify}>
                     Mensajes
                     <i className="fi fi-ss-bell pl-[.5rem]" />
                   </Button>
