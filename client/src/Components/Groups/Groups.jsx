@@ -59,11 +59,11 @@ const Groups = () => {
     }));
   };
 
-   // Modal detalles
-   const [modalGroups, setModalGroups] = useState(false);
-   const modalAddGroups = () => {
-     setModalGroups(!modalGroups);
-   };
+  // Modal detalles
+  const [modalGroups, setModalGroups] = useState(false);
+  const modalAddGroups = () => {
+    setModalGroups(!modalGroups);
+  };
 
   // Barra de notificaciones
   const [notifyOpen, setNotifyOpen] = useState(false);
@@ -131,11 +131,15 @@ const Groups = () => {
           <section className="grid place-items-center  mt-[.5rem] ">
             <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
-          <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
-            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>
+          <section className="absolute grid place-items-center bottom-9 right-8" >
+            <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
+              <p className="text-[15px] top-0 block">
+                <i className="fi fi-br-plus block" />
+                Agregar fichas
+              </p>
+            </button>
+            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
-
           <Footer />
         </section>
       </main>

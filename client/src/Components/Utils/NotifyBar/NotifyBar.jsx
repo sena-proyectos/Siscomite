@@ -48,11 +48,11 @@ export const Notify = ({ isOpen, toggleNotify }) => {
         </section>
         <section className="mt-5">
           <p className="font-extrabold">Nuevos mensajes</p>
-          <section class="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105">
-            <i class="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
-            <section class="items-center">
-              <p class="font-semibold block">Solicitud aceptada</p>
-              <p class="text-[13px] block">Su solicitud a comité ha sido aprobada</p>
+          <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl">
+            <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
+            <section className="items-center">
+              <p className="font-semibold block">Solicitud aceptada</p>
+              <p className="text-[13px] block">Su solicitud a comité ha sido aprobada</p>
             </section>
           </section>
           <Divider />

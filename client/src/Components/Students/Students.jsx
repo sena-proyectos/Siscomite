@@ -142,7 +142,7 @@ const Students = () => {
             </section>
           </header>
 
-          <section className=" flex justify-between  px-[4rem] ">
+          <section className=" flex justify-between px-[4rem] ">
             <Button color="primary" variant="flat" className="" onClick={() => navigate("/groups")}>
               <i className="fi fi-rr-arrow-left mt-[.5rem]"></i>Volver
             </Button>
@@ -152,7 +152,7 @@ const Students = () => {
               <p className="flex justify-end">{informationGruops.numero_ficha}</p>
             </section>
           </section>
-          <section className="h-[65vh] max-sm:h-[150%] max-[935px]:h-[85%] ">
+          <section className="h-[65vh] max-sm:h-[210%] max-[935px]:h-[115%]">
             <section className="grid grid-cols-3 gap-5 items-center justify-center px-9 max-sm:grid-cols-1 max-[935px]:grid-cols-2 ">
               {error ? (
                 <h1>{error}</h1>
@@ -184,7 +184,7 @@ const Students = () => {
                   ) : (
                     <>
                       {currentItems.map((item) => (
-                        <Card className="w-full z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
+                        <Card className="w-full max-h-[8rem] z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
                           <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
                             <div className="flex gap-5">
                               <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>
@@ -210,7 +210,7 @@ const Students = () => {
           </section>
 
           <section className="grid place-items-center ">
-            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[3rem] z-0 ${apprenticesSearch.length > 0 ? "hidden" : ""}`} total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
+            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[.5rem]  z-0 ${apprenticesSearch.length > 0 ? "hidden" : ""}`} total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8">
             <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalStudents}>
