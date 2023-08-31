@@ -5,11 +5,12 @@ import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Modal } from '../Utils/Modal/Modal'
+import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
 import { getFichas } from '../../api/httpRequest'
 import './Groups.css'
 
 const Groups = () => {
+  const [isOpen] = useState(false)
   const [fichas, setFichas] = useState([])
 
   useEffect(() => {
@@ -39,11 +40,6 @@ const Groups = () => {
   const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage)
   const totalPages = Math.ceil(fichas.length / itemsPerPage)
 
-  const [modalGroups, setModalGroups] = useState(false)
-  const modalAddGroups = () => {
-    setModalGroups(!modalGroups)
-  }
-
   // Hover cards
   const [hoveredCards, setHoveredCards] = useState({})
 
@@ -63,6 +59,12 @@ const Groups = () => {
     }))
   }
 
+  // Modal detalles
+  const [modalGroups, setModalGroups] = useState(false)
+  const modalAddGroups = () => {
+    setModalGroups(!modalGroups)
+  }
+
   // Barra de notificaciones
   const [notifyOpen, setNotifyOpen] = useState(false)
 
@@ -72,17 +74,7 @@ const Groups = () => {
 
   return (
     <>
-      {modalGroups && (
-        <Modal
-          modalAddGroups
-          cerrarModal={modalAddGroups}
-          titulo={
-            <section className="text-2xl font-semibold">
-              <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
-            </section>
-          }
-        />
-      )}
+      {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} />}
 
       <main className="flex h-screen">
         <Sliderbar />
@@ -96,7 +88,7 @@ const Groups = () => {
                 <></>
               ) : (
                 <>
-                  <Button radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                  <Button radius="full" variant="flat" color="success" onClick={toggleNotify}>
                     Mensajes
                     <i className="fi fi-ss-bell pl-[.5rem]" />
                   </Button>
@@ -116,7 +108,7 @@ const Groups = () => {
                       </section>
                     </CardHeader>
                     <CardBody className="h-[5rem]">
-                      <p className="text-lg">{card.nombre_programa}</p>
+                      <p className="text-[16px]">{card.nombre_programa}</p>
                     </CardBody>
 
                     <CardFooter>
@@ -139,11 +131,15 @@ const Groups = () => {
           <section className="grid place-items-center  mt-[.5rem] ">
             <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
-          <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
-            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>
+          <section className="absolute grid place-items-center bottom-9 right-8">
+            <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
+              <p className="text-[15px] top-0 block">
+                <i className="fi fi-br-plus block" />
+                Agregar fichas
+              </p>
+            </button>
+            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
-
           <Footer />
         </section>
       </main>

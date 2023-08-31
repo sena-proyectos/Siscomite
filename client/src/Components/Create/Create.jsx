@@ -128,18 +128,18 @@ const Create = () => {
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
           <section className="flex">
             <h1 className="text-2xl font-semibold">Crear solicitud</h1>
-            {/* <section className="absolute right-[15%] cursor-pointer ">
+            <section className="absolute right-[15%] cursor-pointer ">
               {notifyOpen ? (
                 <></>
               ) : (
                 <>
-                  <Button radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                  <Button radius="full" variant="flat" color="success" onClick={toggleNotify}>
                     Mensajes
                     <i className="fi fi-ss-bell pl-[.5rem]" />
                   </Button>
                 </>
               )}
-            </section> */}
+            </section>
           </section>
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>

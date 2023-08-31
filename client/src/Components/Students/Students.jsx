@@ -4,10 +4,13 @@ import { Search } from '../Search/Search'
 import { Card, CardHeader, CardBody, Avatar, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import React, { useEffect, useState } from 'react'
-import { Modal } from '../Utils/Modal/Modal'
+import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
+import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
+import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
 import { useParams, useNavigate } from 'react-router-dom'
 import { getApprenticesById, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { calcLength } from 'framer-motion'
 
 const Students = () => {
   const { id_ficha } = useParams()
@@ -18,6 +21,7 @@ const Students = () => {
   const [apprenticesSearch, setApprenticesSearch] = useState([])
   const [error, setError] = useState(null)
   const [reloadFetch, setReloadFetch] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const navigate = useNavigate()
 
@@ -54,7 +58,7 @@ const Students = () => {
     getFichasByIdFicha()
   }, [])
 
-  const [isFollowed, setIsFollowed] = React.useState(false)
+  const [isFollowed, setIsFollowed] = useState(false)
 
   const itemsPerPage = 9 // Número de elementos por página
   const [activePage, setActivePage] = useState(1)
@@ -68,21 +72,6 @@ const Students = () => {
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber)
-  }
-
-  const [modalStudent, setModalStudent] = useState(false)
-  const modalAdd = () => {
-    setModalStudent(!modalStudent)
-  }
-
-  const [infoStudents, setInfoStudents] = useState(false)
-  const infoStudent = () => {
-    setInfoStudents(!infoStudents)
-  }
-
-  const apprenticeId = (id) => {
-    setInfoStudents(!infoStudents)
-    setIdStudent(id)
   }
 
   const searchApprentices = async (nombres) => {
@@ -111,32 +100,23 @@ const Students = () => {
     setNotifyOpen(!notifyOpen)
   }
 
+  //Abrir Modal para agregar estudiantes
+  const [modalAddStudent, setModalStudentAdd] = useState(false)
+  const modalStudents = () => {
+    setModalStudentAdd(!modalAddStudent)
+  }
+  //Abrir Modal para la informacíon de estudiantes
+  const [modalInfoStudents, setInfoStudents] = useState(false)
+  const infoStudents = (id) => {
+    setInfoStudents(!modalInfoStudents)
+    setIdStudent(id)
+  }
+
   return (
     <>
-      {modalStudent && (
-        <Modal
-          modalAdd
-          cerrarModal={modalAdd}
-          reloadFetchState={setReloadFetch}
-          titulo={
-            <section className="text-2xl font-semibold">
-              <i className="fi fi-rr-user-add text-green-500 px-3"></i>Agregar Estudiantes
-            </section>
-          }
-        />
-      )}
-      {infoStudents && (
-        <Modal
-          modalInfo
-          cerrarModal={infoStudent}
-          titulo={
-            <section className="text-2xl font-semibold">
-              <i className="fi fi-rs-file-user text-blue-600 px-3"></i>Información
-            </section>
-          }
-          infoStudents={idStudent}
-        />
-      )}
+      {modalAddStudent && <ModalAddStudents modalStudents={isOpen} cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
+
+      {modalInfoStudents && <ModalInfoStudents infoStudent={isOpen} cerrarModal={infoStudents} idStudents={idStudent} />}
 
       <main className="flex h-screen">
         <Sliderbar />
@@ -150,7 +130,7 @@ const Students = () => {
                 <></>
               ) : (
                 <>
-                  <Button radius="full" variant="flat" color="secondary" onClick={toggleNotify}>
+                  <Button radius="full" variant="flat" color="success" onClick={toggleNotify}>
                     Mensajes
                     <i className="fi fi-ss-bell pl-[.5rem]" />
                   </Button>
@@ -159,7 +139,7 @@ const Students = () => {
             </section>
           </header>
 
-          <section className=" flex justify-between  px-[4rem] ">
+          <section className=" flex justify-between px-[4rem] ">
             <Button color="primary" variant="flat" className="" onClick={() => navigate('/groups')}>
               <i className="fi fi-rr-arrow-left mt-[.5rem]"></i>Volver
             </Button>
@@ -169,7 +149,7 @@ const Students = () => {
               <p className="flex justify-end">{informationGruops.numero_ficha}</p>
             </section>
           </section>
-          <section className="h-[65vh] max-sm:h-[150%] max-[935px]:h-[85%] ">
+          <section className="h-[65vh] max-sm:h-[210%] max-[935px]:h-[115%]">
             <section className="grid grid-cols-3 gap-5 items-center justify-center px-9 max-sm:grid-cols-1 max-[935px]:grid-cols-2 ">
               {error ? (
                 <h1>{error}</h1>
@@ -179,10 +159,10 @@ const Students = () => {
                   {apprenticesSearch.length > 0 ? (
                     <>
                       {apprenticesSearch.map((item) => (
-                        <Card className="w-full  z-0 shadow-lg" onClick={() => apprenticeId(item.id_aprendiz)} key={item.id_aprendiz}>
-                          <CardHeader onClick={() => apprenticeId(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
+                        <Card className="w-full  z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
+                          <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
                             <div className="flex gap-5">
-                              <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                              <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>
                               <div className="flex flex-col gap-1 items-start justify-center">
                                 <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
                                 <h5 className="text-small tracking-tight text-default-400 flex">
@@ -192,7 +172,7 @@ const Students = () => {
                               </div>
                             </div>
                           </CardHeader>
-                          <CardBody onClick={() => apprenticeId(item.id_aprendiz)} className="relarive  text-default-400 text-small cursor-pointer">
+                          <CardBody onClick={() => infoStudents(item.id_aprendiz)} className="relarive  text-default-400 text-small cursor-pointer">
                             <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
                           </CardBody>
                         </Card>
@@ -201,10 +181,10 @@ const Students = () => {
                   ) : (
                     <>
                       {currentItems.map((item) => (
-                        <Card className="w-full z-0 shadow-lg" onClick={() => apprenticeId(item.id_aprendiz)} key={item.id_aprendiz}>
-                          <CardHeader onClick={() => apprenticeId(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
+                        <Card className="w-full max-h-[8rem] z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
+                          <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
                             <div className="flex gap-5">
-                              <i className="fi fi-rr-circle-user text-purple-500 text-[2rem]"></i>
+                              <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>
                               <div className="flex flex-col gap-1 items-start justify-center">
                                 <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
                                 <h5 className="text-small tracking-tight text-default-400 flex">
@@ -214,7 +194,7 @@ const Students = () => {
                               </div>
                             </div>
                           </CardHeader>
-                          <CardBody onClick={() => apprenticeId(item.id_aprendiz)} className="relarive  text-default-400 text-small cursor-pointer">
+                          <CardBody onClick={() => infoStudents(item.id_aprendiz)} className="relative  text-default-400 text-small cursor-pointer">
                             <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
                           </CardBody>
                         </Card>
@@ -227,11 +207,14 @@ const Students = () => {
           </section>
 
           <section className="grid place-items-center ">
-            <Pagination className="relative top-[.5rem] max-[935px]:pb-[3rem] z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
+            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[.5rem]  z-0 ${apprenticesSearch.length > 0 ? 'hidden' : ''}`} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8">
-            <button className="w-[60px] h-[60px] rounded-full text-white shadow-2xl text-3xl bg-[#2e323e] relative cursor-pointer outline-none border-none add" onClick={modalAdd}>
-              +
+            <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalStudents}>
+              <p className="text-[15px] top-0 block">
+                <i className="fi fi-br-plus block" />
+                Agregar aprendices
+              </p>
             </button>
           </section>
           <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
