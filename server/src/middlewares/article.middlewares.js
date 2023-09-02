@@ -14,6 +14,5 @@ export const checkArticleData = (req, res, next) => {
             next()
         } catch (error) {
             res.status(500).json({ message: 'Error inesperado' })
-            console.log(error);
         }
 }

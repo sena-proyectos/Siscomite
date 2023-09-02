@@ -4,13 +4,28 @@ import { pool } from '../db.js'
 /**
  * La función `getFichas` recupera todos los registros de la tabla `fichas` y los envía como respuesta.
  */
-  export const getFichas = async (req, res) => {
-    try {
-        const [result] = await pool.query('SELECT * FROM fichas');
-        res.status(200).send({ result })
-    } catch (error) {
-        res.status(500).send({ message: 'Error al listar las fichas' })
-    }
+export const getFichas = async (req, res) => {
+  try {
+    const [result] = await pool.query('SELECT * FROM fichas')
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al listar las fichas' })
+  }
+}
+
+//CONSULTAR LA FICHA POR ID
+/**
+ * La función `getFichasById` recupera todos el registro de la tabla `fichas` y los envía como respuesta.
+ */
+export const getFichasById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('SELECT * FROM fichas WHERE id_ficha = ?', [id])
+    if (!result[0]) return res.status(400).send({ message: 'No hay registros existentes de esa ficha' })
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener la ficha' })
+  }
 }
 
 //CREAR UNA NUEVA FICHA
@@ -49,17 +64,19 @@ export const createFicha = async (req, res) => {
  * La función `updateFicha` actualiza un registro en la tabla "fichas" con los datos proporcionados.
  */
 export const updateFicha = async (req, res) => {
-
-  const id_ficha = req.params.id; 
-  const { numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, id_modalidad } = req.body;
+  const id_ficha = req.params.id
+  const { numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, id_modalidad } = req.body
   try {
-    await pool.query(
-      'UPDATE fichas SET numero_ficha = IFNULL(?, numero_ficha), nombre_programa = IFNULL(?, nombre_programa), jornada = IFNULL(?, jornada), etapa_programa = IFNULL(?, etapa_programa), numero_trimestre = IFNULL(?, numero_trimestre), id_modalidad = IFNULL(?, id_modalidad) WHERE id_ficha = ?',
-      [numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, id_modalidad, id_ficha]
-    );
-    res.status(200).send({ message: 'Ficha actualizada exitosamente' });
-
-
+    await pool.query('UPDATE fichas SET numero_ficha = IFNULL(?, numero_ficha), nombre_programa = IFNULL(?, nombre_programa), jornada = IFNULL(?, jornada), etapa_programa = IFNULL(?, etapa_programa), numero_trimestre = IFNULL(?, numero_trimestre), id_modalidad = IFNULL(?, id_modalidad) WHERE id_ficha = ?', [
+      numero_ficha,
+      nombre_programa,
+      jornada,
+      etapa_programa,
+      numero_trimestre,
+      id_modalidad,
+      id_ficha
+    ])
+    res.status(200).send({ message: 'Ficha actualizada exitosamente' })
   } catch (error) {
     res.status(500).send({ message: 'Error al actualizar ficha' })
   }

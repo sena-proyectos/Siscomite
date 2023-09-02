@@ -1,11 +1,11 @@
 import "./Button.css"
 
-export const Button = ({ title, icon }) => {
+export const Button = () => {
     return (
       <main className="containerButton">
-        <button className="button">
-           {icon}  {title}
-        </button>
+        <section className="relative h-screen w-[30%] bg-black">
+
+        </section>
 
       </main>
     );
