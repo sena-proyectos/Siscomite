@@ -37,7 +37,6 @@ export const Register = () => {
     try {
       const res = await register(dataValue)
       const response = res.data.message
-      setMessage(response)
       toast.success('Genial!!', {
         description: response
       })

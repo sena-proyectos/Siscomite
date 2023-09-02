@@ -42,7 +42,7 @@ export const Modal = ({ cerrarModal, titulo, modalAdd = false, modalInfo = false
   const handleEtapaChange = (event) => {
     const selectedValue = event.target.value
     setEtapaPrograma(selectedValue)
-    setIsTrimestreEnabled(selectedValue === 'lectiva')
+    setIsTrimestreEnabled(selectedValue === 'Lectiva')
   }
 
   // Dropdown detalles de solicitud
