@@ -125,7 +125,7 @@ const Students = () => {
         <Sliderbar />
         <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center">
-            <section className="w-[40%]">
+            <section className="w-[40%] max-md:max-w-[10rem]">
               <Search placeholder={"Buscar aprendiz"} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
             <section className="absolute right-[15%] cursor-pointer ">
@@ -152,7 +152,7 @@ const Students = () => {
               <p className="flex justify-end">{informationGruops.numero_ficha}</p>
             </section>
           </section>
-          <section className="h-[65vh] max-sm:h-[210%] max-[935px]:h-[115%]">
+          <section className="h-[65vh] max-sm:h-[190%] max-[935px]:h-[115%]">
             <section className="grid grid-cols-3 gap-5 items-center justify-center px-9 max-sm:grid-cols-1 max-[935px]:grid-cols-2 ">
               {error ? (
                 <h1>{error}</h1>
@@ -197,7 +197,7 @@ const Students = () => {
                               </div>
                             </div>
                           </CardHeader>
-                          <CardBody onClick={() => infoStudents(item.id_aprendiz)} className="relative  text-default-400 text-small cursor-pointer">
+                          <CardBody onClick={() => infoStudents(item.id_aprendiz)} className="relative text-default-400 text-small cursor-pointer">
                             <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
                           </CardBody>
                         </Card>
@@ -210,7 +210,7 @@ const Students = () => {
           </section>
 
           <section className="grid place-items-center ">
-            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[.5rem]  z-0 ${apprenticesSearch.length > 0 ? "hidden" : ""}`} total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
+            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[8px]  z-0 ${apprenticesSearch.length > 0 ? "hidden" : ""}`} total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-8">
             <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalStudents}>

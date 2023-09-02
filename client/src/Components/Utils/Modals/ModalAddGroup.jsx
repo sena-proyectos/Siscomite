@@ -129,7 +129,7 @@ export const ModalAddGroups = ({ cerrarModal }) => {
                   <option value="8">8</option>
                 </select>
               </section>
-              <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
+              <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
                 <option value="">Modalidad</option>
                 <option value="1">Presencial</option>
                 <option value="2">Virtual</option>

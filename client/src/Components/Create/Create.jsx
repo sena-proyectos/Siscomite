@@ -267,8 +267,8 @@ const Create = () => {
           </section>
 
           <section className="mr-[3.1rem] w-[85%] h-full">
-            <div className="flex w-full  flex-col">
-              <Card className="overflow-auto h-[25rem] ">
+            <div className="flex w-full h-full flex-col">
+              <Card className="overflow-auto  h-full ">
                 <section className="px-[3rem] py-[.5rem] bg-slate-500 ">
                   <Search placeholder={"Buscar"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
                 </section>
