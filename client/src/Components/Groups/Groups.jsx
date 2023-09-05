@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Pagination, Tooltip, Button } from "@nextui-org/react";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Button } from "@nextui-org/react";
 import { Search } from "../Search/Search";
 import { Footer } from "../Footer/Footer";
+import { Notify } from "../Utils/NotifyBar/NotifyBar";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
-import { Modal } from "../Utils/Modal/Modal";
+import { ModalAddGroups } from "../Utils/Modals/ModalAddGroup";
 import { getFichas } from "../../api/httpRequest";
 import "./Groups.css";
 
 const Groups = () => {
+  const [isOpen] = useState(false);
   const [fichas, setFichas] = useState([]);
 
   useEffect(() => {
@@ -39,11 +40,6 @@ const Groups = () => {
   const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage);
   const totalPages = Math.ceil(fichas.length / itemsPerPage);
 
-  const [modalGroups, setModalGroups] = useState(false);
-  const modalAddGroups = () => {
-    setModalGroups(!modalGroups);
-  };
-
   // Hover cards
   const [hoveredCards, setHoveredCards] = useState({});
 
@@ -63,19 +59,22 @@ const Groups = () => {
     }));
   };
 
+  // Modal detalles
+  const [modalGroups, setModalGroups] = useState(false);
+  const modalAddGroups = () => {
+    setModalGroups(!modalGroups);
+  };
+
+  // Barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false);
+
+  const toggleNotify = () => {
+    setNotifyOpen(!notifyOpen);
+  };
+
   return (
     <>
-      {modalGroups && (
-        <Modal
-          modalAddGroups
-          cerrarModal={modalAddGroups}
-          titulo={
-            <section className="text-2xl font-semibold">
-              <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
-            </section>
-          }
-        />
-      )}
+      {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} />}
 
       <main className="flex h-screen">
         <Sliderbar />
@@ -84,20 +83,32 @@ const Groups = () => {
             <section className="w-[40%]">
               <Search placeholder={"Buscar ficha"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
+            <section className="absolute right-[15%] cursor-pointer ">
+              {notifyOpen ? (
+                <></>
+              ) : (
+                <>
+                  <Button radius="full" variant="flat" color="success" onClick={toggleNotify}>
+                    Mensajes
+                    <i className="fi fi-ss-bell pl-[.5rem]" />
+                  </Button>
+                </>
+              )}
+            </section>
           </header>
 
           <section className="grid place-items-center h-[75vh] max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5">
             <section className="mx-auto gap-5 grid grid-cols-3 w-[80%] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1  ">
               {visibleCards.map((card) => (
                 <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
-                  <Card className={`card w-full border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? "hovered" : ""}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
+                  <Card className={`card w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? "hovered" : ""}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
                     <CardHeader className="gap-3 flex justify-center z-0">
                       <section className="flex bg-blue-200 py-2 justify-center rounded-xl w-full">
                         <p className="text-xl font-bold ">{card.numero_ficha}</p>
                       </section>
                     </CardHeader>
-                    <CardBody className="">
-                      <p className="text-lg">{card.nombre_programa}</p>
+                    <CardBody className="h-[5rem]">
+                      <p className="text-[16px]">{card.nombre_programa}</p>
                     </CardBody>
 
                     <CardFooter>
@@ -120,8 +131,14 @@ const Groups = () => {
           <section className="grid place-items-center  mt-[.5rem] ">
             <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
-          <section className="absolute grid place-items-center bottom-9 right-8" onClick={modalAddGroups}>
-            <button className="w-[60px] h-[60px] rounded-full text-white shadow-md text-3xl bg-[#2e323e] relative">+</button>
+          <section className="absolute grid place-items-center bottom-9 right-8" >
+            <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
+              <p className="text-[15px] top-0 block">
+                <i className="fi fi-br-plus block" />
+                Agregar fichas
+              </p>
+            </button>
+            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           </section>
           <Footer />
         </section>

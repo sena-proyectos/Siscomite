@@ -25,7 +25,7 @@ const Search = ({ searchStudent, placeholder, icon }) => {
 
   return (
     <form className="flex items-center relative" method="get" onChange={handleSearch} onSubmit={evnt}>
-      <input type="text" name="buscar" className="shadow-md outline-none rounded-xl p-[10px] w-[100%]" placeholder={placeholder} ref={search} autoComplete='off'/>
+      <input type="text" name="buscar" className="shadow-md outline-none rounded-xl p-[10px] w-[100%] max-md:max-w-[20rem]" placeholder={placeholder} ref={search} autoComplete='off'/>
       {icon}
     </form>
   )
