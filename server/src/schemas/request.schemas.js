@@ -1,6 +1,5 @@
 import Joi from "joi";
 
-/* El código define un esquema de validación utilizando la biblioteca Joi en JavaScript. */
 export const createSolicitud = Joi.object({
     tipo_solicitud: Joi.string().required().min(2).max(100),
     nombre_coordinacion: Joi.string().required().min(2).max(100),
@@ -9,6 +8,6 @@ export const createSolicitud = Joi.object({
     categoria_causa: Joi.string().required().max(100),
     calificacion_causa: Joi.string().required().max(100),
     descripcion_caso: Joi.string().required().max(2000),
-    evidencias: Joi.string().required().max(1000),
-    id_articulo: Joi.string().required().max(10)
-})
+    id_archivo: Joi.string().required().max(1000),
+});
+
