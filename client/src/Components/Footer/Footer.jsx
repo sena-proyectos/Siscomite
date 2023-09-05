@@ -6,7 +6,7 @@ const Footer = () => {
       <section className="fixed bottom-0">
         <p className="flex items-center ">
           Siscomite © Centro Tecnológico del Mobiliario - SENA
-          <img src="image/logoSena.webp" alt="Sena" className="w-[2rem] ml-[1rem] " />
+          <img src="/image/logoSena.webp" alt="Sena" className="w-[2rem] ml-[1rem] " />
         </p>
       </section>
     </main>

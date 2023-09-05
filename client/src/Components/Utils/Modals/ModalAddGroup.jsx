@@ -91,7 +91,7 @@ export const ModalAddGroups = ({ cerrarModal }) => {
             <section className="relative grid grid-cols-2 justify-center gap-8">
               <section className="modalInput ">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} minLength={7} maxLength={7} onChange={(e) => setNumeroFicha(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                 </div>
               </section>
               <section className="modalInput">
