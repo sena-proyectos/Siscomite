@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createArticle, deleteArticle, getArticle, getArticleById, updateArticle } from "../controller/article.controller.js";
-import { checkArticleData } from './../middlewares/article.middlewares.js'
+
 
 const router = Router();
 
@@ -10,7 +10,7 @@ router.get('/articulos', getArticle)
 //GETBYID
 router.get('/articulo/:id', getArticleById)
 //POST articulos
-router.post('/createArticulo', checkArticleData, createArticle)
+router.post('/createArticulo', createArticle)
 //PUT articulos
 router.put('/updateArticulo/:id', updateArticle)
 //DELETE articulos

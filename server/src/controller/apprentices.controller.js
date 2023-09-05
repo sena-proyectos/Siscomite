@@ -61,9 +61,9 @@ export const getApprenticeById = async (req, res) => {
  * de base de datos y envía una respuesta con un mensaje de éxito o un mensaje de error.
  */
 export const createApprentices = async (req, res) => {
-  const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
-  try {
-    await pool.query('INSERT INTO aprendices (nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha])
+    const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
+    try {
+    await pool.query('INSERT INTO aprendices (nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, estado, id_ficha) VALUES (?, ?, ?, ?, ?, ?, ?, "EN FORMACIÓN", ?)', [nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha])
     res.status(201).send({ message: 'Aprendiz creado exitosamente' })
   } catch (error) {
     console.log(error)
