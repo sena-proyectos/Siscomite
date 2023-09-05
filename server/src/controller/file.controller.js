@@ -15,7 +15,6 @@ export const handleFileUpload = async (req, res) => {
     res.status(201).send({ message: 'Archivo subido y guardado exitosamente' });
   } catch (error) {
     res.status(500).send({ message: 'Error al subir y guardar el archivo' });
-    console.log(error);
   }
 };
 

@@ -66,7 +66,6 @@ export const createApprentices = async (req, res) => {
     await pool.query('INSERT INTO aprendices (nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, estado, id_ficha) VALUES (?, ?, ?, ?, ?, ?, ?, "EN FORMACIÓN", ?)', [nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha])
     res.status(201).send({ message: 'Aprendiz creado exitosamente' })
   } catch (error) {
-    console.log(error)
     res.status(500).send({ message: 'Error al crear el aprenndiz' })
   }
 }

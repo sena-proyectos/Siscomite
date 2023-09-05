@@ -53,7 +53,6 @@ const Students = () => {
         const res = response.data.result[0];
         setInformationGruops(res);
       } catch (error) {
-        console.log(error);
       }
     };
     getFichasByIdFicha();
