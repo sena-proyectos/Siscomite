@@ -10,7 +10,7 @@ router.get('/solicitudes', getRequests)
 // GETBYID  solicitud
 router.get('/solicitud/:id', getRequestById)
 //POST solicitud
-router.post('/createSolicitud', createDataSolicitud, createRequest )
+router.post('/createSolicitud',createDataSolicitud, createRequest )
 //PUT solicitud
 router.patch('/updateSolicitud/:id', updateRequest)
 //DELETE solicitud
