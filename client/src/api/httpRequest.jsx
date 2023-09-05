@@ -101,7 +101,7 @@ export const getFichasById = (id) => {
 
 /* Create apprentices */
 export const createApprentices = (data) => {
-  const URL = `${BaseUrl}${api}/createAprendices`
+  const URL = `${BaseUrl}${api}/createAprendiz`
   const response = axios.post(URL, data)
   
   return response

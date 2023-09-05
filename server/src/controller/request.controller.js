@@ -1,6 +1,15 @@
 import { pool } from "../db.js";
 import mysql from 'mysql2/promise';
 
+
+export const getsolicitud = async (req,res) =>{
+    try {
+const [result] = await pool.query('SELECT *from solicitud ');
+res.status(200).send({ result })
+} catch (error) {
+res.status(500).send({ message: 'Error al listar las solictudes' })
+}
+}
 //BUSCAR TODAS LAS SOLICITUDES
 export const getRequests = async (req, res) => {
     try {
@@ -169,22 +178,20 @@ export const getRequestById = async (req, res) => {
 /**
  * Esta función crea una solicitud insertando datos en una tabla de base de datos.
  */
-
 export const createRequest = async (req, res) => {
-    const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo } = req.body;
+    const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo } = req.body;
     try {
-        const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Formato YYYY-MM-DD HH:mm:ss
-        await pool.query(
-            'INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo, 'Pendiente', currentDate]
-        );
-        res.status(201).send({ message: 'Solicitud creada exitosamente' });
+      const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Formato YYYY-MM-DD HH:mm:ss
+      await pool.query(
+        'INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, 'Pendiente', currentDate]
+      );
+      res.status(201).send({ message: 'Solicitud creada exitosamente' });
     } catch (error) {
-        res.status(500).send({ message: 'Error al crear la solicitud' });
+      res.status(500).send({ message: 'Error al crear la solicitud' });
     }
-};
-
-
+  };
+  
 
 //ACTUALIZACION DE UNA SOLICITUD
 /**
@@ -193,12 +200,12 @@ export const createRequest = async (req, res) => {
  */
 export const updateRequest = async (req, res) => {
     const { id } = req.params;
-    const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo } = req.body;
+    const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, numerales_relacionados } = req.body;
 
     try {
         const [result] = await pool.query(
-            'UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), id_aprendiz = COALESCE(?, id_aprendiz), estado = COALESCE(?, estado), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso), evidencias = COALESCE(?, evidencias), id_articulo = COALESCE(?, id_articulo) WHERE id_solicitud = ?',
-            [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, id_articulo, id]
+            'UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), id_aprendiz = COALESCE(?, id_aprendiz), estado = COALESCE(?, estado), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso), evidencias = COALESCE(?, evidencias), numerales_relacionados = COALESCE(?, numerales_relacionados) WHERE id_solicitud = ?',
+            [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, JSON.stringify(numerales_relacionados), id]
         );
 
         if (result.affectedRows === 0) {
