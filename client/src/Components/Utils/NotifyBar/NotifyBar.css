@@ -11,21 +11,20 @@
 @keyframes appearance-out {
   0% {
     opacity: 1;
-    transform: none;
   }
   100% {
     transform: translateX(100%);
   }
 }
 .out {
-  animation: appearance-out 0.5s ease-in normal both;
+  animation: appearance-out 0.5s ease-in both;
 }
 
 .visible {
   animation: slideIn 0.5s ease-in-out;
 }
 
-/* Animación del botón para abror las notificaciones */
+/* Animación del botón para las nuevas notificaciones */
 @keyframes swing {
   15% {
     transform: translateX(5px);

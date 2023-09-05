@@ -10,7 +10,11 @@ import causeRoutes from './routes/cause.routes.js'
 import requestsRoutes from './routes/request.routes.js'
 import documentsRoutes from './routes/documents.routes.js'
 import modalitiesRouter from './routes/modalities.routes.js'
-import { PORT } from './config.js'
+import ArticleNumberRouter from './routes/articleNumber.routes.js'
+import ParagraphRouter from './routes/paragraph.routes.js'
+import chapterRouter from './routes/chapter.routes.js'
+import fileRouter from './routes/file.routes.js'
+import { PORT } from './config.js/'
 
 
 const app = express()
@@ -27,6 +31,12 @@ app.use('/api', apprenticesRoutes)
 app.use('/api', requestsRoutes)
 app.use('/api', documentsRoutes)
 app.use('/api', modalitiesRouter)
+app.use('/api', chapterRouter)
+app.use('/api', ArticleNumberRouter)
+app.use('/api', ParagraphRouter)
+app.use('/api', fileRouter)
+
+
 
 // const oauth2Client = new google.auth.OAuth2(
 //   process.env.GOOGLE_CLIENT_ID,

@@ -84,7 +84,7 @@ export const ModalAddGroups = ({ cerrarModal }) => {
               <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
             </h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
-              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" onClick={closeModal} />
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer"  />
             </section>
           </header>
           <section className="mt-[2rem]">
@@ -129,7 +129,7 @@ export const ModalAddGroups = ({ cerrarModal }) => {
                   <option value="8">8</option>
                 </select>
               </section>
-              <select className="bg-default-100 px-[12px] shadow-sm w-[11rem] text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
+              <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
                 <option value="">Modalidad</option>
                 <option value="1">Presencial</option>
                 <option value="2">Virtual</option>

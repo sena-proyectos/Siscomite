@@ -4,13 +4,10 @@ import jwtDecode from 'jwt-decode'
 import Cookie from 'js-cookie'
 
 import { Footer } from '../Footer/Footer'
+import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { RadioGroup, Radio } from '@nextui-org/react'
-import { Card, CardBody } from '@nextui-org/react'
-import { Textarea } from '@nextui-org/react'
+import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip } from '@nextui-org/react'
 import { Search } from '../Search/Search'
-import { CheckboxGroup, Checkbox } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import { getTeacherByName, getApprenticesByName, getApprenticesById } from '../../api/httpRequest'
 
 const Create = () => {
@@ -124,7 +121,9 @@ const Create = () => {
     <main className="relative h-screen flex ">
       <Sliderbar />
       <section className="w-full overflow-auto">
-        <section className="fixed z-20 w-[20rem] right-0">{/* <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} /> */}</section>
+        <section className="fixed z-20 w-[20rem] right-0">
+          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+        </section>
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
           <section className="flex">
             <h1 className="text-2xl font-semibold">Crear solicitud</h1>
@@ -133,7 +132,7 @@ const Create = () => {
                 <></>
               ) : (
                 <>
-                  <Button radius="full" variant="flat" color="success" onClick={toggleNotify}>
+                  <Button radius="full" variant="flat" color="primary" onClick={toggleNotify}>
                     Mensajes
                     <i className="fi fi-ss-bell pl-[.5rem]" />
                   </Button>
@@ -253,18 +252,20 @@ const Create = () => {
                 <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descripción" className="max-w-[300px] " />
               </section>
               <section className="">
-                <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
-                  Subir evidencia
-                  <i className="fi fi-rr-upload px-[.5rem]" />
-                  <input type="file" className="hidden" />
-                </label>
+                <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
+                  <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
+                    Subir evidencia
+                    <i className="fi fi-rr-upload px-[.5rem]" />
+                    <input type="file" className="hidden" />
+                  </label>
+                </Tooltip>
               </section>
             </section>
           </section>
 
           <section className="mr-[3.1rem] w-[85%] h-full">
-            <div className="flex w-full  flex-col">
-              <Card className="overflow-auto h-[25rem] ">
+            <div className="flex w-full h-full flex-col">
+              <Card className="overflow-auto  h-full ">
                 <section className="px-[3rem] py-[.5rem] bg-slate-500 ">
                   <Search placeholder={'Buscar'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
                 </section>
