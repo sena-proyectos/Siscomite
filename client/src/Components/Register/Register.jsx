@@ -36,9 +36,9 @@ export const Register = () => {
     }
     try {
       const res = await register(dataValue)
-      const response = res.data.message
+      const message = res.data.message
       toast.success('Genial!!', {
-        description: response
+        description: message
       })
     } catch (error) {
       const message = error.response.data.message
