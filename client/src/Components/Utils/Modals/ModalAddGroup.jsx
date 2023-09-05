@@ -84,14 +84,14 @@ export const ModalAddGroups = ({ cerrarModal }) => {
               <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
             </h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
-              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" onClick={closeModal} />
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer"  />
             </section>
           </header>
           <section className="mt-[2rem]">
             <section className="relative grid grid-cols-2 justify-center gap-8">
               <section className="modalInput ">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} minLength={7} maxLength={7} onChange={(e) => setNumeroFicha(e.target.value)} />
                 </div>
               </section>
               <section className="modalInput">

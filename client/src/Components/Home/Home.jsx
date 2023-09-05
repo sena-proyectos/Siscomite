@@ -36,7 +36,7 @@ const Home = () => {
                     <></>
                   ) : (
                     <>
-                      <Button className="muve" radius="full" variant="flat" color="success" onClick={toggleNotify}>
+                      <Button className="muve" radius="full" variant="flat" color="primary" onClick={toggleNotify}>
                         Mensajes
                         <i className="fi fi-ss-bell pl-[.5rem]" />
                       </Button>
