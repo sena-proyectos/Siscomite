@@ -13,6 +13,7 @@ const Groups = () => {
   const [isOpen] = useState(false);
   const [fichas, setFichas] = useState([]);
   const [isGridView, setIsGridView] = useState(true);
+  const [actualView, setActualView] = useState(null);
 
   useEffect(() => {
     const getFicha = async () => {
@@ -85,8 +86,21 @@ const Groups = () => {
 
   // Almacenar la preferencia del usuario en localStorage
   useEffect(() => {
-    localStorage.setItem("view", isGridView ? "grid" : "table");
-  }, [isGridView]);
+    checkTableView();
+  }, []);
+
+  const checkTableView = () => {
+    const item = localStorage.getItem("view");
+    if (item) {
+      setActualView(item);
+      return;
+    }
+  };
+
+  const tableView = (value) => {
+    localStorage.setItem("view", value);
+    setActualView(value);
+  };
 
   // Cambiar la vista entre cards y tabla
   const toggleView = () => {
@@ -124,29 +138,30 @@ const Groups = () => {
           </header>
           <section className="flex justify-center items-center mt-[16px]">
             <section className="flex justify-end  bg-default-300 w-[90%] rounded-xl py-2 px-3 ">
-              {isGridView ? (
+              {actualView === "grid" ? (
                 <>
                   <section className="pr-[3rem]">
                     <i
-                      className={`fi fi-rr-list block cursor-pointer text-xl ${!isGridView ? "hidden" : "opacity-100"}`}
+                      className={`fi fi-rr-list block cursor-pointer text-xl opacity-100`}
                       onClick={() => {
                         toggleView();
                         toggleContent();
+                        tableView("table");
                       }}
                     ></i>
                   </section>
                 </>
               ) : (
-                  <section className="pr-[3rem]">
-                    <i
-                      className={`fi fi-rr-grid block cursor-pointer text-xl  ${isGridView ? "hidden" : "opacity-100"}`}
-                      onClick={() => {
-                        toggleView();
-                        toggleContent();
-                      }}
-                    ></i>
-                  </section>
-         
+                <section className="pr-[3rem]">
+                  <i
+                    className={`fi fi-rr-grid block cursor-pointer text-xl opacity-100`}
+                    onClick={() => {
+                      toggleView();
+                      toggleContent();
+                      tableView("grid");
+                    }}
+                  ></i>
+                </section>
               )}
               <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="border border-blue-300 rounded-md   shadow-md outline-none ">
                 <option value={6}>6 elementos por página</option>
@@ -157,7 +172,7 @@ const Groups = () => {
           </section>
           <section className="max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5 min-h-[60vh]">
             <section className="mx-auto w-[90%]">
-              {isCardVisible && (
+              {actualView === "grid" ? (
                 <section className="gap-8 grid grid-cols-3 mt-3 max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
                   {visibleCards.map((card) => (
                     <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
@@ -198,12 +213,9 @@ const Groups = () => {
                     </Link>
                   ))}
                 </section>
-              )}
-            </section>
-            {!isCardVisible && (
-              <section className="w-full  flex justify-center mt-3">
-                {!isCardVisible && (
-                  <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-[90%]">
+              ) : (
+                <section className="w-full flex justify-center mt-3">
+                  <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-full">
                     <table className="w-full">
                       <thead className="text-default-500">
                         <tr className="grid grid-cols-7 text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">
@@ -235,14 +247,14 @@ const Groups = () => {
                       </tbody>
                     </table>
                   </section>
-                )}
-              </section>
-            )}
+                </section>
+              )}
+            </section>
           </section>
           <section className="grid place-items-center  pt-[1rem] mb-[2rem]">
             <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} initialPage={1} color={"primary"} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
-          <section className="absolute grid place-items-center bottom-9 right-8">
+          <section className="absolute grid place-items-center bottom-9 right-[59px]">
             <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
               <p className="text-[15px] top-0 block">
                 <i className="fi fi-br-plus block" />
