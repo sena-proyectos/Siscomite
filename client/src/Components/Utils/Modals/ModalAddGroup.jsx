@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { createFicha, getApprenticesById } from "../../../api/httpRequest";
-import Swal from "sweetalert2";
-import { Toaster, toast } from "sonner";
-import { Input, Button } from "@nextui-org/react";
+import React, { useEffect, useState } from 'react'
+import { createFicha, getApprenticesById, getCoordination } from '../../../api/httpRequest'
+import Swal from 'sweetalert2'
+import { Toaster, toast } from 'sonner'
+import { Input, Button } from '@nextui-org/react'
 
-export const ModalAddGroups = ({ cerrarModal }) => {
+export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   /* fichas values */
-  const [numeroFicha, setNumeroFicha] = useState("");
-  const [nombrePrograma, setNombrePrograma] = useState("");
-  const [jornada, setJornada] = useState("");
-  const [etapaPrograma, setEtapaPrograma] = useState("");
-  const [numeroTrimestre, setNumeroTrimestre] = useState("");
-  const [idModalidad, setIdmodalidad] = useState("");
+  const [numeroFicha, setNumeroFicha] = useState('')
+  const [nombrePrograma, setNombrePrograma] = useState('')
+  const [jornada, setJornada] = useState('')
+  const [etapaPrograma, setEtapaPrograma] = useState('')
+  const [numeroTrimestre, setNumeroTrimestre] = useState('')
+  const [idModalidad, setIdmodalidad] = useState('')
+
+  const [coordination, setCoordination] = useState('')
 
   //Condiciones de agregar ficha
-  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
-  const [dataInfoStudent, setDataInfoStudent] = useState([]);
+  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
 
   const handleEtapaChange = (event) => {
-    const selectedValue = event.target.value;
-    setEtapaPrograma(selectedValue);
-    setIsTrimestreEnabled(selectedValue === "Lectiva");
-  };
+    const selectedValue = event.target.value
+    setEtapaPrograma(selectedValue)
+    setIsTrimestreEnabled(selectedValue === 'Lectiva')
+  }
 
   /* Enviar datos de las fichas */
   const sendDataFichas = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
       const dataValue = {
@@ -34,51 +35,51 @@ export const ModalAddGroups = ({ cerrarModal }) => {
         jornada,
         etapa_programa: etapaPrograma,
         numero_trimestre: numeroTrimestre,
-        id_modalidad: idModalidad,
-      };
+        id_modalidad: idModalidad
+      }
 
-      const response = await createFicha(dataValue);
-      const res = response.data.message;
-      toast.success("Genial!!", {
-        description: res,
-      });
+      const response = await createFicha(dataValue)
+      const res = response.data.message
+      toast.success('Genial!!', {
+        description: res
+      })
+      reloadFetchState(true)
       setTimeout(() => {
-        cerrarModal();
-      }, 1000);
+        cerrarModal()
+      }, 1000)
     } catch (error) {
-      const message = error.response.data.message;
-      toast.error("Opss!!", {
-        description: message,
-      });
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
     }
-  };
+  }
 
   // Cerrar modal
   const closeModal = () => {
-    cerrarModal();
-  };
+    cerrarModal()
+  }
 
   useEffect(() => {
-    const infoStudent = async () => {
-      try {
-        const response = await getApprenticesById(infoStudents);
-        const res = response.data.result;
-        if (res[0].id_documento === 1) res[0].id_documento = "CC";
-        if (res[0].id_documento === 2) res[0].id_documento = "CE";
-        if (res[0].id_documento === 3) res[0].id_documento = "TI";
-        if (res[0].id_documento === 4) res[0].id_documento = "PEP";
-        if (res[0].id_documento === 5) res[0].id_documento = "Registro Civil";
-        setDataInfoStudent(res);
-      } catch (error) {}
-    };
-    infoStudent();
-  }, []);
+    hola()
+    getCoordi()
+  }, [])
+
+  // obtener coordinadores
+  const getCoordi = async () => {
+    const response = await getCoordination()
+    const res = response.data.result
+    setCoordination(res)
+  }
+  const hola = () => {
+    console.log(coordination)
+  }
 
   return (
     <>
       <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
         <Toaster position="top-right" closeButton richColors />
-        <section className={"bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in "}>
+        <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
             <h3 className="text-2xl font-semibold">
               <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
@@ -91,12 +92,12 @@ export const ModalAddGroups = ({ cerrarModal }) => {
             <section className="relative grid grid-cols-2 justify-center gap-8">
               <section className="modalInput ">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                 </div>
               </section>
               <section className="modalInput">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Nombre del programa" labelPlacement={"outside"} variant={"flat"} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
                 </div>
               </section>
               <section>
@@ -140,10 +141,12 @@ export const ModalAddGroups = ({ cerrarModal }) => {
             </section>
             <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
               <option value="">Coordinador*</option>
-              <option value="Marianela Henao Atehortua">Marianela Henao Atehortua</option>
-              <option value="Jaime León Vergara Areiza">Jaime León Vergara Areiza</option>
-              <option value="Sergio Soto Henao">Sergio Soto Henao</option>
-              <option value="Mauro Isaías Arango Vanegas">Mauro Isaías Arango Vanegas</option>
+              {coordination &&
+                coordination.map((item) => {
+                  ;<>
+                    <option value="Marianela Henao Atehortua">{item.nombres}</option>
+                  </>
+                })}
             </select>
             <section className="relative grid place-items-center mt-[1rem]">
               <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataFichas}>
@@ -155,5 +158,5 @@ export const ModalAddGroups = ({ cerrarModal }) => {
         </section>
       </main>
     </>
-  );
-};
+  )
+}

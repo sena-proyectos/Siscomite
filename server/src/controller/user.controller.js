@@ -5,13 +5,14 @@ export const getUser = async (req, res) => {
     const [result] = await pool.query('SELECT * FROM usuarios')
     res.status(200).send({ result })
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: 'Error al listar los usuarios' })
   }
 }
 
 export const getTeacher = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_roles = 2')
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 2')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar los instructores' })
@@ -20,7 +21,7 @@ export const getTeacher = async (req, res) => {
 
 export const getCoordination = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_roles = 1')
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 1')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar los coordinadores' })

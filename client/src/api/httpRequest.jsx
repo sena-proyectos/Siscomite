@@ -114,3 +114,12 @@ export const searchApprenticesByIdFicha = (idFicha, nombres) => {
 
   return response
 }
+
+/* Get coordination */
+export const getCoordination = () => {
+  const URL = `${BaseUrl}${api}/coordination`
+  const response = axios.get(URL)
+
+  return response
+}
+
