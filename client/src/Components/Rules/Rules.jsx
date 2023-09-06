@@ -2,6 +2,7 @@ import { ViewPdf } from "../ViewPDF/ViewPDF";
 import React, { useState } from "react";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Footer } from "../Footer/Footer";
+import { Notify } from "../Utils/NotifyBar/NotifyBar";
 import { Textarea, Button, Input } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
@@ -70,6 +71,13 @@ const Rules = () => {
       setIsLoading(false);
       setIsEditModalOpen(false);
     }, 2000);
+  };
+
+  // Barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false);
+
+  const toggleNotify = () => {
+    setNotifyOpen(!notifyOpen);
   };
 
   return (
@@ -187,18 +195,30 @@ const Rules = () => {
 
       <main className="h-screen flex">
         <Sliderbar />
+        <section className="absolute left-[34%] mt-[2rem] cursor-pointer ">
+          {notifyOpen ? (
+            <></>
+          ) : (
+            <>
+              <Button className="muve" radius="full" variant="flat" color="success" onClick={toggleNotify}>
+                Mensajes
+                <i className="fi fi-ss-bell pl-[.5rem]" />
+              </Button>
+            </>
+          )}
+        </section>
         <section className="w-full h-screen overflow-auto">
-          <section className="grid h-screen grid-cols-2 ">
+          <section className="grid h-screen grid-cols-3 ">
             <section className="grid place-items-center">
               <Button size="lg" onClick={handleOpenEditModal} color="primary" variant="shadow">
                 Editar reglamento
               </Button>
             </section>
-            <section className="">
+            <section className="col-span-2 z-0">
               <ViewPdf />
             </section>
           </section>
-
+          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           <Footer />
         </section>
       </main>

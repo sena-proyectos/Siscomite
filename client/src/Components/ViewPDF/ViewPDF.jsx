@@ -26,16 +26,16 @@ export const ViewPdf = () => {
   }
 
   return (
-    <main className={'h-screen flex justify-center items-center'}>
-      <label className={pdfFile ? 'hidden' : 'cursor-pointer text-[white] bg-indigo-500 text-center px-[20px] py-[8px] text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90 transition duration-150 ease-in-out h-28 flex flex-col'}>
-        <p className='mt-7'>Subir reglamento</p>
-        <i className="fi fi-rr-folder-upload text-[18px] " />
+    <main className="h-screen flex justify-center items-center ">
+      <label className={pdfFile ? 'hidden' : 'cursor-pointer py-[10px] text-[white] items-center bg-indigo-500 text-center px-[25px]  text-[15px] tracking-wide select-none shadow-lg rounded-[10px]  active:transform active:scale-90 transition duration-150 ease-in-out  flex'}>
+        <p>Subir reglamento</p>
+        <i className="fi fi-rr-folder-upload text-[18px] ml-[10px] " />
         <input className="hidden" type="file" accept="application/pdf" onChange={handleFileChange} />
       </label>
       {pdfFile && (
         <section>
           <Card className={'w-full'}>
-            <section className="max-h-[83vh] overflow-auto ">
+            <section className="max-h-[80vh] overflow-auto ">
               <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess} className={'document'}>
                 <Page pageNumber={pageNumber} />
               </Document>

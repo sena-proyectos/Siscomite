@@ -6,7 +6,7 @@ const router =Router();
 /* El código que proporcionó define las rutas para manejar solicitudes HTTP relacionadas con
 "solicitudes" (solicitudes) en una aplicación Node.js Express. */
 //GET solicitudes
-router.get('/solicitudes', getsolicitud)
+router.get('/solicitudes', getRequests)
 // GETBYID  solicitud
 router.get('/solicitud/:id', getRequestById)
 //POST solicitud
