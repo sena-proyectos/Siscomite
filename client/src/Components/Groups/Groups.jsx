@@ -1,3 +1,5 @@
+/* Importaciones de modulos y componentes */
+
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button } from '@nextui-org/react'
@@ -9,7 +11,9 @@ import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
 import { getFichas } from '../../api/httpRequest'
 import './Groups.css'
 
+/* Definicion del componente */
 const Groups = () => {
+  /* Estado y variables de estado del componente */
   const [isOpen] = useState(false)
   const [fichas, setFichas] = useState([])
   const [isGridView, setIsGridView] = useState(true)
@@ -17,6 +21,7 @@ const Groups = () => {
   const [filtroVisible, setFiltroVisible] = useState(false)
   const [reloadFetch, setReloadFetch] = useState(false)
 
+  // Hacer uso de la funcion obtener fichas
   useEffect(() => {
     getFicha()
     if (reloadFetch === true) {
@@ -24,13 +29,14 @@ const Groups = () => {
     }
   }, [fichas, reloadFetch])
 
+  /* Funcion para obtener las fichas guardadas en la base de datos */
   const getFicha = async () => {
     try {
       const response = await getFichas()
       const res = response.data.result
       setFichas(res)
     } catch (error) {
-      console.error(error)
+      // console.error(error)
     }
   }
 
@@ -43,6 +49,7 @@ const Groups = () => {
 
   const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado
 
+  /* establecer paginado y numero de paginacion */
   const startIdx = (activePage - 1) * itemsPerPage
   const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage)
   const totalPages = Math.ceil(fichas.length / itemsPerPage)
@@ -93,6 +100,7 @@ const Groups = () => {
     checkTableView()
   }, [])
 
+  /* Obtener el el estado guardado en el localStorage */
   const checkTableView = () => {
     const item = localStorage.getItem('view')
     if (item) {
@@ -101,6 +109,7 @@ const Groups = () => {
     }
   }
 
+  /* Enviar estado de la tabla al localStorage */
   const tableView = (value) => {
     localStorage.setItem('view', value)
     setActualView(value)

@@ -1,3 +1,4 @@
+/* Importaciones de modulos y componentes */
 import './Home.css'
 import { useState } from 'react'
 import { Card } from '../Utils/Card/Card'
@@ -9,6 +10,7 @@ import { Text } from '../Test/Test'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
 const Home = () => {
+  /* matriz para las cards de acceso rapido del home */
   const data = [
     {
       titleHome: 'Solicitudes',
@@ -36,8 +38,10 @@ const Home = () => {
     }
   ]
 
+  /* Estado para las notificaciones */
   const [notifyOpen, setNotifyOpen] = useState(false)
 
+  /* Cambiar estado de las notificaciones */
   const toggleNotify = () => {
     setNotifyOpen(!notifyOpen)
   }

@@ -5,7 +5,7 @@ import { Input, Button } from '@nextui-org/react'
 import { getCoordination } from '../../../api/httpRequest'
 
 export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
-  /* fichas values */
+  /* Estados para capturar los valores de la ficha */
   const [numeroFicha, setNumeroFicha] = useState('')
   const [nombrePrograma, setNombrePrograma] = useState('')
   const [jornada, setJornada] = useState('')
@@ -70,7 +70,6 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   const getCoordi = async () => {
     const response = await getCoordination()
     const res = response.data.result
-    // console.log(res);
     setCoordination(res)
   }
 
