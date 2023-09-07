@@ -11,7 +11,6 @@ export const getUser = async (req, res) => {
     res.status(200).send({ result })
   } catch (error) {
     // Manejar errores y enviar una respuesta de error
-    console.log(error)
     res.status(500).send({ message: 'Error al listar los usuarios' })
   }
 }

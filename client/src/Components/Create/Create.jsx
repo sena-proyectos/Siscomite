@@ -84,7 +84,6 @@ const Create = () => {
       id_usuario_solicitante: userID,
       id_aprendiz: selectedApprentice[0].id_aprendiz
     }
-    console.log(dataValue)
   }
 
   // Función para manejar el clic en un instructor

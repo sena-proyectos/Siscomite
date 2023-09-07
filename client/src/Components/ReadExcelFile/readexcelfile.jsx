@@ -78,7 +78,6 @@ export const readExcelFile = async (file, id_ficha) => {
             });
           }
         } else if (responseModal.isDenied) {
-          console.log('bueno'); // Otra acción si el usuario decide no guardar los registros
         }
       }
     } catch (error) {

@@ -70,7 +70,6 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   const getCoordi = async () => {
     const response = await getCoordination()
     const res = response.data.result
-    // console.log(res);
     setCoordination(res)
   }
 
