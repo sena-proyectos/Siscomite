@@ -1,7 +1,7 @@
 {
   "name": "siscomite",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.4.0",
   "type": "module",
   "scripts": {
     "tailwind": "npx tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
@@ -11,10 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@flaticon/flaticon-uicons": "^2.3.0",
-    "@nextui-org/react": "^2.0.12",
-    "axios": "^1.4.0",
-    "framer-motion": "^10.15.1",
+    "@flaticon/flaticon-uicons": "^2.4.0",
+    "@nextui-org/react": "^2.1.7",
+    "axios": "^1.5.0",
+    "framer-motion": "^10.16.2",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^3.1.2",
     "react": "^18.2.0",
@@ -22,21 +22,27 @@
     "react-js-pagination": "^3.0.3",
     "react-loading-skeleton": "^3.3.1",
     "react-pdf": "^7.3.3",
-    "react-router-dom": "^6.14.2",
-    "sonner": "^0.6.2",
-    "sweetalert2": "^11.7.23",
+    "react-router-dom": "^6.15.0",
+    "sonner": "^0.7.0",
+    "sweetalert2": "^11.7.27",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@types/react": "^18.2.14",
-    "@types/react-dom": "^18.2.6",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react-swc": "^3.3.2",
-    "eslint": "^8.44.0",
-    "eslint-plugin-react": "^7.32.2",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-n": "^16.0.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.1",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "prettier": "^3.0.3",
     "tailwindcss": "^3.3.3",
-    "vite": "^4.4.0",
+    "vite": "^4.4.9",
     "vite-plugin-static-copy": "^0.17.0"
   }
 }

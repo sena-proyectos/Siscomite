@@ -1,15 +1,13 @@
-import { Toaster, toast } from "sonner";
-import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button } from "@nextui-org/react";
+import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button } from '@nextui-org/react'
 
 export const ModalRequest = ({ cerrarModal }) => {
   // Cerrar modal
   const closeModal = () => {
-    cerrarModal();
-  };
+    cerrarModal()
+  }
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
-        <Toaster position="top-right" closeButton richColors />
         <section className={`bg-white w-[35rem] p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in `}>
           <header className="flex justify-center ">
             <h3 className="font-semibold text-2xl">
@@ -123,8 +121,8 @@ export const ModalRequest = ({ cerrarModal }) => {
                         backdrop="opaque"
                         placement="top"
                         classNames={{
-                          base: "py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50",
-                          arrow: "bg-default-200",
+                          base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
+                          arrow: 'bg-default-200'
                         }}
                       >
                         <PopoverTrigger>
@@ -145,8 +143,8 @@ export const ModalRequest = ({ cerrarModal }) => {
                         backdrop="opaque"
                         placement="top"
                         classNames={{
-                          base: "py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50",
-                          arrow: "bg-default-200",
+                          base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
+                          arrow: 'bg-default-200'
                         }}
                       >
                         <PopoverTrigger>
@@ -170,5 +168,5 @@ export const ModalRequest = ({ cerrarModal }) => {
         <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>
     </>
-  );
-};
+  )
+}

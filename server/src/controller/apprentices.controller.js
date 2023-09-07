@@ -61,12 +61,12 @@ export const getApprenticeById = async (req, res) => {
  * de base de datos y envía una respuesta con un mensaje de éxito o un mensaje de error.
  */
 export const createApprentices = async (req, res) => {
-    const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
-    try {
+  const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
+  try {
     await pool.query('INSERT INTO aprendices (nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, estado, id_ficha) VALUES (?, ?, ?, ?, ?, ?, ?, "EN FORMACIÓN", ?)', [nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha])
     res.status(201).send({ message: 'Aprendiz creado exitosamente' })
   } catch (error) {
-    res.status(500).send({ message: 'Error al crear el aprenndiz' })
+    res.status(500).send({ message: 'Error al crear el aprendiz' })
   }
 }
 
@@ -79,17 +79,7 @@ export const updateApprentice = async (req, res) => {
   const { id } = req.params
   const { nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha } = req.body
   try {
-    const [result] = await pool.query('UPDATE aprendices SET nombres_aprendiz=?, apellidos_aprendiz=?, numero_documento_aprendiz=?, email_aprendiz_sena=?, email_aprendiz_personal=?, celular_aprendiz=?, id_documento=?, id_ficha=? WHERE id_aprendiz=?', [
-      nombres_aprendiz,
-      apellidos_aprendiz,
-      numero_documento_aprendiz,
-      email_aprendiz_sena,
-      email_aprendiz_personal,
-      celular_aprendiz,
-      id_documento,
-      id_ficha,
-      id,
-    ])
+    const [result] = await pool.query('UPDATE aprendices SET nombres_aprendiz=?, apellidos_aprendiz=?, numero_documento_aprendiz=?, email_aprendiz_sena=?, email_aprendiz_personal=?, celular_aprendiz=?, id_documento=?, id_ficha=? WHERE id_aprendiz=?', [nombres_aprendiz, apellidos_aprendiz, numero_documento_aprendiz, email_aprendiz_sena, email_aprendiz_personal, celular_aprendiz, id_documento, id_ficha, id])
     if (result.affectedRows === 0) {
       res.status(404).send({ message: `No se pudo encontrar al aprendiz con id ${id}` })
     } else {

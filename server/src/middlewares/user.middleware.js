@@ -1,9 +1,12 @@
+// Importar la conexión a la base de datos desde pool
 import { pool } from '../db.js'
+// Importar esquemas de validación y herramientas de seguridad
 import { registerDataSchema, loginDataSchema } from '../schemas/user.schemas.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import Joi from 'joi'
 
+// Middleware para verificar si un usuario ya está registrado al intentar registrarse
 export const checkUserExistRegister = async (req, res, next) => {
   const { numero_documento } = req.body
 
@@ -20,6 +23,7 @@ export const checkUserExistRegister = async (req, res, next) => {
   }
 }
 
+// Middleware para verificar si un usuario existe al intentar iniciar sesión
 export const checkUserExistLogin = async (req, res, next) => {
   const { numero_documento } = req.body
 
@@ -35,6 +39,7 @@ export const checkUserExistLogin = async (req, res, next) => {
   }
 }
 
+// Middleware para validar los datos al registrar un usuario
 export const checkRegisterData = (req, res, next) => {
   const { nombres, apellidos, email_sena, numero_celular, numero_documento, contrasena } = req.body
   const idNumberParsed = Number(numero_documento)
@@ -50,6 +55,7 @@ export const checkRegisterData = (req, res, next) => {
   }
 }
 
+// Middleware para validar los datos al iniciar sesión
 export const checkLoginData = (req, res, next) => {
   const { numero_documento, contrasena } = req.body
 
@@ -66,6 +72,7 @@ export const checkLoginData = (req, res, next) => {
   }
 }
 
+// Middleware para hashear la contraseña antes de almacenarla
 export const hashPassword = async (req, res, next) => {
   const { contrasena } = req.body
 
@@ -78,6 +85,7 @@ export const hashPassword = async (req, res, next) => {
   }
 }
 
+// Middleware para comparar contraseñas al iniciar sesión
 export const comparePassword = async (req, res, next) => {
   const { numero_documento, contrasena } = req.body
   try {
@@ -93,6 +101,7 @@ export const comparePassword = async (req, res, next) => {
   }
 }
 
+// Middleware para generar un token JWT después de iniciar sesión
 export const createToken = async (req, res, next) => {
   const { numero_documento } = req.body
   try {
@@ -107,7 +116,7 @@ export const createToken = async (req, res, next) => {
       numero_celular: userExist[0].numero_celular,
       id_documento: userExist[0].id_documento,
       id_rol: userExist[0].id_rol,
-      numero_documento: userExist[0].numero_documento,
+      numero_documento: userExist[0].numero_documento
     }
     const token = jwt.sign(payload, 'secret-keY', { expiresIn: 2 })
     res.locals.token = token
@@ -117,6 +126,7 @@ export const createToken = async (req, res, next) => {
   }
 }
 
+// Middleware para validar el nombre
 export const checkName = (req, res, next) => {
   const { nombres } = req.query
   const nameSchema = Joi.object({ nombres: Joi.string().required().min(0).max(100) })

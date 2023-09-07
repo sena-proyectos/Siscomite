@@ -1,3 +1,5 @@
+
+/* Mapeo de nombres de campos a valores claves del archivo Excel */
 export const mapValues = () => {
   const data = {
     'Tipo de Documento': 'id_documento',

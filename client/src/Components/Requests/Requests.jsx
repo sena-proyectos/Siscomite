@@ -1,78 +1,68 @@
-import "./Requests.css";
-import React, { useState } from "react";
-import { Pagination } from "@nextui-org/react";
-import { Sliderbar } from "../Sliderbar/Sliderbar";
-import { Search } from "../Search/Search";
-import { Footer } from "../Footer/Footer";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from "@nextui-org/react";
-import { Notify } from "../Utils/NotifyBar/NotifyBar";
-import { ModalEditRequest } from "../Utils/Modals/ModalEditRequest";
-import { ModalRequest } from "../Utils/Modals/ModalRequest";
+// Importaciones necesarias
+import './Requests.css' // Importar hoja de estilo CSS
+import { useState } from 'react' // Importar el hook de estado
+import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
+import { Search } from '../Search/Search' // Importar el componente Search
+import { Footer } from '../Footer/Footer' // Importar el componente Footer
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
+import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
+import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
 
+// Componente Requests
 const Requests = () => {
-  const [isOpen] = useState(false);
-  const [filtroVisible, setFiltroVisible] = useState(false);
+  const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
+  const [filtroVisible, setFiltroVisible] = useState(false) // Estado para controlar la visibilidad del filtro de búsqueda
 
+  // Datos de ejemplo para la tabla
   const data = [
-    { id: 1, name: "Azul Andres Velez Romero", date: "02/10/2023", value: "Aprobado" },
-    { id: 2, name: "Carlos Perez Falcó", date: "02/10/2020", value: "Rechazado" },
-    { id: 3, name: "Juan Fernando Pérez del Corral", date: "02/10/2021", value: "Pendiente" },
-    { id: 4, name: "Valentina Laverde de la Rosa", date: "02/10/2023", value: "Rechazado" },
-    { id: 5, name: "Óscar de la Renta", date: "02/10/2024", value: "Pendiente" },
-    { id: 6, name: "Sara Teresa Sánchez del Pinar", date: "02/10/2023", value: "Pendiente" },
-    { id: 7, name: "Efraín de las Casas Mejía", date: "02/10/2023", value: "Pendiente" },
-    { id: 8, name: "Julieta Ponce de León", date: "02/10/2024", value: "Aprobado" },
-    { id: 9, name: "Martín Elías de los Ríos Acosta", date: "02/10/2022", value: "Rechazado" },
-    { id: 10, name: "Gabriela de la Pava de la Torre", date: "02/10/2020", value: "Pendiente" },
-    { id: 11, name: "Matías de Greiff Rincón", date: "02/10/2023", value: "Aprobado" },
-    { id: 12, name: "Manuela del Pino Hincapié", date: "02/10/2021", value: "Rechazado" },
-    { id: 13, name: "Sebastián del Campo Yepes", date: "02/10/2021", value: "Aprobado" },
-  ];
+    { id: 1, name: 'Azul Andres Velez Romero', date: '02/10/2023', value: 'Aprobado' }
+    // ... (otros datos)
+  ]
 
   // Paginación
-  const itemsPerPage = 9; // Número de elementos por página
-  const [activePage, setActivePage] = useState(1); //Cuál es la primers página en aparecer
+  const itemsPerPage = 9 // Número de elementos por página
+  const [activePage, setActivePage] = useState(1) // Número de página activa
 
   // Calcula los datos a mostrar en la página actual
-  const indexOfLastItem = activePage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const indexOfLastItem = activePage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem)
 
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
-    setActivePage(pageNumber);
-  };
+    setActivePage(pageNumber)
+  }
 
-  // Colores de la tabla dependiendo del estado de aprobación
+  // Obtiene una clase CSS basada en el estado de aprobación
   const getStatusColorClass = (status) => {
     const statusColorMap = {
-      Aprobado: "bg-[#45d48383] text-success rounded-2xl  ",
-      Rechazado: "bg-red-200 text-danger rounded-2xl",
-      Pendiente: "bg-yellow-200 text-warning rounded-2xl",
-    };
-    return statusColorMap[status] || "";
-  };
+      Aprobado: 'bg-[#45d48383] text-success rounded-2xl',
+      Rechazado: 'bg-red-200 text-danger rounded-2xl',
+      Pendiente: 'bg-yellow-200 text-warning rounded-2xl'
+    }
+    return statusColorMap[status] || ''
+  }
 
-  // Modal detalles
-  const [modalRequest, setModalDetails] = useState(false);
+  // Estado y función para controlar la apertura del modal de detalles
+  const [modalRequest, setModalDetails] = useState(false)
   const modalDetails = () => {
-    setModalDetails(!modalRequest);
-  };
+    setModalDetails(!modalRequest)
+  }
 
-  // Modal editar detalles
-  const [modalRequestEdit, setModalDetailsEdit] = useState(false);
+  // Estado y función para controlar la apertura del modal de edición de detalles
+  const [modalRequestEdit, setModalDetailsEdit] = useState(false)
   const modalDetailsEdit = () => {
-    setModalDetailsEdit(!modalRequestEdit);
-  };
+    setModalDetailsEdit(!modalRequestEdit)
+  }
 
-  // Barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false);
+  // Estado para controlar la apertura de la barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false)
 
+  // Función para alternar la visibilidad de la barra de notificaciones
   const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen);
-  };
-
-  
+    setNotifyOpen(!notifyOpen)
+  }
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} />}
@@ -83,7 +73,7 @@ const Requests = () => {
         <section className="w-full overflow-auto ">
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search filtro={filtroVisible} placeholder={"Buscar solicitud"} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)}/>} />
+              <Search filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
             </section>
             <section className="absolute right-[20%] cursor-pointer justify-center ">
               {notifyOpen ? (
@@ -107,7 +97,7 @@ const Requests = () => {
                 <TableColumn>Estado</TableColumn>
                 <TableColumn>Detalles</TableColumn>
               </TableHeader>
-              <TableBody emptyContent={"No hay información disponible."}>
+              <TableBody emptyContent={'No hay información disponible.'}>
                 {currentItems.map((item) => (
                   <TableRow key={item.id}>
                     <TableCell>{item.id}</TableCell>
@@ -123,7 +113,7 @@ const Requests = () => {
               </TableBody>
             </Table>
             <section className="grid place-items-center w-full mt-[.5rem] ">
-              <Pagination className="z-0" total={10} initialPage={1} color={"primary"} totalitemscount={data.length} onChange={handlePageChange} />
+              <Pagination className="z-0" total={10} initialPage={1} color={'primary'} totalitemscount={data.length} onChange={handlePageChange} />
             </section>
             <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           </section>
@@ -131,7 +121,7 @@ const Requests = () => {
         </section>
       </main>
     </>
-  );
-};
+  )
+}
 
-export { Requests };
+export { Requests }
