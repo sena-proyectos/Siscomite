@@ -1,10 +1,9 @@
 import './Register.css'
 import { Link } from 'react-router-dom'
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { register } from '../../api/httpRequest'
 import { Footer } from '../Footer/Footer'
-import { Input } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input } from '@nextui-org/react'
 import { Toaster, toast } from 'sonner'
 
 export const Register = () => {
@@ -20,7 +19,7 @@ export const Register = () => {
     CC: '1',
     TI: '2',
     CE: '3',
-    PEP: '4',
+    PEP: '4'
   }
 
   const sendData = async (e) => {
@@ -32,18 +31,18 @@ export const Register = () => {
       numero_celular: numeroCelular,
       id_documento: documentoOptions[selectedTipoDocumento],
       numero_documento: numeroDocumento,
-      contrasena: contrasena,
+      contrasena
     }
     try {
       const res = await register(dataValue)
       const message = res.data.message
       toast.success('Genial!!', {
-        description: message,
+        description: message
       })
     } catch (error) {
       const message = error.response.data.message
       toast.error('Opss!!', {
-        description: message,
+        description: message
       })
     }
   }

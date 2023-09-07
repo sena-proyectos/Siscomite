@@ -1,16 +1,15 @@
 import './Students.css'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Search } from '../Search/Search'
-import { Card, CardHeader, CardBody, Avatar, Button, Pagination } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { getApprenticesById, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
-import { calcLength } from 'framer-motion'
+import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
 
 const Students = () => {
   const { id_ficha } = useParams()
@@ -21,7 +20,6 @@ const Students = () => {
   const [apprenticesSearch, setApprenticesSearch] = useState([])
   const [error, setError] = useState(null)
   const [reloadFetch, setReloadFetch] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
 
   const navigate = useNavigate()
 
@@ -55,8 +53,6 @@ const Students = () => {
     }
     getFichasByIdFicha()
   }, [])
-
-  const [isFollowed, setIsFollowed] = useState(false)
 
   const itemsPerPage = 9 // Número de elementos por página
   const [activePage, setActivePage] = useState(1)
@@ -98,12 +94,12 @@ const Students = () => {
     setNotifyOpen(!notifyOpen)
   }
 
-  //Abrir Modal para agregar estudiantes
+  // Abrir Modal para agregar estudiantes
   const [modalAddStudent, setModalStudentAdd] = useState(false)
   const modalStudents = () => {
     setModalStudentAdd(!modalAddStudent)
   }
-  //Abrir Modal para la informacíon de estudiantes
+  // Abrir Modal para la informacíon de estudiantes
   const [modalInfoStudents, setInfoStudents] = useState(false)
   const infoStudents = (id) => {
     setInfoStudents(!modalInfoStudents)
@@ -112,9 +108,9 @@ const Students = () => {
 
   return (
     <>
-      {modalAddStudent && <ModalAddStudents modalStudents={isOpen} cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
+      {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
 
-      {modalInfoStudents && <ModalInfoStudents infoStudent={isOpen} cerrarModal={infoStudents} idStudents={idStudent} />}
+      {modalInfoStudents && <ModalInfoStudents cerrarModal={infoStudents} idStudents={idStudent} />}
 
       <main className="flex h-screen">
         <Sliderbar />

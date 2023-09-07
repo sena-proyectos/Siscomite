@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
@@ -58,7 +58,7 @@ const Groups = () => {
   const handleCardHover = (id) => {
     setHoveredCards((prevHovered) => ({
       ...prevHovered,
-      [id]: true,
+      [id]: true
     }))
   }
 
@@ -66,7 +66,7 @@ const Groups = () => {
   const handleCardLeave = (id) => {
     setHoveredCards((prevHovered) => ({
       ...prevHovered,
-      [id]: false,
+      [id]: false
     }))
   }
 

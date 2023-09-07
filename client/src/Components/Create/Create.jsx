@@ -6,9 +6,29 @@ import Cookie from 'js-cookie'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
+import {
+  Card,
+  CardBody,
+  Textarea,
+  CheckboxGroup,
+  Checkbox,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+  RadioGroup,
+  Radio,
+  Tooltip,
+  Tabs,
+  Tab
+} from '@nextui-org/react'
 import { Search } from '../Search/Search'
-import { getTeacherByName, getApprenticesByName, getApprenticesById } from '../../api/httpRequest'
+import {
+  getTeacherByName,
+  getApprenticesByName,
+  getApprenticesById
+} from '../../api/httpRequest'
 
 const Create = () => {
   const [selectedAprendizOption, setSelectedAprendizOption] = useState(null)
@@ -21,12 +41,22 @@ const Create = () => {
   const [errorUser, setErrorUser] = useState(null)
   const [userID, setUserID] = useState('')
 
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Coordinador']))
-  const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')), [selectedKeys])
+  const [selectedKeys, setSelectedKeys] = React.useState(
+    new Set(['Coordinador'])
+  )
+  const selectedValue = React.useMemo(
+    () => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')),
+    [selectedKeys]
+  )
 
   // Drop tipo falta
-  const [selectedFalta, setSelectedFalta] = React.useState(new Set(['Calificación']))
-  const selectedValueFalta = React.useMemo(() => Array.from(selectedFalta).join(', ').replaceAll('_', ' '), [selectedFalta])
+  const [selectedFalta, setSelectedFalta] = React.useState(
+    new Set(['Calificación'])
+  )
+  const selectedValueFalta = React.useMemo(
+    () => Array.from(selectedFalta).join(', ').replaceAll('_', ' '),
+    [selectedFalta]
+  )
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
 
@@ -74,14 +104,15 @@ const Create = () => {
   }, [])
 
   const sendData = () => {
-    if (selectedApprentice[0] === undefined) return alert('debe seleccionar un aprendiz, para hacer la solicitud')
+    if (selectedApprentice[0] === undefined)
+      return alert('debe seleccionar un aprendiz, para hacer la solicitud')
 
     const dataValue = {
       tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
       nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
       // id_causa,
       id_usuario_solicitante: userID,
-      id_aprendiz: selectedApprentice[0].id_aprendiz,
+      id_aprendiz: selectedApprentice[0].id_aprendiz
     }
     console.log(dataValue)
   }
@@ -103,11 +134,18 @@ const Create = () => {
   }
 
   const removeApprentices = (apprenticeId) => {
-    setSelectedApprentice((prevApprentices) => prevApprentices.filter((apprentice) => apprentice.id_aprendiz !== apprenticeId))
+    setSelectedApprentice((prevApprentices) =>
+      prevApprentices.filter(
+        (apprentice) => apprentice.id_aprendiz !== apprenticeId
+      )
+    )
     console.log('Aprendiz eliminado:', apprenticeId)
 
     // Imprime el estado después de eliminar para verificar si se actualiza correctamente
-    console.log('Aprendices seleccionados después de eliminar:', selectedApprentice)
+    console.log(
+      'Aprendices seleccionados después de eliminar:',
+      selectedApprentice
+    )
   }
 
   // Barra de notificaciones
@@ -132,7 +170,10 @@ const Create = () => {
                 <></>
               ) : (
                 <>
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                  <section
+                    className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center"
+                    onClick={toggleNotify}
+                  >
                     <i className="fi fi-ss-bell text-blue-400 p-[.3rem] " />
                   </section>
                 </>
@@ -141,7 +182,10 @@ const Create = () => {
           </section>
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>
-              <RadioGroup orientation="horizontal" onChange={(e) => setTipoSolicitud(e.target.value)}>
+              <RadioGroup
+                orientation="horizontal"
+                onChange={(e) => setTipoSolicitud(e.target.value)}
+              >
                 <Radio value="Grupal" isDisabled={true}>
                   Grupal
                 </Radio>
@@ -157,7 +201,14 @@ const Create = () => {
                     <i className="fi fi-rr-angle-small-down text-[1.5rem]" />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedFalta={selectedFalta} onSelectionChange={setSelectedFalta}>
+                <DropdownMenu
+                  aria-label="Single selection actions"
+                  variant="flat"
+                  disallowEmptySelection
+                  selectionMode="single"
+                  selectedFalta={selectedFalta}
+                  onSelectionChange={setSelectedFalta}
+                >
                   <DropdownItem key="leve">Leve</DropdownItem>
                   <DropdownItem key="grave">Grave</DropdownItem>
                   <DropdownItem key="gravísimas">Gravísimas</DropdownItem>
@@ -173,11 +224,26 @@ const Create = () => {
                     <i className="fi fi-rr-angle-small-down text-[1.5rem]" />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
-                  <DropdownItem key="Marianela Henao Atehortua">Marianela Henao Atehortua</DropdownItem>
-                  <DropdownItem key="Jaime León Vergara Areiza">Jaime León Vergara Areiza</DropdownItem>
-                  <DropdownItem key="Sergio Soto Henao">Sergio Soto Henao</DropdownItem>
-                  <DropdownItem key="Mauro Isaías Arango Vanegas">Mauro Isaías Arango Vanegas</DropdownItem>
+                <DropdownMenu
+                  aria-label="Single selection actions"
+                  variant="flat"
+                  disallowEmptySelection
+                  selectionMode="single"
+                  selectedKeys={selectedKeys}
+                  onSelectionChange={setSelectedKeys}
+                >
+                  <DropdownItem key="Marianela Henao Atehortua">
+                    Marianela Henao Atehortua
+                  </DropdownItem>
+                  <DropdownItem key="Jaime León Vergara Areiza">
+                    Jaime León Vergara Areiza
+                  </DropdownItem>
+                  <DropdownItem key="Sergio Soto Henao">
+                    Sergio Soto Henao
+                  </DropdownItem>
+                  <DropdownItem key="Mauro Isaías Arango Vanegas">
+                    Mauro Isaías Arango Vanegas
+                  </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </section>
@@ -186,14 +252,27 @@ const Create = () => {
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
           <section className="w-[85%] ml-[3rem] h-full ">
             <section className=" relative ">
-              <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
+              <Search
+                className="relative "
+                placeholder={'Buscar Instructor'}
+                icon={
+                  <i className="fi fi-br-search relative cursor-pointer right-[3rem]" />
+                }
+                searchStudent={getTeacher}
+              />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
-                <h3 className="text-white grid justify-center ">Instructores</h3>
+                <h3 className="text-white grid justify-center ">
+                  Instructores
+                </h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
                   {teacherSearch.length > 0 ? (
                     <>
                       {teacherSearch.map((item) => (
-                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario} onClick={() => handleTeacherClick(item.id_usuario)}>
+                        <ul
+                          className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2"
+                          key={item.id_usuario}
+                          onClick={() => handleTeacherClick(item.id_usuario)}
+                        >
                           <React.Fragment>
                             <li>{item.numero_documento}</li>
                             <li>{item.nombres + ' ' + item.apellidos}</li>
@@ -205,23 +284,40 @@ const Create = () => {
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">{error ? error : 'Ningún instructor seleccionado'}</span>
+                    <span className="text-white text-center py-[1rem] block">
+                      {error ?? 'Ningún instructor seleccionado'}
+                    </span>
                   )}
                 </section>
               </section>
             </section>
             <section className="relative top-[1rem] ">
-              <Search className="relative w-[100%]  " placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
+              <Search
+                className="relative w-[100%]  "
+                placeholder={'Buscar aprendiz'}
+                icon={
+                  <i className="fi fi-br-search relative cursor-pointer right-[3rem]" />
+                }
+                searchStudent={getUser}
+              />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl">
                 <h3 className="text-white grid justify-center">Aprendices</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
                   {userSearch.length > 0 || selectedApprentice.length > 0 ? (
                     <>
                       {userSearch.map((item) => (
-                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
+                        <ul
+                          className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2"
+                          key={item.id_aprendiz}
+                          onClick={() => handleUserClick(item.id_aprendiz)}
+                        >
                           <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
-                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
+                            <li>
+                              {item.nombres_aprendiz +
+                                ' ' +
+                                item.apellidos_aprendiz}
+                            </li>
                             <li>
                               <i className="fi fi-rr-user-add text-green-500 text-[1rem]"></i>
                             </li>
@@ -229,29 +325,53 @@ const Create = () => {
                         </ul>
                       ))}
                       {selectedApprentice.map((item) => (
-                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
+                        <ul
+                          className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2"
+                          key={item.id_aprendiz}
+                          onClick={() => handleUserClick(item.id_aprendiz)}
+                        >
                           <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
-                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
-                              <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeApprentices(item.id_aprendiz)}></i>
+                              {item.nombres_aprendiz +
+                                ' ' +
+                                item.apellidos_aprendiz}
+                            </li>
+                            <li>
+                              <i
+                                className="fi fi-br-remove-user text-red-500 text-[1rem]"
+                                onClick={() =>
+                                  removeApprentices(item.id_aprendiz)
+                                }
+                              ></i>
                             </li>
                           </React.Fragment>
                         </ul>
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">{errorUser ? errorUser : 'Ningún aprendiz seleccionado'}</span>
+                    <span className="text-white text-center py-[1rem] block">
+                      {errorUser ?? 'Ningún aprendiz seleccionado'}
+                    </span>
                   )}
                 </section>
               </section>
             </section>
             <section className="py-[.5rem] relative top-[2.1rem] place-items-center grid grid-cols-2 gap-4 ">
               <section className=" w-full">
-                <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descripción" className="max-w-[300px] " />
+                <Textarea
+                  label="Descripción"
+                  labelPlacement="outside"
+                  placeholder="Ingresa tu descripción"
+                  className="max-w-[300px] "
+                />
               </section>
               <section className="">
-                <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
+                <Tooltip
+                  showArrow={true}
+                  color="danger"
+                  content="La evidencia tiene que ser en un PDF"
+                >
                   <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
                     Subir evidencia
                     <i className="fi fi-rr-upload px-[.5rem]" />

@@ -1,5 +1,5 @@
 import './Home.css'
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Card } from '../Utils/Card/Card'
 import { Button, Divider } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
@@ -10,10 +10,30 @@ import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
 const Home = () => {
   const data = [
-    { titleHome: 'Solicitudes', image: '/image/solicitudes.webp', descripciónHome: 'Aquí podrás ver las solicitudes que se han realizado y su estado de aprobación.', Link: '/requests' },
-    { titleHome: 'Crear solicitud', image: '/image/solicitud.webp', descripciónHome: 'Aquí podrás crear una solicitud para un comité de evalución..', Link: '/create' },
-    { titleHome: 'Fichas', image: '/image/fichas.webp', descripciónHome: 'Aquí podrás visualizar las fichas del CTM.', Link: '/groups' },
-    { titleHome: 'Reglamento', image: '/image/reglamento.webp', descripciónHome: 'Aquí podrás ver el reglamento para consultar los artículos necesarios.', Link: '/rules' },
+    {
+      titleHome: 'Solicitudes',
+      image: '/image/solicitudes.webp',
+      descripciónHome: 'Aquí podrás ver las solicitudes que se han realizado y su estado de aprobación.',
+      Link: '/requests'
+    },
+    {
+      titleHome: 'Crear solicitud',
+      image: '/image/solicitud.webp',
+      descripciónHome: 'Aquí podrás crear una solicitud para un comité de evalución..',
+      Link: '/create'
+    },
+    {
+      titleHome: 'Fichas',
+      image: '/image/fichas.webp',
+      descripciónHome: 'Aquí podrás visualizar las fichas del CTM.',
+      Link: '/groups'
+    },
+    {
+      titleHome: 'Reglamento',
+      image: '/image/reglamento.webp',
+      descripciónHome: 'Aquí podrás ver el reglamento para consultar los artículos necesarios.',
+      Link: '/rules'
+    }
   ]
 
   const [notifyOpen, setNotifyOpen] = useState(false)
@@ -71,7 +91,8 @@ const Home = () => {
                       <Divider />
                       <section className="grid place-items-center ">
                         <p className="font-semibold text-red-500 pt-[.8rem]">
-                          <i className="fi fi-rr-triangle-warning mr-[.5rem] text-red-500"></i>Importante
+                          <i className="fi fi-rr-triangle-warning mr-[.5rem] text-red-500"></i>
+                          Importante
                         </p>
                         <p className="text-sm">Los datos deben ser los registrados en Sofía Plus</p>
                       </section>

@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { createFicha, getApprenticesById } from "../../../api/httpRequest";
-import Swal from "sweetalert2";
-import { Toaster, toast } from "sonner";
-import { Input, Button } from "@nextui-org/react";
+import { useState } from 'react'
+import { createFicha } from '../../../api/httpRequest'
+import { Toaster, toast } from 'sonner'
+import { Input, Button } from '@nextui-org/react'
 
 export const ModalAddGroups = ({ cerrarModal }) => {
   /* fichas values */
-  const [numeroFicha, setNumeroFicha] = useState("");
-  const [nombrePrograma, setNombrePrograma] = useState("");
-  const [jornada, setJornada] = useState("");
-  const [etapaPrograma, setEtapaPrograma] = useState("");
-  const [numeroTrimestre, setNumeroTrimestre] = useState("");
-  const [idModalidad, setIdmodalidad] = useState("");
+  const [numeroFicha, setNumeroFicha] = useState('')
+  const [nombrePrograma, setNombrePrograma] = useState('')
+  const [jornada, setJornada] = useState('')
+  const [etapaPrograma, setEtapaPrograma] = useState('')
+  const [numeroTrimestre, setNumeroTrimestre] = useState('')
+  const [idModalidad, setIdmodalidad] = useState('')
 
-  //Condiciones de agregar ficha
-  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false);
-  const [dataInfoStudent, setDataInfoStudent] = useState([]);
+  // Condiciones de agregar ficha
+  const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
 
   const handleEtapaChange = (event) => {
-    const selectedValue = event.target.value;
-    setEtapaPrograma(selectedValue);
-    setIsTrimestreEnabled(selectedValue === "Lectiva");
-  };
+    const selectedValue = event.target.value
+    setEtapaPrograma(selectedValue)
+    setIsTrimestreEnabled(selectedValue === 'Lectiva')
+  }
 
   /* Enviar datos de las fichas */
   const sendDataFichas = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
       const dataValue = {
@@ -34,69 +32,53 @@ export const ModalAddGroups = ({ cerrarModal }) => {
         jornada,
         etapa_programa: etapaPrograma,
         numero_trimestre: numeroTrimestre,
-        id_modalidad: idModalidad,
-      };
+        id_modalidad: idModalidad
+      }
 
-      const response = await createFicha(dataValue);
-      const res = response.data.message;
-      toast.success("Genial!!", {
-        description: res,
-      });
+      const response = await createFicha(dataValue)
+      const res = response.data.message
+      toast.success('Genial!!', {
+        description: res
+      })
       setTimeout(() => {
-        cerrarModal();
-      }, 1000);
+        cerrarModal()
+      }, 1000)
     } catch (error) {
-      const message = error.response.data.message;
-      toast.error("Opss!!", {
-        description: message,
-      });
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
     }
-  };
+  }
 
   // Cerrar modal
   const closeModal = () => {
-    cerrarModal();
-  };
-
-  useEffect(() => {
-    const infoStudent = async () => {
-      try {
-        const response = await getApprenticesById(infoStudents);
-        const res = response.data.result;
-        if (res[0].id_documento === 1) res[0].id_documento = "CC";
-        if (res[0].id_documento === 2) res[0].id_documento = "CE";
-        if (res[0].id_documento === 3) res[0].id_documento = "TI";
-        if (res[0].id_documento === 4) res[0].id_documento = "PEP";
-        if (res[0].id_documento === 5) res[0].id_documento = "Registro Civil";
-        setDataInfoStudent(res);
-      } catch (error) {}
-    };
-    infoStudent();
-  }, []);
+    cerrarModal()
+  }
 
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
         <Toaster position="top-right" closeButton richColors />
-        <section className={"bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in "}>
+        <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
             <h3 className="text-2xl font-semibold">
               <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
             </h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
-              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer"  />
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" />
             </section>
           </header>
           <section className="mt-[2rem]">
             <section className="relative grid grid-cols-2 justify-center gap-8">
               <section className="modalInput ">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                 </div>
               </section>
               <section className="modalInput">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Nombre del programa" labelPlacement={"outside"} variant={"flat"} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
                 </div>
               </section>
               <section>
@@ -156,5 +138,5 @@ export const ModalAddGroups = ({ cerrarModal }) => {
         <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>
     </>
-  );
-};
+  )
+}
