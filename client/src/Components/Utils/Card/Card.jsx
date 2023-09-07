@@ -1,13 +1,13 @@
 import "./Card.css";
 
-export const Card = ({ title, descripciónHome, titleHome, descripción, image, icon, flip = false, header = false, click, inside = false, frontContent, backContent }) => {
+export const Card = ({ title, descripciónHome, titleHome, descripción, image, icon, header = false, click, inside = false }) => {
   return (
     <main className="containerCard" onClick={click}>
       <header className="cardTitle">
         {header && (
-          <h4 className="card_title">
-            {title}
+          <h4 className="flex gap-6">
             {icon}
+            {title}
           </h4>
         )}
       </header>
@@ -27,14 +27,6 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
         )}
         <p className="text-[12px]">{descripción}</p>
 
-        {flip && (
-          <section className="card_flip ">
-            <section className="front ">{frontContent}</section>
-            <section className="border-2 border-blue-200 back ">
-              <ul className="list text-lg">{backContent}</ul>
-            </section>
-          </section>
-        )}
       </section>
     </main>
   );

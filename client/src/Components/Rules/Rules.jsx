@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
 import { Footer } from "../Footer/Footer";
 import { Notify } from "../Utils/NotifyBar/NotifyBar";
-import { Textarea, Button, Input } from "@nextui-org/react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from "@nextui-org/react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
+import { Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@nextui-org/react";
 
 const Rules = () => {
   const [inputVisibleCap, setInputVisibleCap] = useState(false);
@@ -200,10 +198,9 @@ const Rules = () => {
             <></>
           ) : (
             <>
-              <Button className="muve" radius="full" variant="flat" color="success" onClick={toggleNotify}>
-                Mensajes
-                <i className="fi fi-ss-bell pl-[.5rem]" />
-              </Button>
+              <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+              </section>
             </>
           )}
         </section>

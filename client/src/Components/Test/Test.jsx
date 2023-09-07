@@ -1,24 +1,38 @@
-import React, { useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 
 export const Text = () => {
-  useEffect(() => {
-    const notification = document.createElement("div");
-    notification.className = "h-[10rem]  fixed top-[10rem] left-[35rem] m-auto p-4 bg-red-500 text-white rounded shadow-lg";
-    notification.textContent = "¡Bienvenido a nuestra página! Gracias por visitarnos.";
-    document.body.appendChild(notification);
+  const [showNotification, setShowNotification] = useState(true);
+  const [canClose, setCanClose] = useState(false);
 
-    // Elimina la notificación después de un tiempo (opcional)
-    setTimeout(() => {
-      notification.remove();
-    }, 5000); // Elimina la notificación después de 5 segundos
+  useEffect(() => {
+    // Simulamos un retraso de 3 segundos antes de permitir el cierre
+    const notificationTimeout = setTimeout(() => {
+      setCanClose(true); // Después de 3 segundos, permitir el cierre manual
+    }, 10);
+
+    // Limpia el temporizador cuando el componente se desmonta
+    return () => clearTimeout(notificationTimeout);
   }, []);
+
+  const handleClose = () => {
+    if (canClose) {
+      setShowNotification(false); // Solo cierra si se permite el cierre manual
+    }
+  };
 
   return (
     <>
-    <main className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]">
-
-    </main>
+      {showNotification && (
+        <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
+          <section className="h-[10rem] animate-appearance-in  p-4 bg-red-500 text-white rounded-xl shadow-lg z-20">
+            <header className="flex gap-4">
+              <p>¡Bienvenido a nuestra página! Gracias por visitarnos.</p>
+              <i className="fi fi-br-cross text-xs cursor-pointer" onClick={handleClose}></i>
+            </header>
+          </section>
+          <section className="inset-0 bg-[#0000006a]  -z-10 fixed flex items-center justify-center " onClick={handleClose}/>
+        </main>
+      )}
     </>
   );
 };
