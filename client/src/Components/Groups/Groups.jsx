@@ -14,6 +14,7 @@ const Groups = () => {
   const [fichas, setFichas] = useState([])
   const [isGridView, setIsGridView] = useState(true)
   const [actualView, setActualView] = useState(null)
+  const [filtroVisible, setFiltroVisible] = useState(false)
 
   useEffect(() => {
     const getFicha = async () => {
@@ -31,6 +32,7 @@ const Groups = () => {
     }
   }, [fichas])
 
+  // Funciones para la paginación y selección de elementos mostar por página
   const [activePage, setActivePage] = useState(1)
 
   const handlePageChange = (pageNumber) => {
@@ -121,28 +123,25 @@ const Groups = () => {
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
             </section>
-            <section className="absolute right-[15%] cursor-pointer ">
+            <section className="absolute right-[20%] cursor-pointer ">
               {notifyOpen ? (
                 <></>
               ) : (
-                <>
-                  <Button radius="full" variant="flat" color="primary" onClick={toggleNotify}>
-                    Mensajes
-                    <i className="fi fi-ss-bell pl-[.5rem]" />
-                  </Button>
-                </>
+                <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                  <i className="fi fi-ss-bell text-blue-400 p-[.3rem] " />
+                </section>
               )}
             </section>
           </header>
           <section className="flex justify-center items-center mt-[16px]">
-            <section className="flex justify-end  bg-default-300 w-[90%] rounded-xl py-2 px-3 ">
+            <section className="flex justify-end items-center  bg-[#2e323e] w-[90%] rounded-xl py-2 px-3 ">
               {actualView === 'grid' ? (
                 <>
-                  <section className="pr-[3rem]">
+                  <section className="pr-[3rem] flex">
                     <i
-                      className={`fi fi-rr-list block cursor-pointer text-xl opacity-100`}
+                      className={`fi fi-rr-list block cursor-pointer text-xl text-white opacity-100`}
                       onClick={() => {
                         toggleView()
                         toggleContent()
@@ -152,9 +151,9 @@ const Groups = () => {
                   </section>
                 </>
               ) : (
-                <section className="pr-[3rem]">
+                <section className="pr-[3rem] flex">
                   <i
-                    className={`fi fi-rr-grid block cursor-pointer text-xl opacity-100`}
+                    className={`fi fi-rr-grid block cursor-pointer text-xl text-white opacity-100`}
                     onClick={() => {
                       toggleView()
                       toggleContent()
@@ -163,10 +162,10 @@ const Groups = () => {
                   ></i>
                 </section>
               )}
-              <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="border border-blue-300 rounded-md   shadow-md outline-none ">
-                <option value={6}>6 elementos por página</option>
-                <option value={12}>12 elementos por página</option>
-                <option value={24}>24 elementos por página</option>
+              <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="outline-none rounded-xl px-[8px] py-[5px]">
+                <option value={6}>6 Elementos por página</option>
+                <option value={12}>12 Elementos por página</option>
+                <option value={24}>24 Elementos por página</option>
               </select>
             </section>
           </section>

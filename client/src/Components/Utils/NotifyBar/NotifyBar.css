@@ -1,28 +1,24 @@
 /* Animación para abrir y cerrar la barra de notoficaciones */
-@keyframes slideIn {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: none;
-  }
+
+.visible, .out {
+  transition: transform 0.5s ease-in-out;
 }
 
 @keyframes appearance-out {
   0% {
     opacity: 1;
+    transform: translateX(0%);
   }
   100% {
+    opacity: 0;
     transform: translateX(100%);
   }
 }
+
 .out {
-  animation: appearance-out 0.5s ease-in both;
+  transform: translateX(110%);
 }
 
-.visible {
-  animation: slideIn 0.5s ease-in-out;
-}
 
 /* Animación del botón para las nuevas notificaciones */
 @keyframes swing {
