@@ -1,13 +1,17 @@
 import './Requests.css'
-import React, { useState } from 'react'
-import { Pagination } from '@nextui-org/react'
+import { useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
-import { Modal } from '../Utils/Modal/Modal'
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from '@nextui-org/react'
+import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest'
+import { ModalRequest } from '../Utils/Modals/ModalRequest'
 
 const Requests = () => {
+  const [isOpen] = useState(false)
+  const [filtroVisible, setFiltroVisible] = useState(false)
+
   const data = [
     { id: 1, name: 'Azul Andres Velez Romero', date: '02/10/2023', value: 'Aprobado' },
     { id: 2, name: 'Carlos Perez Falcó', date: '02/10/2020', value: 'Rechazado' },
@@ -21,12 +25,12 @@ const Requests = () => {
     { id: 10, name: 'Gabriela de la Pava de la Torre', date: '02/10/2020', value: 'Pendiente' },
     { id: 11, name: 'Matías de Greiff Rincón', date: '02/10/2023', value: 'Aprobado' },
     { id: 12, name: 'Manuela del Pino Hincapié', date: '02/10/2021', value: 'Rechazado' },
-    { id: 13, name: 'Sebastián del Campo Yepes', date: '02/10/2021', value: 'Aprobado' },
+    { id: 13, name: 'Sebastián del Campo Yepes', date: '02/10/2021', value: 'Aprobado' }
   ]
 
   // Paginación
   const itemsPerPage = 9 // Número de elementos por página
-  const [activePage, setActivePage] = useState(1) //Cuál es la primers página en aparecer
+  const [activePage, setActivePage] = useState(1) // Cuál es la primers página en aparecer
 
   // Calcula los datos a mostrar en la página actual
   const indexOfLastItem = activePage * itemsPerPage
@@ -43,7 +47,7 @@ const Requests = () => {
     const statusColorMap = {
       Aprobado: 'bg-[#45d48383] text-success rounded-2xl  ',
       Rechazado: 'bg-red-200 text-danger rounded-2xl',
-      Pendiente: 'bg-yellow-200 text-warning rounded-2xl',
+      Pendiente: 'bg-yellow-200 text-warning rounded-2xl'
     }
     return statusColorMap[status] || ''
   }
@@ -60,42 +64,40 @@ const Requests = () => {
     setModalDetailsEdit(!modalRequestEdit)
   }
 
+  // Barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false)
+
+  const toggleNotify = () => {
+    setNotifyOpen(!notifyOpen)
+  }
+
   return (
     <>
-      {modalRequest && (
-        <Modal
-          modalDetails
-          cerrarModal={modalDetails}
-          titulo={
-            <section className="font-semibold text-2xl">
-              <i className="fi fi-rr-file-circle-info text-gray-500 px-3"></i>Detalle de solicitud{' '}
-            </section>
-          }
-        />
-      )}
-      {modalRequestEdit && (
-        <Modal
-          modalDetailsEdit
-          cerrarModal={modalDetailsEdit}
-          titulo={
-            <section className="font-semibold text-2xl">
-              <i className="fi fi-rr-refresh text-green-500 px-3" />
-              Editar información
-            </section>
-          }
-        />
-      )}
+      {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} />}
+      {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} />}
 
       <main className="h-screen flex">
         <Sliderbar />
         <section className="w-full overflow-auto ">
-          <header className="p-[1.5rem] flex justify-center">
+          <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+            </section>
+            <section className="absolute right-[20%] cursor-pointer justify-center ">
+              {notifyOpen ? (
+                <></>
+              ) : (
+                <>
+                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+                  </section>
+                </>
+              )}
             </section>
           </header>
-          <section className="px-[2rem] top-[.5rem] relative mr-auto h-[75vh] ">
-            <Table className="h-full">
+
+          <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
+            <Table className="h-full ">
               <TableHeader>
                 <TableColumn>N°</TableColumn>
                 <TableColumn>Solicitud</TableColumn>
@@ -121,6 +123,7 @@ const Requests = () => {
             <section className="grid place-items-center w-full mt-[.5rem] ">
               <Pagination className="z-0" total={10} initialPage={1} color={'primary'} totalitemscount={data.length} onChange={handlePageChange} />
             </section>
+            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           </section>
           <Footer />
         </section>

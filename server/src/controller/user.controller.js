@@ -5,13 +5,14 @@ export const getUser = async (req, res) => {
     const [result] = await pool.query('SELECT * FROM usuarios')
     res.status(200).send({ result })
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: 'Error al listar los usuarios' })
   }
 }
 
 export const getTeacher = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_roles = 2')
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 2')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar los instructores' })
@@ -20,7 +21,7 @@ export const getTeacher = async (req, res) => {
 
 export const getCoordination = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_roles = 1')
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 1')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar los coordinadores' })
@@ -29,8 +30,9 @@ export const getCoordination = async (req, res) => {
 
 export const registerUser = async (req, res) => {
   const { nombres, apellidos, email_sena, numero_celular, id_documento, numero_documento, contrasena } = req.body
+  console.log(req.body);
   try {
-    await pool.query('INSERT INTO usuarios (nombres, apellidos, email_sena, numero_celular, id_documento, numero_documento, contrasena, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?, 2)', [nombres, apellidos, email_sena, numero_celular, id_documento, numero_documento, contrasena])
+    await pool.query('INSERT INTO usuarios (nombres, apellidos, email_sena, numero_celular, id_documento, numero_documento, contrasena, estado, id_rol) VALUES (?, ?, ?, ?, ?, ?, ?, "ACTIVO", 2)', [nombres, apellidos, email_sena, numero_celular, id_documento, numero_documento, contrasena])
     return res.status(201).json({ message: 'Usuario creado exitosamente' })
   } catch (error) {
     return res.status(500).json({ message: 'Error al crear el usuario' })

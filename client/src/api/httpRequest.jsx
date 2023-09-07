@@ -19,7 +19,7 @@ export const getTeachers = () => {
   return response
 }
 
-/* Get teachers by name*/
+/* Get teachers by name */
 export const getTeacherByName = (nombres) => {
   const URL = `${BaseUrl}${api}/searchTeacher?nombres=${nombres}`
   const response = axios.get(URL)
@@ -101,7 +101,7 @@ export const getFichasById = (id) => {
 
 /* Create apprentices */
 export const createApprentices = (data) => {
-  const URL = `${BaseUrl}${api}/createAprendices`
+  const URL = `${BaseUrl}${api}/createAprendiz`
   const response = axios.post(URL, data)
 
   return response
@@ -114,3 +114,12 @@ export const searchApprenticesByIdFicha = (idFicha, nombres) => {
 
   return response
 }
+
+/* Get coordination */
+export const getCoordination = () => {
+  const URL = `${BaseUrl}${api}/coordination`
+  const response = axios.get(URL)
+
+  return response
+}
+

@@ -2,10 +2,8 @@ import { ViewPdf } from '../ViewPDF/ViewPDF'
 import React, { useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
-import { Textarea, Button, Input } from '@nextui-org/react'
-import { Card, CardBody } from '@nextui-org/react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react'
 
 const Rules = () => {
   const [inputVisibleCap, setInputVisibleCap] = useState(false)
@@ -14,8 +12,6 @@ const Rules = () => {
   const [inputVisibleParagrafos, setInputVisibleParagrafos] = useState(false)
 
   // Modal
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
-
   // Drop capítulo
   const [selectedKeysCaps, setSelectedKeysCaps] = React.useState(new Set(['Seleccionar capítulos']))
   const selectedValueCaps = React.useMemo(() => Array.from(selectedKeysCaps).join(', ').replaceAll('_', ' '), [selectedKeysCaps])
@@ -73,6 +69,13 @@ const Rules = () => {
       setIsLoading(false)
       setIsEditModalOpen(false)
     }, 2000)
+  }
+
+  // Barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false)
+
+  const toggleNotify = () => {
+    setNotifyOpen(!notifyOpen)
   }
 
   return (
@@ -177,27 +180,43 @@ const Rules = () => {
                 </section>
               </section>
             </section>
-            <Button color="success" variant="flat" onClick={handleSave}>
-              Guardar
-            </Button>
+
+            <ModalFooter>
+              <Button color="success" variant="flat" onClick={handleSave}>
+                <i className="fi fi-br-check"></i>
+                Guardar
+              </Button>
+            </ModalFooter>
           </ModalBody>
         </ModalContent>
       </Modal>
 
       <main className="h-screen flex">
         <Sliderbar />
+        <section className="absolute left-[34%] mt-[2rem] cursor-pointer ">
+          {notifyOpen ? (
+            <></>
+          ) : (
+            <>
+              <Button className="muve" radius="full" variant="flat" color="success" onClick={toggleNotify}>
+                Mensajes
+                <i className="fi fi-ss-bell pl-[.5rem]" />
+              </Button>
+            </>
+          )}
+        </section>
         <section className="w-full h-screen overflow-auto">
-          <section className="grid h-screen grid-cols-2 ">
+          <section className="grid h-screen grid-cols-3 ">
             <section className="grid place-items-center">
               <Button size="lg" onClick={handleOpenEditModal} color="primary" variant="shadow">
                 Editar reglamento
               </Button>
             </section>
-            <section className="">
+            <section className="col-span-2 z-0">
               <ViewPdf />
             </section>
           </section>
-
+          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           <Footer />
         </section>
       </main>

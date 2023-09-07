@@ -1,4 +1,4 @@
-import './Card.css'
+import "./Card.css";
 
 export const Card = ({ title, descripciónHome, titleHome, descripción, image, icon, flip = false, header = false, click, inside = false, frontContent, backContent }) => {
   return (
@@ -13,17 +13,17 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
       </header>
       <section className="card_Body">
         {inside && (
-          <section className="relative">
-            <section className="w-48 h-44">
-              <span className="object-contain w-44">
-                <img className="rounded-[10px]" src={image} alt="Imágen" loading="lazy" />
-              </span>
-              <div className="w-full h-[7rem] absolute top-[80%] left-1/2 rounded-b-[10px] bg-[#ffffffea] shadow-lg py-2 px-3" style={{ transform: "translate(-50%, -50%)" }}>
+          <>
+            <section className="relative">
+              <section className="">
+                <img className="rounded-[10px] w-[15rem] h-[11.25rem]" src={image} alt="Imágen" loading="lazy" />
+              </section>
+              <section className="bg-[#ffffffea] top-[7rem] absolute rounded-b-[10px] max-w-[15rem] py-2 pl-3 shadow-lg h-[7rem] " >
                 <h4 className="font-bold">{titleHome}</h4>
                 <p className="text-[12px]">{descripciónHome}</p>
-              </div>
+              </section>
             </section>
-          </section>
+          </>
         )}
         <p className="text-[12px]">{descripción}</p>
 
@@ -37,5 +37,5 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
         )}
       </section>
     </main>
-  )
-}
+  );
+};

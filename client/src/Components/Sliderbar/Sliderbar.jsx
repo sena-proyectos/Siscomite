@@ -1,9 +1,8 @@
 import './Sliderbar.css'
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import Cookie from 'js-cookie'
 import jwt from 'jwt-decode'
-import { useLocation } from 'react-router-dom'
 
 // Para poner color al icon al seleccionarlo
 
@@ -18,7 +17,7 @@ const Sliderbar = () => {
   const [nombreCompleto, setNombreCompleto] = useState(null)
   const [rol, setRol] = useState(null)
 
-  //Para poner color al icon al seleccionarlo
+  // Para poner color al icon al seleccionarlo
   const location = useLocation() // Importa useLocation
 
   useEffect(() => {
