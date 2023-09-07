@@ -5,7 +5,6 @@ import { useState } from 'react' // Agregamos useState para manejar el estado de
 import { login } from '../../api/httpRequest'
 import Cookie from 'js-cookie'
 import { Input } from '@nextui-org/react'
-import React from 'react'
 import { Toaster, toast } from 'sonner'
 
 export const Login = () => {
@@ -26,7 +25,7 @@ export const Login = () => {
 
     const dataValue = {
       numero_documento: numeroDocumento,
-      contrasena,
+      contrasena
     }
 
     try {
@@ -37,7 +36,7 @@ export const Login = () => {
     } catch (error) {
       const message = error.response.data.message
       toast.error('Opss!!', {
-        description: message,
+        description: message
       })
     } finally {
       setIsLoading(false)
@@ -49,7 +48,7 @@ export const Login = () => {
       <section className="absolute top-11 left-11 " style={{ animation: 'show 0.8s ease-in-out' }}>
         <img src="image/logoSena.webp" alt="Sena" className="w-[4rem]" />
       </section>
-      <Toaster position="top-right" closeButton richColors  />
+      <Toaster position="top-right" closeButton richColors />
       <section className="grid place-items-center  h-screen " style={{ animation: 'show 0.8s ease-in-out' }}>
         <form className="relative w-[400px] bg-white  p-[1rem] rounded-xl grid text-center shadow-lg place-items-center" onSubmit={sendData}>
           <h2 className="text-[1.5rem] font-bold mb-7">Iniciar Sesión</h2>

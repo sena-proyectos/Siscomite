@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { createFicha, getApprenticesById, getCoordination } from '../../../api/httpRequest'
-import Swal from 'sweetalert2'
+import { useState } from 'react'
+import { createFicha } from '../../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { Input, Button } from '@nextui-org/react'
 
@@ -77,7 +76,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
 
   return (
     <>
-      <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
+      <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
         <Toaster position="top-right" closeButton richColors />
         <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
@@ -85,7 +84,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
               <i className="fi fi-rr-users-medical text-green-500 px-3"></i>Agregar Fichas
             </h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
-              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" onClick={closeModal} />
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" />
             </section>
           </header>
           <section className="mt-[2rem]">
@@ -156,6 +155,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
             </section>
           </section>
         </section>
+        <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>
     </>
   )

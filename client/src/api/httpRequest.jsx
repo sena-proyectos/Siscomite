@@ -19,7 +19,7 @@ export const getTeachers = () => {
   return response
 }
 
-/* Get teachers by name*/
+/* Get teachers by name */
 export const getTeacherByName = (nombres) => {
   const URL = `${BaseUrl}${api}/searchTeacher?nombres=${nombres}`
   const response = axios.get(URL)

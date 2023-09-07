@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import { google } from 'googleapis'
 import indexRoutes from './routes/index.routes.js'
 import userRoutes from './routes/user.routes.js'
 import fichasRoutes from './routes/fichas.routes.js'
@@ -34,9 +35,6 @@ app.use('/api', chapterRouter)
 app.use('/api', ArticleNumberRouter)
 app.use('/api', ParagraphRouter)
 app.use('/api', fileRouter)
-
-
-
 
 app.use((req, res) => {
   res.status(404).send({

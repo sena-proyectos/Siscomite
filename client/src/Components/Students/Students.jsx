@@ -1,17 +1,15 @@
 import './Students.css'
-import React, { useEffect, useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Search } from '../Search/Search'
-import { Card, CardHeader, CardBody, Button } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
-import { Pagination } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
 import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { getApprenticesById, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
-import { calcLength } from 'framer-motion'
+import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
 
 const Students = () => {
   const { id_ficha } = useParams()
@@ -108,27 +106,27 @@ const Students = () => {
 
   return (
     <>
-      {modalAddStudent && <ModalAddStudents modalStudents={isOpen} cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
+      {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
 
-      {modalInfoStudents && <ModalInfoStudents infoStudent={isOpen} cerrarModal={infoStudents} idStudents={idStudent} />}
+      {modalInfoStudents && <ModalInfoStudents cerrarModal={infoStudents} idStudents={idStudent} />}
 
       <main className="flex h-screen">
         <Sliderbar />
         <section className="w-full h-screen overflow-auto">
-          <header className="p-[1.5rem] flex justify-center">
+          <header className="p-[1.5rem] flex items-center justify-center">
             <section className="w-[40%] max-md:max-w-[10rem]">
               <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
-            <section className="absolute right-[15%] cursor-pointer ">
+            <Button color="danger" variant="bordered">
+              Deshabilitar
+            </Button>
+            <section className="absolute right-[5%] cursor-pointer ">
               {notifyOpen ? (
                 <></>
               ) : (
-                <>
-                  <Button radius="full" variant="flat" color="success" onClick={toggleNotify}>
-                    Mensajes
-                    <i className="fi fi-ss-bell pl-[.5rem]" />
-                  </Button>
-                </>
+                <section className="bg-green-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                  <i className="fi fi-ss-bell text-green-400 p-[.3rem] mt-[]" />
+                </section>
               )}
             </section>
           </header>
@@ -161,7 +159,6 @@ const Students = () => {
                                 <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
                                 <h5 className="text-small tracking-tight text-default-400 flex">
                                   <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
-                                  {/* <p className="px-[4px]">{item.descripción}</p> */}
                                 </h5>
                               </div>
                             </div>
@@ -202,7 +199,7 @@ const Students = () => {
           <section className="grid place-items-center ">
             <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[8px]  z-0 ${apprenticesSearch.length > 0 ? 'hidden' : ''}`} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
-          <section className="absolute grid place-items-center bottom-9 right-8">
+          <section className="absolute grid place-items-center bottom-9 right-[2.5%]">
             <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalStudents}>
               <p className="text-[15px] top-0 block">
                 <i className="fi fi-br-plus block" />

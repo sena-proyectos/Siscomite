@@ -1,30 +1,51 @@
-import "./Home.css";
-import React, { useState } from "react";
-import { Card } from "../Utils/Card/Card";
-import { Button, Divider } from "@nextui-org/react";
-import { Sliderbar } from "../Sliderbar/Sliderbar";
-import { Footer } from "../Footer/Footer";
-import { Link } from "react-router-dom";
-import { Notify } from "../Utils/NotifyBar/NotifyBar";
+import './Home.css'
+import { useState } from 'react'
+import { Card } from '../Utils/Card/Card'
+import { Button, Divider } from '@nextui-org/react'
+import { Sliderbar } from '../Sliderbar/Sliderbar'
+import { Footer } from '../Footer/Footer'
+import { Link } from 'react-router-dom'
+import { Text } from '../Test/Test'
+import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
 const Home = () => {
   const data = [
-    { titleHome: "Solicitudes", image: "/image/solicitudes.webp", descripciónHome: "Aquí podrás ver las solicitudes que se han realizado y su estado de aprobación.", Link: "/requests" },
-    { titleHome: "Crear solicitud", image: "/image/solicitud.webp", descripciónHome: "Aquí podrás crear una solicitud para un comité de evalución..", Link: "/create" },
-    { titleHome: "Fichas", image: "/image/fichas.webp", descripciónHome: "Aquí podrás visualizar las fichas del CTM.", Link: "/groups" },
-    { titleHome: "Reglamento", image: "/image/reglamento.webp", descripciónHome: "Aquí podrás ver el reglamento para consultar los artículos necesarios.", Link: "/rules" },
-  ];
+    {
+      titleHome: 'Solicitudes',
+      image: '/image/solicitudes.webp',
+      descripciónHome: 'Aquí podrás ver las solicitudes que se han realizado y su estado de aprobación.',
+      Link: '/requests'
+    },
+    {
+      titleHome: 'Crear solicitud',
+      image: '/image/solicitud.webp',
+      descripciónHome: 'Aquí podrás crear una solicitud para un comité de evalución..',
+      Link: '/create'
+    },
+    {
+      titleHome: 'Fichas',
+      image: '/image/fichas.webp',
+      descripciónHome: 'Aquí podrás visualizar las fichas del CTM.',
+      Link: '/groups'
+    },
+    {
+      titleHome: 'Reglamento',
+      image: '/image/reglamento.webp',
+      descripciónHome: 'Aquí podrás ver el reglamento para consultar los artículos necesarios.',
+      Link: '/rules'
+    }
+  ]
 
-  // Barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false);
+  const [notifyOpen, setNotifyOpen] = useState(false)
 
   const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen);
-  };
+    setNotifyOpen(!notifyOpen)
+  }
 
   return (
     <>
       <main className="flex h-screen w-full">
+        <Text />
         <Sliderbar />
         <section className="w-full overflow-auto ">
           <section className="flex max-w-[100%]">
@@ -36,7 +57,7 @@ const Home = () => {
                     <></>
                   ) : (
                     <>
-                      <Button className="muve" radius="full" variant="flat" color="success" onClick={toggleNotify}>
+                      <Button className="muve" radius="full" variant="flat" color="primary" onClick={toggleNotify}>
                         Mensajes
                         <i className="fi fi-ss-bell pl-[.5rem]" />
                       </Button>
@@ -49,14 +70,13 @@ const Home = () => {
                 <section className="w-[95%] grid grid-cols-4 gap-x-10 place-items-center  ">
                   {data.map((x, i) => (
                     <Link to={x.Link} key={i}>
-                      <section className="h-[28%] mt-6 text-black  cardHome " style={{ transition: "0.4s ease-in-out" }}>
+                      <section className="h-[28%] mt-6 text-black  cardHome " style={{ transition: '0.4s ease-in-out' }}>
                         <Card inside image={x.image} titleHome={x.titleHome} descripciónHome={x.descripciónHome} />
                       </section>
                     </Link>
                   ))}
 
-
-                  <section className="col-span-2 mt-[4rem] place-items-center  ">
+                  <section className="col-span-2 mt-[4rem]   ">
                     <p className="font-extrabold text-lg">Recomendaciones</p>
                     <section className="bg-white shadow-lg rounded-xl mt-2 p-[1rem] ">
                       <p className="font-semibold ">Agregar aprendices</p>
@@ -71,7 +91,8 @@ const Home = () => {
                       <Divider />
                       <section className="grid place-items-center ">
                         <p className="font-semibold text-red-500 pt-[.8rem]">
-                          <i className="fi fi-rr-triangle-warning mr-[.5rem] text-red-500"></i>Importante
+                          <i className="fi fi-rr-triangle-warning mr-[.5rem] text-red-500"></i>
+                          Importante
                         </p>
                         <p className="text-sm">Los datos deben ser los registrados en Sofía Plus</p>
                       </section>
@@ -88,7 +109,7 @@ const Home = () => {
         </section>
       </main>
     </>
-  );
-};
+  )
+}
 
-export { Home };
+export { Home }

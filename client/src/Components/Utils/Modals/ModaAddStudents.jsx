@@ -1,46 +1,46 @@
-import React, { useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { createApprentices } from "../../../api/httpRequest";
-import Swal from "sweetalert2";
-import { Toaster, toast } from "sonner";
-import { readExcelFile } from "../../ReadExcelFile/readexcelfile";
-import { Input, Button } from "@nextui-org/react";
+import { useRef, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { createApprentices } from '../../../api/httpRequest'
+import Swal from 'sweetalert2'
+import { Toaster, toast } from 'sonner'
+import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
+import { Input, Button } from '@nextui-org/react'
 
 export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
   /* aprendices values */
-  const [nombresAprendiz, setNombresAprendiz] = useState("");
-  const [apellidosAprendiz, setApellidosAprendiz] = useState("");
-  const [tipoDocumento, setTipoDocumento] = useState("");
-  const [numeroDocumento, setNumeroDocumento] = useState("");
-  const [emailSena, setEmailSena] = useState("");
-  const [emailAlterno, setEmailAlterno] = useState("");
-  const [numeroCelular, setNumeroCelular] = useState("");
+  const [nombresAprendiz, setNombresAprendiz] = useState('')
+  const [apellidosAprendiz, setApellidosAprendiz] = useState('')
+  const [tipoDocumento, setTipoDocumento] = useState('')
+  const [numeroDocumento, setNumeroDocumento] = useState('')
+  const [emailSena, setEmailSena] = useState('')
+  const [emailAlterno, setEmailAlterno] = useState('')
+  const [numeroCelular, setNumeroCelular] = useState('')
 
-  const excelFileRef = useRef(null);
-  const { id_ficha } = useParams();
+  const excelFileRef = useRef(null)
+  const { id_ficha } = useParams()
 
-  //Lector de archivos excel
+  // Lector de archivos excel
   const handleExcelFile = () => {
-    const currentFile = excelFileRef.current.files[0];
+    const currentFile = excelFileRef.current.files[0]
 
-    const checkFile = excelFileRef.current.files[0].name.split(".");
-    if (checkFile[1] !== "xlsx" && checkFile[1] !== "xls") {
-      reloadFetchState(true);
+    const checkFile = excelFileRef.current.files[0].name.split('.')
+    if (checkFile[1] !== 'xlsx' && checkFile[1] !== 'xls') {
+      reloadFetchState(true)
       Swal.fire({
-        icon: "error",
-        title: "¡Error!",
-        text: "Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!",
-        footer: ".xlsx, .xls",
-      });
-      excelFileRef.current.value = "";
-      return;
+        icon: 'error',
+        title: '¡Error!',
+        text: 'Has ingresado un formato inválido. ¡Por favor escoga un formato válido de excel!',
+        footer: '.xlsx, .xls'
+      })
+      excelFileRef.current.value = ''
+      return
     }
-    readExcelFile(currentFile, id_ficha);
-  };
+    readExcelFile(currentFile, id_ficha)
+  }
 
   /* enviar datos de aprendiz */
   const sendDataApprentices = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
       const dataValue = {
@@ -51,44 +51,44 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
         email_aprendiz_personal: emailAlterno,
         celular_aprendiz: numeroCelular,
         id_documento: tipoDocumento,
-        id_ficha,
-      };
+        id_ficha
+      }
 
-      const response = await createApprentices(dataValue);
+      const response = await createApprentices(dataValue)
 
-      const res = response.data.message;
-      toast.success("Genial!!", {
-        description: res,
-      });
-      reloadFetchState(true);
+      const res = response.data.message
+      toast.success('Genial!!', {
+        description: res
+      })
+      reloadFetchState(true)
       setTimeout(() => {
-        cerrarModal();
-      }, 1500);
+        cerrarModal()
+      }, 1500)
     } catch (error) {
-      const message = error.response.data.message;
-      toast.error("Opss!!", {
-        description: message,
-      });
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
     }
-  };
+  }
 
   // Cerrar modal
   const closeModal = () => {
-    cerrarModal();
-  };
+    cerrarModal()
+  }
 
   return (
     <>
-      <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
+      <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center ">
         <Toaster position="top-right" closeButton richColors />
-        <section className={"bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in "}>
+        <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
             <h3 className="text-2xl font-semibold">
               <i className="fi fi-rr-smile-plus text-green-600 px-3"></i>
               Agregar aprendices
             </h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
-              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer"  />
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" />
             </section>
           </header>
           <section className="bodyModal">
@@ -97,12 +97,12 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
               <section className="relative grid grid-cols-2 justify-center gap-x-8 py-[2rem]  gap-y-8 max-md:gap-y-5 overflow-auto ">
                 <section className="modalInput ">
                   <div className="flex flex-wrap  items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input isRequired size="md" type="text" label="Nombre" labelPlacement={"outside"} variant={"flat"} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
+                    <Input isRequired size="md" type="text" label="Nombre" labelPlacement={'outside'} variant={'flat'} value={nombresAprendiz} onChange={(e) => setNombresAprendiz(e.target.value)} />
                   </div>
                 </section>
                 <section className="modalInput ">
                   <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input isRequired size="md" type="text" label="Apellido" labelPlacement={"outside"} variant={"flat"} value={apellidosAprendiz} onChange={(e) => setApellidosAprendiz(e.target.value)} />
+                    <Input isRequired size="md" type="text" label="Apellido" labelPlacement={'outside'} variant={'flat'} value={apellidosAprendiz} onChange={(e) => setApellidosAprendiz(e.target.value)} />
                   </div>
                 </section>
                 <section>
@@ -116,27 +116,27 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
                 </section>
                 <section className="modalInput ">
                   <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input isRequired size="md" type="text" label="Documento" labelPlacement={"outside"} variant={"flat"} value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
+                    <Input isRequired size="md" type="text" label="Documento" labelPlacement={'outside'} variant={'flat'} value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
                   </div>
                 </section>
                 <section className="modalInput ">
                   <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input isRequired size="md" type="text" label="Correo Institucional" labelPlacement={"outside"} variant={"flat"} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
+                    <Input isRequired size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
                   </div>
                 </section>
                 <section className="modalInput ">
                   <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input size="md" type="text" label="Correo alterno" labelPlacement={"outside"} variant={"flat"} value={emailAlterno} onChange={(e) => setEmailAlterno(e.target.value)} />
+                    <Input size="md" type="text" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} value={emailAlterno} onChange={(e) => setEmailAlterno(e.target.value)} />
                   </div>
                 </section>
                 <section className="modalInput ">
                   <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input isRequired maxLength={"10"} size="md" type="text" label="Número" labelPlacement={"outside"} variant={"flat"} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
+                    <Input isRequired maxLength={'10'} size="md" type="text" label="Número" labelPlacement={'outside'} variant={'flat'} value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
                   </div>
                 </section>
                 <section className="modalInput ">
                   <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input size="md" type="text" label="Número alterno" labelPlacement={"outside"} variant={"flat"} />
+                    <Input size="md" type="text" label="Número alterno" labelPlacement={'outside'} variant={'flat'} />
                   </div>
                 </section>
               </section>
@@ -156,7 +156,8 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
             </section>
           </section>
         </section>
+        <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>
     </>
-  );
-};
+  )
+}
