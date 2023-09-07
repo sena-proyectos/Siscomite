@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createFicha } from '../../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { Input, Button } from '@nextui-org/react'
+import { getCoordination } from '../../../api/httpRequest'
 
 export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   /* fichas values */
@@ -11,8 +12,9 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   const [etapaPrograma, setEtapaPrograma] = useState('')
   const [numeroTrimestre, setNumeroTrimestre] = useState('')
   const [idModalidad, setIdmodalidad] = useState('')
+  const [coordinadores, setCoordinadores] = useState('')
 
-  const [coordination, setCoordination] = useState('')
+  const [coordination, setCoordination] = useState([])
 
   //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
@@ -34,7 +36,8 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
         jornada,
         etapa_programa: etapaPrograma,
         numero_trimestre: numeroTrimestre,
-        id_modalidad: idModalidad
+        id_modalidad: idModalidad,
+        id_usuario_coordinador : coordinadores
       }
 
       const response = await createFicha(dataValue)
@@ -60,7 +63,6 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   }
 
   useEffect(() => {
-    hola()
     getCoordi()
   }, [])
 
@@ -68,10 +70,8 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   const getCoordi = async () => {
     const response = await getCoordination()
     const res = response.data.result
+    // console.log(res);
     setCoordination(res)
-  }
-  const hola = () => {
-    console.log(coordination)
   }
 
   return (
@@ -135,17 +135,15 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
                 <option value="2">Virtual</option>
                 <option value="3">Media técnica</option>
                 <option value="4">A distancia</option>
-                <option value="5">Virtual</option>
               </select>
             </section>
-            <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none">
+            <select className="bg-default-100 mt-7 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" onChange={(e) => setCoordinadores(e.target.value)}>
               <option value="">Coordinador*</option>
-              {coordination &&
-                coordination.map((item) => {
-                  ;<>
-                    <option value="Marianela Henao Atehortua">{item.nombres}</option>
-                  </>
-                })}
+              {coordination.map((item) => (
+                <option key={item.id_usuario} value={item.id_usuario}>
+                  {item.nombres + ' ' + item.apellidos}
+                </option>
+              ))}
             </select>
             <section className="relative grid place-items-center mt-[1rem]">
               <Button variant="shadow" color="primary" id="iconSave" onClick={sendDataFichas}>

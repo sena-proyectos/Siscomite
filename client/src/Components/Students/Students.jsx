@@ -171,24 +171,25 @@ const Students = () => {
                     </>
                   ) : (
                     <>
-                      { currentItems && currentItems.map((item) => (
-                        <Card className="w-full max-h-[8rem] z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
-                          <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
-                            <div className="flex gap-5">
-                              <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>
-                              <div className="flex flex-col gap-1 items-start justify-center">
-                                <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
-                                <h5 className="text-small tracking-tight text-default-400 flex">
-                                  <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
-                                </h5>
+                      {currentItems &&
+                        currentItems.map((item) => (
+                          <Card className="w-full max-h-[8rem] z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
+                            <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
+                              <div className="flex gap-5">
+                                <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>
+                                <div className="flex flex-col gap-1 items-start justify-center">
+                                  <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
+                                  <h5 className="text-small tracking-tight text-default-400 flex">
+                                    <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
+                                  </h5>
+                                </div>
                               </div>
-                            </div>
-                          </CardHeader>
-                          <CardBody onClick={() => infoStudents(item.id_aprendiz)} className="relative text-default-400 text-small cursor-pointer">
-                            <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
-                          </CardBody>
-                        </Card>
-                      ))}
+                            </CardHeader>
+                            <CardBody onClick={() => infoStudents(item.id_aprendiz)} className="relative text-default-400 text-small cursor-pointer">
+                              <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
+                            </CardBody>
+                          </Card>
+                        ))}
                     </>
                   )}
                 </>

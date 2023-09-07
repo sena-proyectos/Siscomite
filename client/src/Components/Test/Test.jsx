@@ -10,7 +10,7 @@ export const Text = () => {
     // Elimina la notificación después de un tiempo (opcional)
     setTimeout(() => {
       notification.remove()
-    }, 5000) // Elimina la notificación después de 5 segundos
+    }, 10) // Elimina la notificación después de 5 segundos
   }, [])
 
   return (

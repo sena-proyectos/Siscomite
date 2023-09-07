@@ -15,22 +15,24 @@ const Groups = () => {
   const [isGridView, setIsGridView] = useState(true)
   const [actualView, setActualView] = useState(null)
   const [filtroVisible, setFiltroVisible] = useState(false)
+  const [reloadFetch, setReloadFetch] = useState(false)
 
   useEffect(() => {
-    const getFicha = async () => {
-      try {
-        const response = await getFichas()
-        const res = response.data.result
-        setFichas(res)
-      } catch (error) {
-        console.error(error)
-      }
+    getFicha()
+    if (reloadFetch === true) {
+      setReloadFetch(false)
     }
+  }, [fichas, reloadFetch])
 
-    if (fichas.length >= 0) {
-      getFicha()
+  const getFicha = async () => {
+    try {
+      const response = await getFichas()
+      const res = response.data.result
+      setFichas(res)
+    } catch (error) {
+      console.error(error)
     }
-  }, [fichas])
+  }
 
   // Funciones para la paginación y selección de elementos mostar por página
   const [activePage, setActivePage] = useState(1)
@@ -229,7 +231,7 @@ const Groups = () => {
                       <tbody>
                         {visibleCards.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
-                            <tr className="grid grid-cols-7 text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl hover:text-blue-600 mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-105 items-center">
+                            <tr className="grid grid-cols-7 text-sm text-default-700 p-2 place-content-center hover:bg-gray-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
                               <td className="bg-yellow">{card.numero_ficha}</td>
                               <td className="col-span-2">{card.nombre_programa}</td>
                               <td>{card.jornada}</td>
