@@ -1,49 +1,49 @@
-import './Sliderbar.css'
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import Cookie from 'js-cookie'
-import jwt from 'jwt-decode'
-import { useLocation } from 'react-router-dom'
+// Importaciones necesarias
+import './Sliderbar.css' // Importar el archivo CSS para estilos específicos
+import { useEffect, useState } from 'react' // Importar React, useEffect y useState desde React
+import { Link, useNavigate, useLocation } from 'react-router-dom' // Importar funciones de navegación y ubicación de React Router DOM
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 
-// Para poner color al icon al seleccionarlo
-
-// Función para saber si la ruta esta activa
+// Función para saber si la ruta está activa
 const isActiveRoute = (currentPath, targetPath) => {
   return currentPath === targetPath
 }
 
 const Sliderbar = () => {
-  const [selectedIcon, setSelectedIcon] = useState(0)
-  const navigate = useNavigate()
-  const [nombreCompleto, setNombreCompleto] = useState(null)
-  const [rol, setRol] = useState(null)
+  const [selectedIcon, setSelectedIcon] = useState(0) // Estado para controlar el icono seleccionado
+  const navigate = useNavigate() // Función de navegación
+  const [nombreCompleto, setNombreCompleto] = useState(null) // Estado para el nombre completo del usuario
+  const [rol, setRol] = useState(null) // Estado para el rol del usuario
 
-  //Para poner color al icon al seleccionarlo
-  const location = useLocation() // Importa useLocation
+  // Para poner color al icono al seleccionarlo
+  const location = useLocation() // Hook useLocation para obtener la ubicación actual
 
   useEffect(() => {
-    getInformation()
+    getInformation() // Llamar a la función getInformation al montar el componente
   }, [])
 
+  // Función para obtener información del usuario desde el token JWT
   const getInformation = () => {
-    const token = Cookie.get('token')
-    const information = jwt(token)
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
     const nombres = information.nombres
     const apellidos = information.apellidos
 
+    // Mapear los ID de rol a nombres de rol
     if (information.id_rol === 1) information.id_rol = 'Coordinador'
     if (information.id_rol === 2) information.id_rol = 'Instructor'
     if (information.id_rol === 3) information.id_rol = 'Administrador'
-    setRol(information.id_rol)
 
-    setNombreCompleto(`${nombres}  ${apellidos}`)
+    setRol(information.id_rol) // Establecer el rol en el estado
+    setNombreCompleto(`${nombres}  ${apellidos}`) // Establecer el nombre completo en el estado
   }
 
+  // Función para cerrar sesión
   const logout = () => {
-    Cookie.remove('token')
-    navigate('/')
+    Cookie.remove('token') // Eliminar el token de las cookies
+    navigate('/') // Redirigir a la página de inicio
   }
-
   return (
     <main className="sliderbar bg-[#2e323e] m-[1rem] w-[18%]  h-[95vh] relative rounded-2xl text-white flex-col flex items-center ">
       <section className="top flex flex-col items-center p-[30px] text-center w-full">

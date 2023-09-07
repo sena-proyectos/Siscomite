@@ -1,29 +1,39 @@
-import "./Search.css";
-import { useRef, useEffect, useState } from "react";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+// Importaciones necesarias
+import './Search.css' // Importar el archivo CSS para estilos específicos
+import { useRef, useEffect, useState } from 'react' // Importar React, useRef, useEffect y useState desde React
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react' // Importar componentes de Next UI
 
+// Componente Search
 const Search = ({ searchStudent, placeholder, icon, filtro }) => {
-  const [iconRow, setIconRow] = useState(false);
-  const search = useRef();
-  const debounceTimeout = useRef(null);
+  // Estado para controlar la rotación del icono
+  const [iconRow, setIconRow] = useState(false)
 
+  // Referencia al elemento de entrada de texto para búsqueda
+  const search = useRef()
+
+  // Referencia para el temporizador de debounce
+  const debounceTimeout = useRef(null)
+
+  // Función para manejar la búsqueda con debounce
   const handleSearch = () => {
-    const searchValue = search.current.value;
-    clearTimeout(debounceTimeout.current);
+    const searchValue = search.current.value
+    clearTimeout(debounceTimeout.current)
     debounceTimeout.current = setTimeout(() => {
-      searchStudent(searchValue);
-    }, 300);
-  };
+      searchStudent(searchValue)
+    }, 300)
+  }
 
+  // Función para prevenir la acción predeterminada del formulario
   const evnt = (e) => {
-    e.preventDefault();
-  };
+    e.preventDefault()
+  }
 
+  // Limpieza del temporizador de debounce al desmontar el componente
   useEffect(() => {
     return () => {
-      clearTimeout(debounceTimeout.current);
-    };
-  }, []);
+      clearTimeout(debounceTimeout.current)
+    }
+  }, [])
 
   return (
     <form className="flex" method="get" onChange={handleSearch} onSubmit={evnt}>
@@ -39,11 +49,11 @@ const Search = ({ searchStudent, placeholder, icon, filtro }) => {
             <section
               className="text-[13px] flex gap-3 "
               onClick={() => {
-                setIconRow(!iconRow);
+                setIconRow(!iconRow)
               }}
             >
               <p className="cursor-pointer">Nombre</p>
-              <section className={`w-fit ${iconRow ? "rotate-180" : "rotate-0"}`}>
+              <section className={`w-fit ${iconRow ? 'rotate-180' : 'rotate-0'}`}>
                 <i className="fi fi-br-arrow-up cursor-pointer " x />
               </section>
             </section>
@@ -78,7 +88,7 @@ const Search = ({ searchStudent, placeholder, icon, filtro }) => {
         </section>
       )}
     </form>
-  );
-};
+  )
+}
 
-export { Search };
+export { Search }

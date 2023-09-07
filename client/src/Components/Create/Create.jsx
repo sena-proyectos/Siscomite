@@ -1,123 +1,124 @@
-import "./Create.css";
-import React, { useEffect, useState } from "react";
-import jwtDecode from "jwt-decode";
-import Cookie from "js-cookie";
+// Importación de módulos y componentes necesarios
+import './Create.css'
+import React, { useEffect, useState } from 'react'
+import jwtDecode from 'jwt-decode'
+import Cookie from 'js-cookie'
+import { Footer } from '../Footer/Footer'
+import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { Sliderbar } from '../Sliderbar/Sliderbar'
+import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
+import { Search } from '../Search/Search'
+import { getTeacherByName, getApprenticesByName, getApprenticesById } from '../../api/httpRequest'
 
-import { Footer } from "../Footer/Footer";
-import { Notify } from "../Utils/NotifyBar/NotifyBar";
-import { Sliderbar } from "../Sliderbar/Sliderbar";
-import { RadioGroup, Radio, Tooltip, Tabs, Tab } from "@nextui-org/react";
-import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
-import { Search } from "../Search/Search";
-import { getTeacherByName, getApprenticesByName, getApprenticesById } from "../../api/httpRequest";
-
+// Definición del componente Create
 const Create = () => {
-  const [selectedAprendizOption, setSelectedAprendizOption] = useState(null);
+  // Estados para manejar la selección de opciones y resultados de búsqueda
+  const [teacherSearch, setTeacherSearch] = useState([])
+  const [userSearch, setUserSearch] = useState([])
+  const [selectedApprentice, setSelectedApprentice] = useState([])
+  const [error, setError] = useState(null)
+  const [errorUser, setErrorUser] = useState(null)
+  const [userID, setUserID] = useState('')
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Coordinador']))
+  const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')), [selectedKeys])
 
-  const [teacherSearch, setTeacherSearch] = useState([]);
-  const [userSearch, setUserSearch] = useState([]);
+  // estados para manejar la selección de opciones y resultados de búsqueda
+  const [selectedFalta, setSelectedFalta] = React.useState(new Set(['Calificación']))
+  const selectedValueFalta = React.useMemo(() => Array.from(selectedFalta).join(', ').replaceAll('_', ' '), [selectedFalta])
 
-  const [selectedApprentice, setSelectedApprentice] = useState([]);
-  const [error, setError] = useState(null);
-  const [errorUser, setErrorUser] = useState(null);
-  const [userID, setUserID] = useState("");
+  const [tipoSolicitud, setTipoSolicitud] = useState(null)
 
-  const [selectedKeys, setSelectedKeys] = React.useState(new Set(["Coordinador"]));
-  const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, " ")), [selectedKeys]);
-
-  // Drop tipo falta
-  const [selectedFalta, setSelectedFalta] = React.useState(new Set(["Calificación"]));
-  const selectedValueFalta = React.useMemo(() => Array.from(selectedFalta).join(", ").replaceAll("_", " "), [selectedFalta]);
-
-  const [tipoSolicitud, setTipoSolicitud] = useState(null);
-
+  // Función para buscar instructores
   const getTeacher = async (nombres) => {
     try {
-      if (nombres.trim() === "") {
-        setTeacherSearch([]);
-        setError(null);
-        return;
+      if (nombres.trim() === '') {
+        setTeacherSearch([])
+        setError(null)
+        return
       } else {
-        setError(null);
-        const response = await getTeacherByName(nombres);
-        setTeacherSearch(response.data.user);
+        setError(null)
+        const response = await getTeacherByName(nombres)
+        setTeacherSearch(response.data.user)
       }
     } catch (error) {
-      const message = error.response.data.message;
-      setError(message);
-      setTeacherSearch([]);
+      const message = error.response.data.message
+      setError(message)
+      setTeacherSearch([])
     }
-  };
+  }
 
+  // Función para buscar aprendices
   const getUser = async (nombres) => {
     try {
-      if (nombres.trim() === "") {
-        setUserSearch([]);
-        setError(null);
-        return;
+      if (nombres.trim() === '') {
+        setUserSearch([])
+        setError(null)
+        return
       } else {
-        setErrorUser(null);
-        const response = await getApprenticesByName(nombres);
-        setUserSearch(response.data.user);
+        setErrorUser(null)
+        const response = await getApprenticesByName(nombres)
+        setUserSearch(response.data.user)
       }
     } catch (error) {
-      const message = error.response.data.message;
-      setErrorUser(message);
-      setUserSearch([]);
-      setSelectedApprentice([]);
+      const message = error.response.data.message
+      setErrorUser(message)
+      setUserSearch([])
+      setSelectedApprentice([])
     }
-  };
-  useEffect(() => {
-    const infoUser = Cookie.get("token");
-    const decoded = jwtDecode(infoUser);
-    setUserID(decoded.id_usuario);
-    // console.log("hola");
-  }, []);
+  }
 
+  // Efecto para obtener el ID del usuario a partir de un token
+  useEffect(() => {
+    const infoUser = Cookie.get('token')
+    const decoded = jwtDecode(infoUser)
+    setUserID(decoded.id_usuario)
+  }, [])
+
+  // Función para enviar datos
   const sendData = () => {
-    if (selectedApprentice[0] === undefined) return alert("debe seleccionar un aprendiz, para hacer la solicitud");
 
     const dataValue = {
       tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
-      nombre_coordinacion: selectedValue.join(", "), // Agregar el valor del dropdown
+      nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
       // id_causa,
       id_usuario_solicitante: userID,
-      id_aprendiz: selectedApprentice[0].id_aprendiz,
-    };
-    console.log(dataValue);
-  };
-
-  const handleTeacherClick = async (userId) => {
-    console.log("ID del instructor:", userId);
-  };
-
-  const handleUserClick = async (userId) => {
-    // console.log('ID del aprendiz:', userId)
-    try {
-      const response = await getApprenticesById(userId);
-      const res = response.data.result;
-      setSelectedApprentice(res);
-      setUserSearch([]);
-      setTeacherSearch([]);
-    } catch (error) {
-      console.error("Error obteniendo detalles del aprendiz:", error);
+      id_aprendiz: selectedApprentice[0].id_aprendiz
     }
-  };
+  }
 
+  // Función para manejar el clic en un instructor
+  const handleTeacherClick = async (userId) => {
+    console.log('ID del instructor:', userId)
+  }
+
+  // Función para manejar el clic en un aprendiz
+  const handleUserClick = async (userId) => {
+    try {
+      const response = await getApprenticesById(userId)
+      const res = response.data.result
+      setSelectedApprentice(res)
+      setUserSearch([])
+      setTeacherSearch([])
+    } catch (error) {
+      console.error('Error obteniendo detalles del aprendiz:', error)
+    }
+  }
+
+  // Función para eliminar aprendices seleccionados
   const removeApprentices = (apprenticeId) => {
-    setSelectedApprentice((prevApprentices) => prevApprentices.filter((apprentice) => apprentice.id_aprendiz !== apprenticeId));
-    console.log("Aprendiz eliminado:", apprenticeId);
+    setSelectedApprentice((prevApprentices) => prevApprentices.filter((apprentice) => apprentice.id_aprendiz !== apprenticeId))
+    console.log('Aprendiz eliminado:', apprenticeId)
 
     // Imprime el estado después de eliminar para verificar si se actualiza correctamente
-    console.log("Aprendices seleccionados después de eliminar:", selectedApprentice);
-  };
+    console.log('Aprendices seleccionados después de eliminar:', selectedApprentice)
+  }
 
-  // Barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false);
+  // Estado y función para controlar la barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false)
 
   const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen);
-  };
+    setNotifyOpen(!notifyOpen)
+  }
 
   return (
     <main className="relative h-screen flex ">
@@ -188,7 +189,7 @@ const Create = () => {
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
           <section className="w-[85%] ml-[3rem] h-full ">
             <section className=" relative ">
-              <Search className="relative " placeholder={"Buscar Instructor"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
+              <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Instructores</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
@@ -198,7 +199,7 @@ const Create = () => {
                         <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario} onClick={() => handleTeacherClick(item.id_usuario)}>
                           <React.Fragment>
                             <li>{item.numero_documento}</li>
-                            <li>{item.nombres + " " + item.apellidos}</li>
+                            <li>{item.nombres + ' ' + item.apellidos}</li>
                             <li>
                               <i className="fi fi-rr-user-add text-green-500 text-[1rem]"></i>
                             </li>
@@ -207,13 +208,13 @@ const Create = () => {
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">{error ? error : "Ningún instructor seleccionado"}</span>
+                    <span className="text-white text-center py-[1rem] block">{error ?? 'Ningún instructor seleccionado'}</span>
                   )}
                 </section>
               </section>
             </section>
             <section className="relative top-[1rem] ">
-              <Search className="relative w-[100%]  " placeholder={"Buscar aprendiz"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
+              <Search className="relative w-[100%]  " placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl">
                 <h3 className="text-white grid justify-center">Aprendices</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
@@ -223,7 +224,7 @@ const Create = () => {
                         <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
                           <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
-                            <li>{item.nombres_aprendiz + " " + item.apellidos_aprendiz}</li>
+                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
                               <i className="fi fi-rr-user-add text-green-500 text-[1rem]"></i>
                             </li>
@@ -234,7 +235,7 @@ const Create = () => {
                         <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
                           <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
-                            <li>{item.nombres_aprendiz + " " + item.apellidos_aprendiz}</li>
+                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
                               <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeApprentices(item.id_aprendiz)}></i>
                             </li>
@@ -243,7 +244,7 @@ const Create = () => {
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">{errorUser ? errorUser : "Ningún aprendiz seleccionado"}</span>
+                    <span className="text-white text-center py-[1rem] block">{errorUser ?? 'Ningún aprendiz seleccionado'}</span>
                   )}
                 </section>
               </section>
@@ -272,10 +273,10 @@ const Create = () => {
                     <CardBody className="gap-1">
                       <CheckboxGroup>
                         <Checkbox value="rules" className="flex  items-start">
-                          Feliz
+                          Numerales
                         </Checkbox>
                         <Checkbox value="tati" className="flex  items-start">
-                          Estoy
+                          Numerales
                         </Checkbox>
                       </CheckboxGroup>
                     </CardBody>
@@ -286,10 +287,10 @@ const Create = () => {
                     <CardBody>
                       <CheckboxGroup>
                         <Checkbox value="rules" className="flex  items-start">
-                          Amigos
+                          Numerales
                         </Checkbox>
                         <Checkbox value="tati" className="flex  items-start">
-                          holi
+                          Numerales
                         </Checkbox>
                       </CheckboxGroup>
                     </CardBody>
@@ -300,10 +301,10 @@ const Create = () => {
                     <CardBody>
                       <CheckboxGroup>
                         <Checkbox value="rules" className="flex  items-start">
-                          No se que
+                          Numerales
                         </Checkbox>
                         <Checkbox value="tati" className="flex  items-start">
-                          Poner
+                          Numerales
                         </Checkbox>
                       </CheckboxGroup>
                     </CardBody>
@@ -322,7 +323,7 @@ const Create = () => {
         <Footer />
       </section>
     </main>
-  );
-};
+  )
+}
 
-export { Create };
+export { Create }
