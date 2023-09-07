@@ -103,7 +103,7 @@ const Requests = () => {
                     <TableCell>{item.id}</TableCell>
                     <TableCell>{item.name}</TableCell>
                     <TableCell>{item.date}</TableCell>
-                    <TableCell className={` flex justify-center items-center w-[5.5rem] py-[0] relative top-[.5rem] ${getStatusColorClass(item.value)}`}>{item.value}</TableCell>
+                    <TableCell className={` flex justify-center items-center w-[5.5rem] py-[0] relative top-[.6rem] ${getStatusColorClass(item.value)}`}>{item.value}</TableCell>
                     <TableCell>
                       <i className="fi fi-rr-edit px-3 text-xl cursor-pointer hover:text-yellow-300" onClick={modalDetailsEdit} />
                       <i className="fi fi-rs-eye text-xl cursor-pointer  hover:text-green-600 active:opacity-50" onClick={modalDetails} />

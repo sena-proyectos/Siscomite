@@ -7,7 +7,7 @@ export const Text = () => {
   useEffect(() => {
     // Simulamos un retraso de 3 segundos antes de permitir el cierre
     const notificationTimeout = setTimeout(() => {
-      setCanClose(true); // Después de 3 segundos, permitir el cierre manual
+      setCanClose(trueru); // Después de 3 segundos, permitir el cierre manual
     }, 10);
 
     // Limpia el temporizador cuando el componente se desmonta
