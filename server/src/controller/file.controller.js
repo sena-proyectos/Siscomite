@@ -6,18 +6,23 @@ import fs from 'fs';
 export const uploadFile = multerMiddleware.single('archivo');
 
 export const handleFileUpload = async (req, res) => {
+  // Verifica si ocurrió un error durante la carga del archivo
+  if (req.fileValidationError) {
+    return res.status(400).send({ message: 'Tipo de archivo no permitido' });
+  }
+
   const { filename } = req.file;
   const fileType = req.file.mimetype; // Obtener el tipo de archivo desde Multer
-  
 
   try {
     await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `uploads/${filename}`, fileType]);
     res.status(201).send({ message: 'Archivo subido y guardado exitosamente' });
   } catch (error) {
     res.status(500).send({ message: 'Error al subir y guardar el archivo' });
-    console.log(error);
   }
 };
+
+
 
 export const getFiles = async (req, res) => {
   try {
