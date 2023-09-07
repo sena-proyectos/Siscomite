@@ -30,7 +30,7 @@ CREATE TABLE `aprendices` (
   `apellidos_aprendiz` varchar(100) NOT NULL,
   `numero_documento_aprendiz` varchar(45) NOT NULL,
   `email_aprendiz_sena` varchar(300) NOT NULL,
-  `email_aprendiz_personal` varchar(300) NOT NULL,
+  `email_aprendiz_personal` varchar(300) DEFAULT NULL,
   `celular_aprendiz` varchar(20) NOT NULL,
   `fijo_aprendiz` varchar(20) DEFAULT NULL,
   `estado` varchar(100) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `aprendices` (
   KEY `id_ficha` (`id_ficha`),
   CONSTRAINT `aprendices_ibfk_1` FOREIGN KEY (`id_documento`) REFERENCES `documentos` (`id_documento`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `aprendices_ibfk_2` FOREIGN KEY (`id_ficha`) REFERENCES `fichas` (`id_ficha`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,7 +179,7 @@ CREATE TABLE `fichas` (
   KEY `fk_usuario_coordinador` (`id_usuario_coordinador`),
   CONSTRAINT `fichas_ibfk_1` FOREIGN KEY (`id_modalidad`) REFERENCES `modalidades` (`id_modalidad`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_usuario_coordinador` FOREIGN KEY (`id_usuario_coordinador`) REFERENCES `usuarios` (`id_usuario`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +188,7 @@ CREATE TABLE `fichas` (
 
 LOCK TABLES `fichas` WRITE;
 /*!40000 ALTER TABLE `fichas` DISABLE KEYS */;
-INSERT INTO `fichas` VALUES (1,'2473196','ADSO','Mañana','Lectiva','4','',1,3),(2,'2664110','ADSI','Tarde','Lectiva','5','EN EJECUCIÓN',1,3);
+INSERT INTO `fichas` VALUES (1,'2473196','ADSO','Mañana','Lectiva','4','',1,3),(2,'2664110','ADSI','Tarde','Lectiva','5','EN EJECUCIÓN',1,3),(7,'654984','Medicina','Tarde','Lectiva','2','EN EJECUCIÓN',1,10),(12,'1234567','Carpinteria','Noche','Lectiva','3','EN EJECUCIÓN',3,10),(13,'1234563','Carpinteria','Mañana','Lectiva','2','EN EJECUCIÓN',2,3);
 /*!40000 ALTER TABLE `fichas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +203,7 @@ CREATE TABLE `modalidades` (
   `id_modalidad` int NOT NULL AUTO_INCREMENT,
   `nombre_modalidad` varchar(100) NOT NULL,
   PRIMARY KEY (`id_modalidad`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +212,7 @@ CREATE TABLE `modalidades` (
 
 LOCK TABLES `modalidades` WRITE;
 /*!40000 ALTER TABLE `modalidades` DISABLE KEYS */;
-INSERT INTO `modalidades` VALUES (1,'Presencial'),(2,'Virtual');
+INSERT INTO `modalidades` VALUES (1,'Presencial'),(2,'Virtual'),(3,'Media ténica'),(4,'A distancia');
 /*!40000 ALTER TABLE `modalidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +388,7 @@ CREATE TABLE `usuarios` (
   KEY `id_documento` (`id_documento`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `usuarios_ibfk_2` FOREIGN KEY (`id_documento`) REFERENCES `documentos` (`id_documento`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,10 +404,6 @@ UNLOCK TABLES;
 --
 -- Dumping events for database 'siscomite'
 --
-
---
--- Dumping routines for database 'siscomite'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -418,4 +414,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-05 11:16:05
+-- Dump completed on 2023-09-07 13:58:37

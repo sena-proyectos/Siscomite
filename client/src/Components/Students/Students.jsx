@@ -21,7 +21,20 @@ const Students = () => {
   const [error, setError] = useState(null)
   const [reloadFetch, setReloadFetch] = useState(false)
 
+  // Barra de notificaciones
+  const [notifyOpen, setNotifyOpen] = useState(false)
+
+  const itemsPerPage = 9 // Número de elementos por página
+  const [activePage, setActivePage] = useState(1)
+
+  // Calcula los datos a mostrar en la página actual
+  const indexOfLastItem = activePage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentItems = apprentices && apprentices.length > 0 ? apprentices.slice(indexOfFirstItem, indexOfLastItem) : []
+  const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
+
   const navigate = useNavigate()
+  const [isOpen, setIsOpen] = useState(false)
 
   const getApprentices = async () => {
     try {
@@ -33,12 +46,9 @@ const Students = () => {
     }
   }
   useEffect(() => {
-    // if(apprentices != undefined){
-    //   console.log("hola")
-    // }
     getApprentices()
     if (reloadFetch === true) {
-      setMessage([])
+      setMessage(null)
       setReloadFetch(false)
     }
   }, [apprentices, reloadFetch])
@@ -53,15 +63,6 @@ const Students = () => {
     }
     getFichasByIdFicha()
   }, [])
-
-  const itemsPerPage = 9 // Número de elementos por página
-  const [activePage, setActivePage] = useState(1)
-
-  // Calcula los datos a mostrar en la página actual
-  const indexOfLastItem = activePage * itemsPerPage
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = apprentices && apprentices.length > 0 ? apprentices.slice(indexOfFirstItem, indexOfLastItem) : []
-  const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
 
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
@@ -87,19 +88,16 @@ const Students = () => {
     }
   }
 
-  // Barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
   const toggleNotify = () => {
     setNotifyOpen(!notifyOpen)
   }
 
-  // Abrir Modal para agregar estudiantes
+  //Abrir Modal para agregar estudiantes
   const [modalAddStudent, setModalStudentAdd] = useState(false)
   const modalStudents = () => {
     setModalStudentAdd(!modalAddStudent)
   }
-  // Abrir Modal para la informacíon de estudiantes
+  //Abrir Modal para la informacíon de estudiantes
   const [modalInfoStudents, setInfoStudents] = useState(false)
   const infoStudents = (id) => {
     setInfoStudents(!modalInfoStudents)
@@ -173,25 +171,25 @@ const Students = () => {
                     </>
                   ) : (
                     <>
-                      {currentItems.map((item) => (
-                        <Card className="w-full max-h-[8rem] z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
-                          <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
-                            <div className="flex gap-5">
-                              <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>
-                              <div className="flex flex-col gap-1 items-start justify-center">
-                                <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
-                                <h5 className="text-small tracking-tight text-default-400 flex">
-                                  <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
-                                  {/* <p className="px-[4px]">{item.descripción}</p> */}
-                                </h5>
+                      {currentItems &&
+                        currentItems.map((item) => (
+                          <Card className="w-full max-h-[8rem] z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
+                            <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
+                              <div className="flex gap-5">
+                                <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>
+                                <div className="flex flex-col gap-1 items-start justify-center">
+                                  <h4 className="text-small font-semibold leading-none text-default-600">{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</h4>
+                                  <h5 className="text-small tracking-tight text-default-400 flex">
+                                    <p className="px-[4px]">{item.numero_documento_aprendiz}</p>
+                                  </h5>
+                                </div>
                               </div>
-                            </div>
-                          </CardHeader>
-                          <CardBody onClick={() => infoStudents(item.id_aprendiz)} className="relative text-default-400 text-small cursor-pointer">
-                            <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
-                          </CardBody>
-                        </Card>
-                      ))}
+                            </CardHeader>
+                            <CardBody onClick={() => infoStudents(item.id_aprendiz)} className="relative text-default-400 text-small cursor-pointer">
+                              <p className="relative bottom-1">{item.email_aprendiz_sena}</p>
+                            </CardBody>
+                          </Card>
+                        ))}
                     </>
                   )}
                 </>
