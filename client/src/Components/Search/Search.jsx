@@ -1,12 +1,20 @@
-import './Search.css'
-import { useRef, useEffect, useState } from 'react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
+// Importaciones necesarias
+import './Search.css' // Importar el archivo CSS para estilos específicos
+import { useRef, useEffect, useState } from 'react' // Importar React, useRef, useEffect y useState desde React
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react' // Importar componentes de Next UI
 
+// Componente Search
 const Search = ({ searchStudent, placeholder, icon, filtro }) => {
+  // Estado para controlar la rotación del icono
   const [iconRow, setIconRow] = useState(false)
+
+  // Referencia al elemento de entrada de texto para búsqueda
   const search = useRef()
+
+  // Referencia para el temporizador de debounce
   const debounceTimeout = useRef(null)
 
+  // Función para manejar la búsqueda con debounce
   const handleSearch = () => {
     const searchValue = search.current.value
     clearTimeout(debounceTimeout.current)
@@ -15,10 +23,12 @@ const Search = ({ searchStudent, placeholder, icon, filtro }) => {
     }, 300)
   }
 
+  // Función para prevenir la acción predeterminada del formulario
   const evnt = (e) => {
     e.preventDefault()
   }
 
+  // Limpieza del temporizador de debounce al desmontar el componente
   useEffect(() => {
     return () => {
       clearTimeout(debounceTimeout.current)

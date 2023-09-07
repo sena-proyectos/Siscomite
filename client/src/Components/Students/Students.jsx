@@ -12,7 +12,10 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
 
 const Students = () => {
+  // Obtener el parámetro id_ficha desde la URL
   const { id_ficha } = useParams()
+
+  // Estados para gestionar los datos de los aprendices y grupos
   const [apprentices, setApprentices] = useState([])
   const [informationGruops, setInformationGruops] = useState([])
   const [message, setMessage] = useState()
@@ -21,10 +24,11 @@ const Students = () => {
   const [error, setError] = useState(null)
   const [reloadFetch, setReloadFetch] = useState(false)
 
-  // Barra de notificaciones
+  // Estado para controlar la apertura de la notificación
   const [notifyOpen, setNotifyOpen] = useState(false)
 
-  const itemsPerPage = 9 // Número de elementos por página
+  // Número de elementos por página
+  const itemsPerPage = 9 
   const [activePage, setActivePage] = useState(1)
 
   // Calcula los datos a mostrar en la página actual
@@ -36,6 +40,7 @@ const Students = () => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
 
+    // Función para obtener los aprendices por ID de ficha
   const getApprentices = async () => {
     try {
       const response = await getApprenticesByIdFicha(id_ficha)
@@ -54,6 +59,7 @@ const Students = () => {
   }, [apprentices, reloadFetch])
 
   useEffect(() => {
+       // Obtener información de las fichas por ID de ficha
     const getFichasByIdFicha = async () => {
       try {
         const response = await getFichasById(id_ficha)
@@ -69,6 +75,7 @@ const Students = () => {
     setActivePage(pageNumber)
   }
 
+    // Función para buscar aprendices
   const searchApprentices = async (nombres) => {
     const idFicha = id_ficha
     try {

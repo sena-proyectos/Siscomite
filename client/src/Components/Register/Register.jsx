@@ -1,3 +1,4 @@
+/* Importaciones de modulos y componentes */
 import './Register.css'
 import { Link } from 'react-router-dom'
 import React, { useState } from 'react'
@@ -7,6 +8,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input } 
 import { Toaster, toast } from 'sonner'
 
 export const Register = () => {
+  /* Estados para capturar los valores de los campos */
   const [nombres, setNombres] = useState('')
   const [apellidos, setApellidos] = useState('')
   const [emailSena, setEmailSena] = useState('')
@@ -15,6 +17,7 @@ export const Register = () => {
   const [contrasena, setContrasena] = useState('')
   const [selectedTipoDocumento, setSelectedTipoDocumento] = useState('')
 
+  /* mapeo de los valores segun la base de datos */
   const documentoOptions = {
     CC: '1',
     TI: '2',
@@ -22,6 +25,7 @@ export const Register = () => {
     PEP: '4'
   }
 
+  /* Enviar datos capturados al servidor  */
   const sendData = async (e) => {
     e.preventDefault()
     const dataValue = {
