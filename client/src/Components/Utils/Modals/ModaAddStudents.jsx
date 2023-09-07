@@ -79,7 +79,7 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
 
   return (
     <>
-      <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
+      <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center ">
         <Toaster position="top-right" closeButton richColors />
         <section className={"bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in "}>
           <header className="flex justify-center ">
@@ -88,7 +88,7 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
               Agregar aprendices
             </h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
-              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer"  />
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" />
             </section>
           </header>
           <section className="bodyModal">
@@ -156,6 +156,7 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
             </section>
           </section>
         </section>
+        <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>
     </>
   );

@@ -1,12 +1,12 @@
 import "./Create.css";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import Cookie from "js-cookie";
 
 import { Footer } from "../Footer/Footer";
 import { Notify } from "../Utils/NotifyBar/NotifyBar";
 import { Sliderbar } from "../Sliderbar/Sliderbar";
-import { RadioGroup, Radio, Tooltip } from "@nextui-org/react";
+import { RadioGroup, Radio, Tooltip, Tabs, Tab } from "@nextui-org/react";
 import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
 import { Search } from "../Search/Search";
 import { getTeacherByName, getApprenticesByName, getApprenticesById } from "../../api/httpRequest";
@@ -134,10 +134,9 @@ const Create = () => {
                 <></>
               ) : (
                 <>
-                  <Button radius="full" variant="flat" color="primary" onClick={toggleNotify}>
-                    Mensajes
-                    <i className="fi fi-ss-bell pl-[.5rem]" />
-                  </Button>
+                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem] " />
+                  </section>
                 </>
               )}
             </section>
@@ -255,34 +254,63 @@ const Create = () => {
               </section>
               <section className="">
                 <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
-                <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
-                  Subir evidencia
-                  <i className="fi fi-rr-upload px-[.5rem]" />
-                  <input type="file" className="hidden" />
-                </label>
+                  <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
+                    Subir evidencia
+                    <i className="fi fi-rr-upload px-[.5rem]" />
+                    <input type="file" className="hidden" />
+                  </label>
                 </Tooltip>
               </section>
             </section>
           </section>
 
           <section className="mr-[3.1rem] w-[85%] h-full">
-            <div className="flex w-full h-full flex-col">
-              <Card className="overflow-auto  h-full ">
-                <section className="px-[3rem] py-[.5rem] bg-slate-500 ">
-                  <Search placeholder={"Buscar"} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} />
-                </section>
-                <CardBody className="gap-1">
-                  <CheckboxGroup>
-                    <Checkbox value="rules" className="flex  items-start">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla sunt animi voluptatibus recusandae eaque, maxime at voluptatum minima quod illo officia, nihil illum minus possimus perferendis esse nobis, perspiciatis rerum?
-                    </Checkbox>
-                    <Checkbox value="tati" className="flex  items-start">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla sunt animi voluptatibus recusandae eaque, maxime at voluptatum minima quod illo officia, nihil illum minus possimus perferendis esse nobis, perspiciatis rerum?
-                    </Checkbox>
-                  </CheckboxGroup>
-                </CardBody>
-              </Card>
-            </div>
+            <section className="flex w-full h-full flex-col">
+              <Tabs>
+                <Tab key="academica" title="Acádemicas">
+                  <Card className="overflow-auto  h-full ">
+                    <CardBody className="gap-1">
+                      <CheckboxGroup>
+                        <Checkbox value="rules" className="flex  items-start">
+                          Feliz
+                        </Checkbox>
+                        <Checkbox value="tati" className="flex  items-start">
+                          Estoy
+                        </Checkbox>
+                      </CheckboxGroup>
+                    </CardBody>
+                  </Card>
+                </Tab>
+                <Tab key="disciplinarias" title="Disciplinarias">
+                  <Card>
+                    <CardBody>
+                      <CheckboxGroup>
+                        <Checkbox value="rules" className="flex  items-start">
+                          Amigos
+                        </Checkbox>
+                        <Checkbox value="tati" className="flex  items-start">
+                          holi
+                        </Checkbox>
+                      </CheckboxGroup>
+                    </CardBody>
+                  </Card>
+                </Tab>
+                <Tab key="otros" title="Otros">
+                  <Card>
+                    <CardBody>
+                      <CheckboxGroup>
+                        <Checkbox value="rules" className="flex  items-start">
+                          No se que
+                        </Checkbox>
+                        <Checkbox value="tati" className="flex  items-start">
+                          Poner
+                        </Checkbox>
+                      </CheckboxGroup>
+                    </CardBody>
+                  </Card>
+                </Tab>
+              </Tabs>
+            </section>
           </section>
         </section>
         <section className="grid place-items-center relative top-[2rem] ">
