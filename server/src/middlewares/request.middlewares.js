@@ -1,23 +1,34 @@
+// Importar el esquema de validación createSolicitud
 import { createSolicitud } from '../schemas/request.schemas.js'
-import { pool } from '../db.js'
 
+// Middleware para verificar y validar los datos de una solicitud antes de crearla
 export const createDataSolicitud = (req, res, next) => {
-    console.log(req.body);
-    const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo } = req.body;
-    const idParsedUser = Number(id_usuario_solicitante);
-    const idParsedAprendiz = Number(id_aprendiz);
-    const idParsedArchivo = Number (id_archivo);
+  // Extraer los datos de la solicitud del cuerpo de la solicitud
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo } = req.body
 
-    try {
-        if (isNaN(idParsedUser)) return res.status(400).json({ message: 'El usuario no es válido.' });
-        if (isNaN(idParsedAprendiz)) return res.status(400).json({ message: 'El aprendiz no es válido.' });
-        if (isNaN(idParsedArchivo)) return res.status(400).json({ message: 'El archivo no es válido.' });
+  // Convertir los ID a números enteros
+  const idParsedUser = Number(id_usuario_solicitante)
+  const idParsedAprendiz = Number(id_aprendiz)
+  const idParsedArchivo = Number(id_archivo)
 
+  try {
+    // Comprobar si los ID son números válidos
+    if (isNaN(idParsedUser)) return res.status(400).json({ message: 'El usuario no es válido.' })
+    if (isNaN(idParsedAprendiz)) return res.status(400).json({ message: 'El aprendiz no es válido.' })
+    if (isNaN(idParsedArchivo)) return res.status(400).json({ message: 'El archivo no es válido.' })
 
-        const { error } = createSolicitud.validate({ tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo });
-        if (error !== undefined) return res.status(400).json({ message: 'Los datos de la solicitud no son válidos, verifícalos.' });
-        next();
-    } catch (error) {
-        return res.status(500).json({ message: 'Error inesperado' });
+    // Validar los datos de la solicitud utilizando el esquema de validación 'createSolicitud'
+    const { error } = createSolicitud.validate({ tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo })
+
+    // Comprobar si hay un error de validación
+    if (error !== undefined) {
+      return res.status(400).json({ message: 'Los datos de la solicitud no son válidos, verifícalos.' })
     }
-};
+
+    // Si los datos de la solicitud son válidos, se permite que la solicitud continúe al siguiente middleware o controlador
+    next()
+  } catch (error) {
+    // En caso de error, se envía una respuesta de error interno del servidor (500) con un mensaje genérico de error
+    return res.status(500).json({ message: 'Error inesperado' })
+  }
+}

@@ -1,3 +1,4 @@
+/* Importaciones de modulos y componentes */
 import './Login.css'
 import { Footer } from '../Footer/Footer'
 import { Link, useNavigate } from 'react-router-dom'
@@ -8,16 +9,19 @@ import { Input } from '@nextui-org/react'
 import { Toaster, toast } from 'sonner'
 
 export const Login = () => {
+  /* Estados para los valores de los campos */
   const [numeroDocumento, setNumeroDocumento] = useState('')
   const [contrasena, setContrasena] = useState('')
 
-  const [isLoading, setIsLoading] = useState(false) // Estado para controlar el estado de carga
+  // Estado para controlar el estado de carga
+  const [isLoading, setIsLoading] = useState(false) 
   const [isVisible, setIsVisible] = useState(false)
 
   const navigate = useNavigate()
 
   const toggleVisibility = () => setIsVisible(!isVisible)
 
+  /* Funcion para enviar los datos del inicio de sesion al servidor */
   const sendData = async (e) => {
     e.preventDefault()
 

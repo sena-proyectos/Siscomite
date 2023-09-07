@@ -1,65 +1,34 @@
+// Importación de módulos y componentes necesarios
 import './Create.css'
 import React, { useEffect, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 import Cookie from 'js-cookie'
-
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import {
-  Card,
-  CardBody,
-  Textarea,
-  CheckboxGroup,
-  Checkbox,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Button,
-  RadioGroup,
-  Radio,
-  Tooltip,
-  Tabs,
-  Tab
-} from '@nextui-org/react'
+import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
 import { Search } from '../Search/Search'
-import {
-  getTeacherByName,
-  getApprenticesByName,
-  getApprenticesById
-} from '../../api/httpRequest'
+import { getTeacherByName, getApprenticesByName, getApprenticesById } from '../../api/httpRequest'
 
+// Definición del componente Create
 const Create = () => {
-  const [selectedAprendizOption, setSelectedAprendizOption] = useState(null)
-
+  // Estados para manejar la selección de opciones y resultados de búsqueda
   const [teacherSearch, setTeacherSearch] = useState([])
   const [userSearch, setUserSearch] = useState([])
-
   const [selectedApprentice, setSelectedApprentice] = useState([])
   const [error, setError] = useState(null)
   const [errorUser, setErrorUser] = useState(null)
   const [userID, setUserID] = useState('')
+  const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Coordinador']))
+  const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')), [selectedKeys])
 
-  const [selectedKeys, setSelectedKeys] = React.useState(
-    new Set(['Coordinador'])
-  )
-  const selectedValue = React.useMemo(
-    () => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')),
-    [selectedKeys]
-  )
-
-  // Drop tipo falta
-  const [selectedFalta, setSelectedFalta] = React.useState(
-    new Set(['Calificación'])
-  )
-  const selectedValueFalta = React.useMemo(
-    () => Array.from(selectedFalta).join(', ').replaceAll('_', ' '),
-    [selectedFalta]
-  )
+  // estados para manejar la selección de opciones y resultados de búsqueda
+  const [selectedFalta, setSelectedFalta] = React.useState(new Set(['Calificación']))
+  const selectedValueFalta = React.useMemo(() => Array.from(selectedFalta).join(', ').replaceAll('_', ' '), [selectedFalta])
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
 
+  // Función para buscar instructores
   const getTeacher = async (nombres) => {
     try {
       if (nombres.trim() === '') {
@@ -78,6 +47,7 @@ const Create = () => {
     }
   }
 
+  // Función para buscar aprendices
   const getUser = async (nombres) => {
     try {
       if (nombres.trim() === '') {
@@ -96,16 +66,16 @@ const Create = () => {
       setSelectedApprentice([])
     }
   }
+
+  // Efecto para obtener el ID del usuario a partir de un token
   useEffect(() => {
     const infoUser = Cookie.get('token')
     const decoded = jwtDecode(infoUser)
     setUserID(decoded.id_usuario)
-    // console.log("hola");
   }, [])
 
+  // Función para enviar datos
   const sendData = () => {
-    if (selectedApprentice[0] === undefined)
-      return alert('debe seleccionar un aprendiz, para hacer la solicitud')
 
     const dataValue = {
       tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
@@ -117,10 +87,12 @@ const Create = () => {
     console.log(dataValue)
   }
 
+  // Función para manejar el clic en un instructor
   const handleTeacherClick = async (userId) => {
     console.log('ID del instructor:', userId)
   }
 
+  // Función para manejar el clic en un aprendiz
   const handleUserClick = async (userId) => {
     try {
       const response = await getApprenticesById(userId)
@@ -133,22 +105,16 @@ const Create = () => {
     }
   }
 
+  // Función para eliminar aprendices seleccionados
   const removeApprentices = (apprenticeId) => {
-    setSelectedApprentice((prevApprentices) =>
-      prevApprentices.filter(
-        (apprentice) => apprentice.id_aprendiz !== apprenticeId
-      )
-    )
+    setSelectedApprentice((prevApprentices) => prevApprentices.filter((apprentice) => apprentice.id_aprendiz !== apprenticeId))
     console.log('Aprendiz eliminado:', apprenticeId)
 
     // Imprime el estado después de eliminar para verificar si se actualiza correctamente
-    console.log(
-      'Aprendices seleccionados después de eliminar:',
-      selectedApprentice
-    )
+    console.log('Aprendices seleccionados después de eliminar:', selectedApprentice)
   }
 
-  // Barra de notificaciones
+  // Estado y función para controlar la barra de notificaciones
   const [notifyOpen, setNotifyOpen] = useState(false)
 
   const toggleNotify = () => {
@@ -170,10 +136,7 @@ const Create = () => {
                 <></>
               ) : (
                 <>
-                  <section
-                    className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center"
-                    onClick={toggleNotify}
-                  >
+                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
                     <i className="fi fi-ss-bell text-blue-400 p-[.3rem] " />
                   </section>
                 </>
@@ -182,10 +145,7 @@ const Create = () => {
           </section>
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>
-              <RadioGroup
-                orientation="horizontal"
-                onChange={(e) => setTipoSolicitud(e.target.value)}
-              >
+              <RadioGroup orientation="horizontal" onChange={(e) => setTipoSolicitud(e.target.value)}>
                 <Radio value="Grupal" isDisabled={true}>
                   Grupal
                 </Radio>
@@ -201,14 +161,7 @@ const Create = () => {
                     <i className="fi fi-rr-angle-small-down text-[1.5rem]" />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu
-                  aria-label="Single selection actions"
-                  variant="flat"
-                  disallowEmptySelection
-                  selectionMode="single"
-                  selectedFalta={selectedFalta}
-                  onSelectionChange={setSelectedFalta}
-                >
+                <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedFalta={selectedFalta} onSelectionChange={setSelectedFalta}>
                   <DropdownItem key="leve">Leve</DropdownItem>
                   <DropdownItem key="grave">Grave</DropdownItem>
                   <DropdownItem key="gravísimas">Gravísimas</DropdownItem>
@@ -224,26 +177,11 @@ const Create = () => {
                     <i className="fi fi-rr-angle-small-down text-[1.5rem]" />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu
-                  aria-label="Single selection actions"
-                  variant="flat"
-                  disallowEmptySelection
-                  selectionMode="single"
-                  selectedKeys={selectedKeys}
-                  onSelectionChange={setSelectedKeys}
-                >
-                  <DropdownItem key="Marianela Henao Atehortua">
-                    Marianela Henao Atehortua
-                  </DropdownItem>
-                  <DropdownItem key="Jaime León Vergara Areiza">
-                    Jaime León Vergara Areiza
-                  </DropdownItem>
-                  <DropdownItem key="Sergio Soto Henao">
-                    Sergio Soto Henao
-                  </DropdownItem>
-                  <DropdownItem key="Mauro Isaías Arango Vanegas">
-                    Mauro Isaías Arango Vanegas
-                  </DropdownItem>
+                <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
+                  <DropdownItem key="Marianela Henao Atehortua">Marianela Henao Atehortua</DropdownItem>
+                  <DropdownItem key="Jaime León Vergara Areiza">Jaime León Vergara Areiza</DropdownItem>
+                  <DropdownItem key="Sergio Soto Henao">Sergio Soto Henao</DropdownItem>
+                  <DropdownItem key="Mauro Isaías Arango Vanegas">Mauro Isaías Arango Vanegas</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </section>
@@ -252,27 +190,14 @@ const Create = () => {
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
           <section className="w-[85%] ml-[3rem] h-full ">
             <section className=" relative ">
-              <Search
-                className="relative "
-                placeholder={'Buscar Instructor'}
-                icon={
-                  <i className="fi fi-br-search relative cursor-pointer right-[3rem]" />
-                }
-                searchStudent={getTeacher}
-              />
+              <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
-                <h3 className="text-white grid justify-center ">
-                  Instructores
-                </h3>
+                <h3 className="text-white grid justify-center ">Instructores</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
                   {teacherSearch.length > 0 ? (
                     <>
                       {teacherSearch.map((item) => (
-                        <ul
-                          className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2"
-                          key={item.id_usuario}
-                          onClick={() => handleTeacherClick(item.id_usuario)}
-                        >
+                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario} onClick={() => handleTeacherClick(item.id_usuario)}>
                           <React.Fragment>
                             <li>{item.numero_documento}</li>
                             <li>{item.nombres + ' ' + item.apellidos}</li>
@@ -284,40 +209,23 @@ const Create = () => {
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">
-                      {error ?? 'Ningún instructor seleccionado'}
-                    </span>
+                    <span className="text-white text-center py-[1rem] block">{error ?? 'Ningún instructor seleccionado'}</span>
                   )}
                 </section>
               </section>
             </section>
             <section className="relative top-[1rem] ">
-              <Search
-                className="relative w-[100%]  "
-                placeholder={'Buscar aprendiz'}
-                icon={
-                  <i className="fi fi-br-search relative cursor-pointer right-[3rem]" />
-                }
-                searchStudent={getUser}
-              />
+              <Search className="relative w-[100%]  " placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl">
                 <h3 className="text-white grid justify-center">Aprendices</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1">
                   {userSearch.length > 0 || selectedApprentice.length > 0 ? (
                     <>
                       {userSearch.map((item) => (
-                        <ul
-                          className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2"
-                          key={item.id_aprendiz}
-                          onClick={() => handleUserClick(item.id_aprendiz)}
-                        >
+                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
                           <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
-                            <li>
-                              {item.nombres_aprendiz +
-                                ' ' +
-                                item.apellidos_aprendiz}
-                            </li>
+                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
                               <i className="fi fi-rr-user-add text-green-500 text-[1rem]"></i>
                             </li>
@@ -325,53 +233,29 @@ const Create = () => {
                         </ul>
                       ))}
                       {selectedApprentice.map((item) => (
-                        <ul
-                          className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2"
-                          key={item.id_aprendiz}
-                          onClick={() => handleUserClick(item.id_aprendiz)}
-                        >
+                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
                           <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
+                            <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
-                              {item.nombres_aprendiz +
-                                ' ' +
-                                item.apellidos_aprendiz}
-                            </li>
-                            <li>
-                              <i
-                                className="fi fi-br-remove-user text-red-500 text-[1rem]"
-                                onClick={() =>
-                                  removeApprentices(item.id_aprendiz)
-                                }
-                              ></i>
+                              <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeApprentices(item.id_aprendiz)}></i>
                             </li>
                           </React.Fragment>
                         </ul>
                       ))}
                     </>
                   ) : (
-                    <span className="text-white text-center py-[1rem] block">
-                      {errorUser ?? 'Ningún aprendiz seleccionado'}
-                    </span>
+                    <span className="text-white text-center py-[1rem] block">{errorUser ?? 'Ningún aprendiz seleccionado'}</span>
                   )}
                 </section>
               </section>
             </section>
             <section className="py-[.5rem] relative top-[2.1rem] place-items-center grid grid-cols-2 gap-4 ">
               <section className=" w-full">
-                <Textarea
-                  label="Descripción"
-                  labelPlacement="outside"
-                  placeholder="Ingresa tu descripción"
-                  className="max-w-[300px] "
-                />
+                <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descripción" className="max-w-[300px] " />
               </section>
               <section className="">
-                <Tooltip
-                  showArrow={true}
-                  color="danger"
-                  content="La evidencia tiene que ser en un PDF"
-                >
+                <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
                   <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
                     Subir evidencia
                     <i className="fi fi-rr-upload px-[.5rem]" />
@@ -390,10 +274,10 @@ const Create = () => {
                     <CardBody className="gap-1">
                       <CheckboxGroup>
                         <Checkbox value="rules" className="flex  items-start">
-                          Feliz
+                          Numerales
                         </Checkbox>
                         <Checkbox value="tati" className="flex  items-start">
-                          Estoy
+                          Numerales
                         </Checkbox>
                       </CheckboxGroup>
                     </CardBody>
@@ -404,10 +288,10 @@ const Create = () => {
                     <CardBody>
                       <CheckboxGroup>
                         <Checkbox value="rules" className="flex  items-start">
-                          Amigos
+                          Numerales
                         </Checkbox>
                         <Checkbox value="tati" className="flex  items-start">
-                          holi
+                          Numerales
                         </Checkbox>
                       </CheckboxGroup>
                     </CardBody>
@@ -418,10 +302,10 @@ const Create = () => {
                     <CardBody>
                       <CheckboxGroup>
                         <Checkbox value="rules" className="flex  items-start">
-                          No se que
+                          Numerales
                         </Checkbox>
                         <Checkbox value="tati" className="flex  items-start">
-                          Poner
+                          Numerales
                         </Checkbox>
                       </CheckboxGroup>
                     </CardBody>

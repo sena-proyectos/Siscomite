@@ -1,15 +1,22 @@
-import { ViewPdf } from '../ViewPDF/ViewPDF'
-import React, { useState } from 'react'
-import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Footer } from '../Footer/Footer'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react'
+// Importaciones necesarias
+import { ViewPdf } from '../ViewPDF/ViewPDF' // Importar el componente ViewPdf
+import React, { useState } from 'react' // Importar React y useState
+import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
+import { Footer } from '../Footer/Footer' // Importar el componente Footer
+import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react' // Importar componentes de Next UI
 
+// Componente Rules
 const Rules = () => {
+  // Estados para controlar la visibilidad de diferentes elementos
   const [inputVisibleCap, setInputVisibleCap] = useState(false)
   const [inputVisibleArt, setInputVisibleArt] = useState(false)
   const [inputVisibleNumeral, setInputVisibleNumeral] = useState(false)
   const [inputVisibleParagrafos, setInputVisibleParagrafos] = useState(false)
+
+  // Modal de edición
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Modal
   // Drop capítulo
@@ -51,17 +58,17 @@ const Rules = () => {
     setChangeButtonNumeral(!changeButtonNumeral)
   }
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-
+  // Función para abrir el modal de edición
   const handleOpenEditModal = () => {
     setIsEditModalOpen(true)
   }
 
+  // Función para cerrar el modal de edición
   const handleCloseEditModal = () => {
     setIsEditModalOpen(false)
   }
 
+  // Función para guardar cambios (simulada con un timeout)
   const handleSave = () => {
     setIsLoading(true)
     // Simular un proceso de guardado
@@ -74,6 +81,7 @@ const Rules = () => {
   // Barra de notificaciones
   const [notifyOpen, setNotifyOpen] = useState(false)
 
+  // Función para alternar la visibilidad de la barra de notificaciones
   const toggleNotify = () => {
     setNotifyOpen(!notifyOpen)
   }
