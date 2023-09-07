@@ -5,7 +5,6 @@ export const getUser = async (req, res) => {
     const [result] = await pool.query('SELECT * FROM usuarios')
     res.status(200).send({ result })
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: 'Error al listar los usuarios' })
   }
 }

@@ -76,7 +76,7 @@ export const ModalAddGroups = ({ cerrarModal }) => {
 
   return (
     <>
-      <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
+      <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
         <Toaster position="top-right" closeButton richColors />
         <section className={"bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in "}>
           <header className="flex justify-center ">
@@ -91,7 +91,7 @@ export const ModalAddGroups = ({ cerrarModal }) => {
             <section className="relative grid grid-cols-2 justify-center gap-8">
               <section className="modalInput ">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} minLength={7} maxLength={7} onChange={(e) => setNumeroFicha(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={"outside"} variant={"flat"} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                 </div>
               </section>
               <section className="modalInput">
@@ -153,6 +153,7 @@ export const ModalAddGroups = ({ cerrarModal }) => {
             </section>
           </section>
         </section>
+        <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>
     </>
   );

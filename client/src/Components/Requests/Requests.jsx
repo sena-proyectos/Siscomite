@@ -11,6 +11,8 @@ import { ModalRequest } from "../Utils/Modals/ModalRequest";
 
 const Requests = () => {
   const [isOpen] = useState(false);
+  const [filtroVisible, setFiltroVisible] = useState(false);
+
   const data = [
     { id: 1, name: "Azul Andres Velez Romero", date: "02/10/2023", value: "Aprobado" },
     { id: 2, name: "Carlos Perez Falcó", date: "02/10/2020", value: "Rechazado" },
@@ -69,34 +71,34 @@ const Requests = () => {
   const toggleNotify = () => {
     setNotifyOpen(!notifyOpen);
   };
+
+  
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} />}
       {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} />}
 
-     
       <main className="h-screen flex">
         <Sliderbar />
         <section className="w-full overflow-auto ">
-          <header className="p-[1.5rem] flex justify-center">
+          <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search placeholder={"Buscar solicitud"} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+              <Search filtro={filtroVisible} placeholder={"Buscar solicitud"} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)}/>} />
             </section>
-            <section className=" absolute right-[15%] cursor-pointer ">
+            <section className="absolute right-[20%] cursor-pointer justify-center ">
               {notifyOpen ? (
                 <></>
               ) : (
                 <>
-                  <Button className="muve" radius="full" variant="flat" color="success" onClick={toggleNotify}>
-                    Mensajes
-                    <i className="fi fi-ss-bell pl-[.5rem]" />
-                  </Button>
+                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+                  </section>
                 </>
               )}
             </section>
           </header>
 
-          <section className="px-[2rem]  top-[.5rem] relative mr-auto h-[73vh] ">
+          <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
             <Table className="h-full ">
               <TableHeader>
                 <TableColumn>N°</TableColumn>

@@ -24,7 +24,7 @@ export const ModalEditRequest = ({ cerrarModal }) => {
   };
   return (
     <>
-      <main className="top-0 left-0 h-screen w-full bg-[#0000006a] z-10 fixed flex items-center justify-center backdrop-blur-[3px] ">
+      <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center ">
         <Toaster position="top-right" closeButton richColors />
         <section className={"bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in "}>
           <header className="flex justify-center ">
@@ -73,6 +73,7 @@ export const ModalEditRequest = ({ cerrarModal }) => {
             </section>
           </section>
         </section>
+        <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>
     </>
   );
