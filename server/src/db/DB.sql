@@ -149,7 +149,7 @@ CREATE TABLE `detalle_solicitud_aprendices` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_aprendices_ibfk_1` FOREIGN KEY (`id_aprendiz`) REFERENCES `aprendices` (`id_aprendiz`),
   CONSTRAINT `detalle_solicitud_aprendices_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +158,6 @@ CREATE TABLE `detalle_solicitud_aprendices` (
 
 LOCK TABLES `detalle_solicitud_aprendices` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_aprendices` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_aprendices` VALUES (1,9,4),(2,6,4),(3,7,4);
 /*!40000 ALTER TABLE `detalle_solicitud_aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +169,7 @@ DROP TABLE IF EXISTS `detalle_solicitud_numerales`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `detalle_solicitud_numerales` (
-  `id_solicitud_numeral` int NOT NULL,
+  `id_solicitud_numeral` int NOT NULL AUTO_INCREMENT,
   `id_solicitud` int DEFAULT NULL,
   `id_numeral` int DEFAULT NULL,
   PRIMARY KEY (`id_solicitud_numeral`),
@@ -178,7 +177,7 @@ CREATE TABLE `detalle_solicitud_numerales` (
   KEY `id_numeral` (`id_numeral`),
   CONSTRAINT `detalle_solicitud_numerales_ibfk_1` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_numerales_ibfk_2` FOREIGN KEY (`id_numeral`) REFERENCES `numerales` (`id_numeral`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +186,6 @@ CREATE TABLE `detalle_solicitud_numerales` (
 
 LOCK TABLES `detalle_solicitud_numerales` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_numerales` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_numerales` VALUES (1,4,10),(2,4,21),(3,4,25);
 /*!40000 ALTER TABLE `detalle_solicitud_numerales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,7 +205,7 @@ CREATE TABLE `detalle_solicitud_usuarios` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_usuarios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   CONSTRAINT `detalle_solicitud_usuarios_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -216,7 +214,6 @@ CREATE TABLE `detalle_solicitud_usuarios` (
 
 LOCK TABLES `detalle_solicitud_usuarios` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_usuarios` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_usuarios` VALUES (1,5,4),(2,7,4);
 /*!40000 ALTER TABLE `detalle_solicitud_usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,7 +287,7 @@ CREATE TABLE `modalidades` (
   `id_modalidad` int NOT NULL AUTO_INCREMENT,
   `nombre_modalidad` varchar(100) NOT NULL,
   PRIMARY KEY (`id_modalidad`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -299,7 +296,7 @@ CREATE TABLE `modalidades` (
 
 LOCK TABLES `modalidades` WRITE;
 /*!40000 ALTER TABLE `modalidades` DISABLE KEYS */;
-INSERT INTO `modalidades` VALUES (1,'Presencial'),(2,'Virtual');
+INSERT INTO `modalidades` VALUES (1,'Presencial'),(2,'Virtual'),(3,'Media técnia'),(4,'A distancia');
 /*!40000 ALTER TABLE `modalidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,7 +392,6 @@ CREATE TABLE `solicitud` (
   `tipo_solicitud` varchar(100) NOT NULL,
   `nombre_coordinacion` varchar(200) NOT NULL,
   `id_usuario_solicitante` int NOT NULL,
-  `id_aprendiz` int NOT NULL,
   `estado` varchar(45) NOT NULL,
   `fecha_creacion` datetime NOT NULL,
   `categoria_causa` varchar(255) NOT NULL,
@@ -404,12 +400,10 @@ CREATE TABLE `solicitud` (
   `id_archivo` int DEFAULT NULL,
   PRIMARY KEY (`id_solicitud`),
   KEY `fk_solicitud_1` (`id_usuario_solicitante`),
-  KEY `id_aprendiz` (`id_aprendiz`),
   KEY `fk_archivo` (`id_archivo`),
   CONSTRAINT `fk_archivo` FOREIGN KEY (`id_archivo`) REFERENCES `archivos` (`id_archivo`),
-  CONSTRAINT `fk_solicitud_1` FOREIGN KEY (`id_usuario_solicitante`) REFERENCES `usuarios` (`id_usuario`),
-  CONSTRAINT `solicitud_ibfk_2` FOREIGN KEY (`id_aprendiz`) REFERENCES `aprendices` (`id_aprendiz`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_solicitud_1` FOREIGN KEY (`id_usuario_solicitante`) REFERENCES `usuarios` (`id_usuario`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -418,7 +412,6 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
-INSERT INTO `solicitud` VALUES (4,'Grupal','Marianela',4,4,'Aprobado','2023-08-31 20:30:43','Disciplinaria','Grave','Descripción del caso...',13);
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -456,7 +449,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (3,'cristian david','Bedoya Torres','1027944969','bedoya969@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$DZvyLyvnd4b/oiwOHe/fiuu5jce2kNPgmIB53KPckhjzziGnclRq6',1,1),(4,'cristian ','Bedoya ','1027944956','bedoya956@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$O1zLg2.YqZtNbR9DmUwkRO207FuzZ69JpdpI2kwRkmU9JkhaoZzJu',1,2),(5,'Juan Carlos ','Prasca Medina ','1063355027','prasca07@soy.sena.edu',NULL,'3004984546',NULL,'','$2a$10$Q1Sw/kfD0p4NFchNsGowauXAvqMhVKNIPgSUQAFr5CkNr2cEwtzWG',1,2),(7,'cristian Prueba','Bedoya Prueba','1027944970','bedoyaprueba@soy.sena.edu',NULL,'3007030425',NULL,'ACTIVO','$2a$10$rirSMtMHGqWuWxAyucGY/OxDOGtiWAg7BbHmry9SBzHyxu0cirkUS',1,2),(8,'David','Torres','1010101010','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$0jE5eg39maDwPlXJnpuUteQFIA.s/36dBQC6NuYYkKyIVDSm5h4ma',1,2),(9,'David','Torres','101010101','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$17zhj7Y3XI5M85mdZ.KmaeBsxBODypjeYJ8L7KcJW./h3/oe4NIOG',1,1);
+INSERT INTO `usuarios` VALUES (3,'cristian david','Bedoya Torres','1027944969','bedoya969@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$DZvyLyvnd4b/oiwOHe/fiuu5jce2kNPgmIB53KPckhjzziGnclRq6',1,1),(4,'cristian ','Bedoya ','1027944956','bedoya956@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$O1zLg2.YqZtNbR9DmUwkRO207FuzZ69JpdpI2kwRkmU9JkhaoZzJu',1,2),(5,'Juan Carlos ','Prasca Medina ','1063355027','prasca07@soy.sena.edu',NULL,'3004984546',NULL,'','$2a$10$Q1Sw/kfD0p4NFchNsGowauXAvqMhVKNIPgSUQAFr5CkNr2cEwtzWG',1,2),(7,'cristian Prueba','Bedoya Prueba','1027944970','bedoyaprueba@soy.sena.edu',NULL,'3007030425',NULL,'ACTIVO','$2a$10$rirSMtMHGqWuWxAyucGY/OxDOGtiWAg7BbHmry9SBzHyxu0cirkUS',1,2),(8,'David','Torres','1010101010','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$0jE5eg39maDwPlXJnpuUteQFIA.s/36dBQC6NuYYkKyIVDSm5h4ma',1,2),(9,'David','Torres','101010101','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$17zhj7Y3XI5M85mdZ.KmaeBsxBODypjeYJ8L7KcJW./h3/oe4NIOG',1,1),(10,'Stiven','Benjumea Morales','1040491426','gsbenjumea@soy.sena.edu.co',NULL,'3016911686',NULL,'ACTIVO','$2a$10$yY0/KpalVGDIpA4RaFHOo.rAjVnMw.jGiK2NiRd0K0KC1bbzFRgY2',1,2);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 

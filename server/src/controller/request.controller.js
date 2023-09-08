@@ -1,67 +1,89 @@
-import { pool } from "../db.js";
-import mysql from 'mysql2/promise';
-
+import { pool } from '../db.js'
+import mysql from 'mysql2/promise'
 
 export const getsolicitud = async (req, res) => {
-    try {
-        const [result] = await pool.query('SELECT *from solicitud ');
-        res.status(200).send({ result })
-    } catch (error) {
-        res.status(500).send({ message: 'Error al listar las solictudes' })
-    }
+  try {
+    const [result] = await pool.query('SELECT *from solicitud ')
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al listar las solictudes' })
+  }
 }
 //BUSCAR TODAS LAS SOLICITUDES
 export const getRequests = async (req, res) => {
-    try {
-        const query = `
+  try {
+    const query = `
         SELECT
-    s.tipo_solicitud,
-    s.nombre_coordinacion,
-    s.estado,
-    s.categoria_causa,
-    s.calificacion_causa,
-    s.descripcion_caso,
-    a.nombre_archivo AS nombre_archivo_solicitud,
-    a.ruta_archivo AS ruta_archivo_solicitud,
-    a.tipo_archivo AS tipo_archivo_solicitud,
-    GROUP_CONCAT(DISTINCT u.nombres ORDER BY u.id_usuario ASC) AS nombres_solicitantes,
-    GROUP_CONCAT(DISTINCT u.apellidos ORDER BY u.id_usuario ASC) AS apellidos_solicitantes,
-    GROUP_CONCAT(DISTINCT u.email_sena ORDER BY u.id_usuario ASC) AS emails_sena_solicitantes,
-    GROUP_CONCAT(DISTINCT u.numero_celular ORDER BY u.id_usuario ASC) AS numeros_celular_solicitantes,
-    GROUP_CONCAT(DISTINCT ap.nombres_aprendiz ORDER BY ap.id_aprendiz ASC) AS nombres_aprendices,
-    GROUP_CONCAT(DISTINCT ap.apellidos_aprendiz ORDER BY ap.id_aprendiz ASC) AS apellidos_aprendices,
-    GROUP_CONCAT(DISTINCT ap.numero_documento_aprendiz ORDER BY ap.id_aprendiz ASC) AS numeros_documento_aprendices,
-    GROUP_CONCAT(DISTINCT ap.email_aprendiz_sena ORDER BY ap.id_aprendiz ASC) AS emails_sena_aprendices,
-    GROUP_CONCAT(DISTINCT ap.celular_aprendiz ORDER BY ap.id_aprendiz ASC) AS celulares_aprendices,
-    GROUP_CONCAT(DISTINCT n.numero_numeral ORDER BY n.id_numeral ASC) AS numeros_numerales,
-    GROUP_CONCAT(DISTINCT n.descripcion_numeral ORDER BY n.id_numeral ASC) AS descripciones_numerales,
-    GROUP_CONCAT(DISTINCT art.numero_articulo ORDER BY art.id_articulo ASC) AS numeros_articulos,
-    GROUP_CONCAT(DISTINCT art.descripcion_articulo ORDER BY art.id_articulo ASC) AS descripciones_articulos
-FROM solicitud s
-LEFT JOIN archivos a ON s.id_archivo = a.id_archivo
-LEFT JOIN detalle_solicitud_usuarios dsu ON s.id_solicitud = dsu.id_solicitud
-LEFT JOIN usuarios u ON dsu.id_usuario = u.id_usuario
-LEFT JOIN detalle_solicitud_aprendices dsa ON s.id_solicitud = dsa.id_solicitud
-LEFT JOIN aprendices ap ON dsa.id_aprendiz = ap.id_aprendiz
-LEFT JOIN detalle_solicitud_numerales dsn ON s.id_solicitud = dsn.id_solicitud
-LEFT JOIN numerales n ON dsn.id_numeral = n.id_numeral
-LEFT JOIN articulos art ON n.id_articulo = art.id_articulo
-GROUP BY
-    s.tipo_solicitud,
-    s.nombre_coordinacion,
-    s.estado,
-    s.categoria_causa,
-    s.calificacion_causa,
-    s.descripcion_caso,
-    a.nombre_archivo,
-    a.ruta_archivo,
-    a.tipo_archivo;
-        `;
-        const [result] = await pool.query(query);
-        res.status(200).send({ result });
-    } catch (error) {
-        res.status(500).send({ message: 'Error al listar las solicitudes' });
-    }
+        -- Información de la solicitud
+        s.id_solicitud,
+        s.tipo_solicitud,
+        s.nombre_coordinacion,
+        s.estado,
+        s.fecha_creacion,
+        s.categoria_causa,
+        s.calificacion_causa,
+        s.descripcion_caso,
+        s.evidencias,
+    
+        -- Información del artículo
+        a.numero_articulo,
+        a.descripcion_articulo,
+    
+        -- Información del capítulo relacionado al artículo
+        c.titulo AS titulo_capitulo,
+        c.descripcion_capitulo,
+    
+        -- Información de los numerales relacionados al artículo
+        GROUP_CONCAT(n.numero_numeral ORDER BY n.id_numeral ASC) AS numeros_numerales,
+        GROUP_CONCAT(n.descripcion_numeral ORDER BY n.id_numeral ASC) AS descripciones_numerales,
+    
+        -- Información de los párrafos relacionados al artículo
+        GROUP_CONCAT(p.titulo_paragrafo ORDER BY p.id_paragrafo ASC) AS titulos_paragrafos,
+        GROUP_CONCAT(p.descripcion_paragrafos ORDER BY p.id_paragrafo ASC) AS descripciones_paragrafos,
+    
+        -- Información del usuario solicitante
+        u.nombres AS nombres_solicitante,
+        u.apellidos AS apellidos_solicitante,
+        u.email_sena AS email_sena_solicitante,
+        u.numero_celular AS numero_celular_solicitante,
+    
+        -- Tipo de documento del usuario solicitante (subconsulta)
+        (SELECT d.tipo_documento FROM documentos d WHERE d.id_documento = u.id_documento) AS tipo_documento_usuario,
+    
+        -- Información del aprendiz
+        ap.nombres_aprendiz,
+        ap.apellidos_aprendiz,
+        ap.email_aprendiz_sena,
+        ap.celular_aprendiz,
+    
+        -- Tipo de documento del aprendiz (subconsulta)
+        (SELECT d.tipo_documento FROM documentos d WHERE d.id_documento = ap.id_documento) AS tipo_documento_aprendiz,
+    
+        -- Información de la ficha
+        f.numero_ficha,
+        f.nombre_programa,
+        f.jornada,
+        f.etapa_programa,
+        f.numero_trimestre,
+    
+        -- Información de la modalidad
+        m.nombre_modalidad
+    FROM solicitud s
+    LEFT JOIN articulos a ON s.id_articulo = a.id_articulo
+    LEFT JOIN numerales n ON a.id_articulo = n.id_articulo
+    LEFT JOIN paragrafos p ON a.id_articulo = p.id_articulo
+    LEFT JOIN capitulos c ON a.id_capitulo = c.id_capitulo
+    LEFT JOIN usuarios u ON s.id_usuario_solicitante = u.id_usuario
+    LEFT JOIN aprendices ap ON s.id_aprendiz = ap.id_aprendiz
+    LEFT JOIN fichas f ON ap.id_ficha = f.id_ficha
+    LEFT JOIN modalidades m ON f.id_modalidad = m.id_modalidad
+    GROUP BY s.id_solicitud;
+    `
+    const [result] = await pool.query(query)
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al listar las solictudes' })
+  }
 }
 
 
@@ -74,9 +96,9 @@ GROUP BY
  */
 
 export const getRequestById = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const query = `
+  const { id } = req.params
+  try {
+    const query = `
         SELECT
             -- Información de la solicitud
             s.id_solicitud,
@@ -122,50 +144,104 @@ export const getRequestById = async (req, res) => {
             -- Información de la modalidad
             m.nombre_modalidad,
     
-            -- Información del usuario coordinador de la ficha
-            uc.nombres AS nombres_coordinador,
-            uc.apellidos AS apellidos_coordinador,
-            uc.email_sena AS email_sena_coordinador,
-            uc.numero_celular AS numero_celular_coordinador
-        FROM solicitud s
-        LEFT JOIN archivos ar ON s.id_archivo = ar.id_archivo
-        LEFT JOIN usuarios u ON s.id_usuario_solicitante = u.id_usuario
-        LEFT JOIN aprendices ap ON s.id_aprendiz = ap.id_aprendiz
-        LEFT JOIN fichas f ON ap.id_ficha = f.id_ficha
-        LEFT JOIN modalidades m ON f.id_modalidad = m.id_modalidad
-        LEFT JOIN usuarios uc ON f.id_usuario_coordinador = uc.id_usuario
-        WHERE s.id_solicitud = ?;
-        `;
-        const [result] = await pool.query(query, [id]);
-        if (result.length === 0) {
-            res.status(404).send({ message: 'No se pudo encontrar la solicitud' });
-        } else {
-            res.status(200).send({ result: result[0] });
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al obtener la solicitud' });
+        -- Tipo de documento del aprendiz (subconsulta)
+        (SELECT d.tipo_documento FROM documentos d WHERE d.id_documento = ap.id_documento) AS tipo_documento_aprendiz,
+    
+        -- Información de la ficha
+        f.numero_ficha,
+        f.nombre_programa,
+        f.jornada,
+        f.etapa_programa,
+        f.numero_trimestre,
+    
+        -- Información de la modalidad
+        m.nombre_modalidad
+    FROM solicitud s
+    LEFT JOIN articulos a ON s.id_articulo = a.id_articulo
+    LEFT JOIN numerales n ON a.id_articulo = n.id_articulo
+    LEFT JOIN paragrafos p ON a.id_articulo = p.id_articulo
+    LEFT JOIN capitulos c ON a.id_capitulo = c.id_capitulo
+    LEFT JOIN usuarios u ON s.id_usuario_solicitante = u.id_usuario
+    LEFT JOIN aprendices ap ON s.id_aprendiz = ap.id_aprendiz
+    LEFT JOIN fichas f ON ap.id_ficha = f.id_ficha
+    LEFT JOIN modalidades m ON f.id_modalidad = m.id_modalidad
+    WHERE s.id_solicitud = ?;    
+    `
+    const [result] = await pool.query(query, [id])
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se pudo encontrar la solicitud con id ${id}` })
+    } else {
+      res.status(200).send({ result: result[0] })
     }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener la solicitud' })
+  }
 }
-
 
 //CREACION DE UNA NUEVA SOLICITUD
 /**
  * Esta función crea una solicitud insertando datos en una tabla de base de datos.
  */
 export const createRequest = async (req, res) => {
-    const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo } = req.body;
-    try {
-        const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Formato YYYY-MM-DD HH:mm:ss
-        await pool.query(
-            'INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, 'Pendiente', currentDate]
-        );
-        res.status(201).send({ message: 'Solicitud creada exitosamente' });
-    } catch (error) {
-        res.status(500).send({ message: 'Error al crear la solicitud' });
-    }
-};
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
 
+  try {
+    /* Validar selección de numerales */
+    if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {
+      return res.status(400).send({ message: 'Debe seleccionar al menos un numeral' })
+    }
+
+    /* Validar selección de aprendices */
+    if (!aprendicesSeleccionados || aprendicesSeleccionados.length === 0) {
+      return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
+    }
+
+    /* Crear la solicitud */
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ') // Formato YYYY-MM-DD HH:mm:ss
+    const result = await pool.query('INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, 'Pendiente', currentDate])
+
+    const solicitudId = result[0].insertId
+
+    /* Insertar numerales infringidos */
+    numeralesSeleccionados.forEach(async (numeroId) => {
+      try {
+        await pool.query('INSERT INTO detalle_solicitud_numerales (id_solicitud, id_numeral) VALUES (?, ?)', [solicitudId, numeroId])
+      } catch (error) {
+        res.status(400).send({ message: 'No se pudieron asociar los numerales a la solicitud' })
+        return
+      }
+    })
+
+    /* Insertar aprendiz relacionado */
+    if (!aprendicesSeleccionados) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
+    aprendicesSeleccionados.forEach(async (aprendizId) => {
+      try {
+        await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
+      } catch (error) {
+        res.status(400).send({ message: 'Aprendiz seleccionado incorrectamente' })
+        return
+      }
+    })
+
+    /* Insertar instructores relacionados */
+    if (tipo_solicitud === 'Grupal') {
+      instructoresSeleccionados.forEach(async (usuarioId) => {
+        try {
+          await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
+        } catch (error) {
+          res.status(400).send({ message: 'Instructor seleccionado incorrectamente' })
+          return
+        }
+      })
+    }
+
+    /* Enviar respuesta existosa */
+    res.status(201).send({ message: 'Solicitud creada exitosamente' })
+    // res.status(201).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al crear la solicitud' })
+  }
+}
 
 //ACTUALIZACION DE UNA SOLICITUD
 /**
@@ -173,47 +249,21 @@ export const createRequest = async (req, res) => {
  * proporcionado y los datos de la solicitud.
  */
 export const updateRequest = async (req, res) => {
-    const { id } = req.params;
-    const { 
-        tipo_solicitud, 
-        nombre_coordinacion, 
-        id_usuario_solicitante, 
-        id_aprendiz, 
-        estado, 
-        categoria_causa, 
-        calificacion_causa, 
-        descripcion_caso, 
-        id_archivo
-    } = req.body;
+  const { id } = req.params
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, numerales_relacionados } = req.body
 
-    try {
-        const [result] = await pool.query(
-            `UPDATE solicitud 
-            SET 
-                tipo_solicitud = COALESCE(?, tipo_solicitud), 
-                nombre_coordinacion = COALESCE(?, nombre_coordinacion), 
-                id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), 
-                id_aprendiz = COALESCE(?, id_aprendiz), 
-                estado = COALESCE(?, estado), 
-                categoria_causa = COALESCE(?, categoria_causa), 
-                calificacion_causa = COALESCE(?, calificacion_causa), 
-                descripcion_caso = COALESCE(?, descripcion_caso), 
-                id_archivo = COALESCE(?, id_archivo)
-            WHERE id_solicitud = ?`,
-            [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, id]
-        );
+  try {
+    const [result] = await pool.query('UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), id_aprendiz = COALESCE(?, id_aprendiz), estado = COALESCE(?, estado), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso), evidencias = COALESCE(?, evidencias), numerales_relacionados = COALESCE(?, numerales_relacionados) WHERE id_solicitud = ?', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, JSON.stringify(numerales_relacionados), id])
 
-        if (result.affectedRows === 0) {
-            res.status(404).send({ message: `No se pudo encontrar la solicitud` });
-        } else {
-            res.status(200).send({ message: `Solicitud actualizada exitosamente` });
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al actualizar la solicitud' });
+    if (result.affectedRows === 0) {
+      res.status(404).send({ message: `No se pudo encontrar la solicitud` })
+    } else {
+      res.status(200).send({ message: `Solicitud actualizada exitosamente` })
     }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al actualizar la solicitud' })
+  }
 }
-
-
 
 //ELIMINACION DE UNA SOLICITUD
 /**
@@ -221,15 +271,15 @@ export const updateRequest = async (req, res) => {
  * de datos según la ID proporcionada.
  */
 export const deleteRequest = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const [result] = await pool.query('DELETE FROM solicitud WHERE id_solicitud = ?', [id]);
-        if (result.affectedRows === 0) {
-            res.status(404).send({ message: `No se pudo encontrar la solicitud con id ${id}` })
-        } else {
-            res.status(200).send({ message: `Solicitud con id ${id} eliminada exitosamente` })
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al eliminar la solicitud' })
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('DELETE FROM solicitud WHERE id_solicitud = ?', [id])
+    if (result.affectedRows === 0) {
+      res.status(404).send({ message: `No se pudo encontrar la solicitud con id ${id}` })
+    } else {
+      res.status(200).send({ message: `Solicitud con id ${id} eliminada exitosamente` })
     }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al eliminar la solicitud' })
+  }
 }
