@@ -41,7 +41,7 @@ CREATE TABLE `aprendices` (
   KEY `id_ficha` (`id_ficha`),
   CONSTRAINT `aprendices_ibfk_1` FOREIGN KEY (`id_documento`) REFERENCES `documentos` (`id_documento`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `aprendices_ibfk_2` FOREIGN KEY (`id_ficha`) REFERENCES `fichas` (`id_ficha`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE `aprendices` (
 
 LOCK TABLES `aprendices` WRITE;
 /*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
-INSERT INTO `aprendices` VALUES (1,'Cristian D','Bedoya T','','torres23torres@soy.sena.edu','torres23torres@gamil.com','3007030424','4512461','',1,1),(3,'Juan Carlos','Prasca','','prasca@soy.sena.edu.co','parasca85@gmail.com','30124242555',NULL,'',1,1),(4,'Juan Guillermo','Gomez','','jggomez319@soy.sena.edu.co','jggomez016@gmail.com','3195910996',NULL,'',1,1),(5,'Cristian David ','Bedoya T','1027944969','torres23torresTo@soy.sena.edu','torres23torresTo@gamil.com','3007030424',NULL,'',1,1),(6,'Juan Pepitos','Alcaraz','1027541224','pepito@soy.sena.edu.co','prpito994@gmail.com','3042155256',NULL,'',1,1),(7,'Cristian prueba','Bedoya T','1027944955','torresprueba@soy.sena.edu','torresprueba@gamil.com','3007030424',NULL,'EN FORMACIÓN',1,2),(8,'pepito','perez','1049857645','sdjhsudhs@gmail.com','','3028765434',NULL,'EN FORMACIÓN',4,1),(9,'Cristiano','Ronaldo','1071070107','cr7@cristiano.ronaldo.com','cr7@cristiano.ronaldo. sena','3007030424',NULL,'EN FORMACIÓN',1,1);
+INSERT INTO `aprendices` VALUES (1,'Cristian D','Bedoya T','','torres23torres@soy.sena.edu','torres23torres@gamil.com','3007030424','4512461','',1,1),(3,'Juan Carlos','Prasca','','prasca@soy.sena.edu.co','parasca85@gmail.com','30124242555',NULL,'',1,1),(4,'Juan Guillermo','Gomez','','jggomez319@soy.sena.edu.co','jggomez016@gmail.com','3195910996',NULL,'',1,1),(5,'Cristian David ','Bedoya T','1027944969','torres23torresTo@soy.sena.edu','torres23torresTo@gamil.com','3007030424',NULL,'',1,1),(6,'Juan Pepitos','Alcaraz','1027541224','pepito@soy.sena.edu.co','prpito994@gmail.com','3042155256',NULL,'',1,1),(7,'Cristian prueba','Bedoya T','1027944955','torresprueba@soy.sena.edu','torresprueba@gamil.com','3007030424',NULL,'EN FORMACIÓN',1,2),(8,'pepito','perez','1049857645','sdjhsudhs@gmail.com','','3028765434',NULL,'EN FORMACIÓN',4,1),(9,'Cristiano','Ronaldo','1071070107','cr7@cristiano.ronaldo.com','cr7@cristiano.ronaldo. sena','3007030424',NULL,'EN FORMACIÓN',1,1),(11,'rtyuionm,','gbnhmj,','45678907777','gbhhbnhbh@gmail.com','','3344566556',NULL,'EN FORMACIÓN',2,2),(12,'JOHAN FELIPE','GIL GUERRA','1000100946','pipegil0106@gmail.com',NULL,'3043923574',NULL,'EN FORMACIÓN',1,2),(13,'YULIANA','GRISALES ALVAREZ','1025642251','alvarezyuliana516@gmail.com',NULL,'3001273841',NULL,'EN FORMACIÓN',1,2),(14,'MAIRA ALEJANDRA','HERRERA ALVAREZ','1025643039','alejaalvarez4015@gmail.com',NULL,'3052840075',NULL,'EN FORMACIÓN',1,2),(15,'JUANA MARIA','PEREZ TORRES','1032010860','juanamariaperez2411@gmail.com',NULL,'3137967252',NULL,'EN FORMACIÓN',1,2),(16,'MARIA CAMILA','ARANGO ARCILA','1035970952','3043257646camila@gmail.com',NULL,'3028193135',NULL,'EN FORMACIÓN',1,2),(17,'HENRY ALEXANDER','VANEGAS QUICENO','1036657002','figu9920@hotmail.com',NULL,'3003165768',NULL,'EN FORMACIÓN',1,2),(18,'JHORJELIS','HINESTROZA MOSQUERA','1000404088','Jhorjelishinestroza@gmail.com',NULL,'3244082072',NULL,'EN FORMACIÓN',1,2),(19,'LUIS FERNANDO','DIAZ OSORIO','1038646035','luisfernandodiazosorio4@gmail.com',NULL,'3106888439',NULL,'EN FORMACIÓN',1,2),(20,'PAULINA','RODRIGUEZ COSSIO','1000756360','ieca.paulinarodriguez@gmail.com',NULL,'3127490512',NULL,'EN FORMACIÓN',1,2),(22,'EVELYN','ORTEGA ARBOLEDA','1040570683','evelyn4713@hotmail.com',NULL,'3005707008',NULL,'EN FORMACIÓN',1,2),(28,'ELIZABETH','DE LOS RIOS CARDONA','43832725','lizdelosrios@gmail.com',NULL,'3196567841',NULL,'EN FORMACIÓN',1,2),(32,'INGRID','ECHAVARRIA AGUDELO','1001376369','ingridechavarria2018@gmail.com',NULL,'3013100566',NULL,'EN FORMACIÓN',1,2),(41,'YANLI CARINA','BEJARANO BETANCUR','1007507799','carinabejarano59@gmail.com',NULL,'3043969269',NULL,'EN FORMACIÓN',1,2),(42,'BEATRIZ ANDREA','ESCOBAR ORTIZ','1018420177','escobaraandrea@gmail.com',NULL,'3132479810',NULL,'EN FORMACIÓN',1,2),(43,'VALERIA','AREIZA GARCIA','1020105612','valeriaareiza1812@gmail.com',NULL,'3206784121',NULL,'EN FORMACIÓN',1,2),(44,'SEBASTIAN','MEJIA PUCHE','1001227211','sebaspuche29@gmail.com',NULL,'3054349145',NULL,'EN FORMACIÓN',1,2),(45,'JULIAN ESTEBAN','TABORDA GARCIA','1001368597','juliantgmusic@gmail.com',NULL,'3053295272',NULL,'EN FORMACIÓN',1,2),(46,'STIVEN','COCK ALVAREZ','1039463292','stiven_23_@hotmail.com',NULL,'3052261321',NULL,'EN FORMACIÓN',1,2),(47,'ANGIE STEFANIA','RAMIREZ BETANCUR','1040730542','stefaniabetancur583@gmail.com',NULL,'3148613918',NULL,'EN FORMACIÓN',1,2),(48,'FRANCY CAROLINA','BALLESTEROS PUERTA','1042066937','Carolinaballesteros761@gmail.com',NULL,'3193824993',NULL,'EN FORMACIÓN',1,2),(49,'MARINELA','ESPITIA CORREA','1067161366','marinelaespitia40@gmail.com',NULL,'3126482523',NULL,'EN FORMACIÓN',1,2),(50,'MERLYS','MENCO MIRANDA','1101385079','merlysmencom2005@gmail.com',NULL,'3128519108',NULL,'EN FORMACIÓN',1,2),(51,'ROSSANA','RODRIGUEZ ','2000006396','rossanarodriguez07@gmail.com',NULL,'3122714503',NULL,'EN FORMACIÓN',1,2),(52,'MIGUEL ANGEL','TIRADO ECHEVERRI','1035971823','luz-1811@hotmail.com',NULL,'3205524051',NULL,'EN FORMACIÓN',3,2),(53,'KELLY JHOJANA','VALENCIA GARCIA','1001418295','kellyysantiago574@gmail.com',NULL,'3157773242',NULL,'EN FORMACIÓN',1,2),(54,'DAVID','ROMERO VELEZ','1001420529','davidanime88@gmail.com',NULL,'3006371438',NULL,'EN FORMACIÓN',1,2),(55,'YINA','GAVIRIA FORONDA','1001420553','yinagf1@gmail.com',NULL,'3105186215',NULL,'EN FORMACIÓN',1,2),(56,'WARLY','ESTRADA LLORENTE','1003398604','warlyestrada75@gmail.com',NULL,'3218168188',NULL,'EN FORMACIÓN',1,2);
 /*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,7 +67,7 @@ CREATE TABLE `archivos` (
   `ruta_archivo` varchar(255) DEFAULT NULL,
   `tipo_archivo` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id_archivo`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `archivos` (
 
 LOCK TABLES `archivos` WRITE;
 /*!40000 ALTER TABLE `archivos` DISABLE KEYS */;
-INSERT INTO `archivos` VALUES (13,'1693930387941-tablas siscomite.pdf','uploads/1693930387941-tablas siscomite.pdf','application/pdf');
+INSERT INTO `archivos` VALUES (13,'1693930387941-tablas siscomite.pdf','uploads/1693930387941-tablas siscomite.pdf','application/pdf'),(16,'1694021332232-Reporte de Aprendices segÃºn ficha.xls','uploads/1694021332232-Reporte de Aprendices segÃºn ficha.xls','application/vnd.ms-excel'),(17,'1694022702006-egresados web 4-6.xls','uploads/1694022702006-egresados web 4-6.xls','application/vnd.ms-excel');
 /*!40000 ALTER TABLE `archivos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,6 +134,93 @@ INSERT INTO `capitulos` VALUES (1,'CAPÍTULO I. PRINCIPIOS GENERALES ',''),(2,'C
 UNLOCK TABLES;
 
 --
+-- Table structure for table `detalle_solicitud_aprendices`
+--
+
+DROP TABLE IF EXISTS `detalle_solicitud_aprendices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalle_solicitud_aprendices` (
+  `id_detalle_solicitud_aprendiz` int NOT NULL AUTO_INCREMENT,
+  `id_aprendiz` int NOT NULL,
+  `id_solicitud` int NOT NULL,
+  PRIMARY KEY (`id_detalle_solicitud_aprendiz`),
+  KEY `id_aprendiz` (`id_aprendiz`),
+  KEY `id_solicitud` (`id_solicitud`),
+  CONSTRAINT `detalle_solicitud_aprendices_ibfk_1` FOREIGN KEY (`id_aprendiz`) REFERENCES `aprendices` (`id_aprendiz`),
+  CONSTRAINT `detalle_solicitud_aprendices_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_solicitud_aprendices`
+--
+
+LOCK TABLES `detalle_solicitud_aprendices` WRITE;
+/*!40000 ALTER TABLE `detalle_solicitud_aprendices` DISABLE KEYS */;
+INSERT INTO `detalle_solicitud_aprendices` VALUES (1,9,4),(2,6,4),(3,7,4);
+/*!40000 ALTER TABLE `detalle_solicitud_aprendices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalle_solicitud_numerales`
+--
+
+DROP TABLE IF EXISTS `detalle_solicitud_numerales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalle_solicitud_numerales` (
+  `id_solicitud_numeral` int NOT NULL,
+  `id_solicitud` int DEFAULT NULL,
+  `id_numeral` int DEFAULT NULL,
+  PRIMARY KEY (`id_solicitud_numeral`),
+  KEY `id_solicitud` (`id_solicitud`),
+  KEY `id_numeral` (`id_numeral`),
+  CONSTRAINT `detalle_solicitud_numerales_ibfk_1` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`),
+  CONSTRAINT `detalle_solicitud_numerales_ibfk_2` FOREIGN KEY (`id_numeral`) REFERENCES `numerales` (`id_numeral`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_solicitud_numerales`
+--
+
+LOCK TABLES `detalle_solicitud_numerales` WRITE;
+/*!40000 ALTER TABLE `detalle_solicitud_numerales` DISABLE KEYS */;
+INSERT INTO `detalle_solicitud_numerales` VALUES (1,4,10),(2,4,21),(3,4,25);
+/*!40000 ALTER TABLE `detalle_solicitud_numerales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `detalle_solicitud_usuarios`
+--
+
+DROP TABLE IF EXISTS `detalle_solicitud_usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `detalle_solicitud_usuarios` (
+  `id_detalle_solicitud_usuario` int NOT NULL AUTO_INCREMENT,
+  `id_usuario` int NOT NULL,
+  `id_solicitud` int NOT NULL,
+  PRIMARY KEY (`id_detalle_solicitud_usuario`),
+  KEY `id_usuario` (`id_usuario`),
+  KEY `id_solicitud` (`id_solicitud`),
+  CONSTRAINT `detalle_solicitud_usuarios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
+  CONSTRAINT `detalle_solicitud_usuarios_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `detalle_solicitud_usuarios`
+--
+
+LOCK TABLES `detalle_solicitud_usuarios` WRITE;
+/*!40000 ALTER TABLE `detalle_solicitud_usuarios` DISABLE KEYS */;
+INSERT INTO `detalle_solicitud_usuarios` VALUES (1,5,4),(2,7,4);
+/*!40000 ALTER TABLE `detalle_solicitud_usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `documentos`
 --
 
@@ -144,7 +231,7 @@ CREATE TABLE `documentos` (
   `id_documento` int NOT NULL AUTO_INCREMENT,
   `tipo_documento` varchar(100) NOT NULL,
   PRIMARY KEY (`id_documento`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +240,7 @@ CREATE TABLE `documentos` (
 
 LOCK TABLES `documentos` WRITE;
 /*!40000 ALTER TABLE `documentos` DISABLE KEYS */;
-INSERT INTO `documentos` VALUES (1,'C.C'),(2,'C.E'),(3,'T.I'),(4,'PEP');
+INSERT INTO `documentos` VALUES (1,'C.C'),(2,'C.E'),(3,'T.I'),(4,'PEP'),(5,'Registro Civil');
 /*!40000 ALTER TABLE `documentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +266,7 @@ CREATE TABLE `fichas` (
   KEY `fk_usuario_coordinador` (`id_usuario_coordinador`),
   CONSTRAINT `fichas_ibfk_1` FOREIGN KEY (`id_modalidad`) REFERENCES `modalidades` (`id_modalidad`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_usuario_coordinador` FOREIGN KEY (`id_usuario_coordinador`) REFERENCES `usuarios` (`id_usuario`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +275,7 @@ CREATE TABLE `fichas` (
 
 LOCK TABLES `fichas` WRITE;
 /*!40000 ALTER TABLE `fichas` DISABLE KEYS */;
-INSERT INTO `fichas` VALUES (1,'2473196','ADSO','Mañana','Lectiva','4','',1,3),(2,'2664110','ADSI','Tarde','Lectiva','5','EN EJECUCIÓN',1,3),(7,'654984','Medicina','Tarde','Lectiva','2','EN EJECUCIÓN',1,10),(12,'1234567','Carpinteria','Noche','Lectiva','3','EN EJECUCIÓN',3,10),(13,'1234563','Carpinteria','Mañana','Lectiva','2','EN EJECUCIÓN',2,3);
+INSERT INTO `fichas` VALUES (1,'2473196','ADSO','Mañana','Lectiva','4','',1,3),(2,'2664110','ADSI','Tarde','Lectiva','5','EN EJECUCIÓN',1,3),(3,'2473180','MULTIMEDIA','Mañana','Lectiva','3','EN EJECUCIÓN',1,3);
 /*!40000 ALTER TABLE `fichas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +290,7 @@ CREATE TABLE `modalidades` (
   `id_modalidad` int NOT NULL AUTO_INCREMENT,
   `nombre_modalidad` varchar(100) NOT NULL,
   PRIMARY KEY (`id_modalidad`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +299,7 @@ CREATE TABLE `modalidades` (
 
 LOCK TABLES `modalidades` WRITE;
 /*!40000 ALTER TABLE `modalidades` DISABLE KEYS */;
-INSERT INTO `modalidades` VALUES (1,'Presencial'),(2,'Virtual'),(3,'Media ténica'),(4,'A distancia');
+INSERT INTO `modalidades` VALUES (1,'Presencial'),(2,'Virtual');
 /*!40000 ALTER TABLE `modalidades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,36 +418,8 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
-INSERT INTO `solicitud` VALUES (4,'Individual','Marianela',4,4,'Pendiente','2023-08-31 20:30:43','Disciplinaria','Grave','Descripción del caso...',NULL);
+INSERT INTO `solicitud` VALUES (4,'Grupal','Marianela',4,4,'Aprobado','2023-08-31 20:30:43','Disciplinaria','Grave','Descripción del caso...',13);
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `solicitud_numeral`
---
-
-DROP TABLE IF EXISTS `solicitud_numeral`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `solicitud_numeral` (
-  `id_solicitud_numeral` int NOT NULL,
-  `id_solicitud` int DEFAULT NULL,
-  `id_numeral` int DEFAULT NULL,
-  PRIMARY KEY (`id_solicitud_numeral`),
-  KEY `id_solicitud` (`id_solicitud`),
-  KEY `id_numeral` (`id_numeral`),
-  CONSTRAINT `solicitud_numeral_ibfk_1` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`),
-  CONSTRAINT `solicitud_numeral_ibfk_2` FOREIGN KEY (`id_numeral`) REFERENCES `numerales` (`id_numeral`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `solicitud_numeral`
---
-
-LOCK TABLES `solicitud_numeral` WRITE;
-/*!40000 ALTER TABLE `solicitud_numeral` DISABLE KEYS */;
-/*!40000 ALTER TABLE `solicitud_numeral` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -388,7 +447,7 @@ CREATE TABLE `usuarios` (
   KEY `id_documento` (`id_documento`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `usuarios_ibfk_2` FOREIGN KEY (`id_documento`) REFERENCES `documentos` (`id_documento`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -404,6 +463,10 @@ UNLOCK TABLES;
 --
 -- Dumping events for database 'siscomite'
 --
+
+--
+-- Dumping routines for database 'siscomite'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -414,4 +477,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-07 13:58:37
+-- Dump completed on 2023-09-08  9:13:08
