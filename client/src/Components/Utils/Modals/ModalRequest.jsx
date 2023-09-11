@@ -1,10 +1,11 @@
-import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button } from '@nextui-org/react'
+import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button, Pagination } from '@nextui-org/react'
 
 export const ModalRequest = ({ cerrarModal }) => {
   // Cerrar modal
   const closeModal = () => {
     cerrarModal()
   }
+
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">

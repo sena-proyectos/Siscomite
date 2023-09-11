@@ -217,6 +217,7 @@ const Rules = () => {
             <section className="grid place-items-center">
               <Button size="lg" onClick={handleOpenEditModal} color="primary" variant="shadow">
                 Editar reglamento
+                <i className="fi fi-rr-pencil"></i>
               </Button>
             </section>
             <section className="col-span-2 z-0">

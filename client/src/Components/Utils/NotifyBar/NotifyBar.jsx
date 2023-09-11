@@ -1,18 +1,40 @@
 import './NotifyBar.css'
 import { Divider } from '@nextui-org/react'
+import { useState } from 'react'; // Asegúrate de importar useState desde React
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
 
 export const Notify = ({ isOpen, toggleNotify }) => {
   const currentDate = new Date()
   const currentYear = currentDate.getFullYear()
-  const currentMonth = currentDate.getMonth()
+  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth()); // Estado para almacenar el mes actual
+
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
   const daysCount = daysInMonth(currentYear, currentMonth)
   const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1)
 
   const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
+  const handlePrevMonth = () => {
+    const newMonth = currentMonth - 1;
+    if (newMonth < 0) {
+      // Si el nuevo mes es anterior a enero, retrocede al diciembre del año anterior
+      setCurrentMonth(11);
+    } else {
+      setCurrentMonth(newMonth);
+    }
+  };
+
+  const handleNextMonth = () => {
+    const newMonth = currentMonth + 1;
+    if (newMonth > 11) {
+      // Si el nuevo mes es posterior a diciembre, avanza a enero del próximo año
+      setCurrentMonth(0);
+    } else {
+      setCurrentMonth(newMonth);
+    }
+  };
 
   return (
     <main>
@@ -24,9 +46,10 @@ export const Notify = ({ isOpen, toggleNotify }) => {
           <p className="ml-[4.5rem] flex items-center">Notificaciones</p>
         </header>
         <section className="w-[95%] mx-auto mt-2 ">
-          <h2 className="text-md font-light px-2 mb-2 flex justify-between ">
-            <p className="font-bold">Calendario</p>
-            {monthNames[currentMonth]}
+          <h2 className="text-md font-light px-2 mb-2 flex justify-between">
+            <button onClick={handlePrevMonth}><i className="fi fi-sr-angle-left"/></button>
+            <p className="font-bold">{monthNames[currentMonth]} {currentYear}</p>
+            <button onClick={handleNextMonth}><i className="fi fi-sr-angle-right"/></button>
           </h2>
           <section className="grid grid-cols-7 mb-1">
             {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sab'].map((day) => (

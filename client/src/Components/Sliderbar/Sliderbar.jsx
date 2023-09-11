@@ -49,7 +49,7 @@ const Sliderbar = () => {
         <h3 className="mt-[1rem] text-[17px] font-bold">{nombreCompleto}</h3>
         <p>{rol}</p>
       </section>
-      <section className="pages absolute top-[35%]  w-full flex justify-center">
+      <section className="pages absolute top-[30%]  w-full flex justify-center">
         <ul className="p-0">
           <Link to={'/home'} className="line">
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/home') ? 'bg-[#1a1d24]' : ''}`}>
@@ -81,6 +81,12 @@ const Sliderbar = () => {
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/rules') ? 'bg-[#1a1d24]' : ''}`}>
               <i className={`fi fi-rs-document `} title="Reglamento" />
               <span className="slideText ml-[10px]">Reglamento</span>
+            </li>
+          </Link>
+          <Link className="line" to={'/teachers'}>
+            <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/teachers') ? 'bg-[#1a1d24]' : ''}`}>
+              <i className={`fi fi-rs-book-bookmark`} title="Instructores" />
+              <span className="slideText ml-[10px]">Instructores</span>
             </li>
           </Link>
         </ul>

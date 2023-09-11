@@ -3,6 +3,7 @@ import { createFicha } from '../../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { Input, Button } from '@nextui-org/react'
 import { getCoordination } from '../../../api/httpRequest'
+import { Alerts } from '../Alerts/Alerts'
 
 export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   /* Estados para capturar los valores de la ficha */
@@ -37,7 +38,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
         etapa_programa: etapaPrograma,
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
-        id_usuario_coordinador : coordinadores
+        id_usuario_coordinador: coordinadores
       }
 
       const response = await createFicha(dataValue)
@@ -76,6 +77,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
+        <Alerts contenido={'Los datos deben coincidir con los registrados en Sofía Plus'} />
         <Toaster position="top-right" closeButton richColors />
         <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">

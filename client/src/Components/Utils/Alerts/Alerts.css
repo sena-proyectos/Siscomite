@@ -1,0 +1,15 @@
+@keyframes aparecer {
+  0% {
+      transform: translateY(-50%) scaleY(0.2);
+  }
+  100% {
+      transform: translateY(0) scaleY(1);
+  }
+}
+
+
+.card {
+  
+  animation: aparecer .5s ;
+}
+

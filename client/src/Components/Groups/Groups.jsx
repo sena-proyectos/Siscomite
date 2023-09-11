@@ -93,6 +93,7 @@ const Groups = () => {
   }
 
   // .................Tabla............
+  // Estado para controlar la visibilidad de la tabla y las cards
   const [isCardVisible, setIsCardVisible] = useState(true)
 
   // Almacenar la preferencia del usuario en localStorage
@@ -134,7 +135,7 @@ const Groups = () => {
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+              <Search filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
             </section>
             <section className="absolute right-[20%] cursor-pointer ">
               {notifyOpen ? (
@@ -240,7 +241,7 @@ const Groups = () => {
                       <tbody>
                         {visibleCards.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
-                            <tr className="grid grid-cols-7 text-sm text-default-700 p-2 place-content-center hover:bg-gray-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
+                            <tr className="grid grid-cols-7 text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
                               <td className="bg-yellow">{card.numero_ficha}</td>
                               <td className="col-span-2">{card.nombre_programa}</td>
                               <td>{card.jornada}</td>
