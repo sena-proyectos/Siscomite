@@ -1,19 +1,18 @@
-import { pool } from "../db.js";
-import mysql from 'mysql2/promise';
+import { pool } from '../db.js'
+import mysql from 'mysql2/promise'
 
-
-export const getsolicitud = async (req,res) =>{
-    try {
-const [result] = await pool.query('SELECT *from solicitud ');
-res.status(200).send({ result })
-} catch (error) {
-res.status(500).send({ message: 'Error al listar las solictudes' })
-}
+export const getsolicitud = async (req, res) => {
+  try {
+    const [result] = await pool.query('SELECT *from solicitud ')
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al listar las solictudes' })
+  }
 }
 //BUSCAR TODAS LAS SOLICITUDES
 export const getRequests = async (req, res) => {
-    try {
-        const query = `
+  try {
+    const query = `
         SELECT
         -- Información de la solicitud
         s.id_solicitud,
@@ -79,12 +78,12 @@ export const getRequests = async (req, res) => {
     LEFT JOIN fichas f ON ap.id_ficha = f.id_ficha
     LEFT JOIN modalidades m ON f.id_modalidad = m.id_modalidad
     GROUP BY s.id_solicitud;
-    `;
-        const [result] = await pool.query(query);
-        res.status(200).send({ result })
-    } catch (error) {
-        res.status(500).send({ message: 'Error al listar las solictudes' })
-    }
+    `
+    const [result] = await pool.query(query)
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al listar las solictudes' })
+  }
 }
 
 //BUSCAR UNA SOLICITUD
@@ -94,9 +93,9 @@ export const getRequests = async (req, res) => {
  */
 
 export const getRequestById = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const query = `
+  const { id } = req.params
+  try {
+    const query = `
         SELECT
         -- Información de la solicitud
         s.id_solicitud,
@@ -162,36 +161,82 @@ export const getRequestById = async (req, res) => {
     LEFT JOIN fichas f ON ap.id_ficha = f.id_ficha
     LEFT JOIN modalidades m ON f.id_modalidad = m.id_modalidad
     WHERE s.id_solicitud = ?;    
-    `;
-        const [result] = await pool.query(query, [id]);
-        if (result.length === 0) {
-            res.status(404).send({ message: `No se pudo encontrar la solicitud con id ${id}` });
-        } else {
-            res.status(200).send({ result: result[0] });
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al obtener la solicitud' });
+    `
+    const [result] = await pool.query(query, [id])
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se pudo encontrar la solicitud con id ${id}` })
+    } else {
+      res.status(200).send({ result: result[0] })
     }
-};
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener la solicitud' })
+  }
+}
 
 //CREACION DE UNA NUEVA SOLICITUD
 /**
  * Esta función crea una solicitud insertando datos en una tabla de base de datos.
  */
 export const createRequest = async (req, res) => {
-    const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo } = req.body;
-    try {
-      const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Formato YYYY-MM-DD HH:mm:ss
-      await pool.query(
-        'INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-        [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, 'Pendiente', currentDate]
-      );
-      res.status(201).send({ message: 'Solicitud creada exitosamente' });
-    } catch (error) {
-      res.status(500).send({ message: 'Error al crear la solicitud' });
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
+
+  try {
+    /* Validar selección de numerales */
+    if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {
+      return res.status(400).send({ message: 'Debe seleccionar al menos un numeral' })
     }
-  };
-  
+
+    /* Validar selección de aprendices */
+    if (!aprendicesSeleccionados || aprendicesSeleccionados.length === 0) {
+      return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
+    }
+
+    /* Crear la solicitud */
+    const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ') // Formato YYYY-MM-DD HH:mm:ss
+    const result = await pool.query('INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, 'Pendiente', currentDate])
+
+    const solicitudId = result[0].insertId
+
+    /* Insertar numerales infringidos */
+    numeralesSeleccionados.forEach(async (numeroId) => {
+      try {
+        await pool.query('INSERT INTO detalle_solicitud_numerales (id_solicitud, id_numeral) VALUES (?, ?)', [solicitudId, numeroId])
+      } catch (error) {
+        res.status(400).send({ message: 'No se pudieron asociar los numerales a la solicitud' })
+        return
+      }
+    })
+
+    /* Insertar aprendiz relacionado */
+    if (!aprendicesSeleccionados) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
+    aprendicesSeleccionados.forEach(async (aprendizId) => {
+      try {
+        await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
+      } catch (error) {
+        res.status(400).send({ message: 'Aprendiz seleccionado incorrectamente' })
+        return
+      }
+    })
+
+    /* Insertar instructores relacionados */
+    if (tipo_solicitud === 'Grupal') {
+      instructoresSeleccionados.forEach(async (usuarioId) => {
+        try {
+          await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
+        } catch (error) {
+          res.status(400).send({ message: 'Instructor seleccionado incorrectamente' })
+          return
+        }
+      })
+    }
+
+    /* Enviar respuesta existosa */
+    res.status(201).send({ message: 'Solicitud creada exitosamente' })
+    // res.status(201).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al crear la solicitud' })
+  }
+}
 
 //ACTUALIZACION DE UNA SOLICITUD
 /**
@@ -199,25 +244,21 @@ export const createRequest = async (req, res) => {
  * proporcionado y los datos de la solicitud.
  */
 export const updateRequest = async (req, res) => {
-    const { id } = req.params;
-    const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, numerales_relacionados } = req.body;
+  const { id } = req.params
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, numerales_relacionados } = req.body
 
-    try {
-        const [result] = await pool.query(
-            'UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), id_aprendiz = COALESCE(?, id_aprendiz), estado = COALESCE(?, estado), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso), evidencias = COALESCE(?, evidencias), numerales_relacionados = COALESCE(?, numerales_relacionados) WHERE id_solicitud = ?',
-            [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, JSON.stringify(numerales_relacionados), id]
-        );
+  try {
+    const [result] = await pool.query('UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), id_aprendiz = COALESCE(?, id_aprendiz), estado = COALESCE(?, estado), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso), evidencias = COALESCE(?, evidencias), numerales_relacionados = COALESCE(?, numerales_relacionados) WHERE id_solicitud = ?', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, estado, categoria_causa, calificacion_causa, descripcion_caso, evidencias, JSON.stringify(numerales_relacionados), id])
 
-        if (result.affectedRows === 0) {
-            res.status(404).send({ message: `No se pudo encontrar la solicitud` });
-        } else {
-            res.status(200).send({ message: `Solicitud actualizada exitosamente` });
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al actualizar la solicitud' });
+    if (result.affectedRows === 0) {
+      res.status(404).send({ message: `No se pudo encontrar la solicitud` })
+    } else {
+      res.status(200).send({ message: `Solicitud actualizada exitosamente` })
     }
-};
-
+  } catch (error) {
+    res.status(500).send({ message: 'Error al actualizar la solicitud' })
+  }
+}
 
 //ELIMINACION DE UNA SOLICITUD
 /**
@@ -225,15 +266,15 @@ export const updateRequest = async (req, res) => {
  * de datos según la ID proporcionada.
  */
 export const deleteRequest = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const [result] = await pool.query('DELETE FROM solicitud WHERE id_solicitud = ?', [id]);
-        if (result.affectedRows === 0) {
-            res.status(404).send({ message: `No se pudo encontrar la solicitud con id ${id}` })
-        } else {
-            res.status(200).send({ message: `Solicitud con id ${id} eliminada exitosamente` })
-        }
-    } catch (error) {
-        res.status(500).send({ message: 'Error al eliminar la solicitud' })
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('DELETE FROM solicitud WHERE id_solicitud = ?', [id])
+    if (result.affectedRows === 0) {
+      res.status(404).send({ message: `No se pudo encontrar la solicitud con id ${id}` })
+    } else {
+      res.status(200).send({ message: `Solicitud con id ${id} eliminada exitosamente` })
     }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al eliminar la solicitud' })
+  }
 }
