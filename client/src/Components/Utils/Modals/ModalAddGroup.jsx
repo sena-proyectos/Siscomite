@@ -77,7 +77,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
-        <Alerts contenido={'Los datos deben coincidir con los registrados en Sofía Plus'} />
+        <Alerts contenido={'Los datos deben coincidir con los registrados en Sofía Plus'}  />
         <Toaster position="top-right" closeButton richColors />
         <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">

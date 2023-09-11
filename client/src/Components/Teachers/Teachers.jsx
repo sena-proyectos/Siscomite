@@ -79,7 +79,7 @@ const Teachers = () => {
         <section className="flex justify-center min-h-[65vh] ">
           <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] ">
             {visibleData.map((item, index) => (
-              <Card className="h-[13rem]" key={index}>
+              <Card className="h-[13rem] -z-0" key={index}>
                 <CardHeader>
                   <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
                 </CardHeader>
