@@ -14,7 +14,7 @@ export const Card = ({ title, descripciónHome, titleHome, descripción, image, 
       <section className="card_Body">
         {inside && (
           <>
-            <section className="relative">
+            <section className="relative  ">
               <section className="">
                 <img className="rounded-[10px] w-[15rem] h-[11.25rem]" src={image} alt="Imágen" loading="lazy" />
               </section>

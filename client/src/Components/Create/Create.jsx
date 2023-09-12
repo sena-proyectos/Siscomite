@@ -6,7 +6,7 @@ import Cookie from 'js-cookie'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
+import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab, ScrollShadow } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
@@ -259,11 +259,11 @@ const Create = () => {
               <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Instructores</h3>
-                <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1 overflow-auto max-h-[10rem]">
+                <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1  max-h-[10rem]">
                   {(teacherSearch.length > 0 || selectedInstructor.length > 0) && error === null ? (
                     <>
                       {teacherSearch.map((item) => (
-                        <Tooltip color="success" content="Agregar instructor" placement='right'>
+                        <Tooltip color="success" content="Agregar instructor" placement="right">
                           <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario} onClick={() => handleTeacherClick(item.id_usuario)}>
                             <React.Fragment>
                               <li>{item.numero_documento}</li>
@@ -277,16 +277,16 @@ const Create = () => {
                       ))}
                       {selectedInstructor.map((item) => (
                         <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario}>
-                          <React.Fragment>
-                            <li>{item.numero_documento}</li>
-                            <li>{item.nombres + ' ' + item.apellidos}</li>
-                            <li>
-                              <Tooltip color="danger" content="Eliminar instructor" placement='right'>
-                                <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeInstructors(item.id_usuario)}></i>
-                              </Tooltip>
-                            </li>
-                          </React.Fragment>
-                        </ul>
+                            <React.Fragment>
+                              <li>{item.numero_documento}</li>
+                              <li>{item.nombres + ' ' + item.apellidos}</li>
+                              <li>
+                                <Tooltip color="danger" content="Eliminar instructor" placement="right">
+                                  <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeInstructors(item.id_usuario)}></i>
+                                </Tooltip>
+                              </li>
+                            </React.Fragment>
+                          </ul>
                       ))}
                     </>
                   ) : (
@@ -303,7 +303,7 @@ const Create = () => {
                   {(userSearch.length > 0 || selectedApprentice.length > 0) && errorUser === null ? (
                     <>
                       {userSearch.map((item) => (
-                        <Tooltip color="success" content="Agregar aprendiz" placement='right'>
+                        <Tooltip color="success" content="Agregar aprendiz" placement="right">
                           <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
                             <React.Fragment>
                               <li>{item.numero_documento_aprendiz}</li>
@@ -321,7 +321,7 @@ const Create = () => {
                             <li>{item.numero_documento_aprendiz}</li>
                             <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
-                              <Tooltip color="danger" content="Eliminar aprendiz" placement='right'>
+                              <Tooltip color="danger" content="Eliminar aprendiz" placement="right">
                                 <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeApprentices(item.id_aprendiz)}></i>
                               </Tooltip>
                             </li>

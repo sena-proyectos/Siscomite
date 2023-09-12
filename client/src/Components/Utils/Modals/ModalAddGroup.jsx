@@ -111,14 +111,14 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
                 </select>
               </section>
               <section>
-                <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
+                <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required onChange={handleEtapaChange} value={etapaPrograma}>
                   <option value="">Etapa*</option>
                   <option value="Lectiva">Lectiva</option>
                   <option value="Práctica">Práctica</option>
                 </select>
               </section>
               <section>
-                <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
+                <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
                   <option value="">Trimestre lectivo</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -130,7 +130,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
                   <option value="8">8</option>
                 </select>
               </section>
-              <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
+              <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
                 <option value="">Modalidad</option>
                 <option value="1">Presencial</option>
                 <option value="2">Virtual</option>
