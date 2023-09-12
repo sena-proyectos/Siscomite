@@ -122,6 +122,12 @@ export const getCoordination = () => {
 
   return response
 }
+/* Get reglamento */
+export const getRules = () => {
+  const URL = `${BaseUrl}${api}/getRules`
+  const response = axios.get(URL)
+  return response
+}
 
 /* get instructors by id */
 export const getInstructorById = (idInstructor) => {
