@@ -123,3 +123,18 @@ export const getCoordination = () => {
   return response
 }
 
+/* get instructors by id */
+export const getInstructorById = (idInstructor) => {
+  const URL = `${BaseUrl}${api}/user/${idInstructor}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* get request */
+export const getRequest = () => {
+  const URL = `${BaseUrl}${api}/solicitudes`
+  const response = axios.get(URL)
+
+  return response
+}

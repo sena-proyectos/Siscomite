@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise'
 
 export const getsolicitud = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT *from solicitud ')
+    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.tipo_solicitud,solicitud.nombre_coordinacion,solicitud.estado,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario;')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar las solictudes' })
@@ -210,6 +210,7 @@ export const createRequest = async (req, res) => {
     /* Insertar aprendiz relacionado */
     if (!aprendicesSeleccionados) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
     aprendicesSeleccionados.forEach(async (aprendizId) => {
+      console.log(aprendizId)
       try {
         await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
       } catch (error) {
