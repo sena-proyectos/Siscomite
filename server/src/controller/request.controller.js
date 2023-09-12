@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise'
 
 export const getsolicitud = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT *from solicitud ')
+    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.tipo_solicitud,solicitud.nombre_coordinacion,solicitud.estado,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario;')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar las solictudes' })
@@ -173,6 +173,17 @@ export const getRequestById = async (req, res) => {
   }
 }
 
+// Obtener reglamento
+
+export const getRules = async (req, res) => {
+  try {
+    const result = await pool.query('SELECT numerales.id_numeral, numerales.numero_numeral, numerales.descripcion_numeral, articulos.numero_articulo, articulos.descripcion_articulo, capitulos.titulo AS titulo_capitulo FROM numerales INNER JOIN articulos ON     numerales.id_articulo = articulos.id_articulo INNER JOIN capitulos ON articulos.id_capitulo = capitulos.id_capitulo;')
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener el reglamento' })
+  }
+}
+
 //CREACION DE UNA NUEVA SOLICITUD
 /**
  * Esta función crea una solicitud insertando datos en una tabla de base de datos.
@@ -210,6 +221,7 @@ export const createRequest = async (req, res) => {
     /* Insertar aprendiz relacionado */
     if (!aprendicesSeleccionados) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
     aprendicesSeleccionados.forEach(async (aprendizId) => {
+      console.log(aprendizId)
       try {
         await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
       } catch (error) {
