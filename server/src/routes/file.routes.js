@@ -9,6 +9,6 @@ router.get('/archivos', getFiles);
 // Obtener un archivo por su nombre
 router.get('/obtenerArchivo/:nombreArchivo', getSingleFile);
 // Subir archivo
-router.post('/subir-archivo', multerMiddleware.single('archivo'), handleFileUpload);
+router.post('/subirArchivo', multerMiddleware.single('archivo'), handleFileUpload);
 
 export default router;

@@ -26,7 +26,14 @@ export const handleFileUpload = async (req, res) => {
 
 export const getFiles = async (req, res) => {
   try {
-    const files = await pool.query('SELECT * FROM archivos'); // Obtener todos los archivos desde la base de datos
+    const queryResult = await pool.query('SELECT * FROM archivos'); // Obtener todos los archivos desde la base de datos
+
+    // Transformar los resultados en el formato esperado
+    const files = queryResult.map((row) => {
+      return {
+        nombre_archivo: row.nombre_archivo, 
+      };
+    });
 
     res.status(200).send(files); // Enviar los archivos como respuesta
   } catch (error) {
@@ -35,17 +42,19 @@ export const getFiles = async (req, res) => {
 };
 
 
+
 // Obtener un archivo por su nombre
 export const getSingleFile = async (req, res) => {
   const { nombreArchivo } = req.params;
   const currentFileUrl = import.meta.url;
   const currentDir = path.dirname(new URL(currentFileUrl).pathname);
-  const rutaArchivo = path.join(currentDir, 'src/uploads/', nombreArchivo);
+  const rutaArchivo = path.join(currentDir, 'uploads/', nombreArchivo);
 
   try {
     // Verifica si el archivo existe antes de enviarlo
     if (fs.existsSync(rutaArchivo)) {
-      res.sendFile(rutaArchivo);
+      // Devuelve la URL del archivo en lugar de enviar el archivo directamente
+      res.json({ archivoUrl: `/api/obtenerArchivo/${nombreArchivo}` });
     } else {
       // Si el archivo no existe, envía un mensaje de error 404
       res.status(404).send('Archivo no encontrado: ' + nombreArchivo);

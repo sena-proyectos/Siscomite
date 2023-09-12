@@ -123,3 +123,32 @@ export const getCoordination = () => {
   return response
 }
 
+/* Subir archivo */
+export const uploadFile = (formData) => {
+  const URL = `${BaseUrl}${api}/subirArchivo`; // Asegúrate de que esta sea la ruta correcta en tu servidor
+  const response = axios.post(URL, formData);
+
+  return response;
+}
+
+/* Obtener lista de archivos */
+export const getFiles = async () => {
+  try {
+    const response = await axios.get(`${BaseUrl}${api}/archivos`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener la lista de archivos:', error);
+    throw error;
+  }
+}
+/* Obtener archivo por nombre */
+export const getSingleFile = async (nombreArchivo) => {
+  const URL = `${BaseUrl}${api}/obtenerArchivo${nombreArchivo}`;
+  const response = await axios.get(URL, {
+    responseType: 'blob', // Para manejar una respuesta binaria (archivo)
+  });
+
+  return response;
+}
+
+

@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     // Obtener el tipo de archivo a partir de la extensión del nombre
     const ext = file.originalname.split('.').pop().toLowerCase();
-    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'docx', 'txt', 'xlsx', 'xls']; // Agrega las extensiones permitidas
+    const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'docx', 'txt', 'xlsx', 'xls', 'zip']; // Agrega las extensiones permitidas
     
     if (allowedExtensions.includes(ext)) {
       cb(null, Date.now() + '-' + file.originalname);

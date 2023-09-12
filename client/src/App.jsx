@@ -7,7 +7,8 @@ import { Requests } from './Components/Requests/Requests'
 import { Create } from './Components/Create/Create'
 import { Groups } from './Components/Groups/Groups'
 import { Rules } from './Components/Rules/Rules'
-import { Text } from './Components/Test/Test'
+import { Test } from './Components/Test/Test'
+import { ViewFiles} from './Components/viewFiles/viewFiles'
 import './App.css'
 
 function App() {
@@ -21,7 +22,9 @@ function App() {
       <Route path="/create" element={<Create />} />
       <Route path="/groups" element={<Groups />} />
       <Route path="/rules" element={<Rules />} />
-      <Route path="/text" element={<Text />} />
+      <Route path="/Test" element={<Test />} />
+      <Route path="/viewFiles" element={<ViewFiles />} />
+
     </Routes>
   )
 }

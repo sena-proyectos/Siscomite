@@ -6,7 +6,6 @@ import { Button, Divider } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
-import { Text } from '../Test/Test'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
 const Home = () => {
@@ -49,7 +48,7 @@ const Home = () => {
   return (
     <>
       <main className="flex h-screen w-full">
-        <Text />
+      
         <Sliderbar />
         <section className="w-full overflow-auto ">
           <section className="flex max-w-[100%]">
