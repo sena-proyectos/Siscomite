@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 import { Toaster, toast } from 'sonner'
 import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
 import { Input, Button } from '@nextui-org/react'
+import { Alerts } from '../Alerts/Alerts'
 
 export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
   /* aprendices values */
@@ -80,6 +81,7 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center ">
+        <Alerts descargarExcel contenido={'Los datos deben coincidir con los registrados en Sofía Plus'} recordatorio={"Para subir aprendices es neceario utilizar esta plantilla de Excel"} />
         <Toaster position="top-right" closeButton richColors />
         <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">

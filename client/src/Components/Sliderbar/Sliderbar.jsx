@@ -11,13 +11,12 @@ const isActiveRoute = (currentPath, targetPath) => {
 }
 
 const Sliderbar = () => {
-  const [selectedIcon, setSelectedIcon] = useState(0) // Estado para controlar el icono seleccionado
-  const navigate = useNavigate() // Función de navegación
-  const [nombreCompleto, setNombreCompleto] = useState(null) // Estado para el nombre completo del usuario
-  const [rol, setRol] = useState(null) // Estado para el rol del usuario
+  const navigate = useNavigate()
+  const [nombreCompleto, setNombreCompleto] = useState(null)
+  const [rol, setRol] = useState(null)
 
-  // Para poner color al icono al seleccionarlo
-  const location = useLocation() // Hook useLocation para obtener la ubicación actual
+  //Para poner color al componete al seleccionarlo
+  const location = useLocation() // Importa useLocation
 
   useEffect(() => {
     getInformation() // Llamar a la función getInformation al montar el componente
@@ -50,7 +49,7 @@ const Sliderbar = () => {
         <h3 className="mt-[1rem] text-[17px] font-bold">{nombreCompleto}</h3>
         <p>{rol}</p>
       </section>
-      <section className="pages absolute top-[35%]  w-full flex justify-center">
+      <section className="pages absolute top-[30%]  w-full flex justify-center">
         <ul className="p-0">
           <Link to={'/home'} className="line">
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/home') ? 'bg-[#1a1d24]' : ''}`}>
@@ -84,12 +83,18 @@ const Sliderbar = () => {
               <span className="slideText ml-[10px]">Reglamento</span>
             </li>
           </Link>
+          <Link className="line" to={'/teachers'}>
+            <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/teachers') ? 'bg-[#1a1d24]' : ''}`}>
+              <i className={`fi fi-rs-book-bookmark`} title="Instructores" />
+              <span className="slideText ml-[10px]">Instructores</span>
+            </li>
+          </Link>
         </ul>
       </section>
       <section className="absolute bottom-[0.5em]">
         <ul className="p-0 flex flex-col items-center justify-end mb-[20px]">
-          <Link className="line">
-            <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/settings') ? 'bg-[#1a1d24]' : ''}`}>
+          <Link className="line" to={'/setting'}>
+            <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/setting') ? 'bg-[#1a1d24]' : ''}`}>
               <i className="fi fi-rr-gears" id="icon" title="Configuración" />
               <span className="slideText ml-[10px]">Configuración</span>
             </li>
