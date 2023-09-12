@@ -174,13 +174,46 @@ export const getRequestById = async (req, res) => {
 }
 
 // Obtener reglamento
-
 export const getRules = async (req, res) => {
   try {
-    const result = await pool.query('SELECT numerales.id_numeral, numerales.numero_numeral, numerales.descripcion_numeral, articulos.numero_articulo, articulos.descripcion_articulo, capitulos.titulo AS titulo_capitulo FROM numerales INNER JOIN articulos ON     numerales.id_articulo = articulos.id_articulo INNER JOIN capitulos ON articulos.id_capitulo = capitulos.id_capitulo;')
-    res.status(200).send({ result })
+    const sqlQuery = `
+    WITH RankedData AS (
+      SELECT
+        numerales.id_numeral,
+        numerales.numero_numeral,
+        numerales.descripcion_numeral,
+        articulos.numero_articulo,
+        articulos.descripcion_articulo,
+        capitulos.titulo AS titulo_capitulo,
+        ROW_NUMBER() OVER (PARTITION BY capitulos.id_capitulo, articulos.id_articulo ORDER BY numerales.id_numeral) AS RowNum
+      FROM
+        numerales
+      INNER JOIN
+        articulos
+      ON
+        numerales.id_articulo = articulos.id_articulo
+      INNER JOIN
+        capitulos
+      ON
+        articulos.id_capitulo = capitulos.id_capitulo
+    )
+    SELECT
+      id_numeral,
+      numero_numeral,
+      descripcion_numeral,
+      CASE WHEN RowNum = 1 THEN numero_articulo ELSE NULL END AS numero_articulo,
+      descripcion_articulo,
+      CASE WHEN RowNum = 1 THEN titulo_capitulo ELSE NULL END AS titulo_capitulo,
+      CASE WHEN RowNum = 1 THEN @chapterTitle := titulo_capitulo ELSE NULL END AS currentChapter
+    FROM RankedData
+    CROSS JOIN (SELECT @chapterTitle := '') AS vars
+    ORDER BY id_numeral;`
+
+    const [result] = await pool.query(sqlQuery)
+    res.status(200).json({ result })
   } catch (error) {
-    res.status(500).send({ message: 'Error al obtener el reglamento' })
+    console.error(error)
+    res.status(500).json({ message: 'Error al obtener el reglamento' })
   }
 }
 
