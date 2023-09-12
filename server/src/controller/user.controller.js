@@ -15,6 +15,21 @@ export const getUser = async (req, res) => {
   }
 }
 
+/* controlador para obtener instructores por ID */
+export const userById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_usuario = ? and id_rol = 2', [id])
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al instructor` })
+    } else {
+      res.status(200).send({ result })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener el instructor' })
+  }
+}
+
 // Controlador para obtener todos los instructores
 export const getTeacher = async (req, res) => {
   try {

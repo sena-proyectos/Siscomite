@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { checkUserExistRegister, checkUserExistLogin, hashPassword, checkRegisterData, comparePassword, checkLoginData, createToken, checkName } from '../middlewares/user.middleware.js'
-import { registerUser, getUser, loginUser, getTeacher, searchUser, searchTeacher, getCoordination, searchCoordination } from '../controller/user.controller.js'
+import { registerUser, getUser, loginUser, getTeacher, searchUser, searchTeacher, getCoordination, searchCoordination, userById } from '../controller/user.controller.js'
 
 const router = Router()
 /* get */
@@ -8,6 +8,7 @@ router.get('/users', getUser)
 router.get('/teachers', getTeacher)
 router.get('/coordination', getCoordination)
 
+router.get('/user/:id', userById)
 
 router.get('/searchUser', checkName, searchUser)
 router.get('/searchTeacher', checkName, searchTeacher)
