@@ -173,6 +173,17 @@ export const getRequestById = async (req, res) => {
   }
 }
 
+// Obtener reglamento
+
+export const getRules = async (req, res) => {
+  try {
+    const result = await pool.query('SELECT numerales.id_numeral, numerales.numero_numeral, numerales.descripcion_numeral, articulos.numero_articulo, articulos.descripcion_articulo, capitulos.titulo AS titulo_capitulo FROM numerales INNER JOIN articulos ON     numerales.id_articulo = articulos.id_articulo INNER JOIN capitulos ON articulos.id_capitulo = capitulos.id_capitulo;')
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener el reglamento' })
+  }
+}
+
 //CREACION DE UNA NUEVA SOLICITUD
 /**
  * Esta función crea una solicitud insertando datos en una tabla de base de datos.
