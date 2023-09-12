@@ -17,7 +17,6 @@ export const createDataSolicitud = (req, res, next) => {
 
     // Validar los datos de la solicitud utilizando el esquema de validación 'createSolicitud'
     const { error } = createSolicitud.validate({ tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo })
-    console.log(error);
     // Comprobar si hay un error de validación
     if (error !== undefined) {
       return res.status(400).json({ message: 'Los datos de la solicitud no son válidos, verifícalos.' })
