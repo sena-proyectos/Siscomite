@@ -66,16 +66,16 @@ export const Register = () => {
           <section className="relative w-[90%] top-[1.5rem] grid gap-8  ">
             <section className="w-full flex justify-between gap-2">
               <div className="flex flex-wrap items-end w-full gap-4 mb-6 p md:flex-nowrap md:mb-0">
-                <Input type="text" label="Nombre" labelPlacement={'outside'} autoComplete="off" value={nombres} onChange={(e) => setNombres(e.target.value)} />
+                <Input type="text" isRequired label="Nombre" labelPlacement={'outside'} autoComplete="off" value={nombres} onChange={(e) => setNombres(e.target.value)} />
               </div>
 
               <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
-                <Input type="text" label="Apellido" labelPlacement={'outside'} autoComplete="off" value={apellidos} onChange={(e) => setApellidos(e.target.value)} />
+                <Input type="text" isRequired label="Apellido" labelPlacement={'outside'} autoComplete="off" value={apellidos} onChange={(e) => setApellidos(e.target.value)} />
               </div>
             </section>
 
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
-              <Input type="email" label="Correo institucional" labelPlacement={'outside'} autoComplete="off" value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
+              <Input type="email" isRequired label="Correo institucional" labelPlacement={'outside'} autoComplete="off" value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
             </div>
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
               <Input type="text" label="Teléfono" labelPlacement={'outside'} autoComplete="off" value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
@@ -85,7 +85,7 @@ export const Register = () => {
               <Dropdown>
                 <DropdownTrigger>
                   <Button variant="bordered" className="w-full gap-4 capitalize ">
-                    {selectedTipoDocumento || 'Tipo documento'}
+                    {selectedTipoDocumento || 'Tipo documento *'}
                   </Button>
                 </DropdownTrigger>
                 <DropdownMenu
@@ -107,12 +107,13 @@ export const Register = () => {
               </Dropdown>
 
               <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
-                <Input type="text" label="Documento" labelPlacement={'outside'} autoComplete="off" value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
+                <Input type="text" isRequired label="Documento" labelPlacement={'outside'} autoComplete="off" value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
               </div>
             </section>
 
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
               <Input
+                isRequired
                 label="Contraseña"
                 labelPlacement={'outside'}
                 endContent={

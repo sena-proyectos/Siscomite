@@ -9,6 +9,8 @@ import { Groups } from './Components/Groups/Groups'
 import { Rules } from './Components/Rules/Rules'
 import { Test } from './Components/Test/Test'
 import { ViewFiles} from './Components/viewFiles/viewFiles'
+import { Setting } from './Components/Setting/Setting'
+import { Teachers } from './Components/Teachers/Teachers'
 import './App.css'
 
 function App() {
@@ -25,6 +27,8 @@ function App() {
       <Route path="/Test" element={<Test />} />
       <Route path="/viewFiles" element={<ViewFiles />} />
 
+      <Route path="/setting" element={<Setting />} />
+      <Route path="/teachers" element={<Teachers />} />
     </Routes>
   )
 }

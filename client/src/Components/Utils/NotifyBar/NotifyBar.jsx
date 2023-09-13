@@ -1,18 +1,45 @@
 import './NotifyBar.css'
 import { Divider } from '@nextui-org/react'
+import { useState } from 'react'; // Asegúrate de importar useState desde React
 
-const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
+const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
 
 export const Notify = ({ isOpen, toggleNotify }) => {
-  const currentDate = new Date()
-  const currentYear = currentDate.getFullYear()
-  const currentMonth = currentDate.getMonth()
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
+  const currentDate = new Date();
+  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
 
-  const daysCount = daysInMonth(currentYear, currentMonth)
-  const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1)
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
 
-  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  const daysCount = daysInMonth(currentYear, currentMonth);
+  const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1);
+
+  const monthNames = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+
+  const handlePrevMonth = () => {
+    let newMonth = currentMonth - 1;
+    let newYear = currentYear;
+    if (newMonth < 0) {
+      newMonth = 11;
+      newYear--;
+    }
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+  };
+
+  const handleNextMonth = () => {
+    let newMonth = currentMonth + 1;
+    let newYear = currentYear;
+    if (newMonth > 11) {
+      newMonth = 0;
+      newYear++;
+    }
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
+  };
 
   return (
     <main>
@@ -24,9 +51,10 @@ export const Notify = ({ isOpen, toggleNotify }) => {
           <p className="ml-[4.5rem] flex items-center">Notificaciones</p>
         </header>
         <section className="w-[95%] mx-auto mt-2 ">
-          <h2 className="text-md font-light px-2 mb-2 flex justify-between ">
-            <p className="font-bold">Calendario</p>
-            {monthNames[currentMonth]}
+          <h2 className="text-md font-light px-2 mb-2 flex justify-between">
+            <button onClick={handlePrevMonth}><i className="fi fi-sr-angle-left"/></button>
+            <p className="font-bold">{monthNames[currentMonth]} {currentYear}</p>
+            <button onClick={handleNextMonth}><i className="fi fi-sr-angle-right"/></button>
           </h2>
           <section className="grid grid-cols-7 mb-1">
             {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sab'].map((day) => (

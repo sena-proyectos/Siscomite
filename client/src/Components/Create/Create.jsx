@@ -6,9 +6,9 @@ import Cookie from 'js-cookie'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
+import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab, ScrollShadow } from '@nextui-org/react'
 import { Search } from '../Search/Search'
-import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById } from '../../api/httpRequest'
+import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 
 // Definición del componente Create
@@ -23,6 +23,8 @@ const Create = () => {
   const [selectedApprentice, setSelectedApprentice] = useState([])
   const [selectedInstructor, setSelectedInstructor] = useState([])
 
+  const [numSeleccionados, setNumseleccionado] = useState([])
+
   const [coordination, setCoordination] = useState([])
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Coordinador']))
@@ -34,6 +36,9 @@ const Create = () => {
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
   const [descripcion, setDescripcion] = useState(null)
+
+  /* Estado para almacenar el reglamento obtenido de la base de datos */
+  const [rules, setRules] = useState([])
 
   // Función para buscar instructores
   const getTeacher = async (nombres) => {
@@ -82,18 +87,31 @@ const Create = () => {
   }, [])
 
   // Función para enviar datos
-  const sendData = () => {
+  const sendData = async () => {
     const dataValue = {
       tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
       nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
-      id_usuario_solicitante: userID,
-      descripcion,
+      id_usuario_solicitante: `${userID}`,
+      descripcion_caso : descripcion,
       calificacion_causa: selectedValueFalta,
       aprendicesSeleccionados: selectedApprentice.map((item) => item.id_aprendiz),
-      instructoresSeleccionados: selectedInstructor.map((item) => item.id_usuario)
+      instructoresSeleccionados: selectedInstructor.map((item) => item.id_usuario),
+      numeralesSeleccionados: numSeleccionados,
+      categoria_causa: 'Academica',
+      id_archivo: '13'
     }
-
-    console.log(dataValue)
+    try {
+      const response = await createRequest(dataValue)
+      const res = response.data.message
+      toast.success('Genial!!', {
+        description: res
+      })
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
+    }
   }
 
   /* Funcion para obtener los instructores */
@@ -176,17 +194,39 @@ const Create = () => {
     })
   }
 
-  // Utiliza un useEffect para realizar acciones después de actualizar selectedApprentice
+  // Utiliza un useEffect para realizar acciones de obtener reglamento
   useEffect(() => {
-    // Realiza cualquier acción necesaria con el estado actualizado aquí
-    console.log(selectedInstructor)
-  }, [selectedInstructor]) // Este useEffect se ejecutará cada vez que selectedApprentice cambie
+    getRule()
+  }, []) // Este useEffect se ejecutará cada vez que se renderice el componente
+
+  const getRule = async () => {
+    try {
+      const response = await getRules()
+      const res = response.data.result
+      setRules(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   // Estado y función para controlar la barra de notificaciones
   const [notifyOpen, setNotifyOpen] = useState(false)
 
   const toggleNotify = () => {
     setNotifyOpen(!notifyOpen)
+  }
+
+  // Función para manejar cambios en la selección de checkboxes de numerales
+  const handleNumeralChange = (e, numeralId) => {
+    const checked = e.target.checked
+
+    if (checked) {
+      // Si el checkbox se marca, agrega el numeralId al estado numSeleccionados
+      setNumseleccionado((prevSelected) => [...prevSelected, numeralId])
+    } else {
+      // Si el checkbox se desmarca, elimina el numeralId del estado numSeleccionados
+      setNumseleccionado((prevSelected) => prevSelected.filter((numeral) => numeral !== numeralId))
+    }
   }
 
   return (
@@ -259,12 +299,12 @@ const Create = () => {
               <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Instructores</h3>
-                <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1 overflow-auto max-h-[10rem]">
+                <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1  max-h-[10rem]">
                   {(teacherSearch.length > 0 || selectedInstructor.length > 0) && error === null ? (
                     <>
                       {teacherSearch.map((item) => (
-                        <Tooltip color="success" content="Agregar instructor" placement='right'>
-                          <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario} onClick={() => handleTeacherClick(item.id_usuario)}>
+                        <Tooltip color="success" content="Agregar instructor" placement="right" key={item.id_usuario}>
+                          <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" onClick={() => handleTeacherClick(item.id_usuario)}>
                             <React.Fragment>
                               <li>{item.numero_documento}</li>
                               <li>{item.nombres + ' ' + item.apellidos}</li>
@@ -281,7 +321,7 @@ const Create = () => {
                             <li>{item.numero_documento}</li>
                             <li>{item.nombres + ' ' + item.apellidos}</li>
                             <li>
-                              <Tooltip color="danger" content="Eliminar instructor" placement='right'>
+                              <Tooltip color="danger" content="Eliminar instructor" placement="right">
                                 <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeInstructors(item.id_usuario)}></i>
                               </Tooltip>
                             </li>
@@ -303,8 +343,8 @@ const Create = () => {
                   {(userSearch.length > 0 || selectedApprentice.length > 0) && errorUser === null ? (
                     <>
                       {userSearch.map((item) => (
-                        <Tooltip color="success" content="Agregar aprendiz" placement='right'>
-                          <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_aprendiz} onClick={() => handleUserClick(item.id_aprendiz)}>
+                        <Tooltip color="success" content="Agregar aprendiz" placement="right" key={item.id_aprendiz}>
+                          <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" onClick={() => handleUserClick(item.id_aprendiz)}>
                             <React.Fragment>
                               <li>{item.numero_documento_aprendiz}</li>
                               <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
@@ -321,7 +361,7 @@ const Create = () => {
                             <li>{item.numero_documento_aprendiz}</li>
                             <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
                             <li>
-                              <Tooltip color="danger" content="Eliminar aprendiz" placement='right'>
+                              <Tooltip color="danger" content="Eliminar aprendiz" placement="right">
                                 <i className="fi fi-br-remove-user text-red-500 text-[1rem]" onClick={() => removeApprentices(item.id_aprendiz)}></i>
                               </Tooltip>
                             </li>
@@ -355,20 +395,23 @@ const Create = () => {
             <section className="flex w-full h-full flex-col">
               <Tabs>
                 <Tab key="academica" title="Acádemicas">
-                  <Card className="overflow-auto  h-full ">
+                  <Card className="overflow-auto max-h-[50vh]">
                     <CardBody className="gap-1">
                       <CheckboxGroup>
-                        <Checkbox value="rules" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                        <Checkbox value="tati" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
+                        {rules.map((item) => (
+                          <React.Fragment key={item.id_numeral}>
+                            <strong>{item.titulo_capitulo}</strong>
+                            <p>{item.numero_articulo}</p>
+                            <Checkbox value={item.id_numeral} className="flex items-start" checked={numSeleccionados.includes(item.id_numeral)} onChange={(e) => handleNumeralChange(e, item.id_numeral)}>
+                              {item.descripcion_numeral}
+                            </Checkbox>
+                          </React.Fragment>
+                        ))}
                       </CheckboxGroup>
                     </CardBody>
                   </Card>
                 </Tab>
-                <Tab key="disciplinarias" title="Disciplinarias">
+                {/*  <Tab key="disciplinarias" title="Disciplinarias">
                   <Card>
                     <CardBody>
                       <CheckboxGroup>
@@ -395,7 +438,7 @@ const Create = () => {
                       </CheckboxGroup>
                     </CardBody>
                   </Card>
-                </Tab>
+                </Tab> */}
               </Tabs>
             </section>
           </section>

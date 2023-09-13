@@ -58,20 +58,20 @@ const Search = ({ searchStudent, placeholder, icon, filtro }) => {
               </section>
             </section>
             <section>
-              <Dropdown>
+              <Dropdown placement="right-start">
                 <DropdownTrigger>
                   <Button className="z-0 w-[6rem]" variant="bordered" color="primary" size="sm">
                     Fecha
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu aria-label="Fecha">
+                <DropdownMenu  aria-label="Fecha">
                   <DropdownItem key="new">Más reciente</DropdownItem>
                   <DropdownItem key="old">Más antigua</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </section>
             <section>
-              <Dropdown>
+              <Dropdown placement="right-start">
                 <DropdownTrigger>
                   <Button className="z-0 w-[6rem]" variant="bordered" color="primary" size="sm">
                     Estado
