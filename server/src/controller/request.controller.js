@@ -254,7 +254,6 @@ export const createRequest = async (req, res) => {
     /* Insertar aprendiz relacionado */
     if (!aprendicesSeleccionados) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
     aprendicesSeleccionados.forEach(async (aprendizId) => {
-      console.log(aprendizId)
       try {
         await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
       } catch (error) {
@@ -264,16 +263,15 @@ export const createRequest = async (req, res) => {
     })
 
     /* Insertar instructores relacionados */
-    if (tipo_solicitud === 'Grupal') {
       instructoresSeleccionados.forEach(async (usuarioId) => {
         try {
           await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
+          console.log(usuarioId)
         } catch (error) {
           res.status(400).send({ message: 'Instructor seleccionado incorrectamente' })
           return
         }
       })
-    }
 
     /* Enviar respuesta existosa */
     res.status(201).send({ message: 'Solicitud creada exitosamente' })
@@ -321,5 +319,19 @@ export const deleteRequest = async (req, res) => {
     }
   } catch (error) {
     res.status(500).send({ message: 'Error al eliminar la solicitud' })
+  }
+}
+
+// OBTENER SOLICITUDES POR ID DE USUARIO
+export const getRequestByIdUser = async (req, res) => {
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('SELECT * FROM siscomite.solicitud WHERE id_usuario_solicitante = ?;', [id])
+
+    if (result.affectedRows === 0) return res.status(404).send({ message: `No has realizado ninguna solicitud` })
+
+    return res.status(200).send({ result })
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener la solicitud' })
   }
 }

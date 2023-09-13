@@ -144,3 +144,11 @@ export const getRequest = () => {
 
   return response
 }
+
+/* get request by id user */
+export const getRequestByIdUser = (userID) => {
+  const URL = `${BaseUrl}${api}/solicitudByIdUser/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}

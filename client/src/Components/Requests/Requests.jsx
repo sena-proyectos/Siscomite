@@ -8,13 +8,18 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagina
 import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
-import { getRequest } from '../../api/httpRequest'
+import { getRequest, getRequestByIdUser } from '../../api/httpRequest'
+
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 
 // Componente Requests
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
   const [filtroVisible, setFiltroVisible] = useState(false) // Estado para controlar la visibilidad del filtro de búsqueda
-  const [request, setRequest] = useState([]) //estado para guardar las solicitudes de la base de datos
+
+  const [request, setRequest] = useState([]) // estado para guardar las solicitudes de la base de datos
+  const [rol, setRol] = useState(null)
 
   // Paginación
   const itemsPerPage = 9 // Número de elementos por página
@@ -63,21 +68,53 @@ const Requests = () => {
   useEffect(() => {
     /* Llamar la funcion de obtener solicitudes */
     getRequets()
+    getRequetsById()
   }, [])
-  
+
   /* Obtener las solicitudes echas */
-  const getRequets = async() => {
+  const getRequets = async () => {
     try {
       const response = await getRequest()
       const res = response.data.result
       setRequest(res)
-      
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 
+  /* Obtener las solicitudes echas por usuario */
+  const getRequetsById = async () => {
+    try {
+      const response = await getRequestByIdUser(rol)
+      const res = response.data.result
+      setRequest(res)
+    } catch (error) {
+      console.log(error)
+    }
+  // }
 
+  const getElementsByRole = () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
+    
+    setRol(rolToken)
+
+    // Mapear los ID de rol a nombres de rol
+    if (rolToken === 1) rolToken = 'Coordinador'
+    if (rolToken === 2) rolToken = 'Instructor'
+    if (rolToken === 3) rolToken = 'Administrador'
+
+    return {
+      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+      administration: rolToken === 'Administrador',
+      coordination: rolToken === 'Coordinador',
+      instructor: rolToken === 'Instructor'
+    }
+  }
+
+  // Obtener los elementos que se deben mostrar según el rol
+  // const elements = getElementsByRole()
 
   return (
     <>
