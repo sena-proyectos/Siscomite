@@ -6,7 +6,6 @@ import { Button, Divider } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
-import { Text } from '../Test/Test'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
 const Home = () => {
@@ -21,7 +20,7 @@ const Home = () => {
     {
       titleHome: 'Crear solicitud',
       image: '/image/solicitud.webp',
-      descripciónHome: 'Aquí podrás crear una solicitud para un comité de evalución..',
+      descripciónHome: 'Aquí podrás crear una solicitud para un comité de evalución.',
       Link: '/create'
     },
     {
@@ -49,7 +48,6 @@ const Home = () => {
   return (
     <>
       <main className="flex h-screen w-full">
-        <Text />
         <Sliderbar />
         <section className="w-full overflow-auto ">
           <section className="flex max-w-[100%]">
@@ -71,16 +69,15 @@ const Home = () => {
               </header>
 
               <section className="h-[85vh] flex justify-center items-start">
-                <section className="w-[95%] grid grid-cols-4 gap-x-10 place-items-center  ">
+                <section className="w-[95%] grid grid-cols-4 gap-x-10 place-items-center">
                   {data.map((x, i) => (
                     <Link to={x.Link} key={i}>
-                      <section className="h-[28%] mt-6 text-black  cardHome " style={{ transition: '0.4s ease-in-out' }}>
+                      <section className="h-[28%] mt-6 text-black cardHome " style={{ transition: '0.4s ease-in-out' }}>
                         <Card inside image={x.image} titleHome={x.titleHome} descripciónHome={x.descripciónHome} />
                       </section>
                     </Link>
                   ))}
-
-                  <section className="col-span-2 mt-[4rem]   ">
+                  <section className="col-span-3 mt-[4rem]   ">
                     <p className="font-extrabold text-lg">Recomendaciones</p>
                     <section className="bg-white shadow-lg rounded-xl mt-2 p-[1rem] ">
                       <p className="font-semibold ">Agregar aprendices</p>

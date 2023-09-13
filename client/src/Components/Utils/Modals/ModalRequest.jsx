@@ -1,10 +1,11 @@
-import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button } from '@nextui-org/react'
+import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button, Pagination } from '@nextui-org/react'
 
 export const ModalRequest = ({ cerrarModal }) => {
   // Cerrar modal
   const closeModal = () => {
     cerrarModal()
   }
+
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
@@ -69,52 +70,52 @@ export const ModalRequest = ({ cerrarModal }) => {
                 </AccordionItem>
                 <AccordionItem aria-label="Accordion 2" startContent={<i className="fi fi-rs-book-alt text-red-500"></i>} title="Información Aprendiz">
                   <section className="grid grid-cols-2 gap-x-7 gap-y-2 max-h-[200px] overflow-auto pr-[1rem] ">
-                    <div className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Nombre" defaultValue="Juan Manuel " isReadOnly />
-                    </div>
-                    <div className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Apellido" defaultValue="Robledo Sanchez" isReadOnly />
-                    </div>
-                    <div className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Tipo  documento" defaultValue="Tarjeta identidad" isReadOnly />
-                    </div>
-                    <div className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Documento" defaultValue="2345434" isReadOnly />
-                    </div>
-                    <div className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Correo" defaultValue="juan@soy.sena.edu.co" isReadOnly />
-                    </div>
-                    <div className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Número" defaultValue="344555553" isReadOnly />
-                    </div>
-                    <div className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Ficha" defaultValue="2373196" isReadOnly />
-                    </div>
-                    <div className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Programa" defaultValue="Análisis y Desarrollo de Software" isReadOnly />
-                    </div>
+                    </section>
                   </section>
                 </AccordionItem>
                 <AccordionItem aria-label="Accordion 3" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
                   <section className="grid grid-cols-2 gap-x-7 gap-y-2 pr-[1rem] max-h-[200px] overflow-auto">
-                    <div className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue="Individual" isReadOnly />
-                    </div>
-                    <div className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                      <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue="Insectionidual" isReadOnly />
+                    </section>
+                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Coordinador" defaultValue="Marianela Henao" isReadOnly />
-                    </div>
-                    <div className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Categoría causa" defaultValue="Académica" isReadOnly />
-                    </div>
-                    <div className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Calificación causa" defaultValue="Grave" isReadOnly />
-                    </div>
-                    <div className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
-                    </div>
-                    <div className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                    </section>
+                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
-                    </div>
+                    </section>
                     <section className="flex pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Popover
                         showArrow
@@ -131,9 +132,9 @@ export const ModalRequest = ({ cerrarModal }) => {
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent>
-                          <div className="px-1 py-2">
-                            <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
-                          </div>
+                          <section className="px-1 py-2">
+                            <section className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </section>
+                          </section>
                         </PopoverContent>
                       </Popover>
                     </section>
@@ -153,9 +154,9 @@ export const ModalRequest = ({ cerrarModal }) => {
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent>
-                          <div className="px-1 py-2">
-                            <div className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </div>
-                          </div>
+                          <section className="px-1 py-2">
+                            <section className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </section>
+                          </section>
                         </PopoverContent>
                       </Popover>
                     </section>

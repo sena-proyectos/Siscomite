@@ -206,10 +206,9 @@ const Rules = () => {
             <></>
           ) : (
             <>
-              <Button className="muve" radius="full" variant="flat" color="success" onClick={toggleNotify}>
-                Mensajes
-                <i className="fi fi-ss-bell pl-[.5rem]" />
-              </Button>
+              <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+              </section>
             </>
           )}
         </section>
@@ -218,6 +217,7 @@ const Rules = () => {
             <section className="grid place-items-center">
               <Button size="lg" onClick={handleOpenEditModal} color="primary" variant="shadow">
                 Editar reglamento
+                <i className="fi fi-rr-pencil"></i>
               </Button>
             </section>
             <section className="col-span-2 z-0">

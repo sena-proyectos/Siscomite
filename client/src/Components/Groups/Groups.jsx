@@ -93,6 +93,7 @@ const Groups = () => {
   }
 
   // .................Tabla............
+  // Estado para controlar la visibilidad de la tabla y las cards
   const [isCardVisible, setIsCardVisible] = useState(true)
 
   // Almacenar la preferencia del usuario en localStorage
@@ -134,7 +135,7 @@ const Groups = () => {
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+              <Search filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
             </section>
             <section className="absolute right-[20%] cursor-pointer ">
               {notifyOpen ? (
@@ -186,7 +187,7 @@ const Groups = () => {
                 <section className="gap-8 grid grid-cols-3 mt-3 max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
                   {visibleCards.map((card) => (
                     <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
-                      <Card className={`card w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
+                      <Card className={`w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
                         <CardHeader className="gap-3 flex justify-center z-0">
                           <section className="flex bg-blue-200 py-2 justify-center items-center rounded-xl w-full">
                             <p className="text-xl font-bold ">{card.numero_ficha}</p>
@@ -240,7 +241,7 @@ const Groups = () => {
                       <tbody>
                         {visibleCards.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
-                            <tr className="grid grid-cols-7 text-sm text-default-700 p-2 place-content-center hover:bg-gray-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
+                            <tr className="grid grid-cols-7 text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
                               <td className="bg-yellow">{card.numero_ficha}</td>
                               <td className="col-span-2">{card.nombre_programa}</td>
                               <td>{card.jornada}</td>

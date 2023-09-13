@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise'
 
 export const getsolicitud = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT *from solicitud ')
+    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.tipo_solicitud,solicitud.nombre_coordinacion,solicitud.estado,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario;')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar las solictudes' })
@@ -174,13 +174,46 @@ export const getRequestById = async (req, res) => {
 }
 
 // Obtener reglamento
-
 export const getRules = async (req, res) => {
   try {
-    const result = await pool.query('SELECT numerales.id_numeral, numerales.numero_numeral, numerales.descripcion_numeral, articulos.numero_articulo, articulos.descripcion_articulo, capitulos.titulo AS titulo_capitulo FROM numerales INNER JOIN articulos ON     numerales.id_articulo = articulos.id_articulo INNER JOIN capitulos ON articulos.id_capitulo = capitulos.id_capitulo;')
-    res.status(200).send({ result })
+    const sqlQuery = `
+    WITH RankedData AS (
+      SELECT
+        numerales.id_numeral,
+        numerales.numero_numeral,
+        numerales.descripcion_numeral,
+        articulos.numero_articulo,
+        articulos.descripcion_articulo,
+        capitulos.titulo AS titulo_capitulo,
+        ROW_NUMBER() OVER (PARTITION BY capitulos.id_capitulo, articulos.id_articulo ORDER BY numerales.id_numeral) AS RowNum
+      FROM
+        numerales
+      INNER JOIN
+        articulos
+      ON
+        numerales.id_articulo = articulos.id_articulo
+      INNER JOIN
+        capitulos
+      ON
+        articulos.id_capitulo = capitulos.id_capitulo
+    )
+    SELECT
+      id_numeral,
+      numero_numeral,
+      descripcion_numeral,
+      CASE WHEN RowNum = 1 THEN numero_articulo ELSE NULL END AS numero_articulo,
+      descripcion_articulo,
+      CASE WHEN RowNum = 1 THEN titulo_capitulo ELSE NULL END AS titulo_capitulo,
+      CASE WHEN RowNum = 1 THEN @chapterTitle := titulo_capitulo ELSE NULL END AS currentChapter
+    FROM RankedData
+    CROSS JOIN (SELECT @chapterTitle := '') AS vars
+    ORDER BY id_numeral;`
+
+    const [result] = await pool.query(sqlQuery)
+    res.status(200).json({ result })
   } catch (error) {
-    res.status(500).send({ message: 'Error al obtener el reglamento' })
+    console.error(error)
+    res.status(500).json({ message: 'Error al obtener el reglamento' })
   }
 }
 
@@ -221,6 +254,7 @@ export const createRequest = async (req, res) => {
     /* Insertar aprendiz relacionado */
     if (!aprendicesSeleccionados) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
     aprendicesSeleccionados.forEach(async (aprendizId) => {
+      console.log(aprendizId)
       try {
         await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
       } catch (error) {

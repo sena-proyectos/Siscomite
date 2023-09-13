@@ -3,6 +3,7 @@ import { createFicha } from '../../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { Input, Button } from '@nextui-org/react'
 import { getCoordination } from '../../../api/httpRequest'
+import { Alerts } from '../Alerts/Alerts'
 
 export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   /* Estados para capturar los valores de la ficha */
@@ -37,7 +38,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
         etapa_programa: etapaPrograma,
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
-        id_usuario_coordinador : coordinadores
+        id_usuario_coordinador: coordinadores
       }
 
       const response = await createFicha(dataValue)
@@ -76,6 +77,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
+        <Alerts contenido={'Los datos deben coincidir con los registrados en Sofía Plus'}  />
         <Toaster position="top-right" closeButton richColors />
         <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
@@ -109,14 +111,14 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
                 </select>
               </section>
               <section>
-                <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required onChange={handleEtapaChange} value={etapaPrograma}>
+                <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required onChange={handleEtapaChange} value={etapaPrograma}>
                   <option value="">Etapa*</option>
                   <option value="Lectiva">Lectiva</option>
                   <option value="Práctica">Práctica</option>
                 </select>
               </section>
               <section>
-                <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
+                <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required disabled={!isTrimestreEnabled} value={numeroTrimestre} onChange={(e) => setNumeroTrimestre(e.target.value)}>
                   <option value="">Trimestre lectivo</option>
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -128,7 +130,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
                   <option value="8">8</option>
                 </select>
               </section>
-              <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
+              <select className="bg-default-100 px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required value={idModalidad} onChange={(e) => setIdmodalidad(e.target.value)}>
                 <option value="">Modalidad</option>
                 <option value="1">Presencial</option>
                 <option value="2">Virtual</option>

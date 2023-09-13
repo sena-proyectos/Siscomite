@@ -41,8 +41,8 @@ export const ModalInfoStudents = ({ cerrarModal, idStudents }) => {
             <h3 className="text-2xl font-semibold">
               <i className="fi fi-rs-file-user text-blue-600 px-3"></i>Información
             </h3>
-            <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer">
-              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" onClick={closeModal} />
+            <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
+              <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer"  />
             </section>
           </header>
           <section className="bodyModal"></section>
@@ -54,32 +54,32 @@ export const ModalInfoStudents = ({ cerrarModal, idStudents }) => {
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Nombre completo</span>
                   <p>
-                    {item.nombres_aprendiz} {item.apellidos_aprendiz}
+                    {item.nombres_aprendiz || 'No especificado'} {item.apellidos_aprendiz || 'No especificado'}
                   </p>
                 </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Tipo de documento</span>
-                  <p>{item.id_documento}</p>
+                  <p>{item.id_documento || 'No especificado'}</p>
                 </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Número de documento</span>
-                  <p>{item.numero_documento_aprendiz}</p>
+                  <p>{item.numero_documento_aprendiz || 'No especificado'}</p>
                 </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Correo institucional</span>
-                  <p>{item.email_aprendiz_sena}</p>
+                  <p>{item.email_aprendiz_sena || 'No especificado'}</p>
                 </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Correo Alterno</span>
-                  <p>{item.email_aprendiz_personal}</p>
+                  <p>{item.email_aprendiz_personal || 'No especificado'}</p>
                 </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Número</span>
-                  <p>{item.celular_aprendiz}</p>
+                  <p>{item.celular_aprendiz || 'No especificado'}</p>
                 </section>
                 <section className="mt-[10px] border-b-2  border-[#0799b6]">
                   <span className="font-bold text-[17px]">Número alteno</span>
-                  <p>{item.fijo_aprendiz}</p>
+                  <p>{item.fijo_aprendiz || 'No especificado'}</p>
                 </section>
               </section>
             )
