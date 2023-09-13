@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react' // Importar React, useEffect y useSt
 import { Link, useNavigate, useLocation } from 'react-router-dom' // Importar funciones de navegación y ubicación de React Router DOM
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
+import { userInformationStore } from '../../store/config'
 
 // Función para saber si la ruta está activa
 const isActiveRoute = (currentPath, targetPath) => {
@@ -13,7 +14,6 @@ const isActiveRoute = (currentPath, targetPath) => {
 const Sliderbar = () => {
   const [selectedIcon, setSelectedIcon] = useState(0) // Estado para controlar el icono seleccionado
   const navigate = useNavigate() // Función de navegación
-  const [nombreCompleto, setNombreCompleto] = useState(null) // Estado para el nombre completo del usuario
   const [rol, setRol] = useState(null) // Estado para el rol del usuario
 
   // Para poner color al icono al seleccionarlo
@@ -22,6 +22,8 @@ const Sliderbar = () => {
   useEffect(() => {
     getInformation() // Llamar a la función getInformation al montar el componente
   }, [])
+
+  const { setUserInformation, userInformation } = userInformationStore()
 
   // Función para obtener información del usuario desde el token JWT
   const getInformation = () => {
@@ -36,7 +38,7 @@ const Sliderbar = () => {
     if (information.id_rol === 3) information.id_rol = 'Administrador'
 
     setRol(information.id_rol) // Establecer el rol en el estado
-    setNombreCompleto(`${nombres}  ${apellidos}`) // Establecer el nombre completo en el estado
+    setUserInformation({ nombres, apellidos })
   }
 
   // Función para cerrar sesión
@@ -47,7 +49,9 @@ const Sliderbar = () => {
   return (
     <main className="sliderbar bg-[#2e323e] m-[1rem] w-[18%]  h-[95vh] relative rounded-2xl text-white flex-col flex items-center ">
       <section className="top flex flex-col items-center p-[30px] text-center w-full">
-        <h3 className="mt-[1rem] text-[17px] font-bold">{nombreCompleto}</h3>
+        <h3 className="mt-[1rem] text-[17px] font-bold">
+          {userInformation.nombres} {userInformation.apellidos}
+        </h3>
         <p>{rol}</p>
       </section>
       <section className="pages absolute top-[35%]  w-full flex justify-center">
