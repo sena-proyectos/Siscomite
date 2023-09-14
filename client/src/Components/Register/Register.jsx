@@ -29,13 +29,13 @@ export const Register = () => {
   const sendData = async (e) => {
     e.preventDefault()
     const dataValue = {
-      nombres,
-      apellidos,
+      nombres: nombres.toUpperCase(),
+      apellidos: apellidos.toUpperCase(),
       email_sena: emailSena,
       numero_celular: numeroCelular,
       id_documento: documentoOptions[selectedTipoDocumento],
       numero_documento: numeroDocumento,
-      contrasena
+      contrasena: contrasena
     }
     try {
       const res = await register(dataValue)
@@ -50,6 +50,9 @@ export const Register = () => {
       })
     }
   }
+
+  
+
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Tipo documento']))
   const [isVisible, setIsVisible] = React.useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)

@@ -33,9 +33,9 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
     try {
       const dataValue = {
         numero_ficha: numeroFicha,
-        nombre_programa: nombrePrograma,
-        jornada,
-        etapa_programa: etapaPrograma,
+        nombre_programa: nombrePrograma.toUpperCase(),
+        jornada : jornada.toUpperCase(),
+        etapa_programa: etapaPrograma.toUpperCase(),
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
         id_usuario_coordinador: coordinadores

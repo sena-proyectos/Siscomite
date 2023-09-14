@@ -68,19 +68,31 @@ const Home = () => {
                 </section>
               </header>
 
-              <section className="h-[85vh] flex justify-center items-start">
+              <section className="h-[85vh] flex flex-col items-center mt-[1rem]">
                 <section className="w-[95%] grid grid-cols-4 gap-x-10 place-items-center">
                   {data.map((x, i) => (
                     <Link to={x.Link} key={i}>
-                      <section className="h-[28%] mt-6 text-black cardHome " style={{ transition: '0.4s ease-in-out' }}>
+                      <section className="h-[28%] mt-6 text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
                         <Card inside image={x.image} titleHome={x.titleHome} descripciónHome={x.descripciónHome} />
                       </section>
                     </Link>
                   ))}
-                  <section className="col-span-3 mt-[4rem]   ">
-                    <p className="font-extrabold text-lg">Recomendaciones</p>
-                    <section className="bg-white shadow-lg rounded-xl mt-2 p-[1rem] ">
-                      <p className="font-semibold ">Agregar aprendices</p>
+                </section>
+                <section className="w-full mt-[5rem]">
+                  <section className="flex flex-col items-center">
+                    <p className="font-extrabold text-xl">Recomendaciones</p>
+                    <section className=" max-w-[70%] bg-white shadow-lg rounded-xl mt-2 p-[1rem]">
+                      <section className="grid place-items-center">
+                        <p className="font-bold text-red-500 text-xl">
+                          <i className="fi fi-rr-triangle-warning mr-[.5rem] text-red-500"></i>
+                          Importante
+                        </p>
+                        <p className="text-sm">Los datos deben ser los registrados en Sofía Plus</p>
+                      </section>
+
+                      <Divider />
+
+                      <p className="font-bold">Agregar aprendices</p>
                       <section className="flex mt-1">
                         <p className="text-sm">
                           Para poder agregar aprendices a una ficha en necesario descargar el excel y llenar los campos solicitados sin modificarlo, ya que este es el único formato que permite el progama.
@@ -88,14 +100,6 @@ const Home = () => {
                             Descargar excel <i className="fi fi-rr-download"></i>
                           </Button>
                         </p>
-                      </section>
-                      <Divider />
-                      <section className="grid place-items-center ">
-                        <p className="font-semibold text-red-500 pt-[.8rem]">
-                          <i className="fi fi-rr-triangle-warning mr-[.5rem] text-red-500"></i>
-                          Importante
-                        </p>
-                        <p className="text-sm">Los datos deben ser los registrados en Sofía Plus</p>
                       </section>
                     </section>
                   </section>

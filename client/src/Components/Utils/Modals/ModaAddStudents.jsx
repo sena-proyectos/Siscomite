@@ -45,8 +45,8 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
 
     try {
       const dataValue = {
-        nombres_aprendiz: nombresAprendiz,
-        apellidos_aprendiz: apellidosAprendiz,
+        nombres_aprendiz: nombresAprendiz.toUpperCase(),
+        apellidos_aprendiz: apellidosAprendiz.toUpperCase(),
         numero_documento_aprendiz: numeroDocumento,
         email_aprendiz_sena: emailSena,
         email_aprendiz_personal: emailAlterno,

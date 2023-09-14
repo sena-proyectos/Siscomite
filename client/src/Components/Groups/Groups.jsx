@@ -135,7 +135,7 @@ const Groups = () => {
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+              <Search ficha filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
             </section>
             <section className="absolute right-[20%] cursor-pointer ">
               {notifyOpen ? (

@@ -49,7 +49,7 @@ const Sliderbar = () => {
         <h3 className="mt-[1rem] text-[17px] font-bold">{nombreCompleto}</h3>
         <p>{rol}</p>
       </section>
-      <section className="pages absolute top-[30%]  w-full flex justify-center">
+      <section className="pages absolute top-[30%] w-full flex justify-center">
         <ul className="p-0">
           <Link to={'/home'} className="line">
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/home') ? 'bg-[#1a1d24]' : ''}`}>
@@ -89,10 +89,16 @@ const Sliderbar = () => {
               <span className="slideText ml-[10px]">Instructores</span>
             </li>
           </Link>
+          <Link className="line" to={'/procedures'}>
+            <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/procedures') ? 'bg-[#1a1d24]' : ''}`}>
+              <i className={`fi fi-rs-stamp`} title="Trámites solicitud" />
+              <span className="slideText ml-[10px]">Trámites solicitud</span>
+            </li>
+          </Link>
         </ul>
       </section>
       <section className="absolute bottom-[0.5em]">
-        <ul className="p-0 flex flex-col items-center justify-end mb-[20px]">
+        <ul className="p-0 flex flex-col  items-center justify-end mb-[20px]">
           <Link className="line" to={'/setting'}>
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/setting') ? 'bg-[#1a1d24]' : ''}`}>
               <i className="fi fi-rr-gears" id="icon" title="Configuración" />

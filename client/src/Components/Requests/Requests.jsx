@@ -89,7 +89,7 @@ const Requests = () => {
         <section className="w-full overflow-auto ">
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+              <Search request filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
             </section>
             <section className="absolute right-[20%] cursor-pointer justify-center ">
               {notifyOpen ? (
