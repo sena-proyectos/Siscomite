@@ -1,15 +1,14 @@
 // Importación de módulos y componentes necesarios
 import './Create.css'
 import React, { useEffect, useState } from 'react'
-import jwtDecode from 'jwt-decode'
-import Cookie from 'js-cookie'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab, ScrollShadow } from '@nextui-org/react'
+import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
+import { userInformationStore } from '../../store/config'
 
 // Definición del componente Create
 const Create = () => {
@@ -80,19 +79,18 @@ const Create = () => {
 
   // Efecto para obtener el ID del usuario a partir de un token
   useEffect(() => {
-    const infoUser = Cookie.get('token')
-    const decoded = jwtDecode(infoUser)
-    setUserID(decoded.id_usuario)
     coordinations()
   }, [])
+
+  const { userInformation } = userInformationStore()
 
   // Función para enviar datos
   const sendData = async () => {
     const dataValue = {
       tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
       nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
-      id_usuario_solicitante: `${userID}`,
-      descripcion_caso : descripcion,
+      id_usuario_solicitante: `${userInformation.id_usuario}`,
+      descripcion_caso: descripcion,
       calificacion_causa: selectedValueFalta,
       aprendicesSeleccionados: selectedApprentice.map((item) => item.id_aprendiz),
       instructoresSeleccionados: selectedInstructor.map((item) => item.id_usuario),
