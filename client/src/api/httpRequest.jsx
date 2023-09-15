@@ -145,6 +145,14 @@ export const getRequest = () => {
   return response
 }
 
+/* get request by id */
+export const getRequestById = (idRequest) => {
+  const URL = `${BaseUrl}${api}/solicitud/${idRequest}`
+  const response = axios.get(URL)
+  
+  return response
+}
+
 /* get request by id user */
 export const getRequestByIdUser = (userID) => {
   const URL = `${BaseUrl}${api}/solicitudByIdUser/${userID}`

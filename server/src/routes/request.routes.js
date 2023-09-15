@@ -9,7 +9,7 @@ const router = Router()
 router.get('/solicitudes', getsolicitud)
 router.get('/getRules', getRules)
 
-// GETBYID  solicitud
+// GET BY ID  solicitud
 router.get('/solicitud/:id', getRequestById)
 
 // Get request by id user
