@@ -24,6 +24,23 @@ const Sliderbar = () => {
   }, [])
 
   const { setUserInformation, userInformation } = userInformationStore()
+  const getElementsByRole = () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
+
+    // Mapear los ID de rol a nombres de rol
+    if (rolToken === 1) rolToken = 'Coordinador'
+    if (rolToken === 2) rolToken = 'Instructor'
+    if (rolToken === 3) rolToken = 'Administrador'
+
+    return {
+      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+      administration: rolToken === 'Administrador',
+      coordination: rolToken === 'Coordinador',
+      instructor: rolToken === 'Instructor'
+    }
+  }
 
   // Función para obtener información del usuario desde el token JWT
   const getInformation = () => {
@@ -46,6 +63,10 @@ const Sliderbar = () => {
     Cookie.remove('token') // Eliminar el token de las cookies
     navigate('/') // Redirigir a la página de inicio
   }
+
+  // Obtener los elementos que se deben mostrar según el rol
+  const elements = getElementsByRole()
+
   return (
     <main className="sliderbar bg-[#2e323e] m-[1rem] w-[18%]  h-[95vh] relative rounded-2xl text-white flex-col flex items-center ">
       <section className="top flex flex-col items-center p-[30px] text-center w-full">
@@ -88,12 +109,14 @@ const Sliderbar = () => {
               <span className="slideText ml-[10px]">Reglamento</span>
             </li>
           </Link>
-          <Link className="line" to={'/teachers'}>
-            <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/teachers') ? 'bg-[#1a1d24]' : ''}`}>
-              <i className={`fi fi-rs-book-bookmark`} title="Instructores" />
-              <span className="slideText ml-[10px]">Instructores</span>
-            </li>
-          </Link>
+          {elements.coordination && (
+            <Link className="line" to={'/teachers'}>
+              <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/teachers') ? 'bg-[#1a1d24]' : ''}`}>
+                <i className={`fi fi-rs-book-bookmark`} title="Instructores" />
+                <span className="slideText ml-[10px]">Instructores</span>
+              </li>
+            </Link>
+          )}
         </ul>
       </section>
       <section className="absolute bottom-[0.5em]">

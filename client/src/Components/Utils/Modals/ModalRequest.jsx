@@ -1,6 +1,27 @@
 import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button, Pagination } from '@nextui-org/react'
+import { useState, useEffect } from 'react'
 
-export const ModalRequest = ({ cerrarModal }) => {
+import { getRequestById } from '../../../api/httpRequest'
+
+export const ModalRequest = ({ cerrarModal, requestID }) => {
+  /* estado para almacenar los datos de la solicitud */
+  const [requestData, setRequestData] = useState([])
+
+  useEffect(() => {
+    getIdRequest(requestID)
+  }, [requestID])
+
+  const getIdRequest = async (requestID) => {
+    try {
+      const response = await getRequestById(requestID)
+      const res = response.data.result
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  
   // Cerrar modal
   const closeModal = () => {
     cerrarModal()
@@ -18,6 +39,7 @@ export const ModalRequest = ({ cerrarModal }) => {
               <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" />
             </section>
           </header>
+
 
           <section className="relative top-[1.6rem] ">
             <section className="  place-items-center gap-4 flex justify-between">
@@ -71,7 +93,7 @@ export const ModalRequest = ({ cerrarModal }) => {
                 <AccordionItem aria-label="Accordion 2" startContent={<i className="fi fi-rs-book-alt text-red-500"></i>} title="Información Aprendiz">
                   <section className="grid grid-cols-2 gap-x-7 gap-y-2 max-h-[200px] overflow-auto pr-[1rem] ">
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Nombre" defaultValue="Juan Manuel " isReadOnly />
+                      <Input type="text" variant="underlined" label="Nombre" defaultValue={requestData.nombres_aprendices} isReadOnly />
                     </section>
                     <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Apellido" defaultValue="Robledo Sanchez" isReadOnly />
@@ -99,19 +121,19 @@ export const ModalRequest = ({ cerrarModal }) => {
                 <AccordionItem aria-label="Accordion 3" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
                   <section className="grid grid-cols-2 gap-x-7 gap-y-2 pr-[1rem] max-h-[200px] overflow-auto">
                     <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue="Insectionidual" isReadOnly />
+                      <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue={requestData.tipo_solicitud} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Coordinador" defaultValue="Marianela Henao" isReadOnly />
+                      <Input type="text" variant="underlined" label="Coordinador" defaultValue={requestData.nombre_coordinacion} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Categoría causa" defaultValue="Académica" isReadOnly />
+                      <Input type="text" variant="underlined" label="Categoría causa" defaultValue={requestData.categoria_causa} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Calificación causa" defaultValue="Grave" isReadOnly />
+                      <Input type="text" variant="underlined" label="Calificación causa" defaultValue={requestData.calificacion_causa} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Artículo" defaultValue="1" isReadOnly />
+                      <Input type="text" variant="underlined" label="Artículo" defaultValue={requestData.numero_numeral} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
