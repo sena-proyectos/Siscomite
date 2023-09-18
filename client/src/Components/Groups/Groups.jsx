@@ -130,7 +130,7 @@ const Groups = () => {
     <>
       {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={setReloadFetch} />}
 
-      <main className="flex h-screen">
+      <main className="flex h-screen select-none">
         <Sliderbar />
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] flex justify-center items-center">

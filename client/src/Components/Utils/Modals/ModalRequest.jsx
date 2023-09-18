@@ -134,13 +134,19 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
     cerrarModal()
   }
 
-  // const getStatusColorClass = (status) => {
-  //   const statusColorMap = {
-  //     Aprobado: 'bg-green-200 text-success rounded-2xl', // Clase CSS para aprobado
-  //     Rechazado: 'bg-red-200 text-danger rounded-2xl' // Clase CSS para rechazado
-  //   }
-  //   return statusColorMap[status] || 'text-black' // Clase CSS por defecto (negro) si el estado no está en el mapa
-  // }
+  // Función para obtener la clase CSS en función del estado
+  const getStatusColorClass = (estado) => {
+    if (estado === 'Aprobado') {
+      return 'bg-green-200 text-success rounded-2xl'
+    } else if (estado === 'En proceso') {
+      return 'bg-yellow-200 text-warning'
+    } else if (estado === 'Rechazado') {
+      return 'bg-red-200 text-danger rounded-2xl'
+    } else {
+      // Clase CSS por defecto (negro) si el estado no coincide con ninguno de los anteriores
+      return 'text-black'
+    }
+  }
 
   // Función para formatear la fecha
   const formatDate = (dateString) => {
@@ -163,9 +169,9 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
 
           <section className="relative top-[1.6rem] ">
             <section className="  place-items-center gap-4 flex justify-between">
-              <Button>{estado}</Button>
-              <section>
-                <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" value={formatDate(fechaCreacion)}/>
+              <Button className={getStatusColorClass(estado ? estado[0] : '')}>{estado}</Button>
+              <section> 
+                <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" value={formatDate(fechaCreacion)} />
               </section>
             </section>
             <section className="relative py-[1.5rem]">
@@ -174,13 +180,13 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                   <Table aria-label="Datos de Usuarios">
                     <TableHeader
                       columns={[
-                        { key: 'tipoDocumento', label: 'Tipo de Documento' },
-                        { key: 'nombre', label: 'Nombre' },
+                        { key: 'nombre', label: 'Nombre/s' },
                         { key: 'apellidos', label: 'Apellidos' },
+                        { key: 'tipoDocumento', label: 'Tipo de Documento' },
                         { key: 'numeroDocumento', label: 'Número de Documento' },
-                        { key: 'emailSena', label: 'Email Sena' },
-                        { key: 'emailPersonal', label: 'Email Personal' },
-                        { key: 'celular', label: 'Celular' },
+                        { key: 'emailSena', label: 'Correo institucional' },
+                        { key: 'emailPersonal', label: 'Correo Personal' },
+                        { key: 'celular', label: 'Número de celular' },
                         { key: 'fijo', label: 'Teléfono Fijo' }
                       ]}
                     >
@@ -189,9 +195,9 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                     <TableBody items={usuarios}>
                       {(item) => (
                         <TableRow key={item.numeroDocumento}>
-                          <TableCell>{item.tipoDocumento}</TableCell>
                           <TableCell>{item.nombre}</TableCell>
                           <TableCell>{item.apellidos}</TableCell>
+                          <TableCell>{item.tipoDocumento}</TableCell>
                           <TableCell>{item.numeroDocumento}</TableCell>
                           <TableCell>{item.emailSena}</TableCell>
                           <TableCell>{!item.emailPersonal ? 'No disponible' : item.emailPersonal}</TableCell>
@@ -206,13 +212,13 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                   <Table aria-label="Datos de Aprendices">
                     <TableHeader
                       columns={[
-                        { key: 'tipoDocumento', label: 'Tipo de Documento' },
-                        { key: 'nombres', label: 'Nombres' },
+                        { key: 'nombre', label: 'Nombre/s' },
                         { key: 'apellidos', label: 'Apellidos' },
+                        { key: 'tipoDocumento', label: 'Tipo de Documento' },
                         { key: 'numeroDocumento', label: 'Número de Documento' },
-                        { key: 'emailSena', label: 'Email Sena' },
-                        { key: 'emailPersonal', label: 'Email Personal' },
-                        { key: 'celular', label: 'Celular' },
+                        { key: 'emailSena', label: 'Correo institucional' },
+                        { key: 'emailPersonal', label: 'Correo Personal' },
+                        { key: 'celular', label: 'Número de celular' },
                         { key: 'fijo', label: 'Teléfono Fijo' },
                         { key: 'numeroFicha', label: 'Número de Ficha' },
                         { key: 'nombreProgramaFicha', label: 'Nombre del Programa de Ficha' }
@@ -223,9 +229,9 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                     <TableBody items={aprendices}>
                       {(item) => (
                         <TableRow key={item.numeroDocumento}>
-                          <TableCell>{item.tipoDocumento}</TableCell>
                           <TableCell>{item.nombres}</TableCell>
                           <TableCell>{item.apellidos}</TableCell>
+                          <TableCell>{item.tipoDocumento}</TableCell>
                           <TableCell>{item.numeroDocumento}</TableCell>
                           <TableCell>{item.emailSena}</TableCell>
                           <TableCell>{!item.emailPersonal ? 'No disponible' : item.emailPersonal}</TableCell>
