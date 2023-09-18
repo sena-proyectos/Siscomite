@@ -10,6 +10,7 @@ import { Rules } from './Components/Rules/Rules'
 import { Setting } from './Components/Setting/Setting'
 import { Teachers } from './Components/Teachers/Teachers'
 import { Text } from './Components/Test/Test'
+import { ForgotPassword } from './Components/ForgotPassword/ForgotPassword'
 import { Procedures } from './Components/Procedure/Procedures'
 import './App.css'
 
@@ -27,6 +28,7 @@ function App() {
       <Route path="/setting" element={<Setting />} />
       <Route path="/teachers" element={<Teachers />} />
       <Route path="/text" element={<Text />} />
+      <Route path="/password" element={<ForgotPassword />} />
       <Route path="/procedures" element={<Procedures />} />
     </Routes>
   )

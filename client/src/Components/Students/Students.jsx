@@ -4,7 +4,7 @@ import { Search } from '../Search/Search'
 import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import { useEffect, useState } from 'react'
-import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
+import { ModalAddStudents } from '../Utils/Modals/ModalAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 
@@ -38,7 +38,6 @@ const Students = () => {
   const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
 
   const navigate = useNavigate()
-  const [isOpen, setIsOpen] = useState(false)
 
     // Función para obtener los aprendices por ID de ficha
   const getApprentices = async () => {
