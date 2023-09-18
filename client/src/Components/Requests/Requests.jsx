@@ -13,6 +13,8 @@ import { getRequest, getRequestByIdUser } from '../../api/httpRequest'
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 
+import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
+
 // Componente Requests
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
@@ -134,6 +136,12 @@ const Requests = () => {
     }
   }
 
+  // Función para formatear la fecha
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return format(date, 'dd/MM/yyyy')
+  }
+
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} requestID={requestId} />}
@@ -144,14 +152,14 @@ const Requests = () => {
         <section className="w-full overflow-auto ">
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+              <Search filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} aria-label="Buscar solicitud" />
             </section>
             <section className="absolute right-[20%] cursor-pointer justify-center ">
               {notifyOpen ? (
                 <></>
               ) : (
                 <>
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
                     <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
                   </section>
                 </>
@@ -160,25 +168,26 @@ const Requests = () => {
           </header>
 
           <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
-            <Table className="h-full ">
+            <Table className="h-full  " aria-label="Tabla para ver las solicitudes">
               <TableHeader>
-                <TableColumn>Nombre del solicitante</TableColumn>
-                <TableColumn>Fecha de la solicitud</TableColumn>
-                <TableColumn>Tipo de solicitud</TableColumn>
-                <TableColumn>Estado</TableColumn>
-                <TableColumn>Detalles</TableColumn>
+                <TableColumn aria-label="Nombre del solicitante">Nombre del solicitante</TableColumn>
+                <TableColumn aria-label="Fecha de la solicitud">Fecha de la solicitud</TableColumn>
+                <TableColumn aria-label="Tipo de solicitud">Tipo de solicitud</TableColumn>
+                <TableColumn aria-label="Estado">Estado</TableColumn>
+                <TableColumn aria-label="Detalles">Detalles</TableColumn>
               </TableHeader>
+
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
                 {currentItems.map((item) => (
                   <TableRow key={item.id_solicitud}>
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
-                    <TableCell>{item.fecha_creacion}</TableCell>
+                    <TableCell>{formatDate(item.fecha_creacion)}</TableCell>
                     <TableCell>{item.tipo_solicitud}</TableCell>
                     <TableCell className={` flex justify-center items-center w-[7rem] py-[0] relative top-[.5rem] ${selectedValueDetails === 'En proceso' ? 'bg-yellow-200 text-warning rounded-2xl' : getStatusColorClass(item.estado)} ${getStatusColorClass(item.estado)}`}>{item.estado}</TableCell>
 
                     <TableCell>
-                      <i className="fi fi-rr-edit px-3 text-xl cursor-pointer hover:text-yellow-300" onClick={() => modalDetailsEdit(item.id_solicitud)} />
-                      <i className="fi fi-rs-eye text-xl cursor-pointer hover:text-green-600 active:opacity-50" onClick={() => modalDetails(item.id_solicitud)} />
+                      <i className="fi fi-rr-edit px-3 text-xl cursor-pointer hover:text-yellow-300" onClick={() => modalDetailsEdit(item.id_solicitud)} aria-label="Editar solicitud" />
+                      <i className="fi fi-rs-eye text-xl cursor-pointer hover:text-green-600 active:opacity-50" onClick={() => modalDetails(item.id_solicitud)} aria-label="Ver detalles de la solicitud" />
                     </TableCell>
                   </TableRow>
                 ))}

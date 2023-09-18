@@ -7,6 +7,8 @@ import { getRequestById, updateRequest } from '../../../api/httpRequest'
 
 import { Toaster, toast } from 'sonner'
 
+import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
+
 export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetchState }) => {
   /* estado para almacenar los datos de la solicitud */
   const [requestData, setRequestData] = useState([])
@@ -87,6 +89,16 @@ export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetchState }) =
     }
   }
 
+  const formatDate = (dateString) => {
+    if (dateString) {
+      const date = new Date(dateString)
+      if (!isNaN(date.getTime())) {
+        return format(date, 'yyyy-MM-dd')
+      }
+    }
+    return '' // Devuelve una cadena vacía si dateString no es válido
+  }
+
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center ">
@@ -121,7 +133,7 @@ export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetchState }) =
               )}
 
               <section>
-                <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" />
+                <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" value={formatDate(requestData[0] && requestData[0]?.fecha_creacion)} />
               </section>
             </section>
             {elements.administration && (
