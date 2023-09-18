@@ -28,6 +28,8 @@ const Requests = () => {
   const [requestId, setRequestId] = useState(null)
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
 
+  const [reloadFetch, setReloadFetch] = useState(false) // Estado para el valor de estado seleccionado
+
   // Obtener los elementos que se deben mostrar según el rol
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
@@ -54,8 +56,6 @@ const Requests = () => {
   // Calcula los datos a mostrar en la página actual
   const indexOfLastItem = activePage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  // const currentItems = request && request.length > 0 ? request.slice(indexOfFirstItem, indexOfLastItem) : []
-  // const currentItem = requestById && requestById.length > 0 ? requestById.slice(indexOfFirstItem, indexOfLastItem) : []
   const currentItems = elements.adminCoordi ? (request && request.length > 0 ? request.slice(indexOfFirstItem, indexOfLastItem) : []) : elements.instructor ? (requestById && requestById.length > 0 ? requestById.slice(indexOfFirstItem, indexOfLastItem) : []) : []
 
   const totalPages = Math.ceil((request && request.length > 0 / itemsPerPage) || (requestById && requestById.length > 0 / itemsPerPage))
@@ -101,7 +101,7 @@ const Requests = () => {
     /* Llamar la funcion de obtener solicitudes */
     getRequets()
     getRequetsById()
-  }, [])
+  }, [currentItems, reloadFetch])
 
   /* Obtener las solicitudes echas */
   const getRequets = async () => {
@@ -137,7 +137,7 @@ const Requests = () => {
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} requestID={requestId} />}
-      {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} requestID={requestId} />}
+      {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} requestID={requestId} reloadFetchState={setReloadFetch} />}
 
       <main className="h-screen flex">
         <Sliderbar />

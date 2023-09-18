@@ -1,17 +1,22 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Textarea } from '@nextui-org/react'
 
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { getRequestById } from '../../../api/httpRequest'
+import { getRequestById, updateRequest } from '../../../api/httpRequest'
 
-export const ModalEditRequest = ({ cerrarModal, requestID }) => {
+import { Toaster, toast } from 'sonner'
+
+export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetchState }) => {
   /* estado para almacenar los datos de la solicitud */
   const [requestData, setRequestData] = useState([])
 
   // Dropdown detalles de solicitud
   const [selectedKeys, setSelectedKeys] = useState(new Set(['Estado']))
   const selectedValueDetails = useMemo(() => Array.from(selectedKeys).join(', ').replaceAll('_', ' '), [selectedKeys])
+
+  /* capturar el valor del textarea */
+  const valueText = useRef()
 
   const getStatusColorClass = (status) => {
     const statusColorMap = {
@@ -49,25 +54,43 @@ export const ModalEditRequest = ({ cerrarModal, requestID }) => {
   const elements = getElementsByRole()
 
   useEffect(() => {
-    getIdRequest(requestID)
+    getIdRequest()
   }, [])
 
-  const getIdRequest = async (requestID) => {
+  const getIdRequest = async () => {
     try {
       const response = await getRequestById(requestID)
       const res = response.data.result
       setRequestData(res)
       setSelectedKeys(new Set([res[0]?.estado]))
-
-      console.log(res);
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  /* Actualizar datos */
+  const updateState = async () => {
+    const valueArea = { estado_descripcion: valueText.current.value, estado: selectedValueDetails }
+    try {
+      const response = await updateRequest(valueArea, requestID)
+      const res = response.data.message
+      reloadFetchState(true)
+      toast.success('Genial!!', {
+        description: res
+      })
+      reloadFetchState(true)
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
     }
   }
 
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center ">
+        <Toaster position="top-right" closeButton richColors />
         <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
             <h3 className="font-semibold text-2xl">
@@ -81,7 +104,7 @@ export const ModalEditRequest = ({ cerrarModal, requestID }) => {
           <section className="mt-[1.5rem] w-[30rem]">
             <section className="place-items-center gap-4 flex justify-between">
               {elements.administration ? (
-                <Dropdown disabled={elements.instructor}>
+                <Dropdown>
                   <DropdownTrigger>
                     <Button variant="flat" className={`capitalize ${selectedValueDetails === 'En proceso' ? 'bg-yellow-200 text-warning rounded-2xl' : getStatusColorClass(selectedValueDetails)}`}>
                       {selectedValueDetails}
@@ -101,27 +124,29 @@ export const ModalEditRequest = ({ cerrarModal, requestID }) => {
                 <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" />
               </section>
             </section>
-            {elements.adminCoordi && (
+            {elements.administration && (
               <section className="grid mt-[1rem]">
-                <strong>Descripcion actual del estado</strong>
+                <strong>Descripción actual de la solicitud</strong>
                 <p>{requestData[0] ? requestData[0].descripcion_estado_solicitud : 'Verificando información para la aprobación de la solicitud'}</p>
               </section>
             )}
             <section className="w-full grid grid-cols-12  gap-4 py-4">
-              <Textarea variant={'faded'} label={elements.administration ? 'Ingresar descripción' : 'Descripción del estado'} labelPlacement="outside" placeholder={elements.administration ? 'Ingresar la nueva descripción del estado' : requestData[0] ? requestData[0].descripcion_estado_solicitud : ''} className="col-span-12 md:col-span-20 mb-6 md:mb-0" disabled={elements.instructor} />
+              <Textarea
+                variant={'faded'}
+                label={elements.administration ? 'Ingresar descripción' : 'Descripción del estado'}
+                labelPlacement="outside"
+                placeholder={elements.administration ? 'Ingresar la nueva descripción de la solicitud' : requestData[0] ? requestData[0].descripcion_estado_solicitud : ''}
+                className="col-span-12 md:col-span-20 mb-6 md:mb-0"
+                disabled={elements.instructor || elements.coordination}
+                ref={valueText}
+              />
             </section>
             {elements.administration && (
               <section className="flex gap-4 relative py-[5px]">
-                <section className="">
-                  <Button color="primary">
+                <section className=" w-full grid ">
+                  <Button color="primary" onClick={updateState}>
                     <i className="fi fi-br-check"></i>
                     Guardar
-                  </Button>
-                </section>
-                <section className=" ">
-                  <Button color="warning" variant="bordered">
-                    <i className="fi fi-rr-pencil"></i>
-                    Editar
                   </Button>
                 </section>
               </section>

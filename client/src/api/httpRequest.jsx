@@ -160,3 +160,10 @@ export const getRequestByIdUser = (userID) => {
 
   return response
 }
+
+/* update request */
+export const updateRequest = (data, idRequest) => {
+  const URL = `${BaseUrl}${api}/updateSolicitud/${idRequest}`
+  const response = axios.patch(URL, data)
+  return response
+}

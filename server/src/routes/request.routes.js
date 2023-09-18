@@ -15,10 +15,10 @@ router.get('/solicitud/:id', getRequestById)
 // Get request by id user
 router.get('/solicitudByIdUser/:id', getRequestByIdUser)
 
-//POST solicitud
+//POST crear una solicitud
 router.post('/createSolicitud', createDataSolicitud, createRequest)
 
-//PUT solicitud
+//PAATCH, actualizar una solicitud
 router.patch('/updateSolicitud/:id', updateRequest)
 
 //DELETE solicitud

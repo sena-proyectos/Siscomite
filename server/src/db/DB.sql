@@ -50,7 +50,7 @@ CREATE TABLE `aprendices` (
 
 LOCK TABLES `aprendices` WRITE;
 /*!40000 ALTER TABLE `aprendices` DISABLE KEYS */;
-INSERT INTO `aprendices` VALUES (1,'Cristian D','Bedoya T','','torres23torres@soy.sena.edu','torres23torres@gamil.com','3007030424','4512461','',1,1),(3,'Juan Carlos','Prasca','','prasca@soy.sena.edu.co','parasca85@gmail.com','30124242555',NULL,'',1,1),(4,'Juan Guillermo','Gomez','','jggomez319@soy.sena.edu.co','jggomez016@gmail.com','3195910996',NULL,'',1,1),(5,'Cristian David ','Bedoya T','1027944969','torres23torresTo@soy.sena.edu','torres23torresTo@gamil.com','3007030424',NULL,'',1,1),(6,'Juan Pepitos','Alcaraz','1027541224','pepito@soy.sena.edu.co','prpito994@gmail.com','3042155256',NULL,'',1,1),(7,'Cristian prueba','Bedoya T','1027944955','torresprueba@soy.sena.edu','torresprueba@gamil.com','3007030424',NULL,'EN FORMACIÓN',1,2),(8,'pepito','perez','1049857645','sdjhsudhs@gmail.com','','3028765434',NULL,'EN FORMACIÓN',4,1),(9,'Cristiano','Ronaldo','1071070107','cr7@cristiano.ronaldo.com','cr7@cristiano.ronaldo. sena','3007030424',NULL,'EN FORMACIÓN',1,1),(11,'rtyuionm,','gbnhmj,','45678907777','gbhhbnhbh@gmail.com','','3344566556',NULL,'EN FORMACIÓN',2,2),(12,'JOHAN FELIPE','GIL GUERRA','1000100946','pipegil0106@gmail.com',NULL,'3043923574',NULL,'EN FORMACIÓN',1,2),(13,'YULIANA','GRISALES ALVAREZ','1025642251','alvarezyuliana516@gmail.com',NULL,'3001273841',NULL,'EN FORMACIÓN',1,2),(14,'MAIRA ALEJANDRA','HERRERA ALVAREZ','1025643039','alejaalvarez4015@gmail.com',NULL,'3052840075',NULL,'EN FORMACIÓN',1,2),(15,'JUANA MARIA','PEREZ TORRES','1032010860','juanamariaperez2411@gmail.com',NULL,'3137967252',NULL,'EN FORMACIÓN',1,2),(16,'MARIA CAMILA','ARANGO ARCILA','1035970952','3043257646camila@gmail.com',NULL,'3028193135',NULL,'EN FORMACIÓN',1,2),(17,'HENRY ALEXANDER','VANEGAS QUICENO','1036657002','figu9920@hotmail.com',NULL,'3003165768',NULL,'EN FORMACIÓN',1,2),(18,'JHORJELIS','HINESTROZA MOSQUERA','1000404088','Jhorjelishinestroza@gmail.com',NULL,'3244082072',NULL,'EN FORMACIÓN',1,2),(19,'LUIS FERNANDO','DIAZ OSORIO','1038646035','luisfernandodiazosorio4@gmail.com',NULL,'3106888439',NULL,'EN FORMACIÓN',1,2),(20,'PAULINA','RODRIGUEZ COSSIO','1000756360','ieca.paulinarodriguez@gmail.com',NULL,'3127490512',NULL,'EN FORMACIÓN',1,2),(22,'EVELYN','ORTEGA ARBOLEDA','1040570683','evelyn4713@hotmail.com',NULL,'3005707008',NULL,'EN FORMACIÓN',1,2),(28,'ELIZABETH','DE LOS RIOS CARDONA','43832725','lizdelosrios@gmail.com',NULL,'3196567841',NULL,'EN FORMACIÓN',1,2),(32,'INGRID','ECHAVARRIA AGUDELO','1001376369','ingridechavarria2018@gmail.com',NULL,'3013100566',NULL,'EN FORMACIÓN',1,2),(41,'YANLI CARINA','BEJARANO BETANCUR','1007507799','carinabejarano59@gmail.com',NULL,'3043969269',NULL,'EN FORMACIÓN',1,2),(42,'BEATRIZ ANDREA','ESCOBAR ORTIZ','1018420177','escobaraandrea@gmail.com',NULL,'3132479810',NULL,'EN FORMACIÓN',1,2),(43,'VALERIA','AREIZA GARCIA','1020105612','valeriaareiza1812@gmail.com',NULL,'3206784121',NULL,'EN FORMACIÓN',1,2),(44,'SEBASTIAN','MEJIA PUCHE','1001227211','sebaspuche29@gmail.com',NULL,'3054349145',NULL,'EN FORMACIÓN',1,2),(45,'JULIAN ESTEBAN','TABORDA GARCIA','1001368597','juliantgmusic@gmail.com',NULL,'3053295272',NULL,'EN FORMACIÓN',1,2),(46,'STIVEN','COCK ALVAREZ','1039463292','stiven_23_@hotmail.com',NULL,'3052261321',NULL,'EN FORMACIÓN',1,2),(47,'ANGIE STEFANIA','RAMIREZ BETANCUR','1040730542','stefaniabetancur583@gmail.com',NULL,'3148613918',NULL,'EN FORMACIÓN',1,2),(48,'FRANCY CAROLINA','BALLESTEROS PUERTA','1042066937','Carolinaballesteros761@gmail.com',NULL,'3193824993',NULL,'EN FORMACIÓN',1,2),(49,'MARINELA','ESPITIA CORREA','1067161366','marinelaespitia40@gmail.com',NULL,'3126482523',NULL,'EN FORMACIÓN',1,2),(50,'MERLYS','MENCO MIRANDA','1101385079','merlysmencom2005@gmail.com',NULL,'3128519108',NULL,'EN FORMACIÓN',1,2),(51,'ROSSANA','RODRIGUEZ ','2000006396','rossanarodriguez07@gmail.com',NULL,'3122714503',NULL,'EN FORMACIÓN',1,2),(52,'MIGUEL ANGEL','TIRADO ECHEVERRI','1035971823','luz-1811@hotmail.com',NULL,'3205524051',NULL,'EN FORMACIÓN',3,2),(53,'KELLY JHOJANA','VALENCIA GARCIA','1001418295','kellyysantiago574@gmail.com',NULL,'3157773242',NULL,'EN FORMACIÓN',1,2),(54,'DAVID','ROMERO VELEZ','1001420529','davidanime88@gmail.com',NULL,'3006371438',NULL,'EN FORMACIÓN',1,2),(55,'YINA','GAVIRIA FORONDA','1001420553','yinagf1@gmail.com',NULL,'3105186215',NULL,'EN FORMACIÓN',1,2),(56,'WARLY','ESTRADA LLORENTE','1003398604','warlyestrada75@gmail.com',NULL,'3218168188',NULL,'EN FORMACIÓN',1,2);
+INSERT INTO `aprendices` VALUES (1,'Cristian D','Bedoya T','123455678','torres23torres@soy.sena.edu','torres23torres@gamil.com','3007030424','4512461','',3,1),(3,'Juan Carlos','Prasca','1234567332','prasca@soy.sena.edu.co','parasca85@gmail.com','30124242555',NULL,'',1,1),(4,'Juan Guillermo','Gomez','123456776543','jggomez319@soy.sena.edu.co','jggomez016@gmail.com','3195910996',NULL,'',1,1),(5,'Cristian David ','Bedoya T','1027944969','torres23torresTo@soy.sena.edu','torres23torresTo@gamil.com','3007030424',NULL,'',1,1),(6,'Juan Pepitos','Alcaraz','1027541224','pepito@soy.sena.edu.co','prpito994@gmail.com','3042155256',NULL,'',1,1),(7,'Cristian prueba','Bedoya T','1027944955','torresprueba@soy.sena.edu','torresprueba@gamil.com','3007030424',NULL,'EN FORMACIÓN',1,2),(8,'pepito','perez','1049857645','sdjhsudhs@gmail.com','','3028765434',NULL,'EN FORMACIÓN',4,1),(9,'Cristiano','Ronaldo','1071070107','cr7@cristiano.ronaldo.com','cr7@cristiano.ronaldo. sena','3007030424',NULL,'EN FORMACIÓN',1,1),(11,'rtyuionm,','gbnhmj,','45678907777','gbhhbnhbh@gmail.com','','3344566556',NULL,'EN FORMACIÓN',2,2),(12,'JOHAN FELIPE','GIL GUERRA','1000100946','pipegil0106@gmail.com',NULL,'3043923574',NULL,'EN FORMACIÓN',1,2),(13,'YULIANA','GRISALES ALVAREZ','1025642251','alvarezyuliana516@gmail.com',NULL,'3001273841',NULL,'EN FORMACIÓN',1,2),(14,'MAIRA ALEJANDRA','HERRERA ALVAREZ','1025643039','alejaalvarez4015@gmail.com',NULL,'3052840075',NULL,'EN FORMACIÓN',1,2),(15,'JUANA MARIA','PEREZ TORRES','1032010860','juanamariaperez2411@gmail.com',NULL,'3137967252',NULL,'EN FORMACIÓN',1,2),(16,'MARIA CAMILA','ARANGO ARCILA','1035970952','3043257646camila@gmail.com',NULL,'3028193135',NULL,'EN FORMACIÓN',1,2),(17,'HENRY ALEXANDER','VANEGAS QUICENO','1036657002','figu9920@hotmail.com',NULL,'3003165768',NULL,'EN FORMACIÓN',1,2),(18,'JHORJELIS','HINESTROZA MOSQUERA','1000404088','Jhorjelishinestroza@gmail.com',NULL,'3244082072',NULL,'EN FORMACIÓN',1,2),(19,'LUIS FERNANDO','DIAZ OSORIO','1038646035','luisfernandodiazosorio4@gmail.com',NULL,'3106888439',NULL,'EN FORMACIÓN',1,2),(20,'PAULINA','RODRIGUEZ COSSIO','1000756360','ieca.paulinarodriguez@gmail.com',NULL,'3127490512',NULL,'EN FORMACIÓN',1,2),(22,'EVELYN','ORTEGA ARBOLEDA','1040570683','evelyn4713@hotmail.com',NULL,'3005707008',NULL,'EN FORMACIÓN',1,2),(28,'ELIZABETH','DE LOS RIOS CARDONA','43832725','lizdelosrios@gmail.com',NULL,'3196567841',NULL,'EN FORMACIÓN',1,2),(32,'INGRID','ECHAVARRIA AGUDELO','1001376369','ingridechavarria2018@gmail.com',NULL,'3013100566',NULL,'EN FORMACIÓN',1,2),(41,'YANLI CARINA','BEJARANO BETANCUR','1007507799','carinabejarano59@gmail.com',NULL,'3043969269',NULL,'EN FORMACIÓN',1,2),(42,'BEATRIZ ANDREA','ESCOBAR ORTIZ','1018420177','escobaraandrea@gmail.com',NULL,'3132479810',NULL,'EN FORMACIÓN',1,2),(43,'VALERIA','AREIZA GARCIA','1020105612','valeriaareiza1812@gmail.com',NULL,'3206784121',NULL,'EN FORMACIÓN',1,2),(44,'SEBASTIAN','MEJIA PUCHE','1001227211','sebaspuche29@gmail.com',NULL,'3054349145',NULL,'EN FORMACIÓN',1,2),(45,'JULIAN ESTEBAN','TABORDA GARCIA','1001368597','juliantgmusic@gmail.com',NULL,'3053295272',NULL,'EN FORMACIÓN',1,2),(46,'STIVEN','COCK ALVAREZ','1039463292','stiven_23_@hotmail.com',NULL,'3052261321',NULL,'EN FORMACIÓN',1,2),(47,'ANGIE STEFANIA','RAMIREZ BETANCUR','1040730542','stefaniabetancur583@gmail.com',NULL,'3148613918',NULL,'EN FORMACIÓN',1,2),(48,'FRANCY CAROLINA','BALLESTEROS PUERTA','1042066937','Carolinaballesteros761@gmail.com',NULL,'3193824993',NULL,'EN FORMACIÓN',1,2),(49,'MARINELA','ESPITIA CORREA','1067161366','marinelaespitia40@gmail.com',NULL,'3126482523',NULL,'EN FORMACIÓN',1,2),(50,'MERLYS','MENCO MIRANDA','1101385079','merlysmencom2005@gmail.com',NULL,'3128519108',NULL,'EN FORMACIÓN',1,2),(51,'ROSSANA','RODRIGUEZ ','2000006396','rossanarodriguez07@gmail.com',NULL,'3122714503',NULL,'EN FORMACIÓN',1,2),(52,'MIGUEL ANGEL','TIRADO ECHEVERRI','1035971823','luz-1811@hotmail.com',NULL,'3205524051',NULL,'EN FORMACIÓN',3,2),(53,'KELLY JHOJANA','VALENCIA GARCIA','1001418295','kellyysantiago574@gmail.com',NULL,'3157773242',NULL,'EN FORMACIÓN',1,2),(54,'DAVID','ROMERO VELEZ','1001420529','davidanime88@gmail.com',NULL,'3006371438',NULL,'EN FORMACIÓN',1,2),(55,'YINA','GAVIRIA FORONDA','1001420553','yinagf1@gmail.com',NULL,'3105186215',NULL,'EN FORMACIÓN',1,2),(56,'WARLY','ESTRADA LLORENTE','1003398604','warlyestrada75@gmail.com',NULL,'3218168188',NULL,'EN FORMACIÓN',1,2);
 /*!40000 ALTER TABLE `aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,7 @@ CREATE TABLE `detalle_solicitud_aprendices` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_aprendices_ibfk_1` FOREIGN KEY (`id_aprendiz`) REFERENCES `aprendices` (`id_aprendiz`),
   CONSTRAINT `detalle_solicitud_aprendices_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,6 +158,7 @@ CREATE TABLE `detalle_solicitud_aprendices` (
 
 LOCK TABLES `detalle_solicitud_aprendices` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_aprendices` DISABLE KEYS */;
+INSERT INTO `detalle_solicitud_aprendices` VALUES (9,1,32),(10,3,32),(11,4,32),(12,1,33),(13,12,33),(14,19,34);
 /*!40000 ALTER TABLE `detalle_solicitud_aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,7 +178,7 @@ CREATE TABLE `detalle_solicitud_numerales` (
   KEY `id_numeral` (`id_numeral`),
   CONSTRAINT `detalle_solicitud_numerales_ibfk_1` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_numerales_ibfk_2` FOREIGN KEY (`id_numeral`) REFERENCES `numerales` (`id_numeral`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,6 +187,7 @@ CREATE TABLE `detalle_solicitud_numerales` (
 
 LOCK TABLES `detalle_solicitud_numerales` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_numerales` DISABLE KEYS */;
+INSERT INTO `detalle_solicitud_numerales` VALUES (25,32,4),(26,32,5),(27,32,6),(28,33,5),(29,33,4),(30,33,6),(31,34,5);
 /*!40000 ALTER TABLE `detalle_solicitud_numerales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +207,7 @@ CREATE TABLE `detalle_solicitud_usuarios` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_usuarios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   CONSTRAINT `detalle_solicitud_usuarios_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -214,6 +216,7 @@ CREATE TABLE `detalle_solicitud_usuarios` (
 
 LOCK TABLES `detalle_solicitud_usuarios` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_usuarios` DISABLE KEYS */;
+INSERT INTO `detalle_solicitud_usuarios` VALUES (6,10,32),(7,7,33),(8,5,33),(9,5,34);
 /*!40000 ALTER TABLE `detalle_solicitud_usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -393,6 +396,7 @@ CREATE TABLE `solicitud` (
   `nombre_coordinacion` varchar(200) NOT NULL,
   `id_usuario_solicitante` int NOT NULL,
   `estado` varchar(45) NOT NULL,
+  `estado_descripcion` varchar(100) NOT NULL,
   `fecha_creacion` datetime NOT NULL,
   `categoria_causa` varchar(255) NOT NULL,
   `calificacion_causa` varchar(255) NOT NULL,
@@ -403,7 +407,7 @@ CREATE TABLE `solicitud` (
   KEY `fk_archivo` (`id_archivo`),
   CONSTRAINT `fk_archivo` FOREIGN KEY (`id_archivo`) REFERENCES `archivos` (`id_archivo`),
   CONSTRAINT `fk_solicitud_1` FOREIGN KEY (`id_usuario_solicitante`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -412,6 +416,7 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
+INSERT INTO `solicitud` VALUES (32,'Grupal','Marianela',10,'Rechazado','Verificando información para la aprobación de la solicitud','2023-09-11 18:36:02','Academica','Grave','trajo una gallina al aula y no le dio a sus compañeros',13),(33,'Grupal','cristian david Bedoya Torres',10,'Aprobado','Verificando información para la aprobación de la solicitud','2023-09-12 18:23:37','Academica','grave','se robo un celular',13),(34,'Individual','cristian david Bedoya Torres',11,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-14 16:20:05','Academica','gravísimas','Prueba de solicitud',13);
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -440,7 +445,7 @@ CREATE TABLE `usuarios` (
   KEY `id_documento` (`id_documento`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `usuarios_ibfk_2` FOREIGN KEY (`id_documento`) REFERENCES `documentos` (`id_documento`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -449,7 +454,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (3,'cristian david','Bedoya Torres','1027944969','bedoya969@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$DZvyLyvnd4b/oiwOHe/fiuu5jce2kNPgmIB53KPckhjzziGnclRq6',1,1),(4,'cristian ','Bedoya ','1027944956','bedoya956@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$O1zLg2.YqZtNbR9DmUwkRO207FuzZ69JpdpI2kwRkmU9JkhaoZzJu',1,2),(5,'Juan Carlos ','Prasca Medina ','1063355027','prasca07@soy.sena.edu',NULL,'3004984546',NULL,'','$2a$10$Q1Sw/kfD0p4NFchNsGowauXAvqMhVKNIPgSUQAFr5CkNr2cEwtzWG',1,2),(7,'cristian Prueba','Bedoya Prueba','1027944970','bedoyaprueba@soy.sena.edu',NULL,'3007030425',NULL,'ACTIVO','$2a$10$rirSMtMHGqWuWxAyucGY/OxDOGtiWAg7BbHmry9SBzHyxu0cirkUS',1,2),(8,'David','Torres','1010101010','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$0jE5eg39maDwPlXJnpuUteQFIA.s/36dBQC6NuYYkKyIVDSm5h4ma',1,2),(9,'David','Torres','101010101','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$17zhj7Y3XI5M85mdZ.KmaeBsxBODypjeYJ8L7KcJW./h3/oe4NIOG',1,1),(10,'Stiven','Benjumea Morales','1040491426','gsbenjumea@soy.sena.edu.co',NULL,'3016911686',NULL,'ACTIVO','$2a$10$yY0/KpalVGDIpA4RaFHOo.rAjVnMw.jGiK2NiRd0K0KC1bbzFRgY2',1,2);
+INSERT INTO `usuarios` VALUES (3,'cristian david','Bedoya Torres','1027944969','bedoya969@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$DZvyLyvnd4b/oiwOHe/fiuu5jce2kNPgmIB53KPckhjzziGnclRq6',1,1),(4,'cristian ','Bedoya ','1027944956','bedoya956@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$O1zLg2.YqZtNbR9DmUwkRO207FuzZ69JpdpI2kwRkmU9JkhaoZzJu',1,1),(5,'Juan Carlos ','Prasca Medina ','1063355027','prasca07@soy.sena.edu',NULL,'3004984546',NULL,'','$2a$10$Q1Sw/kfD0p4NFchNsGowauXAvqMhVKNIPgSUQAFr5CkNr2cEwtzWG',1,2),(7,'cristian Prueba','Bedoya Prueba','1027944970','bedoyaprueba@soy.sena.edu',NULL,'3007030425',NULL,'ACTIVO','$2a$10$rirSMtMHGqWuWxAyucGY/OxDOGtiWAg7BbHmry9SBzHyxu0cirkUS',1,2),(8,'David','Torres','1010101010','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$0jE5eg39maDwPlXJnpuUteQFIA.s/36dBQC6NuYYkKyIVDSm5h4ma',1,2),(9,'David','Torres','101010101','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$17zhj7Y3XI5M85mdZ.KmaeBsxBODypjeYJ8L7KcJW./h3/oe4NIOG',1,1),(10,'Stiven','Benjumea Morales','1040491426','gsbenjumea@soy.sena.edu.co',NULL,'3016911686',NULL,'ACTIVO','$2a$10$yY0/KpalVGDIpA4RaFHOo.rAjVnMw.jGiK2NiRd0K0KC1bbzFRgY2',1,3),(11,'Estefania ','Valencia Perez','1020109614','evperez@soy.sena.edu.co',NULL,'3242192087',NULL,'ACTIVO','$2a$10$pjl5X7cHlxi583pAc5ts6OIP9GiINnnjTL0JvatGcMLPvEU.iF4/K',1,2);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -470,4 +475,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-08 10:22:58
+-- Dump completed on 2023-09-15 10:52:11
