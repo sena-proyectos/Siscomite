@@ -168,7 +168,7 @@ const Requests = () => {
           </header>
 
           <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
-            <Table className="h-full  " aria-label="Tabla para ver las solicitudes">
+            <Table className="h-full select-none" aria-label="Tabla para ver las solicitudes">
               <TableHeader>
                 <TableColumn aria-label="Nombre del solicitante">Nombre del solicitante</TableColumn>
                 <TableColumn aria-label="Fecha de la solicitud">Fecha de la solicitud</TableColumn>
@@ -179,7 +179,7 @@ const Requests = () => {
 
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
                 {currentItems.map((item) => (
-                  <TableRow key={item.id_solicitud}>
+                  <TableRow key={item.id_solicitud} className='hover:bg-gray-200 transition-all'>
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
                     <TableCell>{formatDate(item.fecha_creacion)}</TableCell>
                     <TableCell>{item.tipo_solicitud}</TableCell>
