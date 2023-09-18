@@ -36,7 +36,7 @@ const Groups = () => {
       const res = response.data.result
       setFichas(res)
     } catch (error) {
-      // console.error(error)
+      console.error(error)
     }
   }
 
@@ -186,7 +186,8 @@ const Groups = () => {
               {actualView === 'grid' ? (
                 <section className="gap-8 grid grid-cols-3 mt-3 max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
                   {visibleCards.map((card) => (
-                    <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
+                    <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="no-underline">
+                      {/* Envuelve toda la tarjeta dentro del enlace */}
                       <Card className={`w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
                         <CardHeader className="gap-3 flex justify-center z-0">
                           <section className="flex bg-blue-200 py-2 justify-center items-center rounded-xl w-full">
@@ -209,7 +210,7 @@ const Groups = () => {
                         </CardBody>
 
                         <CardFooter>
-                          <p className="text-gray-500 text-md"> Marianela Henao</p>
+                          <p className="text-gray-500 text-md">{card.nombre_coordinador + ' ' + card.apellido_coordinador}</p>
                         </CardFooter>
                       </Card>
 
@@ -246,7 +247,7 @@ const Groups = () => {
                               <td className="col-span-2">{card.nombre_programa}</td>
                               <td>{card.jornada}</td>
                               <td>{card.etapa_programa}</td>
-                              <td>Maria Rosario</td>
+                              <td>{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
                               <td className="z-100">
                                 <Button size="sm" color="success" variant="flat" radius="full">
                                   Activo

@@ -15,12 +15,30 @@ const Sliderbar = () => {
   const [nombreCompleto, setNombreCompleto] = useState(null)
   const [rol, setRol] = useState(null)
 
-  //Para poner color al componete al seleccionarlo
+  // Para poner color al componete al seleccionarlo
   const location = useLocation() // Importa useLocation
 
   useEffect(() => {
     getInformation() // Llamar a la función getInformation al montar el componente
   }, [])
+
+  const getElementsByRole = () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
+
+    // Mapear los ID de rol a nombres de rol
+    if (rolToken === 1) rolToken = 'Coordinador'
+    if (rolToken === 2) rolToken = 'Instructor'
+    if (rolToken === 3) rolToken = 'Administrador'
+
+    return {
+      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+      administration: rolToken === 'Administrador',
+      coordination: rolToken === 'Coordinador',
+      instructor: rolToken === 'Instructor'
+    }
+  }
 
   // Función para obtener información del usuario desde el token JWT
   const getInformation = () => {
@@ -43,6 +61,10 @@ const Sliderbar = () => {
     Cookie.remove('token') // Eliminar el token de las cookies
     navigate('/') // Redirigir a la página de inicio
   }
+
+  // Obtener los elementos que se deben mostrar según el rol
+  const elements = getElementsByRole()
+
   return (
     <main className="sliderbar bg-[#2e323e] m-[1rem] w-[18%]  h-[95vh] relative rounded-2xl text-white flex-col flex items-center ">
       <section className="top flex flex-col items-center p-[30px] text-center w-full">

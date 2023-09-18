@@ -6,7 +6,7 @@ import Cookie from 'js-cookie'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab, ScrollShadow } from '@nextui-org/react'
+import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
@@ -100,6 +100,7 @@ const Create = () => {
       categoria_causa: 'Academica',
       id_archivo: '13'
     }
+    console.log(dataValue)
     try {
       const response = await createRequest(dataValue)
       const res = response.data.message
