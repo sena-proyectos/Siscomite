@@ -332,7 +332,6 @@ export const createRequest = async (req, res) => {
     res.status(201).send({ message: 'Solicitud creada exitosamente' })
     // res.status(201).send({ result })
   } catch (error) {
-    console.log(error)
     res.status(500).send({ message: 'Error al crear la solicitud' })
   }
 }

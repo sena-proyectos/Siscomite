@@ -3,7 +3,7 @@ import { Divider } from '@nextui-org/react'
 import { useState, useEffect } from 'react' // Asegúrate de importar useState desde React
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { getRequest } from '../../../api/httpRequest'
+import { getMessageById, getRequest } from '../../../api/httpRequest'
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
 
@@ -11,8 +11,7 @@ export const Notify = ({ isOpen, toggleNotify }) => {
   const currentDate = new Date()
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
-  const [previousRequests, setPreviousRequests] = useState([])
-  const [newRequestCount, setNewRequestCount] = useState(0)
+  const [rolToken, setRolToken] = useState(null)
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
@@ -43,13 +42,30 @@ export const Notify = ({ isOpen, toggleNotify }) => {
     setCurrentYear(newYear)
   }
 
-  
+  useEffect(() => {
+    getMessages()
+  }, [])
 
+  const getMessages = async () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
+    
+    setRolToken(rolToken)
+    try {
+      // const response = await getMessageById(rolToken)
+      // console.log(response);
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
     const information = jwt(token) // Decodificar el token JWT
     let rolToken = information.id_rol
+
+    // setRolToken(rolToken)
 
     // Mapear los ID de rol a nombres de rol
     if (rolToken === 1) rolToken = 'Coordinador'
@@ -65,7 +81,7 @@ export const Notify = ({ isOpen, toggleNotify }) => {
   }
 
   // Obtener los elementos que se deben mostrar según el rol
-  // const elements = getElementsByRole()
+  const elements = getElementsByRole()
 
   return (
     <main>
