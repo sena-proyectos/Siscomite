@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise'
 
 export const getsolicitud = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.id_solicitud, solicitud.tipo_solicitud,solicitud.nombre_coordinacion,solicitud.estado,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario;')
+    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.id_solicitud, solicitud.tipo_solicitud,solicitud.nombre_coordinacion,solicitud.estado, solicitud.estado_descripcion,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario;')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar las solictudes' })
@@ -279,7 +279,7 @@ export const getRules = async (req, res) => {
  */
 export const createRequest = async (req, res) => {
   const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
-
+  console.log(req.body)
   try {
     /* Validar selección de numerales */
     if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {
@@ -322,7 +322,6 @@ export const createRequest = async (req, res) => {
     instructoresSeleccionados.forEach(async (usuarioId) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
-        console.log(usuarioId)
       } catch (error) {
         res.status(400).send({ message: 'Instructor seleccionado incorrectamente' })
         return

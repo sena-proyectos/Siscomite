@@ -117,7 +117,7 @@ const Requests = () => {
         setSelectedValueDetails('En proceso')
       }
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 

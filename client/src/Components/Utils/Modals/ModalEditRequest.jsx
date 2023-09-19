@@ -80,7 +80,6 @@ export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetchState }) =
       toast.success('Genial!!', {
         description: res
       })
-      reloadFetchState(true)
     } catch (error) {
       const message = error.response.data.message
       toast.error('Opss!!', {
