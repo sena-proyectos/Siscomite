@@ -68,7 +68,7 @@ const Sliderbar = () => {
   const elements = getElementsByRole()
 
   return (
-    <main className="sliderbar bg-[#2e323e] m-[1rem] w-[18%]  h-[95vh] relative rounded-2xl text-white flex-col flex items-center ">
+    <main className="sliderbar bg-[#2e323e] m-[1rem] w-[18%]  h-[95vh] relative rounded-2xl text-white flex-col flex items-center select-none">
       <section className="top flex flex-col items-center p-[30px] text-center w-full">
         <h3 className="mt-[1rem] text-[17px] font-bold">
           {userInformation.nombres} {userInformation.apellidos}

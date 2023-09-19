@@ -1,11 +1,27 @@
-import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button, Pagination } from '@nextui-org/react'
+import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
 import { useState, useEffect } from 'react'
 
 import { getRequestById } from '../../../api/httpRequest'
 
+import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
+
 export const ModalRequest = ({ cerrarModal, requestID }) => {
-  /* estado para almacenar los datos de la solicitud */
-  const [requestData, setRequestData] = useState([])
+  // Estados para almacenar los datos completos de aprendices, usuarios y numerales
+  const [aprendices, setAprendices] = useState([])
+  const [usuarios, setUsuarios] = useState([])
+
+  /* estados para almacenar los datos de la solicitud */
+  const [tipoSolicitud, setTipoSolicitud] = useState(null)
+  const [nombreCoordinacion, setNombreCoordinacion] = useState(null)
+  const [estado, setEstado] = useState(null)
+  const [categoriaCausa, setCategoriaCausa] = useState(null)
+  const [calificacionCausa, setCalificacionCausa] = useState(null)
+  const [descripcionCaso, setDescripcionCaso] = useState(null)
+  const [fechaCreacion, setFechaCreacion] = useState(null)
+
+  /* estados para almacenar los datos de las infracciones */
+  const [numeroArticulo, setNumeroArticulo] = useState(null)
+  const [numerales, setNumerales] = useState([])
 
   useEffect(() => {
     getIdRequest(requestID)
@@ -16,15 +32,126 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
       const response = await getRequestById(requestID)
       const res = response.data.result
 
+      // Crear un conjunto para almacenar los objetos únicos
+      const datosUnicos = new Set()
+
+      res.forEach((item) => {
+        // Utilizar JSON.stringify para convertir cada objeto en una cadena
+        const itemString = JSON.stringify(item)
+        datosUnicos.add(itemString)
+      })
+
+      /* Datos detallados de la solicitud */
+      const datosUnicosArray = Array.from(datosUnicos).map((itemString) => JSON.parse(itemString))
+
+      // Arrays para almacenar los datos completos de aprendices y usuarios sin duplicados
+      const aprendicesData = []
+      const usuariosData = []
+
+      // Iterar sobre los datos y agregarlos a los arrays correspondientes
+      res.forEach((item) => {
+        /* Aprendices */
+        if (item.tipo_documento_aprendiz && item.nombres_aprendices) {
+          const aprendiz = {
+            tipoDocumento: item.tipo_documento_aprendiz,
+            nombres: item.nombres_aprendices,
+            apellidos: item.apellidos_aprendices,
+            numeroDocumento: item.numero_documento_aprendiz,
+            emailSena: item.email_aprendiz_sena,
+            emailPersonal: item.email_aprendiz_personal,
+            celular: item.celular_aprendiz,
+            fijo: item.fijo_aprendiz,
+            numeroFicha: item.numero_ficha,
+            nombreProgramaFicha: item.nombre_programa_ficha
+          }
+          aprendicesData.push(aprendiz)
+        }
+
+        /* Usuarios */
+        if (item.tipo_documento_solicitante && item.nombre_usuario_solicitante) {
+          const usuario = {
+            tipoDocumento: item.tipo_documento_solicitante,
+            nombre: item.nombre_usuario_solicitante,
+            apellidos: item.apellidos_usuario_solicitante,
+            numeroDocumento: item.numero_documento_usuario_solicitante,
+            emailSena: item.email_sena_usuario_solicitante,
+            emailPersonal: item.email_personal_usuario_solicitante,
+            celular: item.numero_celular_usuario_solicitante,
+            fijo: item.telefono_fijo_usuario_solicitante
+          }
+          usuariosData.push(usuario)
+        }
+
+        if (item.numero_numeral && item.descripcion_numeral) {
+          const numeral = {
+            numero: item.numero_numeral,
+            descripcion: item.descripcion_numeral
+          }
+          numerales.push(numeral)
+        }
+      })
+
+      // Convertir los objetos únicos de nuevo a objetos JSON de la solicitud
+      const tipoSolicitud = [...new Set(datosUnicosArray.map((item) => item.tipo_solicitud))]
+      const nombreCoordinacion = [...new Set(datosUnicosArray.map((item) => item.nombre_coordinacion))]
+      const estado = [...new Set(datosUnicosArray.map((item) => item.estado))]
+      const categoriaCausa = [...new Set(datosUnicosArray.map((item) => item.categoria_causa))]
+      const calificacionCausa = [...new Set(datosUnicosArray.map((item) => item.calificacion_causa))]
+      const descripcionCaso = [...new Set(datosUnicosArray.map((item) => item.descripcion_caso))]
+      const fechaCreacion = [...new Set(datosUnicosArray.map((item) => item.fecha_creacion))]
+
+      // Convertir los objetos únicos de nuevo a objetos JSON de las infracciones
+      const numeroArticulo = [...new Set(datosUnicosArray.map((item) => item.numero_articulo))]
+
+      // Eliminar duplicados utilizando un conjunto para cada tipo de datos
+      const uniqueAprendicesData = Array.from(new Set(aprendicesData.map(JSON.stringify)), JSON.parse)
+      const uniqueUsuariosData = Array.from(new Set(usuariosData.map(JSON.stringify)), JSON.parse)
+      const uniqueNumerales = Array.from(new Set(numerales.map(JSON.stringify)), JSON.parse)
+
+      // Asignar los arrays de datos a los estados correspondientes
+      setAprendices(uniqueAprendicesData)
+      setUsuarios(uniqueUsuariosData)
+
+      /* Datos de la solicitud */
+      setTipoSolicitud(tipoSolicitud)
+      setNombreCoordinacion(nombreCoordinacion)
+      setEstado(estado)
+      setCategoriaCausa(categoriaCausa)
+      setCalificacionCausa(calificacionCausa)
+      setDescripcionCaso(descripcionCaso)
+      setFechaCreacion(fechaCreacion[0])
+
+      /* Datos de las infracciones */
+      setNumeroArticulo(numeroArticulo)
+      setNumerales(uniqueNumerales)
     } catch (error) {
       console.log(error)
     }
   }
 
-  
   // Cerrar modal
   const closeModal = () => {
     cerrarModal()
+  }
+
+  // Función para obtener la clase CSS en función del estado
+  const getStatusColorClass = (estado) => {
+    if (estado === 'Aprobado') {
+      return 'bg-green-200 text-success rounded-2xl'
+    } else if (estado === 'En proceso') {
+      return 'bg-yellow-200 text-warning'
+    } else if (estado === 'Rechazado') {
+      return 'bg-red-200 text-danger rounded-2xl'
+    } else {
+      // Clase CSS por defecto (negro) si el estado no coincide con ninguno de los anteriores
+      return 'text-black'
+    }
+  }
+
+  // Función para formatear la fecha
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return format(date, 'yyyy-MM-dd')
   }
 
   return (
@@ -32,7 +159,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
         <section className={`bg-white w-[35rem] p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in `}>
           <header className="flex justify-center ">
-            <h3 className="font-semibold text-2xl">
+            <h3 className="font-semibold text-2xl" id="solicitud-label">
               <i className="fi fi-rr-file-circle-info text-gray-500 px-3"></i>Detalle de solicitud
             </h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
@@ -40,144 +167,136 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
             </section>
           </header>
 
-
           <section className="relative top-[1.6rem] ">
             <section className="  place-items-center gap-4 flex justify-between">
-              <Button className="bg-green-200 text-success rounded-2xl ">Aprobado</Button>
-              <section>
-                <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" />
+              <Button className={getStatusColorClass(estado ? estado[0] : '')}>{estado}</Button>
+              <section> 
+                <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" value={formatDate(fechaCreacion)} />
               </section>
             </section>
             <section className="relative py-[1.5rem]">
-              <Accordion isCompact variant="bordered">
-                <AccordionItem aria-label="Accordion 1" startContent={<i className="fi fi-rr-user text-purple-500"></i>} title="Información Instructor">
-                  <section className="grid-cols-2 gap-x-3 gap-y-2  grid max-h-[200px] place-items-center overflow-auto">
-                    <section className="w-full">
-                      <label htmlFor="nombre" className="text-[13px] block">
-                        Nombre
-                        <input type="text" id="nombre" value="Adelaida" readOnly className="bg-[#80808036]  text-zinc-500 w-full shadow-sm px-[12px]  text-small  rounded-medium h-unit-10 outline-none block " />
-                      </label>
-                    </section>
-                    <section className="w-full">
-                      <label htmlFor="apellidp" className="text-[13px] block">
-                        Apellido
-                        <input type="text" id="apellido" value="Cano" readOnly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-full text-small rounded-medium h-unit-10 outline-none block" />
-                      </label>
-                    </section>
-                    <section className="w-full">
-                      <label htmlFor="tipo" className="text-[13px] block">
-                        Tipo documento
-                        <input type="text" id="tipo" value="Cádula ciudadanía" readOnly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-full text-small rounded-medium h-unit-10 outline-none block" />
-                      </label>
-                    </section>
-                    <section className="w-full">
-                      <label htmlFor="documento" className="text-[13px] block">
-                        Documento
-                        <input type="text" id="docuemento" value="45555543" readOnly className="bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-full text-small rounded-medium h-unit-10 outline-none block" />
-                      </label>
-                    </section>
-                    <section className="w-full">
-                      <label htmlFor="email" className="text-[13px] block">
-                        Correo
-                        <input type="email" id="email" value="acanom@soy.sena.edu.co" readOnly className=" bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-full text-small rounded-medium h-unit-10 outline-none block" />
-                      </label>
-                    </section>
-                    <section className="w-full">
-                      <label htmlFor="number" className="text-[13px] block">
-                        Número
-                        <input type="text" id="number" value="3154567878" readOnly className=" bg-[#80808036] text-zinc-500 px-[12px] shadow-sm w-full text-small rounded-medium h-unit-10 outline-none block" />
-                      </label>
-                    </section>
-                  </section>
+              <Accordion isCompact variant="bordered" aria-label="informacion en general de toda la solicitud">
+                <AccordionItem startContent={<i className="fi fi-rr-user text-purple-500"></i>} title="Información del/los instructor/es" aria-label="Información del instructor">
+                  <Table aria-label="Datos de Usuarios">
+                    <TableHeader
+                      columns={[
+                        { key: 'nombre', label: 'Nombre/s' },
+                        { key: 'apellidos', label: 'Apellidos' },
+                        { key: 'tipoDocumento', label: 'Tipo de Documento' },
+                        { key: 'numeroDocumento', label: 'Número de Documento' },
+                        { key: 'emailSena', label: 'Correo institucional' },
+                        { key: 'emailPersonal', label: 'Correo Personal' },
+                        { key: 'celular', label: 'Número de celular' },
+                        { key: 'fijo', label: 'Teléfono Fijo' }
+                      ]}
+                    >
+                      {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+                    </TableHeader>
+                    <TableBody items={usuarios}>
+                      {(item) => (
+                        <TableRow key={item.numeroDocumento}>
+                          <TableCell>{item.nombre}</TableCell>
+                          <TableCell>{item.apellidos}</TableCell>
+                          <TableCell>{item.tipoDocumento}</TableCell>
+                          <TableCell>{item.numeroDocumento}</TableCell>
+                          <TableCell>{item.emailSena}</TableCell>
+                          <TableCell>{!item.emailPersonal ? 'No disponible' : item.emailPersonal}</TableCell>
+                          <TableCell>{item.celular}</TableCell>
+                          <TableCell>{!item.fijo ? 'No disponible' : item.fijo}</TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
                 </AccordionItem>
-                <AccordionItem aria-label="Accordion 2" startContent={<i className="fi fi-rs-book-alt text-red-500"></i>} title="Información Aprendiz">
-                  <section className="grid grid-cols-2 gap-x-7 gap-y-2 max-h-[200px] overflow-auto pr-[1rem] ">
-                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Nombre" defaultValue={requestData.nombres_aprendices} isReadOnly />
-                    </section>
-                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Apellido" defaultValue="Robledo Sanchez" isReadOnly />
-                    </section>
-                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Tipo  documento" defaultValue="Tarjeta identidad" isReadOnly />
-                    </section>
-                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Documento" defaultValue="2345434" isReadOnly />
-                    </section>
-                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Correo" defaultValue="juan@soy.sena.edu.co" isReadOnly />
-                    </section>
-                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Número" defaultValue="344555553" isReadOnly />
-                    </section>
-                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Ficha" defaultValue="2373196" isReadOnly />
-                    </section>
-                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Programa" defaultValue="Análisis y Desarrollo de Software" isReadOnly />
-                    </section>
-                  </section>
+                <AccordionItem startContent={<i className="fi fi-rs-book-alt text-red-500"></i>} title="Información del aprendiz" aria-label="Información del aprendiz">
+                  <Table aria-label="Datos de Aprendices">
+                    <TableHeader
+                      columns={[
+                        { key: 'nombre', label: 'Nombre/s' },
+                        { key: 'apellidos', label: 'Apellidos' },
+                        { key: 'tipoDocumento', label: 'Tipo de Documento' },
+                        { key: 'numeroDocumento', label: 'Número de Documento' },
+                        { key: 'emailSena', label: 'Correo institucional' },
+                        { key: 'emailPersonal', label: 'Correo Personal' },
+                        { key: 'celular', label: 'Número de celular' },
+                        { key: 'fijo', label: 'Teléfono Fijo' },
+                        { key: 'numeroFicha', label: 'Número de Ficha' },
+                        { key: 'nombreProgramaFicha', label: 'Nombre del Programa de Ficha' }
+                      ]}
+                    >
+                      {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+                    </TableHeader>
+                    <TableBody items={aprendices}>
+                      {(item) => (
+                        <TableRow key={item.numeroDocumento}>
+                          <TableCell>{item.nombres}</TableCell>
+                          <TableCell>{item.apellidos}</TableCell>
+                          <TableCell>{item.tipoDocumento}</TableCell>
+                          <TableCell>{item.numeroDocumento}</TableCell>
+                          <TableCell>{item.emailSena}</TableCell>
+                          <TableCell>{!item.emailPersonal ? 'No disponible' : item.emailPersonal}</TableCell>
+                          <TableCell>{item.celular}</TableCell>
+                          <TableCell>{!item.fijo ? 'No disponible' : item.fijo}</TableCell>
+                          <TableCell>{item.numeroFicha}</TableCell>
+                          <TableCell>{item.nombreProgramaFicha}</TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
                 </AccordionItem>
-                <AccordionItem aria-label="Accordion 3" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información Solicitud">
+                <AccordionItem aria-labelledby="solicitud-label" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información de la solicitud">
                   <section className="grid grid-cols-2 gap-x-7 gap-y-2 pr-[1rem] max-h-[200px] overflow-auto">
                     <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue={requestData.tipo_solicitud} isReadOnly />
+                      <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue={tipoSolicitud} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Coordinador" defaultValue={requestData.nombre_coordinacion} isReadOnly />
+                      <Input type="text" variant="underlined" label="nombre del/la coordinador/a" defaultValue={nombreCoordinacion} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Categoría causa" defaultValue={requestData.categoria_causa} isReadOnly />
+                      <Input type="text" variant="underlined" label="Categoría causa" defaultValue={categoriaCausa} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Calificación causa" defaultValue={requestData.calificacion_causa} isReadOnly />
+                      <Input type="text" variant="underlined" label="Calificación causa" defaultValue={calificacionCausa} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Artículo" defaultValue={requestData.numero_numeral} isReadOnly />
+                      <Input type="text" variant="underlined" label="Artículo" defaultValue={numeroArticulo} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                       <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
                     </section>
-                    <section className="flex pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Popover
-                        showArrow
-                        backdrop="opaque"
-                        placement="top"
-                        classNames={{
-                          base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
-                          arrow: 'bg-default-200'
-                        }}
-                      >
-                        <PopoverTrigger>
+                    <section>
+                      <Popover placement="top" backdrop="opaque" showArrow>
+                        <PopoverTrigger className=" w-full">
                           <Button color="primary" variant="flat">
-                            Descripción artículo
+                            Numerales infringidos
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent>
-                          <section className="px-1 py-2">
-                            <section className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </section>
-                          </section>
+                          <div className="px-1 py-2">
+                            {numerales.map((numeral) => (
+                              <div key={numeral.numero}>
+                                <strong>Numeral:</strong> {numeral.numero}
+                                <br />
+                                <strong>Descripción del numeral:</strong> {numeral.descripcion}
+                                <hr />
+                              </div>
+                            ))}
+                          </div>
                         </PopoverContent>
                       </Popover>
                     </section>
-                    <section className="flex  pt-[1rem] flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Popover
-                        showArrow
-                        backdrop="opaque"
-                        placement="top"
-                        classNames={{
-                          base: 'py-3 px-4 border border-default-200 bg-gradient-to-br from-white to-default-300 dark:from-default-100 dark:to-default-50',
-                          arrow: 'bg-default-200'
-                        }}
-                      >
-                        <PopoverTrigger>
+                    <section>
+                      <Popover showArrow backdrop="opaque" placement="top">
+                        <PopoverTrigger className="w-full">
                           <Button color="primary" variant="flat">
                             Descripción caso
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent>
                           <section className="px-1 py-2">
-                            <section className="text-sm w-[10rem]">Lorem ipsum dolor sit amet consectetur adipiscing elit tortor pharetra, primis turpis ornare nostra feugiat viverra placerat leo convallis, volutpat aenean nec habitasse suspendisse urna egestas integer. </section>
+                            <section className="text-sm w-[10rem]">
+                              <p>{descripcionCaso}</p>
+                            </section>
                           </section>
                         </PopoverContent>
                       </Popover>

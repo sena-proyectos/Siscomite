@@ -345,10 +345,10 @@ export const createRequest = async (req, res) => {
  */
 export const updateRequest = async (req, res) => {
   const { id } = req.params
-  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, estado, estado_descripcion, categoria_causa, calificacion_causa, descripcion_caso, evidencias, numerales_relacionados } = req.body
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, estado, estado_descripcion, categoria_causa, calificacion_causa, descripcion_caso } = req.body
 
   try {
-    const [result] = await pool.query('UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), estado = COALESCE(?, estado),estado_descripcion = COALESCE(?, estado_descripcion), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso), evidencias = COALESCE(?, evidencias), numerales_relacionados = COALESCE(?, numerales_relacionados) WHERE id_solicitud = ?', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, estado, estado_descripcion, categoria_causa, calificacion_causa, descripcion_caso, evidencias, JSON.stringify(numerales_relacionados), id])
+    const [result] = await pool.query('UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), estado = COALESCE(?, estado),estado_descripcion = COALESCE(?, estado_descripcion), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso) WHERE id_solicitud = ?', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, estado, estado_descripcion, categoria_causa, calificacion_causa, descripcion_caso, id])
 
     if (result.affectedRows === 0) {
       res.status(404).send({ message: `No se pudo encontrar la solicitud` })
@@ -356,6 +356,7 @@ export const updateRequest = async (req, res) => {
       res.status(200).send({ message: `Solicitud actualizada exitosamente` })
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: 'Error al actualizar la solicitud' })
   }
 }
