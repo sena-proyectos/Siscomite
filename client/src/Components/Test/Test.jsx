@@ -4,7 +4,7 @@ import { uploadFile, getFiles, getSingleFile } from '../../api/httpRequest';
 export const Test = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
-  const [files, setFiles] = useState([]);
+const [files, setFiles] = useState([]);
   const [selectedFileUrl, setSelectedFileUrl] = useState(null);
 
   useEffect(() => {
@@ -35,10 +35,10 @@ export const Test = () => {
 
     const formData = new FormData();
     formData.append('archivo', selectedFile);
-
+    
     try {
       const response = await uploadFile(formData);
-
+      
       if (response.status === 201) {
         setUploadStatus('Archivo subido exitosamente.');
         // Actualizar la lista de archivos después de subir uno nuevo
@@ -49,11 +49,11 @@ export const Test = () => {
       }
     } catch (error) {
       console.error('Error al subir el archivo:', error);
-      setUploadStatus('Error al subir el archivo.');
+    setUploadStatus('Error al subir el archivo.');
     }
   };
 
-  const handleFileSelect = async (nombre_archivo) => {
+const handleFileSelect = async (nombre_archivo) => {
     try {
       const response = await getSingleFile(nombre_archivo);
       const blob = new Blob([response.data]);
@@ -71,7 +71,7 @@ export const Test = () => {
       <button onClick={handleFileUpload}>Subir Archivo</button>
       <p>{uploadStatus}</p>
 
-      <h2>Archivos Subidos</h2>
+  <h2>Archivos Subidos</h2>
       <ul>
         {files.map((file, index) => (
           <li key={index}>

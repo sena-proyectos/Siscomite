@@ -36,6 +36,9 @@ const Create = () => {
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
   const [descripcion, setDescripcion] = useState(null)
+  
+  //Recuperar la imagen
+  const [selectFile, setSelectFile] = useState()
 
   /* Estado para almacenar el reglamento obtenido de la base de datos */
   const [rules, setRules] = useState([])
@@ -100,7 +103,7 @@ const Create = () => {
       categoria_causa: 'Academica',
       id_archivo: '13'
     }
-    try {
+  try {
       const response = await createRequest(dataValue)
       const res = response.data.message
       toast.success('Genial!!', {
@@ -108,10 +111,14 @@ const Create = () => {
       })
     } catch (error) {
       const message = error.response.data.message
-      toast.error('Opss!!', {
+    toast.error('Opss!!', {
         description: message
       })
     }
+  }
+
+  const getFile = (event) => {
+   setSelectFile (event.target.files[0])
   }
 
   /* Funcion para obtener los instructores */
@@ -384,7 +391,7 @@ const Create = () => {
                   <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
                     Subir evidencia
                     <i className="fi fi-rr-upload px-[.5rem]" />
-                    <input type="file" className="hidden" />
+                    <input type="file" onChange={getFile} id="FileId" className="hidden" />
                   </label>
                 </Tooltip>
               </section>

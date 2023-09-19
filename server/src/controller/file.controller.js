@@ -2,7 +2,7 @@ import { pool } from '../db.js';
 import multerMiddleware from '../middlewares/files.middlewares.js';
 import path from 'path';
 import fs from 'fs';
-
+/*Subir un archivo*/
 export const uploadFile = multerMiddleware.single('archivo');
 
 export const handleFileUpload = async (req, res) => {
@@ -12,6 +12,7 @@ export const handleFileUpload = async (req, res) => {
   }
 
   const { filename } = req.file;
+  console.log(filename);
   const fileType = req.file.mimetype; // Obtener el tipo de archivo desde Multer
 
   try {
@@ -24,6 +25,7 @@ export const handleFileUpload = async (req, res) => {
 
 
 
+/*Mostrar todos los archivos*/
 export const getFiles = async (req, res) => {
   try {
     const queryResult = await pool.query('SELECT * FROM archivos'); // Obtener todos los archivos desde la base de datos
@@ -43,24 +45,28 @@ export const getFiles = async (req, res) => {
 
 
 
-// Obtener un archivo por su nombre
-export const getSingleFile = async (req, res) => {
-  const { nombreArchivo } = req.params;
-  const currentFileUrl = import.meta.url;
-  const currentDir = path.dirname(new URL(currentFileUrl).pathname);
-  const rutaArchivo = path.join(currentDir, 'uploads/', nombreArchivo);
+/*Mostrar un archivo por su id*/
+export const serveFileById = async (req, res) => {
+  const fileId = req.params.fileId; // Obtener el ID del archivo desde la URL
 
   try {
-    // Verifica si el archivo existe antes de enviarlo
-    if (fs.existsSync(rutaArchivo)) {
-      // Devuelve la URL del archivo en lugar de enviar el archivo directamente
-      res.json({ archivoUrl: `/api/obtenerArchivo/${nombreArchivo}` });
-    } else {
-      // Si el archivo no existe, envía un mensaje de error 404
-      res.status(404).send('Archivo no encontrado: ' + nombreArchivo);
+    // Buscar el archivo en la base de datos por su ID
+    const result = await pool.query('SELECT * FROM archivos WHERE id = ?', [fileId]);
+
+    if (result.length === 0) {
+      return res.status(404).send({ message: 'Archivo no encontrado' });
     }
+
+    const archivo = result[0];
+    const filePath = archivo.ruta_archivo; // Obtener la ruta del archivo
+
+    // Leer el archivo del sistema de archivos y enviarlo como respuesta
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
   } catch (error) {
-    // Si ocurre cualquier excepción durante la verificación o el envío del archivo
-    res.status(500).send('Error interno del servidor');
+    res.status(500).send({ message: 'Error al obtener el archivo' });
   }
 };
+
+
+

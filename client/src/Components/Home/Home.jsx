@@ -87,7 +87,7 @@ const Home = () => {
                           <Button color="success" size="sm" variant="light" className="">
                             Descargar excel <i className="fi fi-rr-download"></i>
                           </Button>
-                        </p>
+                                                  </p>
                       </section>
                       <Divider />
                       <section className="grid place-items-center ">

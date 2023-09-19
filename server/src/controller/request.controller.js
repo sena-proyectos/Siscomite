@@ -1,5 +1,10 @@
 import { pool } from '../db.js'
 import mysql from 'mysql2/promise'
+import multerMiddleware from '../middlewares/files.middlewares.js';
+import path from 'path';
+import fs from 'fs';
+
+export const uploadFile = multerMiddleware.single('archivo');
 
 export const getsolicitud = async (req, res) => {
   try {
@@ -85,9 +90,6 @@ export const getRequests = async (req, res) => {
     res.status(500).send({ message: 'Error al listar las solictudes' })
   }
 }
-
-
-
 
 //BUSCAR UNA SOLICITUD
 /**
@@ -227,9 +229,27 @@ export const getRules = async (req, res) => {
  * Esta función crea una solicitud insertando datos en una tabla de base de datos.
  */
 export const createRequest = async (req, res) => {
-  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
 
+  
   try {
+  const { filename } = req.file;
+  const fileType = req.file.mimetype; // Obtener el tipo de archivo desde Multer
+  /*verifica si hay un archivo existente*/
+  if(!req.file){
+    return res.status(400).send({ message: 'Necesita subir un archivo' })
+  }
+  /*verifica el tipo de archivo*/
+  if (req.fileValidationError) {
+    return res.status(400).send({ message: 'Tipo de archivo no permitido' });
+  }
+  /*inserta los datos en la tabla archivos*/
+    const resultFile = await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `uploads/${filename}`, fileType]);
+    const archivoId = resultFile.insertId; // Obtener el ID del archivo recién insertado
+    // Verificar si se obtuvo el ID del archivo
+    if (!archivoId) {
+    return res.status(500).send({ message: 'Error al subir el archivo' });
+    }
     /* Validar selección de numerales */
     if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {
       return res.status(400).send({ message: 'Debe seleccionar al menos un numeral' })
@@ -242,7 +262,7 @@ export const createRequest = async (req, res) => {
 
     /* Crear la solicitud */
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ') // Formato YYYY-MM-DD HH:mm:ss
-    const result = await pool.query('INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, 'Pendiente', currentDate])
+    const result = await pool.query('INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, archivoId, 'Pendiente', currentDate])
 
     const solicitudId = result[0].insertId
 
