@@ -43,6 +43,8 @@ export const Notify = ({ isOpen, toggleNotify }) => {
     setCurrentYear(newYear)
   }
 
+  
+
 
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
