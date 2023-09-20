@@ -1,11 +1,12 @@
 /* Importaciones de modulos y componentes */
 import './Register.css'
 import { Link } from 'react-router-dom'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { register } from '../../api/httpRequest'
 import { Footer } from '../Footer/Footer'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Input } from '@nextui-org/react'
 import { Toaster, toast } from 'sonner'
+import { validationRegister } from '../../Validations/validations'
 
 export const Register = () => {
   /* Estados para capturar los valores de los campos */
@@ -16,6 +17,9 @@ export const Register = () => {
   const [numeroDocumento, setNumeroDocumento] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [selectedTipoDocumento, setSelectedTipoDocumento] = useState('')
+
+  // Limpiar el formulario al enviarlo
+  const cleanInput = useRef(null)
 
   /* mapeo de los valores segun la base de datos */
   const documentoOptions = {
@@ -37,22 +41,39 @@ export const Register = () => {
       numero_documento: numeroDocumento,
       contrasena: contrasena
     }
+
     try {
-      const res = await register(dataValue)
-      const message = res.data.message
-      toast.success('Genial!!', {
-        description: message
-      })
+      // Validar los datos antes de enviarlos
+      const { error } = validationRegister.validate(dataValue, { stripUnknown: true })
+      if (error) {
+        const errorDetails = error.details[0] // Obtén el primer detalle de error
+        const errorMessage = errorDetails.message
+
+        if (errorDetails.path[0] === 'numero_celular') {
+          toast.error('El número de celular no es válido, verifíquelo')
+        } else if (errorDetails.path[0] === 'numero_documento') {
+          toast.error('El número de documento no es válido')
+        } else if (errorDetails.path[0] === 'contrasena') {
+          toast.error('La contraseña no es válida. Debe contener mayúsculas, números y carácteres especiales')
+        } else {
+          toast.error(`Error de validación: ${errorMessage}`)
+        }
+      } else {
+        // Si no hay errores de validación, procede con la creación de el usurio
+        const res = await register(dataValue)
+        const message = res.data.message
+        toast.success('¡Genial!', {
+          description: message
+        })
+
+      }
     } catch (error) {
-      const message = error.response.data.message
-      toast.error('Opss!!', {
+      const message = error?.response?.data?.message
+      toast.error(message, {
         description: message
       })
     }
   }
-
-  
-
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Tipo documento']))
   const [isVisible, setIsVisible] = React.useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
@@ -81,7 +102,7 @@ export const Register = () => {
               <Input type="email" isRequired label="Correo institucional" labelPlacement={'outside'} autoComplete="off" value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
             </div>
             <div className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
-              <Input type="text" label="Teléfono" labelPlacement={'outside'} autoComplete="off" value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} />
+              <Input type="text" label="Teléfono" labelPlacement={'outside'} autoComplete="off" value={numeroCelular} onChange={(e) => setNumeroCelular(e.target.value)} maxLength={15} />
             </div>
 
             <section className="w-full flex justify-between gap-2 ">

@@ -8,23 +8,23 @@ export const Alerts = ({ cerrarAlert, contenido, recordatorio, descargarExcel })
   // Agregamos un estado para controlar si ha pasado más de 5 segundos
   const [alertTime, setAlertTime] = useState(false)
   // Estado para el contador regresivo
-  const [countdown, setCountdown] = useState(5)
+  const [countdown, setCountdown] = useState(3)
 
   useEffect(() => {
     // Utilizamos setTimeout para cerrar la alerta después de 5 segundos
     const timer = setTimeout(() => {
       setAlertTime(true)
-    }, 5000)
+    }, 3000)
 
-      // Utilizamos setInterval para actualizar el contador regresivo
-      const countdownTimer = setInterval(() => {
-        setCountdown((prevCountdown) => {
-          if (prevCountdown > 0) {
-            return prevCountdown - 1;
-          }
-          return prevCountdown;
-        });
-      }, 1000);
+    // Utilizamos setInterval para actualizar el contador regresivo
+    const countdownTimer = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        if (prevCountdown > 0) {
+          return prevCountdown - 1
+        }
+        return prevCountdown
+      })
+    }, 1000)
 
     // Limpia los temporizadores si el componente se desmonta antes de que se cierre la alerta
     return () => {
@@ -66,7 +66,7 @@ export const Alerts = ({ cerrarAlert, contenido, recordatorio, descargarExcel })
               <p className="text-[16px]">{recordatorio}</p>
               {descargarExcel && (
                 <Button color="success" size="sm" variant="flat" className="">
-                  Descargar excel <i className="fi fi-rr-download"></i>
+                  Descargar excel <i className="fi fi-rr-download"/>
                 </Button>
               )}
             </section>

@@ -1,6 +1,5 @@
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Tabs, Tab, Card, CardBody } from '@nextui-org/react'
 
 const Procedures = () => {
   return (

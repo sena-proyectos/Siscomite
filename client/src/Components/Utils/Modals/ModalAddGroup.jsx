@@ -4,6 +4,7 @@ import { Toaster, toast } from 'sonner'
 import { Input, Button } from '@nextui-org/react'
 import { getCoordination } from '../../../api/httpRequest'
 import { Alerts } from '../Alerts/Alerts'
+import { validationGroups } from '../../../Validations/validations'
 
 export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   /* Estados para capturar los valores de la ficha */
@@ -20,6 +21,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   //Condiciones de agregar ficha
   const [isTrimestreEnabled, setIsTrimestreEnabled] = useState(false)
 
+  // Funcion para activar el select de "Trimstre lectivo" dependiendo de lo seleciondo en "Etapa"
   const handleEtapaChange = (event) => {
     const selectedValue = event.target.value
     setEtapaPrograma(selectedValue)
@@ -34,25 +36,41 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
       const dataValue = {
         numero_ficha: numeroFicha,
         nombre_programa: nombrePrograma.toUpperCase(),
-        jornada : jornada.toUpperCase(),
+        jornada: jornada.toUpperCase(),
         etapa_programa: etapaPrograma.toUpperCase(),
         numero_trimestre: numeroTrimestre,
         id_modalidad: idModalidad,
         id_usuario_coordinador: coordinadores
       }
 
-      const response = await createFicha(dataValue)
-      const res = response.data.message
-      toast.success('Genial!!', {
-        description: res
-      })
-      reloadFetchState(true)
-      setTimeout(() => {
-        cerrarModal()
-      }, 1000)
+      const { error } = validationGroups.validate(dataValue, { stripUnknown: true })
+
+      if (error) {
+        const errorDetails = error.details[0] // Obtén el primer detalle de error
+
+        if (!jornada || !etapaPrograma || !numeroTrimestre || !idModalidad ||  !coordinadores){
+          toast.error('Todos los campos tienen que ser rellenados')
+        }
+        else if(errorDetails.path[0] === 'numero_ficha') {
+          toast.error('El número de ficha debe ser un valor numérico')
+        } else if (errorDetails.path[0] === 'nombre_programa') {
+          toast.error('El nombre del programa debe ser más específico')
+        }
+      } else {
+        // Si no hay errores de validación, procede con la creación de la ficha
+        const response = await createFicha(dataValue)
+        const res = response.data.message
+        toast.success('¡Genial!', {
+          description: res
+        })
+        reloadFetchState(true)
+        setTimeout(() => {
+          cerrarModal()
+        }, 1000)
+      }
     } catch (error) {
-      const message = error.response.data.message
-      toast.error('Opss!!', {
+      const message = error?.response?.data?.message
+      toast.error(message, {
         description: message
       })
     }
@@ -77,7 +95,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
-        <Alerts contenido={'Los datos deben coincidir con los registrados en Sofía Plus'}  />
+        <Alerts contenido={'Los datos deben coincidir con los registrados en Sofía Plus'} />
         <Toaster position="top-right" closeButton richColors />
         <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
@@ -92,12 +110,12 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
             <section className="relative grid grid-cols-2 justify-center gap-8">
               <section className="modalInput ">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Número de ficha" labelPlacement={'outside'} variant={'flat'} maxLength={12} min={6} value={numeroFicha} onChange={(e) => setNumeroFicha(e.target.value)} />
                 </div>
               </section>
               <section className="modalInput">
                 <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                  <Input isRequired size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
+                  <Input isRequired size="md" type="text" label="Nombre del programa" labelPlacement={'outside'} variant={'flat'} minLength={2} value={nombrePrograma} onChange={(e) => setNombrePrograma(e.target.value)} />
                 </div>
               </section>
               <section>

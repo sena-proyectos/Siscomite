@@ -7,6 +7,7 @@ import { login } from '../../api/httpRequest'
 import Cookie from 'js-cookie'
 import { Input } from '@nextui-org/react'
 import { Toaster, toast } from 'sonner'
+import { validationLogin } from '../../Validations/validations'
 
 export const Login = () => {
   /* Estados para los valores de los campos */
@@ -33,15 +34,28 @@ export const Login = () => {
     }
 
     try {
+      const { error } = validationLogin.validate(dataValue)
+      if (error) {
+        const errorString = String(error)
+        const errorMsg = errorString.includes('numero_documento')
+        if (errorMsg) {
+          toast.error('El número de documento no es válido, verifiquelo')
+          throw new Error()
+        }
+        toast.error('La contraseña no es correcta, verifiquelo')
+        throw new Error()
+      }
       const res = await login(dataValue)
       const response = res.data.response.info.token
       Cookie.set('token', response, { expires: 2, secure: true, sameSite: 'None', path: '/' })
       navigate('/home')
     } catch (error) {
-      const message = error.response.data.message
-      toast.error('Opss!!', {
-        description: message
-      })
+      const message = error?.response?.data?.message
+      if (message) {
+        toast.error(message, {
+          description: message
+        })
+      }
     } finally {
       setIsLoading(false)
     }
@@ -78,13 +92,15 @@ export const Login = () => {
                   className="max-w-xs"
                 />
               </section>
-                <p className="text-sm cursor-pointer hover:text-[#587fff]"><Link to='/password'>¿Olvidaste tu contraseña?</Link></p>
+              <p className="text-sm cursor-pointer hover:text-[#587fff]">
+                <Link to="/password">¿Olvidaste tu contraseña?</Link>
+              </p>
               <button className="bg-[#3c3c3c] text-white w-full cursor-pointer rounded-md font-light text-xs py-3" disabled={isLoading}>
                 {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
                 {isLoading ? 'Cargando...' : 'Iniciar sesión'}
               </button>
               <p className="text-sm">
-                ¿Nuevo usuario?{' '}
+                ¿Nuevo usuario?
                 <Link className="text-sm text-[#587fff]" to={'/Register'}>
                   Registrate
                 </Link>

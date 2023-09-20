@@ -1,5 +1,4 @@
 /* Importaciones de modulos y componentes */
-
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button } from '@nextui-org/react'
@@ -9,6 +8,7 @@ import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
 import { getFichas } from '../../api/httpRequest'
+import { validationGroups } from '../../Validations/validations'
 import './Groups.css'
 
 /* Definicion del componente */
@@ -47,7 +47,7 @@ const Groups = () => {
     setActivePage(pageNumber)
   }
 
-  const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado
+  const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado de fichas a mostrar
 
   /* establecer paginado y numero de paginacion */
   const startIdx = (activePage - 1) * itemsPerPage
@@ -230,9 +230,9 @@ const Groups = () => {
                   <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-full">
                     <table className="w-full">
                       <thead className="text-default-500">
-                        <tr className="grid grid-cols-7 text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">
+                        <tr className="grid grid-cols-6-column-table text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">
                           <th>N° Ficha</th>
-                          <th className="col-span-2">Programa formación</th>
+                          <th>Programa formación</th>
                           <th>Jornada</th>
                           <th>Etapa</th>
                           <th>Coordinador</th>
@@ -242,9 +242,9 @@ const Groups = () => {
                       <tbody>
                         {visibleCards.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
-                            <tr className="grid grid-cols-7 text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
-                              <td className="bg-yellow">{card.numero_ficha}</td>
-                              <td className="col-span-2">{card.nombre_programa}</td>
+                            <tr className="grid grid-cols-6-column-table text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
+                              <td>{card.numero_ficha}</td>
+                              <td>{card.nombre_programa}</td>
                               <td>{card.jornada}</td>
                               <td>{card.etapa_programa}</td>
                               <td>{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
