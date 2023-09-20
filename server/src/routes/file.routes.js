@@ -1,6 +1,5 @@
 import { Router } from "express";
-import multerMiddleware from '../middlewares/files.middlewares.js';
-import { handleFileUpload, uploadFile, getFiles } from "../controller/file.controller.js";
+import { handleFileUpload, uploadFile, getFiles, downloadFile } from "../controller/file.controller.js";
 
 
 
@@ -12,5 +11,6 @@ router.get('/archivos', getFiles);
 //router.get('/obtenerArchivo/:nombreArchivo', getSingleFile);
 // Subir archivo
 router.post('/subirArchivo', uploadFile, handleFileUpload);
+router.get('/descargarArchivo/:archivoId', downloadFile);
 
 export default router;

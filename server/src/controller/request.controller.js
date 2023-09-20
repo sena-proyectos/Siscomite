@@ -231,32 +231,43 @@ export const getRules = async (req, res) => {
 export const createRequest = async (req, res) => {
   const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
 
+  await pool.beginTransaction();  // Antes de comenzar las inserciones, inicia la transacción
   
   try {
-  const { filename } = req.file;
-  const fileType = req.file.mimetype; // Obtener el tipo de archivo desde Multer
-  /*verifica si hay un archivo existente*/
-  if(!req.file){
-    return res.status(400).send({ message: 'Necesita subir un archivo' })
-  }
-  /*verifica el tipo de archivo*/
-  if (req.fileValidationError) {
-    return res.status(400).send({ message: 'Tipo de archivo no permitido' });
-  }
-  /*inserta los datos en la tabla archivos*/
+    const { filename } = req.file;
+    const fileType = req.file.mimetype;
+
+    // Verifica si hay un archivo existente
+    if (!req.file) {
+      await pool.rollback();
+      return res.status(400).send({ message: 'Necesita subir un archivo' });
+    }
+
+    // Verifica el tipo de archivo
+    if (req.fileValidationError) {
+      await pool.rollback();
+      return res.status(400).send({ message: 'Tipo de archivo no permitido' });
+    }
+
+    // Inserta los datos en la tabla archivos
     const resultFile = await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `uploads/${filename}`, fileType]);
-    const archivoId = resultFile.insertId; // Obtener el ID del archivo recién insertado
+    const archivoId = resultFile.insertId;
+
     // Verificar si se obtuvo el ID del archivo
     if (!archivoId) {
-    return res.status(500).send({ message: 'Error al subir el archivo' });
+      await pool.rollback();
+      return res.status(500).send({ message: 'Error al subir el archivo' });
     }
+
     /* Validar selección de numerales */
     if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {
-      return res.status(400).send({ message: 'Debe seleccionar al menos un numeral' })
+      await pool.rollback();
+      return res.status(400).send({ message: 'Debe seleccionar al menos un numeral' });
     }
 
     /* Validar selección de aprendices */
     if (!aprendicesSeleccionados || aprendicesSeleccionados.length === 0) {
+      await pool.rollback();
       return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
     }
 
@@ -271,6 +282,7 @@ export const createRequest = async (req, res) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_numerales (id_solicitud, id_numeral) VALUES (?, ?)', [solicitudId, numeroId])
       } catch (error) {
+        await pool.rollback();
         res.status(400).send({ message: 'No se pudieron asociar los numerales a la solicitud' })
         return
       }
@@ -283,6 +295,7 @@ export const createRequest = async (req, res) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
       } catch (error) {
+        await pool.rollback();
         res.status(400).send({ message: 'Aprendiz seleccionado incorrectamente' })
         return
       }
@@ -294,16 +307,20 @@ export const createRequest = async (req, res) => {
         try {
           await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
         } catch (error) {
+          await pool.rollback();
           res.status(400).send({ message: 'Instructor seleccionado incorrectamente' })
           return
         }
       })
     }
+    
+    await pool.commit(); // Confirma la transacción si todo ha ido bien
 
     /* Enviar respuesta existosa */
     res.status(201).send({ message: 'Solicitud creada exitosamente' })
     // res.status(201).send({ result })
   } catch (error) {
+    await pool.rollback();  // Si ocurre un error, realiza un rollback
     res.status(500).send({ message: 'Error al crear la solicitud' })
   }
 }

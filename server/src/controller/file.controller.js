@@ -2,6 +2,8 @@ import { pool } from '../db.js';
 import multerMiddleware from '../middlewares/files.middlewares.js';
 import path from 'path';
 import fs from 'fs';
+
+
 /*Subir un archivo*/
 export const uploadFile = multerMiddleware.single('archivo');
 
@@ -70,3 +72,37 @@ export const serveFileById = async (req, res) => {
 
 
 
+/*Funcion para descargar el archivo*/
+export const downloadFile = async (req, res) => {
+  const { ArchivoId } = req.params;
+
+  try {
+    // Consulta la base de datos para obtener la información del archivo por su ID
+    const [fileInfo] = await pool.query('SELECT nombre_archivo, ruta_archivo, tipo_archivo FROM archivos WHERE id_archivo = ?', [ArchivoId]);
+
+    // Verifica si se encontró el archivo en la base de datos
+    if (fileInfo.length === 0) {
+      return res.status(404).send({ message: 'Archivo no encontrado' });
+     
+    }
+
+    const { nombre_archivo, ruta_archivo, tipo_archivo } = fileInfo[0];
+    const filePath = `../uploads/${ruta_archivo}`;
+
+    // Verifica si el archivo existe en el sistema de archivos
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send({ message: 'Archivo no encontrado en el sistema de archivos' });
+    }
+
+    // Configura las cabeceras de respuesta para la descarga del archivo
+    res.setHeader('Content-Disposition', `attachment; filename="${nombre_archivo}"`);
+    res.setHeader('Content-Type', tipo_archivo);
+
+    // Crea un flujo de lectura del archivo y lo envía como respuesta
+    const fileStream = fs.createReadStream(filePath);
+    fileStream.pipe(res);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Error al descargar el archivo' });
+  }
+};
