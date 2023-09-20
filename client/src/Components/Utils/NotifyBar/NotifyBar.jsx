@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react' // Asegúrate de importar useState d
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 import { getMessageById, getRequest } from '../../../api/httpRequest'
+import { Link } from 'react-router-dom'
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
 
@@ -11,7 +12,7 @@ export const Notify = ({ isOpen, toggleNotify }) => {
   const currentDate = new Date()
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
-  const [rolToken, setRolToken] = useState(null)
+  const [message, setMessage] = useState([])
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
@@ -43,29 +44,35 @@ export const Notify = ({ isOpen, toggleNotify }) => {
   }
 
   useEffect(() => {
-    getMessages()
-  }, [])
+    const fetchData = async () => {
+      const token = Cookie.get('token');
+      const information = jwt(token);
+      const userID = information.id_usuario;
 
-  const getMessages = async () => {
-    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
-    const information = jwt(token) // Decodificar el token JWT
-    let rolToken = information.id_rol
-    
-    setRolToken(rolToken)
-    try {
-      // const response = await getMessageById(rolToken)
-      // console.log(response);
-    } catch (error) {
-      console.log(error)
-    }
-  }
+      try {
+        const response = await getMessageById(userID);
+        const res = response.data.result;
+        setMessage(res);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    // Llamar a la función fetchData inmediatamente
+    fetchData();
+
+    // Establecer un intervalo para llamar a fetchData cada 3 segundos
+    const intervalId = setInterval(fetchData, 3000);
+
+    // Limpieza del intervalo cuando el componente se desmonta
+    return () => clearInterval(intervalId);
+  }, []);
 
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
     const information = jwt(token) // Decodificar el token JWT
     let rolToken = information.id_rol
-
-    // setRolToken(rolToken)
 
     // Mapear los ID de rol a nombres de rol
     if (rolToken === 1) rolToken = 'Coordinador'
@@ -82,6 +89,10 @@ export const Notify = ({ isOpen, toggleNotify }) => {
 
   // Obtener los elementos que se deben mostrar según el rol
   const elements = getElementsByRole()
+
+  const openNotify = () => {
+    console.log('holaaaaaaaaaaaa')
+  }
 
   return (
     <main>
@@ -124,13 +135,17 @@ export const Notify = ({ isOpen, toggleNotify }) => {
         </section>
         <section className="mt-5">
           <p className="font-extrabold">Nuevos mensajes</p>
-          <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl">
-            <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
-            <section className="items-center">
-              <p className="font-semibold block">Cambios en la solicitud</p>
-              <p className="text-[13px] block">Su solicitud a comité ha sido aprobada</p>
-            </section>
-          </section>
+          {message.map((item) => (
+            <Link to={'/requests'} key={item.id_mensaje}>
+              <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={openNotify}>
+                <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
+                <section className="items-center">
+                  <p className="font-semibold block">Cambios en la solicitud</p>
+                  <p className="text-[13px] block">{item.mensaje}</p>
+                </section>
+              </section>
+            </Link>
+          ))}
           <Divider />
         </section>
       </section>

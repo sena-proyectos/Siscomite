@@ -157,7 +157,7 @@ export const getRequestById = (idRequest) => {
 export const getRequestByIdUser = (userID) => {
   const URL = `${BaseUrl}${api}/solicitudByIdUser/${userID}`
   const response = axios.get(URL)
-
+  
   return response
 }
 
@@ -170,9 +170,9 @@ export const updateRequest = (data, idRequest) => {
 }
 
 /* get messages */
-export const getMessageById = ( userID) => {
+export const getMessageById = (userID) => {
   const URL = `${BaseUrl}${api}/notifyByIdUser/${userID}`
-  const response = axios.patch(URL)
+  const response = axios.get(URL)
 
   return response
 }
