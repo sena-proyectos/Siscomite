@@ -173,3 +173,35 @@ export const getRequest = () => {
 
   return response
 }
+
+/* get request by id */
+export const getRequestById = (idRequest) => {
+  const URL = `${BaseUrl}${api}/solicitud/${idRequest}`
+  const response = axios.get(URL)
+  
+  return response
+}
+
+/* get request by id user */
+export const getRequestByIdUser = (userID) => {
+  const URL = `${BaseUrl}${api}/solicitudByIdUser/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* update request */
+export const updateRequest = (data, idRequest) => {
+  const URL = `${BaseUrl}${api}/updateSolicitud/${idRequest}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* get messages */
+export const getMessageById = ( userID) => {
+  const URL = `${BaseUrl}${api}/notifyByIdUser/${userID}`
+  const response = axios.patch(URL)
+
+  return response
+}

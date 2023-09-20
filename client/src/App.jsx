@@ -11,6 +11,7 @@ import { Test } from './Components/Test/Test'
 import { ViewFiles} from './Components/viewFiles/viewFiles'
 import { Setting } from './Components/Setting/Setting'
 import { Teachers } from './Components/Teachers/Teachers'
+import { Test } from './Components/Test/Test'
 import './App.css'
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
 
       <Route path="/setting" element={<Setting />} />
       <Route path="/teachers" element={<Teachers />} />
+      <Route path="/test" element={<Test />} />
     </Routes>
   )
 }
