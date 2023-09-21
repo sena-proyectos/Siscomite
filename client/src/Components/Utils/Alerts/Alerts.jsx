@@ -5,13 +5,13 @@ import './Alerts.css'
 export const Alerts = ({ cerrarAlert, contenido, recordatorio, descargarExcel }) => {
   // Estado para controlar si la alerta debe mostrarse
   const [showAlert, setShowAlert] = useState(true)
-  // Agregamos un estado para controlar si ha pasado más de 5 segundos
+  // Agregamos un estado para controlar si ha pasado más de 3 segundos
   const [alertTime, setAlertTime] = useState(false)
   // Estado para el contador regresivo
   const [countdown, setCountdown] = useState(3)
 
   useEffect(() => {
-    // Utilizamos setTimeout para cerrar la alerta después de 5 segundos
+    // Utilizamos setTimeout para cerrar la alerta después de 3 segundos
     const timer = setTimeout(() => {
       setAlertTime(true)
     }, 3000)
@@ -70,7 +70,7 @@ export const Alerts = ({ cerrarAlert, contenido, recordatorio, descargarExcel })
                 </Button>
               )}
             </section>
-            <p className="text-sm text-default-300 ">Esta alerta se podrá cerrar en: {countdown} segundos</p>
+            <p className="text-sm text-default-400 ">Esta alerta se podrá cerrar en: {countdown} segundos</p>
           </section>
           <section className="inset-0 bg-[#00000068] -z-10 fixed flex items-center justify-center " onClick={alertClose} />
         </main>

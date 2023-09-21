@@ -42,16 +42,16 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
         id_modalidad: idModalidad,
         id_usuario_coordinador: coordinadores
       }
-
+      // Realiza la validación de los datos utilizando la función "validate" de "validationGroups".
+      // "dataValue" es el conjunto de datos a validar y "stripUnknown: true" elimina cualquier campo desconocido.
       const { error } = validationGroups.validate(dataValue, { stripUnknown: true })
-
+      // Si hay un error de validación:
       if (error) {
-        const errorDetails = error.details[0] // Obtén el primer detalle de error
+        const errorDetails = error.details[0] // Obtén el primer detalle de error del objeto "error".
 
-        if (!jornada || !etapaPrograma || !numeroTrimestre || !idModalidad ||  !coordinadores){
+        if (!numeroFicha || !jornada || !etapaPrograma || !numeroTrimestre || !idModalidad || !coordinadores) {
           toast.error('Todos los campos tienen que ser rellenados')
-        }
-        else if(errorDetails.path[0] === 'numero_ficha') {
+        } else if (errorDetails.path[0] === 'numero_ficha') {
           toast.error('El número de ficha debe ser un valor numérico')
         } else if (errorDetails.path[0] === 'nombre_programa') {
           toast.error('El nombre del programa debe ser más específico')
@@ -70,7 +70,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
       }
     } catch (error) {
       const message = error?.response?.data?.message
-      toast.error(message, {
+      toast.error('¡Opss!', {
         description: message
       })
     }

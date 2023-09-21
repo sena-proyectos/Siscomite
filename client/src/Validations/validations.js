@@ -15,7 +15,7 @@ export const validationLogin = Joi.object({
 export const validationRegister = Joi.object({
     nombres: Joi.string().required().min(2),
     apellidos: Joi.string().required().min(2),
-    email_sena: Joi.string().required().min(5),
+    email_sena: Joi.string().required().min(5).pattern(EMAIL_REGEX),
     numero_celular: Joi.number().required().min(5),
     numero_documento: Joi.number().required().min(8),
     contrasena: Joi.string().required().min(8).pattern(PASSWORD_REGEX),

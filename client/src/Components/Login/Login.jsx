@@ -34,20 +34,30 @@ export const Login = () => {
     }
 
     try {
+      // Realiza la validación de los datos utilizando la función "validate" de "validationLogin".
       const { error } = validationLogin.validate(dataValue)
+      // Verifica si hay un error de validación.
       if (error) {
+        // Convierte el objeto "error" a una cadena de texto.
         const errorString = String(error)
+        // Comprueba si el error contiene la cadena 'numero_documento'.
         const errorMsg = errorString.includes('numero_documento')
         if (errorMsg) {
-          toast.error('El número de documento no es válido, verifiquelo')
+          toast.error('El número de documento no es válido, verifíquelo')
+          // Lanza una excepción para detener la ejecución.
           throw new Error()
         }
-        toast.error('La contraseña no es correcta, verifiquelo')
+        // Si el error no está relacionado con 'numero_documento', muestra un mensaje de error de contraseña incorrecta.
+        toast.error('La contraseña no es correcta, verifíquelo')
+        // Lanza una excepción para detener la ejecución.
         throw new Error()
       }
+      // Si no hubo errores de validación, procede con la autenticación.
       const res = await login(dataValue)
       const response = res.data.response.info.token
+      // Establece la cookie del token de autenticación.
       Cookie.set('token', response, { expires: 2, secure: true, sameSite: 'None', path: '/' })
+      // Redirige al usuario a la página de inicio ('/home').
       navigate('/home')
     } catch (error) {
       const message = error?.response?.data?.message

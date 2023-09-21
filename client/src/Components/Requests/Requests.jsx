@@ -19,7 +19,6 @@ import { format } from 'date-fns' // Importar biblioteca para formatear las fech
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
   const [filtroVisible, setFiltroVisible] = useState(false) // Estado para controlar la visibilidad del filtro de búsqueda
-
   const [request, setRequest] = useState([]) // estado para guardar las solicitudes de la base de datos
   const [requestById, setRequestById] = useState([]) // estado para guardar las solicitudes de usuarios de la base de datos
 
@@ -51,6 +50,7 @@ const Requests = () => {
       instructor: rolToken === 'Instructor'
     }
   }
+
 
   // Obtener los elementos que se deben mostrar según el rol
   const elements = getElementsByRole()
@@ -142,6 +142,8 @@ const Requests = () => {
     return format(date, 'dd/MM/yyyy')
   }
 
+
+
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} requestID={requestId} />}
@@ -152,7 +154,12 @@ const Requests = () => {
         <section className="w-full overflow-auto ">
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
-              <Search request filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+              <Search
+                request
+                filtro={filtroVisible}
+                placeholder={'Buscar solicitud'}
+                icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
+              />
             </section>
             <section className="absolute right-[20%] cursor-pointer justify-center ">
               {notifyOpen ? (
@@ -179,7 +186,7 @@ const Requests = () => {
 
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
                 {currentItems.map((item) => (
-                  <TableRow key={item.id_solicitud} className='hover:bg-gray-200 transition-all'>
+                  <TableRow key={item.id_solicitud} className="hover:bg-gray-200 transition-all">
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
                     <TableCell>{formatDate(item.fecha_creacion)}</TableCell>
                     <TableCell>{item.tipo_solicitud}</TableCell>

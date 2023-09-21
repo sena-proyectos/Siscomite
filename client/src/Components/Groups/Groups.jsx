@@ -8,7 +8,6 @@ import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
 import { getFichas } from '../../api/httpRequest'
-import { validationGroups } from '../../Validations/validations'
 import './Groups.css'
 
 /* Definicion del componente */
@@ -205,7 +204,7 @@ const Groups = () => {
                             </Tooltip>
                           </section>
                         </CardHeader>
-                        <CardBody className="h-[5rem]">
+                        <CardBody className="h-[5rem] pt-0 pb-0">
                           <p className="text-[16px]">{card.nombre_programa}</p>
                         </CardBody>
 

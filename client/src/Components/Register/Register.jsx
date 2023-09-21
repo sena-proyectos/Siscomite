@@ -49,12 +49,14 @@ export const Register = () => {
         const errorDetails = error.details[0] // Obtén el primer detalle de error
         const errorMessage = errorDetails.message
 
-        if (errorDetails.path[0] === 'numero_celular') {
+        if (errorDetails.path[0] === 'email_sena'){
+          toast.error('Formato de correo institucional inválido')
+        }else if(errorDetails.path[0] === 'numero_celular') {
           toast.error('El número de celular no es válido, verifíquelo')
         } else if (errorDetails.path[0] === 'numero_documento') {
           toast.error('El número de documento no es válido')
         } else if (errorDetails.path[0] === 'contrasena') {
-          toast.error('La contraseña no es válida. Debe contener mayúsculas, números y carácteres especiales')
+          toast.error('La contraseña no es válida. Debe contener mayúsculas, minúsculas, números y carácteres especiales')
         } else {
           toast.error(`Error de validación: ${errorMessage}`)
         }

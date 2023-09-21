@@ -58,26 +58,27 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
       }
       // Validacion de datos
       const { error } = validationStudents.validate(dataValue, { stripUnknown: true })
-      console.log(error)
+      // Realiza la validación de los datos utilizando la función "validate" de "validationStudents".
+      // "dataValue" es el conjunto de datos a validar y "stripUnknown: true" elimina cualquier campo desconocido.
       if (error) {
-        const errorDetails = error.details[0] // Obtén el primer detalle de error
-        
+        // Si hay un error de validación:
+        const errorDetails = error.details[0] // Obtén el primer detalle de error del objeto "error".
         if (!nombresAprendiz || !apellidosAprendiz || !numeroDocumento || !emailSena || !numeroCelular || !tipoDocumento) {
-          toast.error('Todos los campos con (*) son deben ser rellenados')
+          toast.error('Todos los campos con (*) son deben ser digitados')
         } else if (errorDetails.path[0] === 'numero_documento_aprendiz') {
-          toast.error('El número de documento debe ser un valor numrico')
+          toast.error('El número de documento debe ser un valor numérico')
         } else if (errorDetails.path[0] === 'email_aprendiz_sena') {
           toast.error('Formato de correo institucional inválido')
-        // } else if (errorDetails.path[0] === 'email_aprendiz_personal') {
-        //   toast.error('Formato de correo alterno inválido')
-        }else if (errorDetails.path[0] === 'celular_aprendiz'){
-          toast.error('El número debe ser un valor numrico')
+        } else if (errorDetails.path[0] === 'email_aprendiz_personal' && emailAprendizPersonal !== '') {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // Expresión regular para validar el formato de correo electrónico
+          if (!emailRegex.test(emailAprendizPersonal)) {
+            toast.error('Formato de correo alterno inválido')
+          }
+        } else if (errorDetails.path[0] === 'celular_aprendiz') {
+          toast.error('El número debe ser un valor numérico')
         }
-        }else if (errorDetails.path[0] === 'celular_aprendiz'){
-          toast.error('El número debe ser un valor numrico')
-        
       } else {
-        // Si no hay errores de validación, procede con la creación de el usurio
+        // Si no hay errores de validación, procede con la creación de el aprendiz
         const response = await createApprentices(dataValue)
         const res = response.data.message
         toast.success('Genial!!', {
