@@ -97,6 +97,7 @@ const Requests = () => {
   // Función para alternar la visibilidad de la barra de notificaciones
   const toggleNotify = () => {
     setNotifyOpen(!notifyOpen)
+    
   }
 
   useEffect(() => {

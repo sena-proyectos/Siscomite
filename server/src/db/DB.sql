@@ -179,7 +179,7 @@ CREATE TABLE `detalle_solicitud_aprendices` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_aprendices_ibfk_1` FOREIGN KEY (`id_aprendiz`) REFERENCES `aprendices` (`id_aprendiz`),
   CONSTRAINT `detalle_solicitud_aprendices_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +188,7 @@ CREATE TABLE `detalle_solicitud_aprendices` (
 
 LOCK TABLES `detalle_solicitud_aprendices` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_aprendices` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_aprendices` VALUES (9,1,32),(10,3,32),(11,4,32),(12,1,33),(13,12,33),(14,19,34),(15,54,36);
+INSERT INTO `detalle_solicitud_aprendices` VALUES (17,5,38);
 /*!40000 ALTER TABLE `detalle_solicitud_aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -208,7 +208,7 @@ CREATE TABLE `detalle_solicitud_numerales` (
   KEY `id_numeral` (`id_numeral`),
   CONSTRAINT `detalle_solicitud_numerales_ibfk_1` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_numerales_ibfk_2` FOREIGN KEY (`id_numeral`) REFERENCES `numerales` (`id_numeral`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,7 +217,7 @@ CREATE TABLE `detalle_solicitud_numerales` (
 
 LOCK TABLES `detalle_solicitud_numerales` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_numerales` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_numerales` VALUES (25,32,4),(26,32,5),(27,32,6),(28,33,5),(29,33,4),(30,33,6),(31,34,5),(32,36,11),(33,36,5);
+INSERT INTO `detalle_solicitud_numerales` VALUES (35,38,4);
 /*!40000 ALTER TABLE `detalle_solicitud_numerales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +237,7 @@ CREATE TABLE `detalle_solicitud_usuarios` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_usuarios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   CONSTRAINT `detalle_solicitud_usuarios_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +246,7 @@ CREATE TABLE `detalle_solicitud_usuarios` (
 
 LOCK TABLES `detalle_solicitud_usuarios` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_usuarios` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_usuarios` VALUES (6,10,32),(7,7,33),(8,5,33),(9,5,34),(10,11,36);
+INSERT INTO `detalle_solicitud_usuarios` VALUES (12,5,38);
 /*!40000 ALTER TABLE `detalle_solicitud_usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,7 +327,7 @@ CREATE TABLE `mensajes` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `mensajes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   CONSTRAINT `mensajes_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -336,7 +336,7 @@ CREATE TABLE `mensajes` (
 
 LOCK TABLES `mensajes` WRITE;
 /*!40000 ALTER TABLE `mensajes` DISABLE KEYS */;
-INSERT INTO `mensajes` VALUES (1,10,36,'Se ha creado una nueva solicitud','2023-09-19 20:01:30');
+INSERT INTO `mensajes` VALUES (3,3,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(4,4,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(5,9,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(6,13,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(7,10,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(8,12,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09');
 /*!40000 ALTER TABLE `mensajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -468,7 +468,7 @@ CREATE TABLE `solicitud` (
   KEY `fk_archivo` (`id_archivo`),
   CONSTRAINT `fk_archivo` FOREIGN KEY (`id_archivo`) REFERENCES `archivos` (`id_archivo`),
   CONSTRAINT `fk_solicitud_1` FOREIGN KEY (`id_usuario_solicitante`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -477,7 +477,7 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
-INSERT INTO `solicitud` VALUES (32,'Grupal','Marianela',10,'Rechazado','Verificando información para la aprobación de la solicitud','2023-09-11 18:36:02','Academica','Grave','trajo una gallina al aula y no le dio a sus compañeros',13),(33,'Grupal','cristian david Bedoya Torres',10,'Aprobado','Verificando información para la aprobación de la solicitud','2023-09-12 18:23:37','Academica','grave','se robo un celular',13),(34,'Individual','cristian david Bedoya Torres',11,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-14 16:20:05','Academica','gravísimas','Prueba de solicitud',13),(36,'Individual','Coordi Coordinador',14,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-19 20:01:30','Academica','gravísimas','Mató un niño',13);
+INSERT INTO `solicitud` VALUES (38,'Individual','cristian  Bedoya ',11,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-20 13:15:09','Academica','grave','se robo un celular',13);
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -489,53 +489,43 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `tr_solicitud_insert` AFTER INSERT ON `solicitud` FOR EACH ROW BEGIN
-    DECLARE contador INT;
-    DECLARE admin_id INT;
-    
-    -- Contar el número de registros en la tabla solicitud
-    SELECT COUNT(*) INTO contador FROM solicitud;
-    
-    -- Obtener el id del usuario con rol 3 (administrador)
-    SELECT id_usuario INTO admin_id FROM usuarios WHERE id_rol = 3 LIMIT 1;
-    
-    -- Insertar un mensaje para cada administrador
-    INSERT INTO mensajes (id_usuario, id_solicitud, mensaje)
-    VALUES (admin_id, NEW.id_solicitud, 'Se ha creado una nueva solicitud');
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `nuevoMensajeAdministrador` AFTER INSERT ON `solicitud` FOR EACH ROW BEGIN
+    DECLARE id_usuario_administrador INT;
+    DECLARE done INT DEFAULT 0;
+    DECLARE curUsuarios CURSOR FOR
+        SELECT id_usuario
+        FROM usuarios
+        WHERE id_rol = 3 OR id_rol = 1;
+
+    -- Declarar controlador para continuar procesamiento de cursor
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    -- Obtener el ID de la solicitud recién insertada
+    SET @id_solicitud_nueva = NEW.id_solicitud;
+
+    -- Iniciar cursor
+    OPEN curUsuarios;
+
+    -- Recorrer usuarios y enviar mensajes
+    usuarioLoop: LOOP
+        FETCH curUsuarios INTO id_usuario_administrador;
+        IF done = 1 THEN
+            LEAVE usuarioLoop;
+        END IF;
+
+        -- Insertar un mensaje para el usuario actual
+        INSERT INTO mensajes (id_usuario, id_solicitud, mensaje)
+        VALUES (id_usuario_administrador, @id_solicitud_nueva, 'Se ha creado una nueva solicitud');
+    END LOOP;
+
+    -- Cerrar cursor
+    CLOSE curUsuarios;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
-
---
--- Table structure for table `solicitud_numeral`
---
-
-DROP TABLE IF EXISTS `solicitud_numeral`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `solicitud_numeral` (
-  `id_solicitud_numeral` int NOT NULL,
-  `id_solicitud` int DEFAULT NULL,
-  `id_numeral` int DEFAULT NULL,
-  PRIMARY KEY (`id_solicitud_numeral`),
-  KEY `id_solicitud` (`id_solicitud`),
-  KEY `id_numeral` (`id_numeral`),
-  CONSTRAINT `solicitud_numeral_ibfk_1` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`),
-  CONSTRAINT `solicitud_numeral_ibfk_2` FOREIGN KEY (`id_numeral`) REFERENCES `numerales` (`id_numeral`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `solicitud_numeral`
---
-
-LOCK TABLES `solicitud_numeral` WRITE;
-/*!40000 ALTER TABLE `solicitud_numeral` DISABLE KEYS */;
-/*!40000 ALTER TABLE `solicitud_numeral` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `usuarios`
@@ -592,4 +582,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-19 15:04:02
+-- Dump completed on 2023-09-20  8:16:20
