@@ -8,11 +8,12 @@ import { Link } from 'react-router-dom'
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
 
-export const Notify = ({ isOpen, toggleNotify }) => {
+export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
   const currentDate = new Date()
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
   const [message, setMessage] = useState([])
+  const [error, setError] = useState(null)
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
@@ -45,29 +46,29 @@ export const Notify = ({ isOpen, toggleNotify }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = Cookie.get('token');
-      const information = jwt(token);
-      const userID = information.id_usuario;
+      const token = Cookie.get('token')
+      const information = jwt(token)
+      const userID = information.id_usuario
 
       try {
-        const response = await getMessageById(userID);
-        const res = response.data.result;
-        setMessage(res);
-        console.log(res);
+        const response = await getMessageById(userID)
+        const res = response.data.result
+        setMessage(res)
       } catch (error) {
-        console.log(error);
+        const message = error.response.data.message
+        setError(message)
       }
-    };
+    }
 
     // Llamar a la función fetchData inmediatamente
-    fetchData();
+    fetchData()
 
     // Establecer un intervalo para llamar a fetchData cada 3 segundos
-    const intervalId = setInterval(fetchData, 3000);
+    const intervalId = setInterval(fetchData, 3000)
 
     // Limpieza del intervalo cuando el componente se desmonta
-    return () => clearInterval(intervalId);
-  }, []);
+    return () => clearInterval(intervalId)
+  }, [])
 
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
@@ -89,10 +90,6 @@ export const Notify = ({ isOpen, toggleNotify }) => {
 
   // Obtener los elementos que se deben mostrar según el rol
   const elements = getElementsByRole()
-
-  const openNotify = () => {
-    console.log('holaaaaaaaaaaaa')
-  }
 
   return (
     <main>
@@ -134,20 +131,23 @@ export const Notify = ({ isOpen, toggleNotify }) => {
           </section>
         </section>
         <section className="mt-5">
-          <p className="font-extrabold">Nuevos mensajes</p>
-          {message.map((item) => (
-            <Link to={'/requests'} key={item.id_mensaje}>
-              <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={openNotify}>
-                <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
-                <section className="items-center">
-                  <p className="font-semibold block">Cambios en la solicitud</p>
-                  <p className="text-[13px] block">{item.mensaje}</p>
+          <p className="font-extrabold text-center">Nuevos mensajes</p>
+          {message &&
+            message.length > 0 &&
+            message.map((item) => (
+              <Link to={`/requests/${item.id_solicitud}`} key={item.id_mensaje}>
+                <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={onNotifyClic}>
+                  <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
+                  <section className="items-center">
+                    <p className="font-semibold block">Cambios en la solicitud</p>
+                    <p className="text-[13px] block">{item.mensaje}</p>
+                  </section>
                 </section>
-              </section>
-            </Link>
-          ))}
+              </Link>
+            ))}
           <Divider />
         </section>
+        {error && <h1 className="h-full max-h-[45vh] grid items-center text-center text-gray-500 ">{error}</h1>}
       </section>
     </main>
   )

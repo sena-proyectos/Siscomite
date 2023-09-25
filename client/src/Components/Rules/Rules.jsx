@@ -224,7 +224,7 @@ const Rules = () => {
               <ViewPdf />
             </section>
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
           <Footer />
         </section>
       </main>
