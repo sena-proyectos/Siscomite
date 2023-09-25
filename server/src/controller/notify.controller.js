@@ -7,7 +7,7 @@ export const getNotifyByUserId = async (req, res) => {
     const [result] = await pool.query('SELECT * FROM mensajes WHERE id_usuario = ?', [id])
 
     if (result.length === 0) {
-      res.status(404).send({ message: `No hay mensajes` })
+      res.status(404).send({ message: `No tienes mensajes disponibles` })
     } else {
       res.status(200).send({ result })
     }
