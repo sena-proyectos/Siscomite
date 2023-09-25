@@ -176,3 +176,19 @@ export const getMessageById = (userID) => {
 
   return response
 }
+
+/* update information personal */
+export const updateUser = (userID, data) => {
+  const URL = `${BaseUrl}${api}/updateUser/${userID}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* get information personal */
+export const usersById = (userID) => {
+  const URL = `${BaseUrl}${api}/users/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}

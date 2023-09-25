@@ -1,22 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Card, CardHeader, CardBody, CardFooter, Divider, Input, Button } from '@nextui-org/react'
 
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
+import { updateUser, usersById } from '../../api/httpRequest'
+
+import { Toaster, toast } from 'sonner'
+
 const Setting = () => {
   // Funcion para ver el estado del botón de deactivar cuenta
   const [activo, setActivo] = useState(true)
+  const [information, setInformation] = useState([])
+
+  const [emailSena, setEmailSena] = useState(null)
+  const [emailPersonal, setEmailPersonal] = useState(null)
+  const [numeroCelular, setNumeroCelular] = useState(null)
+  const [telefonoFijo, setTelefonoFijo] = useState(null)
+  const [contrasena, setContrasena] = useState(null)
+  const [nuevaContrasena, setNuevaContrasena] = useState(null)
 
   // Campo para cambiar si la contraseña es visible o no
   // Vieja contraseña
-  const [oldPassword, setOldPassword] = React.useState('')
-  const [showOldPassword, setShowOldPassword] = React.useState(false)
+  const [showOldPassword, setShowOldPassword] = useState(false)
 
   const toggleShowOldPassword = () => {
     setShowOldPassword(!showOldPassword)
   }
   // Nueva contraseña
-  const [newPassword, setNewPassword] = React.useState('')
   const [showNewPassword, setShowNewPassword] = React.useState(false)
 
   const toggleShowNewPassword = () => {
@@ -28,8 +40,50 @@ const Setting = () => {
     setActivo(!activo) // Cambia el estado de activo cada vez que se hace clic
   }
 
+  useEffect(() => {
+    InformationUser()
+  }, [])
+
+  const InformationUser = async () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    const rolUser = information.id_usuario
+    try {
+      const response = await usersById(rolUser)
+      const [information] = response.data.result
+      setInformation(information)
+    } catch (error) {}
+  }
+
+  const updateInformation = async () => {
+    const dataValue = {
+      email_sena: emailSena,
+      email_personal: emailPersonal,
+      numero_celular: numeroCelular,
+      telefono_fijo: telefonoFijo,
+      contrasena,
+      nuevaContrasena
+    }
+
+    const rolUser = information.id_usuario
+
+    try {
+      const response = await updateUser(rolUser, dataValue)
+      const message = response.data.message
+      toast.success('Genial!!', {
+        description: message
+      })
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
+    }
+  }
+
   return (
     <main className="h-screen flex">
+      <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
       <section className="w-full  overflow-auto">
         <section className="h-screen grid place-items-center">
@@ -39,8 +93,8 @@ const Setting = () => {
                 <section className="flex gap-3">
                   <i className="fi fi-rr-settings text-[2.5rem]" />
                   <samp className="flex flex-col">
-                    <p className="text-md">Angie Tatiana Mosquera Arco</p>
-                    <p className="text-small text-default-500">atmosquera45@misena.edu.co</p>
+                    <p className="text-md">{information.nombres + ' ' + information.apellidos}</p>
+                    <p className="text-small text-default-500">{information.email_sena}</p>
                   </samp>
                 </section>
                 <Button onClick={handleClick} className={`px-4 py-2 text-white ${activo ? 'bg-red-200 text-red-700' : 'bg-green-200 text-green-700'}`}>
@@ -50,16 +104,15 @@ const Setting = () => {
               <Divider className="bg-blue-500" />
               <CardBody>
                 <h3 className="font-bold">Seguridad de cuenta</h3>
-                <Input label="Email institucional" type="email" variant="underlined" defaultValue="atmosquera45@misena.edu.co" className=" w-[18rem]" />
-                <Input label="Email personal" type="email" variant="underlined" defaultValue="atatianamosquera@gmail.com" className=" w-[18rem]" />
-                <Input label="Número de contacto" type="text" variant="underlined" defaultValue="3014291038" className=" w-[18rem]" />
-                <Input autoComplete="off" label="Número de fijo" type="text" variant="underlined" className=" w-[18rem]" />
+                <Input label="Email institucional" type="email" variant="underlined" placeholder={information.email_sena || 'No disponible'} onChange={(e) => setEmailSena(e.target.value)} className="w-[18rem]" />
+                <Input label="Email personal" type="email" variant="underlined" placeholder={information.email_personal || 'No disponible'} onChange={(e) => setEmailPersonal(e.target.value)} className="w-[18rem]" />
+                <Input label="Número de contacto" type="text" variant="underlined" placeholder={information.numero_celular || 'No disponible'} onChange={(e) => setNumeroCelular(e.target.value)} className="w-[18rem]" />
+                <Input label="Número alterno" type="text" variant="underlined" placeholder={information.telefono_fijo || 'No disponible'} onChange={(e) => setTelefonoFijo(e.target.value)} className="w-[18rem]" />
               </CardBody>
               <Divider className="bg-blue-500" />
               <CardFooter className="block">
                 <h3 className="font-bold">Cambiar contraseña</h3>
                 <Input
-                  autoComplete="off"
                   label="Antigua contraseña"
                   variant="underlined"
                   placeholder="Ingresa tu antigua contraseña"
@@ -69,10 +122,10 @@ const Setting = () => {
                     </button>
                   }
                   type={showOldPassword ? 'text' : 'password'}
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
+                  onChange={(e) => setContrasena(e.target.value)}
                   className="w-[18rem]"
                 />
+
                 <Input
                   label="Nueva contraseña"
                   variant="underlined"
@@ -83,12 +136,11 @@ const Setting = () => {
                     </button>
                   }
                   type={showNewPassword ? 'text' : 'password'}
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  onChange={(e) => setNuevaContrasena(e.target.value)}
                   className="w-[18rem]"
                 />
                 <section className="mt-[1rem]">
-                  <Button color="primary" variant="flat" className=" w-[10rem]">
+                  <Button color="primary" variant="flat" className=" w-[10rem]" onClick={updateInformation}>
                     Guardar cambios <i className="fi fi-br-check" />
                   </Button>
                 </section>

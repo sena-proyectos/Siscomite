@@ -15,6 +15,8 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
+import { useParams } from 'react-router-dom'
+
 // Componente Requests
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
@@ -31,6 +33,8 @@ const Requests = () => {
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
 
   const [reloadFetch, setReloadFetch] = useState(false) // Estado para el valor de estado seleccionado
+
+  const [highlightedRequestId, setHighlightedRequestId] = useState(null)
 
   // Obtener los elementos que se deben mostrar según el rol
   const getElementsByRole = () => {
@@ -97,7 +101,6 @@ const Requests = () => {
   // Función para alternar la visibilidad de la barra de notificaciones
   const toggleNotify = () => {
     setNotifyOpen(!notifyOpen)
-    
   }
 
   useEffect(() => {
@@ -143,6 +146,17 @@ const Requests = () => {
     return format(date, 'dd/MM/yyyy')
   }
 
+  useEffect(() => {
+    handleNotifyClick()
+  }, [])
+
+  // Función para manejar los clics en las notificaciones
+  const { id_solicitud } = useParams()
+  
+  const handleNotifyClick = () => {
+    setHighlightedRequestId(id_solicitud)
+  }
+
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} requestID={requestId} />}
@@ -180,7 +194,7 @@ const Requests = () => {
 
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
                 {currentItems.map((item) => (
-                  <TableRow key={item.id_solicitud} className='hover:bg-gray-200 transition-all'>
+                  <TableRow key={item.id_solicitud} className={`hover:bg-gray-200 transition-all ${item.id_solicitud === parseInt(highlightedRequestId) ? 'highlighted-row' : ''}`}>
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
                     <TableCell>{formatDate(item.fecha_creacion)}</TableCell>
                     <TableCell>{item.tipo_solicitud}</TableCell>
@@ -197,7 +211,7 @@ const Requests = () => {
             <section className="grid place-items-center w-full mt-[.5rem] ">
               <Pagination className="z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={(request && request.length) || (requestById && requestById.length)} onChange={handlePageChange} />
             </section>
-            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} onNotifyClic={handleNotifyClick} />
           </section>
           <Footer />
         </section>
