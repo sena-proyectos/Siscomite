@@ -152,7 +152,6 @@ const Requests = () => {
 
   // Función para manejar los clics en las notificaciones
   const { id_solicitud } = useParams()
-  
   const handleNotifyClick = () => {
     setHighlightedRequestId(id_solicitud)
   }

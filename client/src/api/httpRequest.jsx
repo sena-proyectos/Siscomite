@@ -177,6 +177,14 @@ export const getMessageById = (userID) => {
   return response
 }
 
+/* update message state */
+export const updateStateMessage = (messageID) => {
+  const URL = `${BaseUrl}${api}/updateMessageState/${messageID}`
+  const response = axios.patch(URL)
+
+  return response
+}
+
 /* update information personal */
 export const updateUser = (userID, data) => {
   const URL = `${BaseUrl}${api}/updateUser/${userID}`

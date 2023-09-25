@@ -3,7 +3,7 @@ import { Divider } from '@nextui-org/react'
 import { useState, useEffect } from 'react' // Asegúrate de importar useState desde React
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { getMessageById, getRequest } from '../../../api/httpRequest'
+import { getMessageById, updateStateMessage } from '../../../api/httpRequest'
 import { Link } from 'react-router-dom'
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
@@ -54,42 +54,24 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
         const response = await getMessageById(userID)
         const res = response.data.result
         setMessage(res)
-      } catch (error) {
-        const message = error.response.data.message
-        setError(message)
-      }
+      } catch (error) {}
     }
 
     // Llamar a la función fetchData inmediatamente
     fetchData()
 
-    // Establecer un intervalo para llamar a fetchData cada 3 segundos
-    const intervalId = setInterval(fetchData, 3000)
+    // Establecer un intervalo para llamar a fetchData cada 2 segundos
+    const intervalId = setInterval(fetchData, 2000)
 
     // Limpieza del intervalo cuando el componente se desmonta
     return () => clearInterval(intervalId)
   }, [])
 
-  const getElementsByRole = () => {
-    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
-    const information = jwt(token) // Decodificar el token JWT
-    let rolToken = information.id_rol
-
-    // Mapear los ID de rol a nombres de rol
-    if (rolToken === 1) rolToken = 'Coordinador'
-    if (rolToken === 2) rolToken = 'Instructor'
-    if (rolToken === 3) rolToken = 'Administrador'
-
-    return {
-      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
-      administration: rolToken === 'Administrador',
-      coordination: rolToken === 'Coordinador',
-      instructor: rolToken === 'Instructor'
-    }
+  const changeMessageState = async (idMessage) => {
+    try {
+      await updateStateMessage(idMessage)
+    } catch (error) {}
   }
-
-  // Obtener los elementos que se deben mostrar según el rol
-  const elements = getElementsByRole()
 
   return (
     <main>
@@ -136,18 +118,20 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
             message.length > 0 &&
             message.map((item) => (
               <Link to={`/requests/${item.id_solicitud}`} key={item.id_mensaje}>
-                <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={onNotifyClic}>
-                  <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
-                  <section className="items-center">
-                    <p className="font-semibold block">Cambios en la solicitud</p>
-                    <p className="text-[13px] block">{item.mensaje}</p>
+                <div onClick={onNotifyClic}>
+                  <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={() => changeMessageState(item.id_mensaje)}>
+                    <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
+                    <section className="items-center">
+                      <p className="font-semibold block">Cambios en la solicitud</p>
+                      <p className="text-[13px] block">{item.mensaje}</p>
+                    </section>
                   </section>
-                </section>
+                </div>
               </Link>
             ))}
           <Divider />
         </section>
-        {error && <h1 className="h-full max-h-[45vh] grid items-center text-center text-gray-500 ">{error}</h1>}
+        {message.length === 0 && <h1 className="h-full max-h-[45vh] grid items-center text-center text-gray-500 ">No tienes mensajes disponibles</h1>}
       </section>
     </main>
   )
