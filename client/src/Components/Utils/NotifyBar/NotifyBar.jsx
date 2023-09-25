@@ -13,7 +13,6 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
   const [message, setMessage] = useState([])
-  const [error, setError] = useState(null)
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
@@ -60,11 +59,11 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
     // Llamar a la función fetchData inmediatamente
     fetchData()
 
-    // Establecer un intervalo para llamar a fetchData cada 2 segundos
+     // Establecer un intervalo para llamar a fetchData cada 2 segundos
     const intervalId = setInterval(fetchData, 2000)
 
-    // Limpieza del intervalo cuando el componente se desmonta
-    return () => clearInterval(intervalId)
+    // Limpieza del intervalo cuando el compononte se desmonta
+    return () => clearInterval(intervalId) 
   }, [])
 
   const changeMessageState = async (idMessage) => {
@@ -72,6 +71,39 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
       await updateStateMessage(idMessage)
     } catch (error) {}
   }
+
+  // Función para mostrar una notificación
+  function showNotification(title, options) {
+    // Verificamos si el navegador admite notificaciones
+    if (!('Notification' in window)) {
+      console.log('Este navegador no admite notificaciones.')
+      return
+    }
+
+    // Verificamos si el usuario ha permitido las notificaciones
+    if (Notification.permission === 'granted') {
+      // Si el usuario ha permitido las notificaciones, mostramos una notificación
+      new Notification(title, options)
+    } else if (Notification.permission !== 'denied') {
+      // Si el usuario no ha decidido sobre las notificaciones, solicitamos permiso
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          // Si se concede el permiso, mostramos la notificación
+          new Notification(title, options)
+        }
+      })
+    }
+  }
+
+  // En tu componente Notify, después de recibir una nueva notificación
+  // Puedes llamar a la función showNotification para mostrarla en el escritorio
+  const handleNewNotification = (title, body) => {
+    showNotification(title, { body })
+  }
+
+  // useEffect(() => {
+  //   handleNewNotification('Nuevo mensaje', message[0]?.mensaje)
+  // }, [message])
 
   return (
     <main>

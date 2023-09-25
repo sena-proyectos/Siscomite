@@ -179,7 +179,7 @@ CREATE TABLE `detalle_solicitud_aprendices` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_aprendices_ibfk_1` FOREIGN KEY (`id_aprendiz`) REFERENCES `aprendices` (`id_aprendiz`),
   CONSTRAINT `detalle_solicitud_aprendices_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +188,7 @@ CREATE TABLE `detalle_solicitud_aprendices` (
 
 LOCK TABLES `detalle_solicitud_aprendices` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_aprendices` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_aprendices` VALUES (17,5,38);
+INSERT INTO `detalle_solicitud_aprendices` VALUES (17,5,38),(18,51,39),(19,4,40),(20,1,41),(21,1,42),(22,3,45);
 /*!40000 ALTER TABLE `detalle_solicitud_aprendices` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -208,7 +208,7 @@ CREATE TABLE `detalle_solicitud_numerales` (
   KEY `id_numeral` (`id_numeral`),
   CONSTRAINT `detalle_solicitud_numerales_ibfk_1` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_numerales_ibfk_2` FOREIGN KEY (`id_numeral`) REFERENCES `numerales` (`id_numeral`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,7 +217,7 @@ CREATE TABLE `detalle_solicitud_numerales` (
 
 LOCK TABLES `detalle_solicitud_numerales` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_numerales` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_numerales` VALUES (35,38,4);
+INSERT INTO `detalle_solicitud_numerales` VALUES (35,38,4),(36,39,5),(37,40,5),(38,41,4),(39,42,4),(40,45,4);
 /*!40000 ALTER TABLE `detalle_solicitud_numerales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +237,7 @@ CREATE TABLE `detalle_solicitud_usuarios` (
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `detalle_solicitud_usuarios_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   CONSTRAINT `detalle_solicitud_usuarios_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,7 +246,7 @@ CREATE TABLE `detalle_solicitud_usuarios` (
 
 LOCK TABLES `detalle_solicitud_usuarios` WRITE;
 /*!40000 ALTER TABLE `detalle_solicitud_usuarios` DISABLE KEYS */;
-INSERT INTO `detalle_solicitud_usuarios` VALUES (12,5,38);
+INSERT INTO `detalle_solicitud_usuarios` VALUES (12,5,38),(13,7,39),(14,8,40),(15,5,41),(16,5,42),(17,5,45);
 /*!40000 ALTER TABLE `detalle_solicitud_usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -322,12 +322,13 @@ CREATE TABLE `mensajes` (
   `id_solicitud` int NOT NULL,
   `mensaje` text NOT NULL,
   `fecha_creacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `estado_mensaje` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id_mensaje`),
   KEY `id_usuario` (`id_usuario`),
   KEY `id_solicitud` (`id_solicitud`),
   CONSTRAINT `mensajes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
   CONSTRAINT `mensajes_ibfk_2` FOREIGN KEY (`id_solicitud`) REFERENCES `solicitud` (`id_solicitud`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -336,7 +337,7 @@ CREATE TABLE `mensajes` (
 
 LOCK TABLES `mensajes` WRITE;
 /*!40000 ALTER TABLE `mensajes` DISABLE KEYS */;
-INSERT INTO `mensajes` VALUES (3,3,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(4,4,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(5,9,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(6,13,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(7,10,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09'),(8,12,38,'Se ha creado una nueva solicitud','2023-09-20 13:15:09');
+INSERT INTO `mensajes` VALUES (21,3,41,'Se ha creado una nueva solicitud','2023-09-25 22:32:13','Sin leer'),(22,4,41,'Se ha creado una nueva solicitud','2023-09-25 22:32:13','Sin leer'),(23,9,41,'Se ha creado una nueva solicitud','2023-09-25 22:32:13','Sin leer'),(24,13,41,'Se ha creado una nueva solicitud','2023-09-25 22:32:13','Sin leer'),(25,10,41,'Se ha creado una nueva solicitud','2023-09-25 22:32:13','Sin leer'),(26,12,41,'Se ha creado una nueva solicitud','2023-09-25 22:32:13','Sin leer'),(27,3,42,'Se ha creado una nueva solicitud','2023-09-25 22:33:35','Sin leer'),(28,4,42,'Se ha creado una nueva solicitud','2023-09-25 22:33:35','Sin leer'),(29,9,42,'Se ha creado una nueva solicitud','2023-09-25 22:33:35','Sin leer'),(30,13,42,'Se ha creado una nueva solicitud','2023-09-25 22:33:35','Sin leer'),(31,10,42,'Se ha creado una nueva solicitud','2023-09-25 22:33:35','Sin leer'),(32,12,42,'Se ha creado una nueva solicitud','2023-09-25 22:33:35','Sin leer'),(35,3,45,'Se ha creado una nueva solicitud','2023-09-25 23:02:51','Sin leer'),(36,4,45,'Se ha creado una nueva solicitud','2023-09-25 23:02:51','Sin leer'),(37,9,45,'Se ha creado una nueva solicitud','2023-09-25 23:02:51','Sin leer'),(38,13,45,'Se ha creado una nueva solicitud','2023-09-25 23:02:51','Sin leer'),(39,10,45,'Se ha creado una nueva solicitud','2023-09-25 23:02:51','Sin leer'),(40,12,45,'Se ha creado una nueva solicitud','2023-09-25 23:02:51','Sin leer');
 /*!40000 ALTER TABLE `mensajes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -468,7 +469,7 @@ CREATE TABLE `solicitud` (
   KEY `fk_archivo` (`id_archivo`),
   CONSTRAINT `fk_archivo` FOREIGN KEY (`id_archivo`) REFERENCES `archivos` (`id_archivo`),
   CONSTRAINT `fk_solicitud_1` FOREIGN KEY (`id_usuario_solicitante`) REFERENCES `usuarios` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -477,7 +478,7 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
-INSERT INTO `solicitud` VALUES (38,'Individual','cristian  Bedoya ',11,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-20 13:15:09','Academica','grave','se robo un celular',13);
+INSERT INTO `solicitud` VALUES (38,'Individual','cristian  Bedoya ',11,'Aprobado','Espere citacion a comite','2023-09-20 13:15:09','Academica','grave','se robo un celular',13),(39,'Individual','cristian  Bedoya ',11,'Aprobado','espere citacion a comite','2023-09-21 15:14:40','Academica','gravísimas','ssssssssssssssssssss',13),(40,'Individual','David Torres',11,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-25 20:08:14','Academica','gravísimas','se comio un pan sin pagar',13),(41,'Individual','cristian david Bedoya Torres',11,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-25 22:32:13','Academica','grave','sssssssssssssssssss',13),(42,'Individual','cristian david Bedoya Torres',11,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-25 22:33:35','Academica','gravísimas','ddfdfdf',13),(45,'Individual','David Torres',11,'En proceso','Verificando información para la aprobación de la solicitud','2023-09-25 23:02:51','Academica','gravísimas','sssssssssss',13);
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -513,9 +514,9 @@ DELIMITER ;;
             LEAVE usuarioLoop;
         END IF;
 
-        -- Insertar un mensaje para el usuario actual
-        INSERT INTO mensajes (id_usuario, id_solicitud, mensaje)
-        VALUES (id_usuario_administrador, @id_solicitud_nueva, 'Se ha creado una nueva solicitud');
+        -- Insertar un mensaje para el usuario actual con el estado "Sin leer"
+        INSERT INTO mensajes (id_usuario, id_solicitud, mensaje, estado_mensaje)
+        VALUES (id_usuario_administrador, @id_solicitud_nueva, 'Se ha creado una nueva solicitud', 'Sin leer');
     END LOOP;
 
     -- Cerrar cursor
@@ -561,7 +562,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (3,'cristian david','Bedoya Torres','1027944969','bedoya969@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$DZvyLyvnd4b/oiwOHe/fiuu5jce2kNPgmIB53KPckhjzziGnclRq6',1,1),(4,'cristian ','Bedoya ','1027944956','bedoya956@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$O1zLg2.YqZtNbR9DmUwkRO207FuzZ69JpdpI2kwRkmU9JkhaoZzJu',1,1),(5,'Juan Carlos ','Prasca Medina ','1063355027','prasca07@soy.sena.edu',NULL,'3004984546',NULL,'','$2a$10$Q1Sw/kfD0p4NFchNsGowauXAvqMhVKNIPgSUQAFr5CkNr2cEwtzWG',1,2),(7,'cristian Prueba','Bedoya Prueba','1027944970','bedoyaprueba@soy.sena.edu',NULL,'3007030425',NULL,'ACTIVO','$2a$10$rirSMtMHGqWuWxAyucGY/OxDOGtiWAg7BbHmry9SBzHyxu0cirkUS',1,2),(8,'David','Torres','1010101010','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$0jE5eg39maDwPlXJnpuUteQFIA.s/36dBQC6NuYYkKyIVDSm5h4ma',1,2),(9,'David','Torres','101010101','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$17zhj7Y3XI5M85mdZ.KmaeBsxBODypjeYJ8L7KcJW./h3/oe4NIOG',1,1),(10,'Stiven','Benjumea Morales','1040491426','gsbenjumea@soy.sena.edu.co',NULL,'3016911686',NULL,'ACTIVO','$2a$10$yY0/KpalVGDIpA4RaFHOo.rAjVnMw.jGiK2NiRd0K0KC1bbzFRgY2',1,3),(11,'Estefania ','Valencia Perez','1020109614','evperez@soy.sena.edu.co',NULL,'3242192087',NULL,'ACTIVO','$2a$10$pjl5X7cHlxi583pAc5ts6OIP9GiINnnjTL0JvatGcMLPvEU.iF4/K',1,2),(12,'Admin','Administrador','1234567890','admin@sena.edu.co',NULL,'1234567890',NULL,'ACTIVO','$2a$10$X4w.T7rhPOqAm1kVn2HCyef40K92gATZykvYjgSrY/ibx4D3ZESWS',1,3),(13,'Coordi','Coordinador','123456789','coordi@sena.edu.co',NULL,'1234567890',NULL,'ACTIVO','$2a$10$awleqvF3Nl4sUz5kX63B4.rgCInBjl0qwbxPEc322RhkedbQawTt.',1,1),(14,'Instructor','Instructor','12345678','instructor@sena.edu.co',NULL,'1234567890',NULL,'ACTIVO','$2a$10$9HHCQIAkG7iCs22dBvdBT..mOxMHHn5cbAxVqExvf2zHODO4jXlpC',1,2);
+INSERT INTO `usuarios` VALUES (3,'cristian david','Bedoya Torres','1027944969','bedoya969@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$DZvyLyvnd4b/oiwOHe/fiuu5jce2kNPgmIB53KPckhjzziGnclRq6',1,1),(4,'cristian ','Bedoya ','1027944956','bedoya956@soy.sena.edu',NULL,'3007030424',NULL,'','$2a$10$O1zLg2.YqZtNbR9DmUwkRO207FuzZ69JpdpI2kwRkmU9JkhaoZzJu',1,1),(5,'Juan Carlos ','Prasca Medina ','1063355027','prasca07@soy.sena.edu',NULL,'3004984546',NULL,'','$2a$10$Q1Sw/kfD0p4NFchNsGowauXAvqMhVKNIPgSUQAFr5CkNr2cEwtzWG',1,2),(7,'cristian Prueba','Bedoya Prueba','1027944970','bedoyaprueba@soy.sena.edu',NULL,'3007030425',NULL,'ACTIVO','$2a$10$rirSMtMHGqWuWxAyucGY/OxDOGtiWAg7BbHmry9SBzHyxu0cirkUS',1,2),(8,'David','Torres','1010101010','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$0jE5eg39maDwPlXJnpuUteQFIA.s/36dBQC6NuYYkKyIVDSm5h4ma',1,2),(9,'David','Torres','101010101','torres@soy.sena.edu',NULL,'3007030424',NULL,'ACTIVO','$2a$10$17zhj7Y3XI5M85mdZ.KmaeBsxBODypjeYJ8L7KcJW./h3/oe4NIOG',1,1),(10,'Stiven','Benjumea Morales','1040491426','gsbenjumea@sena.edu.co','stevenbenjumea9@gmail.com','3016911686','123456','ACTIVO','$2a$10$rveDpNUaT.s3jpQecVyKkumBKo8KR8hjkyZLlt7WtYF19UTrXPS1C',1,3),(11,'Estefania ','Valencia Perez','1020109614','evperez@soy.sena.edu.co',NULL,'3242192087',NULL,'ACTIVO','$2a$10$pjl5X7cHlxi583pAc5ts6OIP9GiINnnjTL0JvatGcMLPvEU.iF4/K',1,2),(12,'Admin','Administrador','1234567890','admin@sena.edu.co',NULL,'1234567890',NULL,'ACTIVO','$2a$10$X4w.T7rhPOqAm1kVn2HCyef40K92gATZykvYjgSrY/ibx4D3ZESWS',1,3),(13,'Coordi','Coordinador','123456789','coordi@sena.edu.co',NULL,'1234567890',NULL,'ACTIVO','$2a$10$awleqvF3Nl4sUz5kX63B4.rgCInBjl0qwbxPEc322RhkedbQawTt.',1,1),(14,'Instructor','Instructor','12345678','instructor@sena.edu.co',NULL,'1234567890',NULL,'ACTIVO','$2a$10$9HHCQIAkG7iCs22dBvdBT..mOxMHHn5cbAxVqExvf2zHODO4jXlpC',1,2);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -582,4 +583,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-09-20  8:16:20
+-- Dump completed on 2023-09-25 18:38:40
