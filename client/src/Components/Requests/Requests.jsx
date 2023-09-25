@@ -51,7 +51,6 @@ const Requests = () => {
     }
   }
 
-
   // Obtener los elementos que se deben mostrar según el rol
   const elements = getElementsByRole()
 
@@ -142,7 +141,65 @@ const Requests = () => {
     return format(date, 'dd/MM/yyyy')
   }
 
+  // ---------------- Filtros --------------------
+  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
+  const [searchResults,setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
+  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
+  const [selectedDateFilter, setSelectedDateFilter] = useState('') // Estado para la fecha seleccionada
 
+  // Función para manejar la búsqueda de solicitudes por nombre
+  const searchRequestsByName = (searchValue) => {
+    setSearchValue(searchValue)
+    // Filtrar las solicitudes según el nombre y el estado seleccionado
+    const filteredResults = currentItems.filter((item) => item.nombres.toLowerCase().includes(searchValue.toLowerCase()) && (selectedEstado === '' || item.estado === selectedEstado))
+    setSearchResults(filteredResults)
+  }
+
+  useEffect(() => {
+    /* Llamar la función de obtener solicitudes */
+    getRequets()
+    getRequetsById()
+  }, [currentItems, reloadFetch])
+
+  // Filtrar las solicitudes por nombre y estado
+  const filteredRequests = currentItems.filter((item) => {
+    const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
+    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+    return nombreMatches && estadoMatches
+  })
+
+  // Función para aplicar el filtro de fecha
+  const filterRequestsByDate = (requests, dateFilter) => {
+    if (!dateFilter) {
+      // Si no hay fecha seleccionada, devuelve todas las solicitudes
+      return requests
+    }
+    const currentDate = new Date()
+    const filteredRequests = requests.filter((item) => {
+      switch (dateFilter) {
+        case 'week':
+          // Filtrar solicitudes de la última semana
+          const oneWeekAgo = new Date()
+          oneWeekAgo.setDate(currentDate.getDate() - 7)
+          return new Date(item.fecha_creacion) >= oneWeekAgo
+        case 'month':
+          // Filtrar solicitudes del último mes
+          const oneMonthAgo = new Date()
+          oneMonthAgo.setMonth(currentDate.getMonth() - 1)
+          return new Date(item.fecha_creacion) >= oneMonthAgo
+        case 'year':
+          // Filtrar solicitudes del último año
+          const oneYearAgo = new Date()
+          oneYearAgo.setFullYear(currentDate.getFullYear() - 1)
+          return new Date(item.fecha_creacion) >= oneYearAgo
+        default:
+          // No se aplica ningún filtro de fecha
+          return true
+      }
+    })
+    // Devuelve las solicitudes filtradas o todas las solicitudes si no hay filtro aplicado
+    return filteredRequests
+  }
 
   return (
     <>
@@ -152,16 +209,23 @@ const Requests = () => {
       <main className="h-screen flex">
         <Sliderbar />
         <section className="w-full overflow-auto ">
-          <header className="p-[1.5rem] flex justify-center items-center">
-            <section className="w-[40%]">
+          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+            <section className="w-[60%] col-span-2 right-0 relative">
               <Search
                 request
                 filtro={filtroVisible}
                 placeholder={'Buscar solicitud'}
                 icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
+                searchStudent={searchRequestsByName}
+                searchResults={searchResults}
+                searchValue={searchValue}
+                selectedEstado={selectedEstado}
+                setSelectedEstado={setSelectedEstado}
+                selectedDateFilter={selectedDateFilter} 
+                setSelectedDateFilter={setSelectedDateFilter} 
               />
             </section>
-            <section className="absolute right-[20%] cursor-pointer justify-center ">
+            <section className="mr-[80%] pb-[.4rem] cursor-pointer">
               {notifyOpen ? (
                 <></>
               ) : (
@@ -185,7 +249,7 @@ const Requests = () => {
               </TableHeader>
 
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
-                {currentItems.map((item) => (
+                {filterRequestsByDate(filteredRequests, selectedDateFilter).map((item) => (
                   <TableRow key={item.id_solicitud} className="hover:bg-gray-200 transition-all">
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
                     <TableCell>{formatDate(item.fecha_creacion)}</TableCell>

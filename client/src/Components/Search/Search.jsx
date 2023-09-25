@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from 'react' // Importar React, useRef, u
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react' // Importar componentes de Next UI
 
 // Componente Search
-const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teacher }) => {
+const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, request, teacher, setSelectedEstado, setSelectedDateFilter }) => {
   // Estado para controlar la rotación del icono
   const [iconRow, setIconRow] = useState(false)
   // Referencia al elemento de entrada de texto para búsqueda
@@ -19,7 +19,15 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
     clearTimeout(debounceTimeout.current)
     debounceTimeout.current = setTimeout(() => {
       searchStudent(searchValue)
+      searchGroup(searchValue) 
     }, 300)
+  }
+
+  const handleEstadoChange = (estado) => {
+    setSelectedEstado(estado)
+  }
+  const handleDateFilterChange = (dateFilter) => {
+    setSelectedDateFilter(dateFilter) // Actualiza el estado de la fecha seleccionada
   }
 
   // Función para prevenir la acción predeterminada del formulario
@@ -35,14 +43,14 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
   }, [])
 
   return (
-    <form className="flex" method="get" onChange={handleSearch} onSubmit={evnt}>
+    <form className="flex flex-col" method="get" onChange={handleSearch} onSubmit={evnt}>
       <section className="flex items-center w-full">
         <input type="text" name="buscar" className="shadow-md outline-none rounded-xl p-[10px] w-full" placeholder={placeholder} ref={search} autoComplete="off" />
         {icon}
       </section>
 
       {filtro && (
-        <section className="w-[27rem] top-[4.5rem] absolute z-10 animate-appearance-in">
+        <section className="w-[27rem] z-10 animate-appearance-in absolute mt-[3rem]">
           <section className="bg-white border grid shadow-md w-full rounded-xl p-[10px]">
             <p className="font-semibold pb-0 text-default-400">
               Filtrar por
@@ -61,22 +69,30 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
               >
                 <p className="cursor-pointer">Nombre</p>
                 <section className={`w-fit ${iconRow ? 'rotate-180' : 'rotate-0'}`}>
-                  <i className="fi fi-br-arrow-up cursor-pointer " x />
+                  <i className="fi fi-br-arrow-up cursor-pointer " />
                 </section>
               </Button>
               {request && (
                 <section className="w-full gap-5 grid grid-cols-2 px-[1rem]">
                   <Dropdown>
                     <DropdownTrigger>
-                      <Button size="sm" color="primary" variant="bordered" className="w-full ">
+                      <Button size="sm" color="primary" variant="bordered" className="w-full">
                         Fecha
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownItem key="old">Más antigua</DropdownItem>
-                      <DropdownItem key="new">Más reciente</DropdownItem>
+                      <DropdownItem key="week" onClick={() => handleDateFilterChange('week')}>
+                        Hace una semana
+                      </DropdownItem>
+                      <DropdownItem key="month" onClick={() => handleDateFilterChange('month')}>
+                        Hace un mes
+                      </DropdownItem>
+                      <DropdownItem key="year" onClick={() => handleDateFilterChange('year')}>
+                        Hace un año
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
+
                   <Dropdown>
                     <DropdownTrigger>
                       <Button size="sm" color="primary" variant="bordered" className="w-full">
@@ -84,9 +100,18 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownItem key="pendiente">Pendiente</DropdownItem>
-                      <DropdownItem key="aprobado">Aprobado</DropdownItem>
-                      <DropdownItem key="rechazado">Rechazado</DropdownItem>
+                      <DropdownItem key="todos" onClick={() => handleEstadoChange('')}>
+                        Todos
+                      </DropdownItem>
+                      <DropdownItem key="" onClick={() => handleEstadoChange('En proceso')}>
+                        En proceso
+                      </DropdownItem>
+                      <DropdownItem key="aprobado" onClick={() => handleEstadoChange('Aprobado')}>
+                        Aprobado
+                      </DropdownItem>
+                      <DropdownItem key="rechazado" onClick={() => handleEstadoChange('Rechazado')}>
+                        Rechazado
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </section>

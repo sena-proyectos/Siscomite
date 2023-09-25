@@ -47,7 +47,7 @@ export const ViewPdf = () => {
       {/* Contenedor para mostrar el archivo PDF */}
       {pdfFile && (
         <section>
-          <Card className={'w-full'}>
+          <Card className={'max-w-full'}>
             <section className="max-h-[80vh] overflow-auto ">
               <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess} className={'document'}>
                 <Page pageNumber={pageNumber} />

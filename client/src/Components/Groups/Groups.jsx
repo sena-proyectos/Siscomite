@@ -125,6 +125,10 @@ const Groups = () => {
     setIsCardVisible((prevVisibility) => !prevVisibility)
   }
 
+  // ---------------- Filtros --------------------
+ 
+  
+  
   return (
     <>
       {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={setReloadFetch} />}
@@ -132,15 +136,21 @@ const Groups = () => {
       <main className="flex h-screen">
         <Sliderbar />
         <section className="w-screen overflow-auto">
-          <header className="p-[1.5rem] flex justify-center items-center">
-            <section className="w-[40%]">
-              <Search ficha filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+            <section className="w-[60%] col-span-2 right-0 relative">
+              <Search
+                ficha
+                filtro={filtroVisible}
+                placeholder={'Buscar ficha'}
+                icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
+                
+              />
             </section>
-            <section className="absolute right-[20%] cursor-pointer ">
+            <section className="mr-[80%] pb-[.7rem] cursor-pointer">
               {notifyOpen ? (
                 <></>
               ) : (
-                <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                <section className="bg-blue-200 sticky rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
                   <i className="fi fi-ss-bell text-blue-400 p-[.3rem] " />
                 </section>
               )}

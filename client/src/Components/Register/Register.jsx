@@ -71,7 +71,7 @@ export const Register = () => {
       }
     } catch (error) {
       const message = error?.response?.data?.message
-      toast.error(message, {
+      toast.error('¡Opss!', {
         description: message
       })
     }
