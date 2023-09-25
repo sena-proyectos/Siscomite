@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Search } from '../Search/Search'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
-import { Button, Pagination, Divider, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { Button, Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+
+import { getTeacher } from '../../api/httpRequest'
 
 const Teachers = () => {
   const [filtroVisible, setFiltroVisible] = useState(false) // Estado para controlar la visibilidad del filtro de búsqueda
   const [notifyOpen, setNotifyOpen] = useState(false) //   Estado para activar la barra de notificaciones
-
-  const data = [{ name: 'María Luciana Perez Carton' }, { name: 'Stiven Guillermo Bejumea Morales' }, { name: 'Luna Rocio Perez Tiamino' }, { name: 'Alejandrina Alejandrina  Mosquera wilmar' }]
+  const [teacher, setTeacher] = useState([])
 
   const [activePage, setActivePage] = useState(1) // Funciones para la paginación y selección de elementos mostar por página
 
@@ -27,9 +28,23 @@ const Teachers = () => {
     setActivePage(1)
   }
 
+  useEffect(() => {
+    getTeachers()
+  }, [])
+
+  const getTeachers = async () => {
+    try {
+      const response = await getTeacher()
+      const res = response.data.result
+      setTeacher(res)
+    } catch (error) {
+      // console.log(error)
+    }
+  }
+
   const startIdx = (activePage - 1) * itemsPerPage
-  const visibleData = data.slice(startIdx, startIdx + itemsPerPage)
-  const totalPages = Math.ceil(data.length / itemsPerPage)
+  const visibleData = teacher.slice(startIdx, startIdx + itemsPerPage)
+  const totalPages = Math.ceil(teacher.length / itemsPerPage)
 
   // Barra de notificaciones
 
@@ -38,7 +53,7 @@ const Teachers = () => {
   }
 
   // Crear un array de estados para mantener el estado de cada Dropdown
-  const [selectedKeysArray, setSelectedKeysArray] = React.useState(Array(data.length).fill(new Set(['Instructor'])))
+  const [selectedKeysArray, setSelectedKeysArray] = React.useState(Array(teacher.length).fill(new Set(['Instructor'])))
 
   // Función para manejar el cambio de selección en un Dropdown específico
   const handleDropdownChange = (index, newSelectedKeys) => {
@@ -79,13 +94,13 @@ const Teachers = () => {
         <section className="flex justify-center min-h-[65vh] ">
           <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] ">
             {visibleData.map((item, index) => (
-              <Card className="h-[13rem] -z-0" key={index}>
+              <Card className="h-[13rem] -z-0" key={item.id_usuario}>
                 <CardHeader>
                   <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
                 </CardHeader>
-                <CardBody className="pt-2 pb-0 ">{item.name}</CardBody>
+                <CardBody className="pt-2 pb-0 ">{item.nombres}</CardBody>
                 <CardFooter>
-                  <Dropdown>
+                  {/* <Dropdown>
                     <DropdownTrigger>
                       <Button variant="bordered" color="primary" className="capitalize">
                         {Array.from(selectedKeysArray[index]).join(', ').replaceAll('_', ' ')}
@@ -95,7 +110,7 @@ const Teachers = () => {
                       <DropdownItem key="administrador">Administrador</DropdownItem>
                       <DropdownItem key="coordinador">Coordinador</DropdownItem>
                     </DropdownMenu>
-                  </Dropdown>
+                  </Dropdown> */}
                 </CardFooter>
               </Card>
             ))}

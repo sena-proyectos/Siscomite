@@ -45,29 +45,29 @@ export const Notify = ({ isOpen, toggleNotify }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = Cookie.get('token');
-      const information = jwt(token);
-      const userID = information.id_usuario;
+      const token = Cookie.get('token')
+      const information = jwt(token)
+      const userID = information.id_usuario
 
       try {
-        const response = await getMessageById(userID);
-        const res = response.data.result;
-        setMessage(res);
-        console.log(res);
+        const response = await getMessageById(userID)
+        const res = response.data.result
+        setMessage(res)
+        // console.log(res);
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-    };
+    }
 
     // Llamar a la función fetchData inmediatamente
-    fetchData();
+    fetchData()
 
     // Establecer un intervalo para llamar a fetchData cada 3 segundos
-    const intervalId = setInterval(fetchData, 3000);
+    const intervalId = setInterval(fetchData, 3000)
 
     // Limpieza del intervalo cuando el componente se desmonta
-    return () => clearInterval(intervalId);
-  }, []);
+    return () => clearInterval(intervalId)
+  }, [])
 
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
