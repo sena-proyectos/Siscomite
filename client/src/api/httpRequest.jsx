@@ -177,11 +177,6 @@ export const getMessageById = (userID) => {
   return response
 }
 
-<<<<<<< HEAD
-/* get teachers */
-export const getTeacher = () => {
-  const URL = `${BaseUrl}${api}/teachers`
-=======
 /* update message state */
 export const updateStateMessage = (messageID) => {
   const URL = `${BaseUrl}${api}/updateMessageState/${messageID}`
@@ -201,8 +196,21 @@ export const updateUser = (userID, data) => {
 /* get information personal */
 export const usersById = (userID) => {
   const URL = `${BaseUrl}${api}/users/${userID}`
->>>>>>> 8467e3728fe1535fcbe686833281087847de428e
   const response = axios.get(URL)
+
+  return response
+}
+
+export const getTeacher = () => {
+  const URL = `${BaseUrl}${api}/getTeacher`
+  const response = axios.get(URL)
+
+  return response
+}
+
+export const sendEmail = (data) => {
+  const URL = `${BaseUrl}${api}/sendEmail`
+  const response = axios.post(URL, data)
 
   return response
 }

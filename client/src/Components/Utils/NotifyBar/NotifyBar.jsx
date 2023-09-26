@@ -3,7 +3,7 @@ import { Divider } from '@nextui-org/react'
 import { useState, useEffect } from 'react' // Asegúrate de importar useState desde React
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { getMessageById, updateStateMessage } from '../../../api/httpRequest'
+import { getMessageById, sendEmail, updateStateMessage } from '../../../api/httpRequest'
 import { Link } from 'react-router-dom'
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
@@ -16,6 +16,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
 
   const [isLoading, setIsLoading] = useState(true)
 
+  const [hasSentEmail, setHasSentEmail] = useState(false) // Nuevo estado para controlar si se ha enviado el correo
   const [newMessageCount, setNewMessageCount] = useState(0)
   const [latestMessage, setLatestMessage] = useState(null)
 
@@ -64,8 +65,10 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
           const newMessages = res.slice(message.length)
           setNewMessageCount(newMessages.length)
           setLatestMessage(newMessages[0])
+          setHasSentEmail(false)
         }
         handleNewNotification()
+        sendMail()
       } catch (error) {
         // Manejar errores
       } finally {
@@ -77,6 +80,19 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
 
     return () => clearInterval(intervalId)
   }, [message])
+
+  const sendMail = async () => {
+    if (latestMessage && !hasSentEmail) {
+      // Verifica si hay un último mensaje y no se ha enviado un correo
+      const token = Cookie.get('token')
+      const information = jwt(token)
+      const dataValue = { to: information.email_sena, subject: 'Novedad en las solicitudes a comité', text: latestMessage.mensaje }
+      try {
+        await sendEmail(dataValue)
+        setHasSentEmail(true) // Marcar que se ha enviado el correo
+      } catch (error) {}
+    }
+  }
 
   const changeMessageState = async (idMessage) => {
     try {
