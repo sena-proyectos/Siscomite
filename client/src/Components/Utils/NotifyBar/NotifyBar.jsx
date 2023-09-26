@@ -14,6 +14,11 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
   const [message, setMessage] = useState([])
 
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [newMessageCount, setNewMessageCount] = useState(0)
+  const [latestMessage, setLatestMessage] = useState(null)
+
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
   const daysCount = daysInMonth(currentYear, currentMonth)
@@ -53,18 +58,25 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
         const response = await getMessageById(userID)
         const res = response.data.result
         setMessage(res)
-      } catch (error) {}
+
+        if (res.length > message.length) {
+          // Si hay nuevos mensajes, actualiza el estado
+          const newMessages = res.slice(message.length)
+          setNewMessageCount(newMessages.length)
+          setLatestMessage(newMessages[0])
+        }
+        handleNewNotification()
+      } catch (error) {
+        // Manejar errores
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    // Llamar a la función fetchData inmediatamente
-    fetchData()
-
-     // Establecer un intervalo para llamar a fetchData cada 2 segundos
     const intervalId = setInterval(fetchData, 2000)
 
-    // Limpieza del intervalo cuando el compononte se desmonta
-    return () => clearInterval(intervalId) 
-  }, [])
+    return () => clearInterval(intervalId)
+  }, [message])
 
   const changeMessageState = async (idMessage) => {
     try {
@@ -97,13 +109,12 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
 
   // En tu componente Notify, después de recibir una nueva notificación
   // Puedes llamar a la función showNotification para mostrarla en el escritorio
-  const handleNewNotification = (title, body) => {
-    showNotification(title, { body })
+  const handleNewNotification = () => {
+    if (newMessageCount > 0 && latestMessage) {
+      showNotification('Nuevo mensaje', { body: latestMessage.mensaje })
+      setNewMessageCount(0) // Marca los nuevos mensajes como manejados
+    }
   }
-
-  // useEffect(() => {
-  //   handleNewNotification('Nuevo mensaje', message[0]?.mensaje)
-  // }, [message])
 
   return (
     <main>
