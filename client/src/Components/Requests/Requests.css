@@ -1,13 +1,16 @@
+/* Agrega esto a tu hoja de estilos CSS */
+@keyframes highlight {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: gray; /* Puedes ajustar el color que desees */
+  }
+  100% {
+    background-color: transparent;
+  }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+.highlighted-row {
+  animation: highlight 2s ease-in-out; /* Puedes ajustar la duración y el efecto de animación según tus preferencias */
+}

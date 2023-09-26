@@ -3,16 +3,21 @@ import { Divider } from '@nextui-org/react'
 import { useState, useEffect } from 'react' // Asegúrate de importar useState desde React
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { getMessageById, getRequest } from '../../../api/httpRequest'
+import { getMessageById, updateStateMessage } from '../../../api/httpRequest'
 import { Link } from 'react-router-dom'
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
 
-export const Notify = ({ isOpen, toggleNotify }) => {
+export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
   const currentDate = new Date()
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
   const [message, setMessage] = useState([])
+
+  const [isLoading, setIsLoading] = useState(true)
+
+  const [newMessageCount, setNewMessageCount] = useState(0)
+  const [latestMessage, setLatestMessage] = useState(null)
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
@@ -53,45 +58,62 @@ export const Notify = ({ isOpen, toggleNotify }) => {
         const response = await getMessageById(userID)
         const res = response.data.result
         setMessage(res)
-        // console.log(res);
+
+        if (res.length > message.length) {
+          // Si hay nuevos mensajes, actualiza el estado
+          const newMessages = res.slice(message.length)
+          setNewMessageCount(newMessages.length)
+          setLatestMessage(newMessages[0])
+        }
+        handleNewNotification()
       } catch (error) {
-        console.log(error)
+        // Manejar errores
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    // Llamar a la función fetchData inmediatamente
-    fetchData()
+    const intervalId = setInterval(fetchData, 2000)
 
-    // Establecer un intervalo para llamar a fetchData cada 3 segundos
-    const intervalId = setInterval(fetchData, 3000)
-
-    // Limpieza del intervalo cuando el componente se desmonta
     return () => clearInterval(intervalId)
-  }, [])
+  }, [message])
 
-  const getElementsByRole = () => {
-    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
-    const information = jwt(token) // Decodificar el token JWT
-    let rolToken = information.id_rol
+  const changeMessageState = async (idMessage) => {
+    try {
+      await updateStateMessage(idMessage)
+    } catch (error) {}
+  }
 
-    // Mapear los ID de rol a nombres de rol
-    if (rolToken === 1) rolToken = 'Coordinador'
-    if (rolToken === 2) rolToken = 'Instructor'
-    if (rolToken === 3) rolToken = 'Administrador'
+  // Función para mostrar una notificación
+  function showNotification(title, options) {
+    // Verificamos si el navegador admite notificaciones
+    if (!('Notification' in window)) {
+      console.log('Este navegador no admite notificaciones.')
+      return
+    }
 
-    return {
-      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
-      administration: rolToken === 'Administrador',
-      coordination: rolToken === 'Coordinador',
-      instructor: rolToken === 'Instructor'
+    // Verificamos si el usuario ha permitido las notificaciones
+    if (Notification.permission === 'granted') {
+      // Si el usuario ha permitido las notificaciones, mostramos una notificación
+      new Notification(title, options)
+    } else if (Notification.permission !== 'denied') {
+      // Si el usuario no ha decidido sobre las notificaciones, solicitamos permiso
+      Notification.requestPermission().then(function (permission) {
+        if (permission === 'granted') {
+          // Si se concede el permiso, mostramos la notificación
+          new Notification(title, options)
+        }
+      })
     }
   }
 
-  // Obtener los elementos que se deben mostrar según el rol
-  const elements = getElementsByRole()
-
-  const openNotify = () => {
-    console.log('holaaaaaaaaaaaa')
+  // En tu componente Notify, después de recibir una nueva notificación
+  // Puedes llamar a la función showNotification para mostrarla en el escritorio
+  const handleNewNotification = () => {
+    if (newMessageCount > 0 && latestMessage) {
+      showNotification('Nuevo mensaje', { body: latestMessage.mensaje })
+      setNewMessageCount(0) // Marca los nuevos mensajes como manejados
+    }
   }
 
   return (
@@ -134,20 +156,25 @@ export const Notify = ({ isOpen, toggleNotify }) => {
           </section>
         </section>
         <section className="mt-5">
-          <p className="font-extrabold">Nuevos mensajes</p>
-          {message.map((item) => (
-            <Link to={'/requests'} key={item.id_mensaje}>
-              <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={openNotify}>
-                <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
-                <section className="items-center">
-                  <p className="font-semibold block">Cambios en la solicitud</p>
-                  <p className="text-[13px] block">{item.mensaje}</p>
-                </section>
-              </section>
-            </Link>
-          ))}
+          <p className="font-extrabold text-center">Nuevos mensajes</p>
+          {message &&
+            message.length > 0 &&
+            message.map((item) => (
+              <Link to={`/requests/${item.id_solicitud}`} key={item.id_mensaje}>
+                <div onClick={onNotifyClic}>
+                  <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={() => changeMessageState(item.id_mensaje)}>
+                    <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
+                    <section className="items-center">
+                      <p className="font-semibold block">Cambios en la solicitud</p>
+                      <p className="text-[13px] block">{item.mensaje}</p>
+                    </section>
+                  </section>
+                </div>
+              </Link>
+            ))}
           <Divider />
         </section>
+        {message.length === 0 && <h1 className="h-full max-h-[45vh] grid items-center text-center text-gray-500 ">No tienes mensajes disponibles</h1>}
       </section>
     </main>
   )

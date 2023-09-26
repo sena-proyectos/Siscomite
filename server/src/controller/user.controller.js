@@ -30,6 +30,21 @@ export const userById = async (req, res) => {
   }
 }
 
+/* controlador para obtener usuarios por ID */
+export const usersById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_usuario = ?', [id])
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al usuario` })
+    } else {
+      res.status(200).send({ result })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener el usuario' })
+  }
+}
+
 // Controlador para obtener todos los instructores
 export const getTeacher = async (req, res) => {
   try {
@@ -153,5 +168,23 @@ export const searchCoordination = async (req, res) => {
   } catch (error) {
     // Manejar errores y enviar una respuesta de error
     res.status(401).send({ message: 'Ha ocurrido un error inesperado' })
+  }
+}
+
+// Controlador para actualizar los datos de los usuarios
+export const updateUserById = async (req, res) => {
+  const { email_sena, email_personal, numero_celular, telefono_fijo } = req.body
+  const { id } = req.params
+  const hashedPassword = req.hashedPassword
+  try {
+    const [result] = await pool.query('UPDATE usuarios SET email_sena = IFNULL(?, email_sena), email_personal = IFNULL(?, email_personal), numero_celular = IFNULL(?, numero_celular), telefono_fijo = IFNULL(?, telefono_fijo), contrasena = IFNULL(?, contrasena) WHERE id_usuario = ? ', [email_sena, email_personal, numero_celular, telefono_fijo, hashedPassword, id])
+
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al usuario` })
+    } else {
+      res.status(200).send({ message: 'Datos actualizados correctamente' })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener el usuario' })
   }
 }

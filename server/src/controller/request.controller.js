@@ -279,7 +279,6 @@ export const getRules = async (req, res) => {
  */
 export const createRequest = async (req, res) => {
   const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
-  console.log(req.body)
   try {
     /* Validar selección de numerales */
     if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {
@@ -354,7 +353,6 @@ export const updateRequest = async (req, res) => {
       res.status(200).send({ message: `Solicitud actualizada exitosamente` })
     }
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: 'Error al actualizar la solicitud' })
   }
 }

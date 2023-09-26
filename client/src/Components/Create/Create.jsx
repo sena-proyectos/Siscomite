@@ -98,7 +98,6 @@ const Create = () => {
       categoria_causa: 'Academica',
       id_archivo: '13'
     }
-    console.log(dataValue)
     try {
       const response = await createRequest(dataValue)
       const res = response.data.message

@@ -177,9 +177,31 @@ export const getMessageById = (userID) => {
   return response
 }
 
+<<<<<<< HEAD
 /* get teachers */
 export const getTeacher = () => {
   const URL = `${BaseUrl}${api}/teachers`
+=======
+/* update message state */
+export const updateStateMessage = (messageID) => {
+  const URL = `${BaseUrl}${api}/updateMessageState/${messageID}`
+  const response = axios.patch(URL)
+
+  return response
+}
+
+/* update information personal */
+export const updateUser = (userID, data) => {
+  const URL = `${BaseUrl}${api}/updateUser/${userID}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* get information personal */
+export const usersById = (userID) => {
+  const URL = `${BaseUrl}${api}/users/${userID}`
+>>>>>>> 8467e3728fe1535fcbe686833281087847de428e
   const response = axios.get(URL)
 
   return response

@@ -276,7 +276,7 @@ const Groups = () => {
                 Agregar fichas
               </p>
             </button>
-            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
           </section>
           <Footer />
         </section>
