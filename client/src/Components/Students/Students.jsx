@@ -1,7 +1,7 @@
 import './Students.css'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Search } from '../Search/Search'
-import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, Button, Pagination, Badge } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import { useEffect, useState } from 'react'
 import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
@@ -28,7 +28,7 @@ const Students = () => {
   const [notifyOpen, setNotifyOpen] = useState(false)
 
   // Número de elementos por página
-  const itemsPerPage = 9 
+  const itemsPerPage = 9
   const [activePage, setActivePage] = useState(1)
 
   // Calcula los datos a mostrar en la página actual
@@ -40,7 +40,7 @@ const Students = () => {
   const navigate = useNavigate()
   const [isOpen, setIsOpen] = useState(false)
 
-    // Función para obtener los aprendices por ID de ficha
+  // Función para obtener los aprendices por ID de ficha
   const getApprentices = async () => {
     try {
       const response = await getApprenticesByIdFicha(id_ficha)
@@ -59,7 +59,7 @@ const Students = () => {
   }, [apprentices, reloadFetch])
 
   useEffect(() => {
-       // Obtener información de las fichas por ID de ficha
+    // Obtener información de las fichas por ID de ficha
     const getFichasByIdFicha = async () => {
       try {
         const response = await getFichasById(id_ficha)
@@ -75,7 +75,7 @@ const Students = () => {
     setActivePage(pageNumber)
   }
 
-    // Función para buscar aprendices
+  // Función para buscar aprendices
   const searchApprentices = async (nombres) => {
     const idFicha = id_ficha
     try {
@@ -131,9 +131,11 @@ const Students = () => {
               {notifyOpen ? (
                 <></>
               ) : (
-                <section className="bg-green-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                  <i className="fi fi-ss-bell text-green-400 p-[.3rem] mt-[]" />
-                </section>
+                <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size="sm">
+                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
+                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+                  </section>
+                </Badge>
               )}
             </section>
           </header>

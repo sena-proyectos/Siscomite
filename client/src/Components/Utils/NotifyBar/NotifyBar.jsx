@@ -68,7 +68,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
           setHasSentEmail(false)
         }
         handleNewNotification()
-        sendMail()
+        // sendMail()
       } catch (error) {
         // Manejar errores
       } finally {

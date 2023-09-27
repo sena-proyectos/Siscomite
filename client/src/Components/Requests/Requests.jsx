@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react' // Importar el hook de estado
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Badge } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
 import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
@@ -173,9 +173,11 @@ const Requests = () => {
                 <></>
               ) : (
                 <>
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                  </section>
+                  <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size='sm'>
+                    <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
+                      <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+                    </section>
+                  </Badge>
                 </>
               )}
             </section>

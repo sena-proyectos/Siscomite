@@ -2,7 +2,7 @@
 import './Home.css'
 import { useState } from 'react'
 import { Card } from '../Utils/Card/Card'
-import { Button, Divider } from '@nextui-org/react'
+import { Button, Divider, Badge } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
@@ -45,7 +45,6 @@ const Home = () => {
     setNotifyOpen(!notifyOpen)
   }
 
-
   return (
     <>
       <main className="flex h-screen w-full">
@@ -60,10 +59,12 @@ const Home = () => {
                     <></>
                   ) : (
                     <>
-                      <Button className="muve" radius="full" variant="flat" color="primary" onClick={toggleNotify}>
-                        Mensajes
-                        <i className="fi fi-ss-bell pl-[.5rem]" />
-                      </Button>
+                      <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size="sm">
+                        <Button className="muve" radius="full" variant="flat" color="primary" onClick={toggleNotify}>
+                          Mensajes
+                          <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+                        </Button>
+                      </Badge>
                     </>
                   )}
                 </section>
@@ -105,7 +106,7 @@ const Home = () => {
               <Footer />
             </section>
             <section className="fixed  w-[20rem] right-0">
-              <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
+              <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
             </section>
           </section>
         </section>
