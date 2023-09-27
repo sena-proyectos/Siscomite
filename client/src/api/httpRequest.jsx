@@ -157,7 +157,7 @@ export const getRequestById = (idRequest) => {
 export const getRequestByIdUser = (userID) => {
   const URL = `${BaseUrl}${api}/solicitudByIdUser/${userID}`
   const response = axios.get(URL)
-
+  
   return response
 }
 
@@ -165,5 +165,38 @@ export const getRequestByIdUser = (userID) => {
 export const updateRequest = (data, idRequest) => {
   const URL = `${BaseUrl}${api}/updateSolicitud/${idRequest}`
   const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* get messages */
+export const getMessageById = (userID) => {
+  const URL = `${BaseUrl}${api}/notifyByIdUser/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* update message state */
+export const updateStateMessage = (messageID) => {
+  const URL = `${BaseUrl}${api}/updateMessageState/${messageID}`
+  const response = axios.patch(URL)
+
+  return response
+}
+
+/* update information personal */
+export const updateUser = (userID, data) => {
+  const URL = `${BaseUrl}${api}/updateUser/${userID}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* get information personal */
+export const usersById = (userID) => {
+  const URL = `${BaseUrl}${api}/users/${userID}`
+  const response = axios.get(URL)
+
   return response
 }

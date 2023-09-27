@@ -8,6 +8,7 @@ import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
 import { getFichas } from '../../api/httpRequest'
+import { fichaInformationStore } from '../../store/config'
 import './Groups.css'
 
 /* Definicion del componente */
@@ -19,6 +20,7 @@ const Groups = () => {
   const [actualView, setActualView] = useState(null)
   const [filtroVisible, setFiltroVisible] = useState(false)
   const [reloadFetch, setReloadFetch] = useState(false)
+  const { fichaInformation, setFichaInformation } = fichaInformationStore()
 
   // Hacer uso de la funcion obtener fichas
   useEffect(() => {
@@ -26,13 +28,14 @@ const Groups = () => {
     if (reloadFetch === true) {
       setReloadFetch(false)
     }
-  }, [fichas, reloadFetch])
+  }, [fichaInformation, reloadFetch])
 
   /* Funcion para obtener las fichas guardadas en la base de datos */
   const getFicha = async () => {
     try {
       const response = await getFichas()
       const res = response.data.result
+      setFichaInformation(res)
       setFichas(res)
     } catch (error) {
       console.error(error)
@@ -133,7 +136,7 @@ const Groups = () => {
     <>
       {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={setReloadFetch} />}
 
-      <main className="flex h-screen">
+      <main className="flex h-screen select-none">
         <Sliderbar />
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
@@ -282,7 +285,7 @@ const Groups = () => {
                 Agregar fichas
               </p>
             </button>
-            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
           </section>
           <Footer />
         </section>

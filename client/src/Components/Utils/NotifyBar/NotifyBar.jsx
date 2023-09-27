@@ -1,53 +1,79 @@
-import './NotifyBar.css'// Importa estilos CSS para este componente.
-import { Divider } from '@nextui-org/react'// Importa el componente Divider de la biblioteca '@nextui-org/react'.
-import { useState } from 'react'; // Importa el hook useState de React.
+import './NotifyBar.css'
+import { Divider } from '@nextui-org/react'
+import { useState, useEffect } from 'react' // Asegúrate de importar useState desde React
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
+import { getMessageById, updateStateMessage } from '../../../api/httpRequest'
+import { Link } from 'react-router-dom'
 
+const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
 
-// Define una función daysInMonth que calcula la cantidad de días en un mes dado.
-const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
-// Define el componente funcional Notify, que acepta props isOpen y toggleNotify.
-export const Notify = ({ isOpen, toggleNotify }) => {
-  // Obtiene la fecha actual.
-  const currentDate = new Date();
-  // Define el estado para el año actual.
-  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
-  // Define el estado para el mes actual.
-  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
-  // Calcula el día de la semana del primer día del mes actual.
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-  // Calcula la cantidad de días en el mes actual.
-  const daysCount = daysInMonth(currentYear, currentMonth);
-  // Crea un array con números del 1 al número de días en el mes actual.
-  const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1);
-  // Define un array de nombres de meses en español.
-  const monthNames = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-  ];
+export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
+  const currentDate = new Date()
+  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
+  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
+  const [message, setMessage] = useState([])
+  const [error, setError] = useState(null)
+
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
+
+  const daysCount = daysInMonth(currentYear, currentMonth)
+  const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1)
+
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
   // Función que maneja el evento de hacer clic en el botón para retroceder al mes anterior.
   const handlePrevMonth = () => {
-    let newMonth = currentMonth - 1;
-    let newYear = currentYear;
+    let newMonth = currentMonth - 1
+    let newYear = currentYear
     if (newMonth < 0) {
-      newMonth = 11;
-      newYear--;
+      newMonth = 11
+      newYear--
     }
-    setCurrentMonth(newMonth);
-    setCurrentYear(newYear);
-  };
+    setCurrentMonth(newMonth)
+    setCurrentYear(newYear)
+  }
 
   // Función que maneja el evento de hacer clic en el botón para avanzar al mes siguiente.
   const handleNextMonth = () => {
-    let newMonth = currentMonth + 1;
-    let newYear = currentYear;
+    let newMonth = currentMonth + 1
+    let newYear = currentYear
     if (newMonth > 11) {
-      newMonth = 0;
-      newYear++;
+      newMonth = 0
+      newYear++
     }
-    setCurrentMonth(newMonth);
-    setCurrentYear(newYear);
-  };
+    setCurrentMonth(newMonth)
+    setCurrentYear(newYear)
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = Cookie.get('token')
+      const information = jwt(token)
+      const userID = information.id_usuario
+
+      try {
+        const response = await getMessageById(userID)
+        const res = response.data.result
+        setMessage(res)
+      } catch (error) {}
+    }
+
+    // Llamar a la función fetchData inmediatamente
+    fetchData()
+
+    // Establecer un intervalo para llamar a fetchData cada 2 segundos
+    const intervalId = setInterval(fetchData, 2000)
+
+    // Limpieza del intervalo cuando el componente se desmonta
+    return () => clearInterval(intervalId)
+  }, [])
+
+  const changeMessageState = async (idMessage) => {
+    try {
+      await updateStateMessage(idMessage)
+    } catch (error) {}
+  }
 
   return (
     <main>
@@ -60,9 +86,15 @@ export const Notify = ({ isOpen, toggleNotify }) => {
         </header>
         <section className="w-[95%] mx-auto mt-2 ">
           <h2 className="text-md font-light px-2 mb-2 flex justify-between">
-            <button onClick={handlePrevMonth}><i className="fi fi-sr-angle-left"/></button>
-            <p className="font-bold">{monthNames[currentMonth]} {currentYear}</p>
-            <button onClick={handleNextMonth}><i className="fi fi-sr-angle-right"/></button>
+            <button onClick={handlePrevMonth}>
+              <i className="fi fi-sr-angle-left" />
+            </button>
+            <p className="font-bold">
+              {monthNames[currentMonth]} {currentYear}
+            </p>
+            <button onClick={handleNextMonth}>
+              <i className="fi fi-sr-angle-right" />
+            </button>
           </h2>
           <section className="grid grid-cols-7 mb-1">
             {/* Renderiza los nombres de los días de la semana */}
@@ -86,16 +118,25 @@ export const Notify = ({ isOpen, toggleNotify }) => {
           </section>
         </section>
         <section className="mt-5">
-          <p className="font-extrabold">Nuevos mensajes</p>
-          <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl">
-            <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
-            <section className="items-center">
-              <p className="font-semibold block">Solicitud aceptada</p>
-              <p className="text-[13px] block">Su solicitud a comité ha sido aprobada</p>
-            </section>
-          </section>
+          <p className="font-extrabold text-center">Nuevos mensajes</p>
+          {message &&
+            message.length > 0 &&
+            message.map((item) => (
+              <Link to={`/requests/${item.id_solicitud}`} key={item.id_mensaje}>
+                <div onClick={onNotifyClic}>
+                  <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={() => changeMessageState(item.id_mensaje)}>
+                    <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
+                    <section className="items-center">
+                      <p className="font-semibold block">Cambios en la solicitud</p>
+                      <p className="text-[13px] block">{item.mensaje}</p>
+                    </section>
+                  </section>
+                </div>
+              </Link>
+            ))}
           <Divider />
         </section>
+        {message.length === 0 && <h1 className="h-full max-h-[45vh] grid items-center text-center text-gray-500 ">No tienes mensajes disponibles</h1>}
       </section>
     </main>
   )

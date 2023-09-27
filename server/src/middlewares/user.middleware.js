@@ -113,7 +113,9 @@ export const createToken = async (req, res, next) => {
       nombres: userExist[0].nombres,
       apellidos: userExist[0].apellidos,
       email_sena: userExist[0].email_sena,
+      email_personal: userExist[0].email_personal,
       numero_celular: userExist[0].numero_celular,
+      telefono_fijo: userExist[0].telefono_fijo,
       id_documento: userExist[0].id_documento,
       id_rol: userExist[0].id_rol,
       numero_documento: userExist[0].numero_documento
@@ -137,4 +139,41 @@ export const checkName = (req, res, next) => {
   } catch (error) {
     return res.status(500).json({ message: 'Error inesperado' })
   }
+}
+
+// Middleware para actualizar contraseña
+export const updatePassword = async (req, res, next) => {
+  const { id } = req.params
+  const { contrasena } = req.body
+
+  if (contrasena) {
+    try {
+      const [userExist] = await pool.query('SELECT contrasena FROM usuarios WHERE id_usuario = ?', [id])
+
+      const passwordCompare = await bcrypt.compare(contrasena, userExist[0].contrasena)
+
+      if (!passwordCompare) {
+        return res.status(401).json({ message: 'La contraseña debe ser igual a su antigua contraseña' })
+      }
+    } catch (error) {
+      return res.status(500).json({ message: 'Error inesperado', error })
+    }
+  }
+
+  next()
+}
+
+// Middleware para hashear la contraseña al actualizarlo
+export const hashPasswordUpdate = async (req, res, next) => {
+  const { nuevaContrasena } = req.body
+
+  if (nuevaContrasena) {
+    try {
+      const passwordHash = await bcrypt.hash(nuevaContrasena, 10)
+      req.hashedPassword = passwordHash
+    } catch (error) {
+      return res.status(500).json({ message: 'Error inesperado' })
+    }
+  }
+  next()
 }

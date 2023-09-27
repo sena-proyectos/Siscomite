@@ -45,6 +45,7 @@ const Home = () => {
     setNotifyOpen(!notifyOpen)
   }
 
+
   return (
     <>
       <main className="flex h-screen w-full">
@@ -108,7 +109,7 @@ const Home = () => {
               <Footer />
             </section>
             <section className="fixed  w-[20rem] right-0">
-              <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+              <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
             </section>
           </section>
         </section>

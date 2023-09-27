@@ -95,7 +95,7 @@ export const getRequests = async (req, res) => {
 export const getRequestById = async (req, res) => {
   const { id } = req.params
   try {
-      const query = `SELECT
+    const query = `SELECT
       solicitud.id_solicitud,
       solicitud.tipo_solicitud,
       solicitud.nombre_coordinacion,
@@ -279,7 +279,6 @@ export const getRules = async (req, res) => {
  */
 export const createRequest = async (req, res) => {
   const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
-
   try {
     /* Validar selección de numerales */
     if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {
@@ -322,7 +321,6 @@ export const createRequest = async (req, res) => {
     instructoresSeleccionados.forEach(async (usuarioId) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
-        console.log(usuarioId)
       } catch (error) {
         res.status(400).send({ message: 'Instructor seleccionado incorrectamente' })
         return
@@ -355,7 +353,6 @@ export const updateRequest = async (req, res) => {
       res.status(200).send({ message: `Solicitud actualizada exitosamente` })
     }
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: 'Error al actualizar la solicitud' })
   }
 }

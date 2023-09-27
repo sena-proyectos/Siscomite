@@ -104,7 +104,7 @@ const Teachers = () => {
         <section className="grid place-items-center pt-[1rem] mb-[2rem]">
           <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
         </section>
-        <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+        <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
         <Footer />
       </section>
     </main>
