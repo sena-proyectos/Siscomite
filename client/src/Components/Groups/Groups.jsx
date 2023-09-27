@@ -1,14 +1,13 @@
 /* Importaciones de modulos y componentes */
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Chip } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
 import { getFichas } from '../../api/httpRequest'
-import { fichaInformationStore } from '../../store/config'
 import './Groups.css'
 
 /* Definicion del componente */
@@ -20,7 +19,6 @@ const Groups = () => {
   const [actualView, setActualView] = useState(null)
   const [filtroVisible, setFiltroVisible] = useState(false)
   const [reloadFetch, setReloadFetch] = useState(false)
-  const { fichaInformation, setFichaInformation } = fichaInformationStore()
 
   // Hacer uso de la funcion obtener fichas
   useEffect(() => {
@@ -28,14 +26,13 @@ const Groups = () => {
     if (reloadFetch === true) {
       setReloadFetch(false)
     }
-  }, [fichaInformation, reloadFetch])
+  }, [fichas, reloadFetch])
 
   /* Funcion para obtener las fichas guardadas en la base de datos */
   const getFicha = async () => {
     try {
       const response = await getFichas()
       const res = response.data.result
-      setFichaInformation(res)
       setFichas(res)
     } catch (error) {
       console.error(error)
@@ -129,25 +126,64 @@ const Groups = () => {
   }
 
   // ---------------- Filtros --------------------
- 
+  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
+  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
+  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
+  const [selectedJornada, setSelectedJornada] = useState('')
+  const [selectedEtapa, setSelectedEtapa] = useState('')
+
+
+  const searchGroupsByName = (searchValue) => {
+    setSearchValue(searchValue);
   
+    // Filtrar las solicitudes según el nombre, el número de ficha y el estado seleccionado
+    const filteredResults = fichas.filter((item) => {
+      const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase());
+      const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString());
+      const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada;
+      const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa;
+      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado;
   
+      return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches;
+    });
+  
+    // Ordenar la lista de resultados en función del estado sortOrder
+    const sortedResults = [...filteredResults].sort((a, b) => {
+      const nameA = a.nombre_programa.toLowerCase();
+      const nameB = b.nombre_programa.toLowerCase();
+  
+      if (sortOrder === "asc") {
+        return nameA.localeCompare(nameB);
+      } else {
+        return nameB.localeCompare(nameA);
+      }
+    });
+  
+    setSearchResults(sortedResults);
+  };
+  
+
+  // Filtrar las solicitudes por nombre, estado y jornada
+  const filteredGroups = visibleCards.filter((item) => {
+    const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
+    const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString());
+    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+    const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
+    const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
+
+    return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
+  })
+
   return (
     <>
       {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={setReloadFetch} />}
 
-      <main className="flex h-screen select-none">
+      <main className="flex h-screen">
         <Sliderbar />
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
-              <Search
-                ficha
-                filtro={filtroVisible}
-                placeholder={'Buscar ficha'}
-                icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                
-              />
+              <Search ficha filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} searchStudent={searchGroupsByName} searchResults={searchResults} searchValue={searchValue} selectedEstado={selectedEstado} setSelectedEstado={setSelectedEstado} setSelectedJornada={setSelectedJornada} setSelectedEtapa={setSelectedEtapa} />
             </section>
             <section className="mr-[80%] pb-[.7rem] cursor-pointer">
               {notifyOpen ? (
@@ -197,7 +233,7 @@ const Groups = () => {
             <section className="mx-auto w-[90%]">
               {actualView === 'grid' ? (
                 <section className="gap-8 grid grid-cols-3 mt-3 max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
-                  {visibleCards.map((card) => (
+                  {filteredGroups.map((card) => (
                     <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="no-underline">
                       {/* Envuelve toda la tarjeta dentro del enlace */}
                       <Card className={`w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
@@ -252,7 +288,7 @@ const Groups = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {visibleCards.map((card) => (
+                        {filteredGroups.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
                             <tr className="grid grid-cols-6-column-table text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
                               <td>{card.numero_ficha}</td>
@@ -261,9 +297,9 @@ const Groups = () => {
                               <td>{card.etapa_programa}</td>
                               <td>{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
                               <td className="z-100">
-                                <Button size="sm" color="success" variant="flat" radius="full">
+                                <Chip size="sm" color="success" variant="flat" radius="full" key={'activo'}>
                                   Activo
-                                </Button>
+                                </Chip>
                               </td>
                             </tr>
                           </Link>
@@ -276,7 +312,7 @@ const Groups = () => {
             </section>
           </section>
           <section className="grid place-items-center  pt-[1rem] mb-[2rem]">
-            <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
+            <Pagination className={`relative z-0 max-[935px]:pb-[3rem] `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-[59px]">
             <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
@@ -285,7 +321,7 @@ const Groups = () => {
                 Agregar fichas
               </p>
             </button>
-            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
+            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           </section>
           <Footer />
         </section>

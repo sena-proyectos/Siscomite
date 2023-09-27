@@ -28,7 +28,7 @@ const Students = () => {
   const [notifyOpen, setNotifyOpen] = useState(false)
 
   // Número de elementos por página
-  const itemsPerPage = 9 
+  const itemsPerPage = 9
   const [activePage, setActivePage] = useState(1)
 
   // Calcula los datos a mostrar en la página actual
@@ -39,7 +39,7 @@ const Students = () => {
 
   const navigate = useNavigate()
 
-    // Función para obtener los aprendices por ID de ficha
+  // Función para obtener los aprendices por ID de ficha
   const getApprentices = async () => {
     try {
       const response = await getApprenticesByIdFicha(id_ficha)
@@ -58,7 +58,7 @@ const Students = () => {
   }, [apprentices, reloadFetch])
 
   useEffect(() => {
-       // Obtener información de las fichas por ID de ficha
+    // Obtener información de las fichas por ID de ficha
     const getFichasByIdFicha = async () => {
       try {
         const response = await getFichasById(id_ficha)
@@ -74,7 +74,7 @@ const Students = () => {
     setActivePage(pageNumber)
   }
 
-    // Función para buscar aprendices
+  // Función para buscar aprendices
   const searchApprentices = async (nombres) => {
     const idFicha = id_ficha
     try {
@@ -119,18 +119,18 @@ const Students = () => {
       <main className="flex h-screen">
         <Sliderbar />
         <section className="w-full h-screen overflow-auto">
-          <header className="p-[1.5rem] flex items-center justify-center">
-            <section className="w-[40%] max-md:max-w-[10rem]">
-              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+            <section className="w-[60%] col-span-2 right-0 relative">
+              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} />
             </section>
+            <section className="flex items-center mr-[50%]   cursor-pointer ">
             <Button color="danger" variant="bordered">
               Deshabilitar
             </Button>
-            <section className="absolute right-[5%] cursor-pointer ">
               {notifyOpen ? (
                 <></>
               ) : (
-                <section className="bg-green-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
+                <section className="bg-green-200 rounded-full w-[2rem] h-[2rem] grid place-items-center ml-3" onClick={toggleNotify}>
                   <i className="fi fi-ss-bell text-green-400 p-[.3rem] mt-[]" />
                 </section>
               )}

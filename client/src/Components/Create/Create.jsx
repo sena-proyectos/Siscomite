@@ -227,6 +227,15 @@ const Create = () => {
     }
   }
 
+  const [file, setFile] = useState(null)
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0]
+    if (selectedFile) {
+      setFile(selectedFile)
+    }
+  }
+
   return (
     <main className="relative h-screen flex ">
       <Toaster position="top-right" closeButton richColors />
@@ -379,10 +388,10 @@ const Create = () => {
               </section>
               <section className="">
                 <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
-                  <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
-                    Subir evidencia
+                  <label className="inline-block bg-[#2E323E] text-white w-[12rem] p-[16px] rounded-xl cursor-pointer select-none text-center">
+                    {file ? `Evidencia Subida` : 'Subir evidencia'}
                     <i className="fi fi-rr-upload px-[.5rem]" />
-                    <input type="file" className="hidden" />
+                    <input type="file" className="hidden" onChange={handleFileChange} />
                   </label>
                 </Tooltip>
               </section>
@@ -409,34 +418,6 @@ const Create = () => {
                     </CardBody>
                   </Card>
                 </Tab>
-                {/*  <Tab key="disciplinarias" title="Disciplinarias">
-                  <Card>
-                    <CardBody>
-                      <CheckboxGroup>
-                        <Checkbox value="rules" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                        <Checkbox value="tati" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                      </CheckboxGroup>
-                    </CardBody>
-                  </Card>
-                </Tab>
-                <Tab key="otros" title="Otros">
-                  <Card>
-                    <CardBody>
-                      <CheckboxGroup>
-                        <Checkbox value="rules" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                        <Checkbox value="tati" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                      </CheckboxGroup>
-                    </CardBody>
-                  </Card>
-                </Tab> */}
               </Tabs>
             </section>
           </section>

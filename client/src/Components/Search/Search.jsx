@@ -4,14 +4,13 @@ import { useRef, useEffect, useState } from 'react' // Importar React, useRef, u
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react' // Importar componentes de Next UI
 
 // Componente Search
-const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, request, teacher, setSelectedEstado, setSelectedDateFilter }) => {
+const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teacher, setSelectedEstado, setSelectedDateFilter, setSelectedJornada, setSelectedEtapa }) => {
   // Estado para controlar la rotación del icono
   const [iconRow, setIconRow] = useState(false)
   // Referencia al elemento de entrada de texto para búsqueda
   const search = useRef()
   // Referencia para el temporizador de debounce
   const debounceTimeout = useRef(null)
-  // Estado para la fecha seleccionada
 
   // Función para manejar la búsqueda con debounce
   const handleSearch = () => {
@@ -19,15 +18,22 @@ const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, 
     clearTimeout(debounceTimeout.current)
     debounceTimeout.current = setTimeout(() => {
       searchStudent(searchValue)
-      searchGroup(searchValue) 
     }, 300)
   }
 
   const handleEstadoChange = (estado) => {
     setSelectedEstado(estado)
   }
+
   const handleDateFilterChange = (dateFilter) => {
     setSelectedDateFilter(dateFilter) // Actualiza el estado de la fecha seleccionada
+  }
+
+  const handleJornadaFilterChange = (jornadaFilter) => {
+    setSelectedJornada(jornadaFilter)
+  }
+  const handleEtapaChange = (etapaFilter) => {
+    setSelectedEtapa(etapaFilter)
   }
 
   // Función para prevenir la acción predeterminada del formulario
@@ -41,6 +47,8 @@ const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, 
       clearTimeout(debounceTimeout.current)
     }
   }, [])
+
+  const [sortOrder, setSortOrder] = useState("asc"); // Estado para el orden de los nombres
 
   return (
     <form className="flex flex-col" method="get" onChange={handleSearch} onSubmit={evnt}>
@@ -65,6 +73,7 @@ const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, 
                 className="w-[7rem]"
                 onClick={() => {
                   setIconRow(!iconRow)
+                  setSortOrder(sortOrder === "asc" ? "desc" : "asc")
                 }}
               >
                 <p className="cursor-pointer">Nombre</p>
@@ -125,8 +134,15 @@ const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, 
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownItem key="activo">Activo</DropdownItem>
-                      <DropdownItem key="deshabilitado">Deshabilitado</DropdownItem>
+                      <DropdownItem key="todos" onClick={() => handleEstadoChange('')}>
+                        Todos
+                      </DropdownItem>
+                      <DropdownItem key="activo" onClick={() => handleEstadoChange('Activo')}>
+                        Activo
+                      </DropdownItem>
+                      <DropdownItem key="deshabilitado" onClick={() => handleEstadoChange('Deshabilitado')}>
+                        Deshabilitado
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                   <Dropdown>
@@ -136,11 +152,24 @@ const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, 
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownItem>Mañana</DropdownItem>
-                      <DropdownItem>Tarde</DropdownItem>
-                      <DropdownItem>Noche</DropdownItem>
-                      <DropdownItem>Virtual</DropdownItem>
-                      <DropdownItem>Fines de semana</DropdownItem>
+                      <DropdownItem key="todos" onClick={() => handleJornadaFilterChange('')}>
+                        Todos
+                      </DropdownItem>
+                      <DropdownItem key={'mañana'} onClick={() => handleJornadaFilterChange('MAÑANA')}>
+                        Mañana
+                      </DropdownItem>
+                      <DropdownItem key={'tarde'} onClick={() => handleJornadaFilterChange('TARDE')}>
+                        Tarde
+                      </DropdownItem>
+                      <DropdownItem key={'noche'} onClick={() => handleJornadaFilterChange('NOCHE')}>
+                        Noche
+                      </DropdownItem>
+                      <DropdownItem key={'vitual'} onClick={() => handleJornadaFilterChange('VIRTUAL')}>
+                        Virtual
+                      </DropdownItem>
+                      <DropdownItem key={'finesDeSenama'} onClick={() => handleJornadaFilterChange('FINES DE SEMANA')}>
+                        Fines de semana
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                   <Dropdown>
@@ -150,8 +179,11 @@ const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, 
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownItem>Lectiva</DropdownItem>
-                      <DropdownItem>Práctica</DropdownItem>
+                      <DropdownItem key="todos" onClick={() => handleEtapaChange('')}>
+                        Todos
+                      </DropdownItem>
+                      <DropdownItem onClick={() => handleEtapaChange('LECTIVA')}>Lectiva</DropdownItem>
+                      <DropdownItem onClick={() => handleEtapaChange('PRACTICA')}>Práctica</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </section>
@@ -165,8 +197,17 @@ const Search = ({ searchStudent, searchGroup, placeholder, icon, filtro, ficha, 
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu>
-                      <DropdownItem key="activo">Activo</DropdownItem>
-                      <DropdownItem key="deshabilitado">Deshabilitado</DropdownItem>
+                      <DropdownMenu>
+                        <DropdownItem key="todos" onClick={() => handleEstadoChange('')}>
+                          Todos
+                        </DropdownItem>
+                        <DropdownItem key="activo" onClick={() => handleEstadoChange('Activo')}>
+                          Activo
+                        </DropdownItem>
+                        <DropdownItem key="deshabilitado" onClick={() => handleEstadoChange('Deshabilitado')}>
+                          Deshabilitado
+                        </DropdownItem>
+                      </DropdownMenu>{' '}
                     </DropdownMenu>
                   </Dropdown>
                   <Dropdown>

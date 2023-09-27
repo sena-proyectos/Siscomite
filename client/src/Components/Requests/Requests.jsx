@@ -25,8 +25,9 @@ const Requests = () => {
   const [requestById, setRequestById] = useState([]) // estado para guardar las solicitudes de usuarios de la base de datos
 
   // Paginación
-  const itemsPerPage = 9 // Número de elementos por página
-  const [activePage, setActivePage] = useState(1) // Número de página activa
+  // Número de elementos por página
+  const itemsPerPage = 9
+  const [activePage, setActivePage] = useState(1)
 
   const [requestId, setRequestId] = useState(null)
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
@@ -61,9 +62,8 @@ const Requests = () => {
   // Calcula los datos a mostrar en la página actual
   const indexOfLastItem = activePage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = elements.adminCoordi ? (request && request.length > 0 ? request.slice(indexOfFirstItem, indexOfLastItem) : []) : elements.instructor ? (requestById && requestById.length > 0 ? requestById.slice(indexOfFirstItem, indexOfLastItem) : []) : []
-
-  const totalPages = Math.ceil((request && request.length > 0 / itemsPerPage) || (requestById && requestById.length > 0 / itemsPerPage))
+  const currentItems = request && request.length > 0 ? request.slice(indexOfFirstItem, indexOfLastItem) : []
+  const totalPages = Math.ceil(request && request.length / itemsPerPage)
 
   // Función para cambiar de página
   const handlePageChange = (pageNumber) => {
@@ -145,9 +145,19 @@ const Requests = () => {
     return format(date, 'dd/MM/yyyy')
   }
 
+  useEffect(() => {
+    handleNotifyClick()
+  }, [])
+
+  // Función para manejar los clics en las notificaciones
+  const { id_solicitud } = useParams()
+  const handleNotifyClick = () => {
+    setHighlightedRequestId(id_solicitud)
+  }
+
   // ---------------- Filtros --------------------
   const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  const [searchResults,setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
+  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
   const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
   const [selectedDateFilter, setSelectedDateFilter] = useState('') // Estado para la fecha seleccionada
 
@@ -225,8 +235,8 @@ const Requests = () => {
                 searchValue={searchValue}
                 selectedEstado={selectedEstado}
                 setSelectedEstado={setSelectedEstado}
-                selectedDateFilter={selectedDateFilter} 
-                setSelectedDateFilter={setSelectedDateFilter} 
+                selectedDateFilter={selectedDateFilter}
+                setSelectedDateFilter={setSelectedDateFilter}
               />
             </section>
             <section className="mr-[80%] pb-[.4rem] cursor-pointer">
@@ -254,12 +264,11 @@ const Requests = () => {
 
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
                 {filterRequestsByDate(filteredRequests, selectedDateFilter).map((item) => (
-                  <TableRow key={item.id_solicitud} className="hover:bg-gray-200 transition-all">
+                  <TableRow key={item.id_solicitud} className={`hover:bg-gray-200 transition-all ${item.id_solicitud === parseInt(highlightedRequestId) ? 'highlighted-row' : ''}`}>
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
                     <TableCell>{formatDate(item.fecha_creacion)}</TableCell>
                     <TableCell>{item.tipo_solicitud}</TableCell>
                     <TableCell className={` flex justify-center items-center w-[7rem] py-[0] relative top-[13px] bg-red-500 ${selectedValueDetails === 'En proceso' ? 'bg-yellow-200 text-warning rounded-2xl' : getStatusColorClass(item.estado)} ${getStatusColorClass(item.estado)}`}>{item.estado}</TableCell>
-
                     <TableCell>
                       <i className="fi fi-rr-edit px-3 text-xl cursor-pointer hover:text-yellow-300" onClick={() => modalDetailsEdit(item.id_solicitud)} aria-label="Editar solicitud" />
                       <i className="fi fi-rs-eye text-xl cursor-pointer hover:text-green-600 active:opacity-50" onClick={() => modalDetails(item.id_solicitud)} aria-label="Ver detalles de la solicitud" />
@@ -269,7 +278,7 @@ const Requests = () => {
               </TableBody>
             </Table>
             <section className="grid place-items-center w-full mt-[.5rem] ">
-              <Pagination className="z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={(request && request.length) || (requestById && requestById.length)} onChange={handlePageChange} />
+              <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />
             </section>
             <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} onNotifyClic={handleNotifyClick} />
           </section>
