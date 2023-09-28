@@ -111,7 +111,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
               ))}
             {/* Renderiza los números de los días del mes */}
             {daysArray.map((day) => (
-              <section key={day} className={`text-center py-1 ${day === currentDate.getDate() ? 'bg-[#2e323e] text-white rounded-full' : ''}`}>
+              <section key={day} className={`text-center py-1 ${currentMonth === currentDate.getMonth() && day === currentDate.getDate() ? 'bg-[#2e323e] text-white rounded-full' : ''}`}>
                 {day}
               </section>
             ))}

@@ -8,6 +8,7 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 import { updateUser, usersById } from '../../api/httpRequest'
 
 import { Toaster, toast } from 'sonner'
+import { Test } from '../Test/Test'
 
 const Setting = () => {
   // Funcion para ver el estado del botón de deactivar cuenta
@@ -147,9 +148,7 @@ const Setting = () => {
               </CardFooter>
             </Card>
           </form>
-          <section>
-            colores
-          </section>
+          
         </section>
         <Footer />
       </section>
