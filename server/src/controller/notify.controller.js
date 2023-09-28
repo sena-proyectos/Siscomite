@@ -12,6 +12,18 @@ export const getNotifyByUserId = async (req, res) => {
   }
 }
 
+export const countMessageById = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const [result] = await pool.query('SELECT COUNT(*) as num_message FROM mensajes WHERE id_usuario = ? and estado_mensaje = "Sin leer"', [id])
+
+    res.status(200).send({ result })
+  } catch (error) {
+    res.status(404).send({ message: `Error al mostrar los mensajes` })
+  }
+}
+
 export const changeStateMessage = async (req, res) => {
   const { id } = req.params
   try {
