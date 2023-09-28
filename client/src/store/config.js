@@ -1,5 +1,10 @@
 import { create } from 'zustand'
 
+export const notificationStore = create((set) => ({
+  numCount: null,
+  setNumCount: (count) => set({ numCount: count })
+}))
+
 export const userInformationStore = create((set) => ({
   userInformation: {},
   setUserInformation: (data) => set({ userInformation: data })
