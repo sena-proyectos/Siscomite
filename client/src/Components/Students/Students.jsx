@@ -1,12 +1,12 @@
 import './Students.css'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Search } from '../Search/Search'
-import { Card, CardHeader, CardBody, Button, Pagination, Badge } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import { useEffect, useState } from 'react'
 import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { useParams, useNavigate } from 'react-router-dom'
 import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
@@ -24,9 +24,6 @@ const Students = () => {
   const [error, setError] = useState(null)
   const [reloadFetch, setReloadFetch] = useState(false)
 
-  // Estado para controlar la apertura de la notificación
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
   // Número de elementos por página
   const itemsPerPage = 9
   const [activePage, setActivePage] = useState(1)
@@ -38,7 +35,6 @@ const Students = () => {
   const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
 
   const navigate = useNavigate()
-  const [isOpen, setIsOpen] = useState(false)
 
   // Función para obtener los aprendices por ID de ficha
   const getApprentices = async () => {
@@ -95,10 +91,6 @@ const Students = () => {
     }
   }
 
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
   //Abrir Modal para agregar estudiantes
   const [modalAddStudent, setModalStudentAdd] = useState(false)
   const modalStudents = () => {
@@ -127,17 +119,6 @@ const Students = () => {
             <Button color="danger" variant="bordered">
               Deshabilitar
             </Button>
-            <section className="absolute right-[5%] cursor-pointer ">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size="sm">
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                  </section>
-                </Badge>
-              )}
-            </section>
           </header>
 
           <section className=" flex justify-between px-[4rem] ">
@@ -217,7 +198,11 @@ const Students = () => {
               </p>
             </button>
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+          <section className="fixed right-[10%] top-[2rem]">
+            <section className=" cursor-pointer ">
+              <NotifyBadge />
+            </section>
+          </section>
           <Footer />
         </section>
       </main>

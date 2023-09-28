@@ -5,7 +5,7 @@ import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sli
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Badge } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
-import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
 import { getRequest, getRequestByIdUser } from '../../api/httpRequest'
@@ -16,6 +16,7 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
 import { useParams } from 'react-router-dom'
+import { userInformationStore } from '../../store/config'
 
 // Componente Requests
 const Requests = () => {
@@ -168,19 +169,6 @@ const Requests = () => {
             <section className="w-[40%]">
               <Search filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} aria-label="Buscar solicitud" />
             </section>
-            <section className="absolute right-[20%] cursor-pointer justify-center ">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <>
-                  <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size='sm'>
-                    <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                      <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                    </section>
-                  </Badge>
-                </>
-              )}
-            </section>
           </header>
 
           <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
@@ -212,7 +200,11 @@ const Requests = () => {
             <section className="grid place-items-center w-full mt-[.5rem] ">
               <Pagination className="z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={(request && request.length) || (requestById && requestById.length)} onChange={handlePageChange} />
             </section>
-            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} onNotifyClic={handleNotifyClick} />
+            <section className="fixed right-[22%] top-[2rem]">
+              <section className=" cursor-pointer ">
+                <NotifyBadge />
+              </section>
+            </section>
           </section>
           <Footer />
         </section>

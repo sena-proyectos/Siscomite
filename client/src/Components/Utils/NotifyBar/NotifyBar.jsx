@@ -5,6 +5,7 @@ import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con c
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 import { getMessageById, sendEmail, updateStateMessage } from '../../../api/httpRequest'
 import { Link } from 'react-router-dom'
+import { userInformationStore } from '../../../store/config'
 
 const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
 
@@ -13,12 +14,6 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
   const [message, setMessage] = useState([])
-
-  const [isLoading, setIsLoading] = useState(true)
-
-  const [hasSentEmail, setHasSentEmail] = useState(false) // Nuevo estado para controlar si se ha enviado el correo
-  const [newMessageCount, setNewMessageCount] = useState(0)
-  const [latestMessage, setLatestMessage] = useState(null)
 
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
 
@@ -48,50 +43,35 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
     setCurrentMonth(newMonth)
     setCurrentYear(newYear)
   }
+  const { userInformation } = userInformationStore()
 
   useEffect(() => {
-    const fetchData = async () => {
-      const token = Cookie.get('token')
-      const information = jwt(token)
-      const userID = information.id_usuario
+    if (isOpen) {
+      const fetchData = async () => {
+        try {
+          const response = await getMessageById(userInformation.id_usuario)
+          const res = response.data.result
+          console.log(res);
+          setMessage(res)
 
-      try {
-        const response = await getMessageById(userID)
-        const res = response.data.result
-        setMessage(res)
-
-        if (res.length > message.length) {
-          // Si hay nuevos mensajes, actualiza el estado
-          const newMessages = res.slice(message.length)
-          setNewMessageCount(newMessages.length)
-          setLatestMessage(newMessages[0])
-          setHasSentEmail(false)
+          // handleNewNotification()
+          // sendMail()
+        } catch (error) {
+          // Manejar errores
         }
-        handleNewNotification()
-        // sendMail()
-      } catch (error) {
-        // Manejar errores
-      } finally {
-        setIsLoading(false)
       }
+      fetchData()
     }
-
-    const intervalId = setInterval(fetchData, 2000)
-
-    return () => clearInterval(intervalId)
-  }, [message])
+  }, [isOpen])
 
   const sendMail = async () => {
-    if (latestMessage && !hasSentEmail) {
-      // Verifica si hay un último mensaje y no se ha enviado un correo
-      const token = Cookie.get('token')
-      const information = jwt(token)
-      const dataValue = { to: information.email_sena, subject: 'Novedad en las solicitudes a comité', text: latestMessage.mensaje }
-      try {
-        await sendEmail(dataValue)
-        setHasSentEmail(true) // Marcar que se ha enviado el correo
-      } catch (error) {}
-    }
+    // Verifica si hay un último mensaje y no se ha enviado un correo
+    const token = Cookie.get('token')
+    const information = jwt(token)
+    const dataValue = { to: information.email_sena, subject: 'Novedad en las solicitudes a comité', text: latestMessage.mensaje }
+    try {
+      await sendEmail(dataValue)
+    } catch (error) {}
   }
 
   const changeMessageState = async (idMessage) => {
@@ -126,10 +106,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
   // En tu componente Notify, después de recibir una nueva notificación
   // Puedes llamar a la función showNotification para mostrarla en el escritorio
   const handleNewNotification = () => {
-    if (newMessageCount > 0 && latestMessage) {
-      showNotification('Nuevo mensaje', { body: latestMessage.mensaje })
-      setNewMessageCount(0) // Marca los nuevos mensajes como manejados
-    }
+    showNotification('Nuevo mensaje', { body: message[0].mensaje })
   }
 
   return (

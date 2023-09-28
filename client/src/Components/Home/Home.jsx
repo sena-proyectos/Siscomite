@@ -1,12 +1,14 @@
 /* Importaciones de modulos y componentes */
 import './Home.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Card } from '../Utils/Card/Card'
 import { Button, Divider, Badge } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { countMessage } from '../../api/httpRequest'
+import { userInformationStore } from '../../store/config'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 const Home = () => {
   /* matriz para las cards de acceso rapido del home */
@@ -39,11 +41,26 @@ const Home = () => {
 
   /* Estado para las notificaciones */
   const [notifyOpen, setNotifyOpen] = useState(false)
+  const [numCount, setNumCount] = useState(null)
 
   /* Cambiar estado de las notificaciones */
   const toggleNotify = () => {
     setNotifyOpen(!notifyOpen)
   }
+
+  const { userInformation } = userInformationStore()
+
+  useEffect(() => {
+    const messageCount = async () => {
+      try {
+        const response = await countMessage(userInformation.id_usuario)
+        const res = response.data.result[0].num_message
+        setNumCount(res)
+      } catch (error) {}
+    }
+
+    messageCount()
+  }, [])
 
   return (
     <>
@@ -54,20 +71,6 @@ const Home = () => {
             <section className="w-full h-screen ">
               <header className="mt-8 flex justify-center text-[23px]">
                 <h1 className=" text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
-                <section className="absolute right-[15%] cursor-pointer ">
-                  {notifyOpen ? (
-                    <></>
-                  ) : (
-                    <>
-                      <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size="sm">
-                        <Button className="muve" radius="full" variant="flat" color="primary" onClick={toggleNotify}>
-                          Mensajes
-                          <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                        </Button>
-                      </Badge>
-                    </>
-                  )}
-                </section>
               </header>
 
               <section className="h-[85vh] flex justify-center items-start">
@@ -105,8 +108,10 @@ const Home = () => {
               </section>
               <Footer />
             </section>
-            <section className="fixed  w-[20rem] right-0">
-              <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+            <section className="fixed right-[15%] top-[2.5rem]">
+              <section className=" cursor-pointer ">
+                <NotifyBadge />
+              </section>
             </section>
           </section>
         </section>

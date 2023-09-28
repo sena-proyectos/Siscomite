@@ -24,6 +24,7 @@ const Sliderbar = () => {
   }, [])
 
   const { setUserInformation, userInformation } = userInformationStore()
+  
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
     const information = jwt(token) // Decodificar el token JWT
