@@ -56,7 +56,7 @@ const Sliderbar = () => {
     if (information.id_rol === 3) information.id_rol = 'Administrador'
 
     setRol(information.id_rol) // Establecer el rol en el estado
-    setUserInformation({ nombres, apellidos, id_usuario: information.id_usuario })
+    setUserInformation({ nombres, apellidos, id_usuario: information.id_usuario, email_sena: information.email_sena, email_personal: information.email_personal })
   }
 
   // Función para cerrar sesión

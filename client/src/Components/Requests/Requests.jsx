@@ -16,7 +16,6 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
 import { useParams } from 'react-router-dom'
-import { userInformationStore } from '../../store/config'
 
 // Componente Requests
 const Requests = () => {

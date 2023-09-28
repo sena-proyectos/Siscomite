@@ -1,11 +1,9 @@
 // Importaciones necesarias
 import { ViewPdf } from '../ViewPDF/ViewPDF' // Importar el componente ViewPdf
-import React, { useState, useEffect } from 'react' // Importar React y useState
+import React, { useState } from 'react' // Importar React y useState
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Badge } from '@nextui-org/react' // Importar componentes de Next UI
-import { countMessage } from '../../api/httpRequest'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react' // Importar componentes de Next UI
 
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
@@ -79,14 +77,6 @@ const Rules = () => {
       setIsLoading(false)
       setIsEditModalOpen(false)
     }, 2000)
-  }
-
-  // Barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
-  // Función para alternar la visibilidad de la barra de notificaciones
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
   }
 
   return (

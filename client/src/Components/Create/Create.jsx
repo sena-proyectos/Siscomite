@@ -8,6 +8,7 @@ import { Search } from '../Search/Search'
 import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest, countMessage } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
+import { userInformationStore } from '../../store/config'
 
 // Definición del componente Create
 const Create = () => {
@@ -33,6 +34,8 @@ const Create = () => {
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
   const [descripcion, setDescripcion] = useState(null)
+
+  const { userInformation } = userInformationStore()
 
   /* Estado para almacenar el reglamento obtenido de la base de datos */
   const [rules, setRules] = useState([])

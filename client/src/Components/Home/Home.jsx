@@ -1,13 +1,10 @@
 /* Importaciones de modulos y componentes */
 import './Home.css'
-import { useEffect, useState } from 'react'
 import { Card } from '../Utils/Card/Card'
 import { Button, Divider, Badge } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
-import { countMessage } from '../../api/httpRequest'
-import { userInformationStore } from '../../store/config'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 const Home = () => {
@@ -38,30 +35,6 @@ const Home = () => {
       Link: '/rules'
     }
   ]
-
-  /* Estado para las notificaciones */
-  const [notifyOpen, setNotifyOpen] = useState(false)
-  const [numCount, setNumCount] = useState(null)
-
-  /* Cambiar estado de las notificaciones */
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
-  const { userInformation } = userInformationStore()
-
-  useEffect(() => {
-    const messageCount = async () => {
-      try {
-        const response = await countMessage(userInformation.id_usuario)
-        const res = response.data.result[0].num_message
-        setNumCount(res)
-      } catch (error) {}
-    }
-
-    messageCount()
-  }, [])
-
   return (
     <>
       <main className="flex h-screen w-full">
