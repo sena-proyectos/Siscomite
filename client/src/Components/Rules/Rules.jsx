@@ -4,7 +4,7 @@ import React, { useState } from 'react' // Importar React y useState
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
 import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react' // Importar componentes de Next UI
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Badge } from '@nextui-org/react' // Importar componentes de Next UI
 
 // Componente Rules
 const Rules = () => {
@@ -206,9 +206,11 @@ const Rules = () => {
             <></>
           ) : (
             <>
-              <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-              </section>
+            <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size='sm'>
+                    <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
+                      <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+                    </section>
+                  </Badge>
             </>
           )}
         </section>

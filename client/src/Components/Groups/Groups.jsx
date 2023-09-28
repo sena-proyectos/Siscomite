@@ -1,7 +1,7 @@
 /* Importaciones de modulos y componentes */
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Chip } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Badge } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
@@ -189,9 +189,11 @@ const Groups = () => {
               {notifyOpen ? (
                 <></>
               ) : (
-                <section className="bg-blue-200 sticky rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                  <i className="fi fi-ss-bell text-blue-400 p-[.3rem] " />
-                </section>
+                <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size="sm">
+                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
+                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+                  </section>
+                </Badge>
               )}
             </section>
           </header>

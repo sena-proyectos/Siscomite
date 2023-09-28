@@ -37,9 +37,9 @@ El proyecto `Siscomite` es un software diseñado para facilitar la gestión de s
 
 ## ✨ Características
 
-✔️ Responsivo;\
 ✔️ Viable;\
 ✔️ Uso institucional;\
+✔️ Envío de correos;\
 ✔️ Escalable;
 
 ## 🚀 Tecnologías
@@ -93,6 +93,8 @@ DB_PASSWORD=passwordRoot123 # Contraseña del usuario MySQL
 DB_HOST=localhost # Host del usuario MySQL
 DB_DATABASE=db_root # nombre de la base de datos MySQL
 DB_PORT=3306 # Puerto de conexión de SQL
+EMAIL_USERNAME=email@ejemplo.com # Correo electrónico para enviar emails
+EMAIL_PASSWORD=contraseña123 # Contraseña del correo electrónico
 ```
 
 ## 📃 Licencia
@@ -114,6 +116,7 @@ Este proyecto está bajo licencia del MIT. Para más detalles, mira el archivo [
 ## 🤝 Contribuciones
 
 - 👤 [@Lorenqg](https://github.com/lorenqg)
+- 👤 [@ConanGH-S](https://github.com/ConanGH-S)
 
 ¡Contribuciones, problemas y nuevas características son bienvenidas!
 

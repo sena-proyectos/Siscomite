@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
+import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab, Badge } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
@@ -252,9 +252,11 @@ const Create = () => {
                 <></>
               ) : (
                 <>
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem] " />
-                  </section>
+                <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size='sm'>
+                    <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
+                      <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
+                    </section>
+                  </Badge>
                 </>
               )}
             </section>

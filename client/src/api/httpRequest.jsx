@@ -149,7 +149,7 @@ export const getRequest = () => {
 export const getRequestById = (idRequest) => {
   const URL = `${BaseUrl}${api}/solicitud/${idRequest}`
   const response = axios.get(URL)
-  
+
   return response
 }
 
@@ -157,7 +157,7 @@ export const getRequestById = (idRequest) => {
 export const getRequestByIdUser = (userID) => {
   const URL = `${BaseUrl}${api}/solicitudByIdUser/${userID}`
   const response = axios.get(URL)
-  
+
   return response
 }
 
@@ -197,6 +197,20 @@ export const updateUser = (userID, data) => {
 export const usersById = (userID) => {
   const URL = `${BaseUrl}${api}/users/${userID}`
   const response = axios.get(URL)
+
+  return response
+}
+
+export const getTeacher = () => {
+  const URL = `${BaseUrl}${api}/getTeacher`
+  const response = axios.get(URL)
+
+  return response
+}
+
+export const sendEmail = (data) => {
+  const URL = `${BaseUrl}${api}/sendEmail`
+  const response = axios.post(URL, data)
 
   return response
 }
