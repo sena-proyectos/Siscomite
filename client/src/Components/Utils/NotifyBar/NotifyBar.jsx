@@ -1,112 +1,82 @@
-import './NotifyBar.css'
-import { Divider } from '@nextui-org/react'
-import { useState, useEffect } from 'react' // Asegúrate de importar useState desde React
-import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
-import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { getMessageById, sendEmail, updateStateMessage } from '../../../api/httpRequest'
-import { Link } from 'react-router-dom'
-import { userInformationStore } from '../../../store/config'
+import './NotifyBar.css'; // Importa un archivo de estilo NotifyBar.css.
+import { Divider } from '@nextui-org/react'; // Importa el componente Divider de una biblioteca externa.
+import { useState, useEffect } from 'react'; // Importa los hooks useState y useEffect de React.
+import Cookie from 'js-cookie'; // Importa el módulo Cookie para trabajar con cookies.
+import jwt from 'jwt-decode'; // Importa el módulo jwt-decode para decodificar tokens JWT.
+import { getMessageById, sendEmail, updateStateMessage } from '../../../api/httpRequest'; // Importa funciones para contar mensajes, obtener mensajes por ID, enviar correos electrónicos y actualizar estados de mensajes.
+import { Link } from 'react-router-dom'; // Importa el componente Link de React Router para crear enlaces.
+import { userInformationStore } from '../../../store/config'; // Importa una función para obtener información del usuario desde una tienda.
 
-const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
+const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate(); // Función para obtener el número de días en un mes.
 
 export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
-  const currentDate = new Date()
-  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
-  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
-  const [message, setMessage] = useState([])
+  const currentDate = new Date();
+  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear()); // Estado para el año actual.
+  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth()); // Estado para el mes actual.
+  const [message, setMessage] = useState([]); // Estado para almacenar mensajes.
 
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay(); // Día de la semana en que comienza el mes.
 
-  const daysCount = daysInMonth(currentYear, currentMonth)
-  const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1)
+  const daysCount = daysInMonth(currentYear, currentMonth); // Número de días en el mes.
+  const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1); // Arreglo de días del mes.
 
-  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']; // Nombres de los meses.
 
+  // Función para retroceder un mes.
   const handlePrevMonth = () => {
-    let newMonth = currentMonth - 1
-    let newYear = currentYear
+    let newMonth = currentMonth - 1;
+    let newYear = currentYear;
     if (newMonth < 0) {
-      newMonth = 11
-      newYear--
+      newMonth = 11;
+      newYear--;
     }
-    setCurrentMonth(newMonth)
-    setCurrentYear(newYear)
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
   }
 
+  // Función para avanzar un mes.
   const handleNextMonth = () => {
-    let newMonth = currentMonth + 1
-    let newYear = currentYear
+    let newMonth = currentMonth + 1;
+    let newYear = currentYear;
     if (newMonth > 11) {
-      newMonth = 0
-      newYear++
+      newMonth = 0;
+      newYear++;
     }
-    setCurrentMonth(newMonth)
-    setCurrentYear(newYear)
+    setCurrentMonth(newMonth);
+    setCurrentYear(newYear);
   }
-  const { userInformation } = userInformationStore()
+
+  const { userInformation } = userInformationStore(); // Obtiene información del usuario desde una tienda.
 
   useEffect(() => {
     if (isOpen) {
+      // Función para obtener mensajes si el componente está abierto.
       const fetchData = async () => {
         try {
-          const response = await getMessageById(userInformation.id_usuario)
-          const res = response.data.result
-          console.log(res);
-          setMessage(res)
-
-          // handleNewNotification()
-          // sendMail()
+          const response = await getMessageById(userInformation.id_usuario); // Obtiene mensajes por ID de usuario.
+          const res = response.data.result;
+          setMessage(res); // Almacena los mensajes en el estado.
         } catch (error) {
-          // Manejar errores
+          // Maneja errores si ocurren.
         }
       }
-      fetchData()
+      fetchData(); // Llama a la función fetchData inmediatamente.
+
+      const intervalId = setInterval(fetchData, 100); // Establece un intervalo para actualizar los mensajes cada 100 milisegundos.
+
+      return () => {
+        clearInterval(intervalId); // Limpia el intervalo cuando el componente se desmonta.
+      }
     }
-  }, [isOpen])
+  }, [isOpen]); // Se ejecuta cuando isOpen cambia.
 
-  const sendMail = async () => {
-    // Verifica si hay un último mensaje y no se ha enviado un correo
-    const token = Cookie.get('token')
-    const information = jwt(token)
-    const dataValue = { to: information.email_sena, subject: 'Novedad en las solicitudes a comité', text: latestMessage.mensaje }
-    try {
-      await sendEmail(dataValue)
-    } catch (error) {}
-  }
-
+  /* Actualizar el estado del mensaje al hacer clic */
   const changeMessageState = async (idMessage) => {
     try {
-      await updateStateMessage(idMessage)
-    } catch (error) {}
-  }
-
-  // Función para mostrar una notificación
-  function showNotification(title, options) {
-    // Verificamos si el navegador admite notificaciones
-    if (!('Notification' in window)) {
-      console.log('Este navegador no admite notificaciones.')
-      return
+      await updateStateMessage(idMessage); // Actualiza el estado del mensaje al hacer clic.
+    } catch (error) {
+      // Maneja errores si ocurren.
     }
-
-    // Verificamos si el usuario ha permitido las notificaciones
-    if (Notification.permission === 'granted') {
-      // Si el usuario ha permitido las notificaciones, mostramos una notificación
-      new Notification(title, options)
-    } else if (Notification.permission !== 'denied') {
-      // Si el usuario no ha decidido sobre las notificaciones, solicitamos permiso
-      Notification.requestPermission().then(function (permission) {
-        if (permission === 'granted') {
-          // Si se concede el permiso, mostramos la notificación
-          new Notification(title, options)
-        }
-      })
-    }
-  }
-
-  // En tu componente Notify, después de recibir una nueva notificación
-  // Puedes llamar a la función showNotification para mostrarla en el escritorio
-  const handleNewNotification = () => {
-    showNotification('Nuevo mensaje', { body: message[0].mensaje })
   }
 
   return (
@@ -165,10 +135,10 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
                 </div>
               </Link>
             ))}
-          <Divider />
+          <Divider /> {/* Agrega un separador. */}
         </section>
         {message.length === 0 && <h1 className="h-full max-h-[45vh] grid items-center text-center text-gray-500 ">No tienes mensajes disponibles</h1>}
       </section>
     </main>
-  )
+  );
 }
