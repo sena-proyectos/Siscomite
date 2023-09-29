@@ -9,7 +9,9 @@ import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { changeStateGroups, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { Toaster, toast } from 'sonner'
+import sw from 'sweetalert2'
 
 const Students = () => {
   // Obtener el parámetro id_ficha desde la URL
@@ -103,6 +105,32 @@ const Students = () => {
     setIdStudent(id)
   }
 
+  const StateGroups = () => {
+    try {
+      sw.fire({
+        title: '¿Estás seguro que quieres desactivar esta ficha?',
+        text: 'Estos cambios serán irreversibles',
+        showDenyButton: true,
+        confirmButtonText: 'Desactivar',
+        denyButtonText: `Cancelar`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await changeStateGroups(id_ficha)
+          const message = response.data.message
+          toast.success('Genial!!', {
+            description: message
+          })
+          navigate('/groups')
+        }
+      })
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
+    }
+  }
+
   return (
     <>
       {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
@@ -111,13 +139,14 @@ const Students = () => {
 
       <main className="flex h-screen">
         <Sliderbar />
+        <Toaster position="top-right" closeButton richColors />
         <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] flex items-center justify-center">
             <section className="w-[40%] max-md:max-w-[10rem]">
               <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
             </section>
-            <Button color="danger" variant="bordered">
-              Deshabilitar
+            <Button color="danger" variant="bordered" onClick={StateGroups}>
+              Deshabilitar ficha
             </Button>
           </header>
 

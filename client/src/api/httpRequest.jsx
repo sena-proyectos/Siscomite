@@ -106,6 +106,13 @@ export const getFichasById = (id) => {
 
   return response
 }
+/* change state groups */
+export const changeStateGroups = (idgroups) => {
+  const URL = `${BaseUrl}${api}/stateFicha/${idgroups}`
+  const response = axios.patch(URL)
+
+  return response
+}
 
 /* Create apprentices */
 export const createApprentices = (data) => {
