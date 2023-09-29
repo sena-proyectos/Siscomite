@@ -1,12 +1,11 @@
 /* Importaciones de modulos y componentes */
 import './Home.css'
-import { useState } from 'react'
 import { Card } from '../Utils/Card/Card'
 import { Button, Divider, Badge } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 const Home = () => {
   /* matriz para las cards de acceso rapido del home */
@@ -36,15 +35,6 @@ const Home = () => {
       Link: '/rules'
     }
   ]
-
-  /* Estado para las notificaciones */
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
-  /* Cambiar estado de las notificaciones */
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
   return (
     <>
       <main className="flex h-screen w-full">
@@ -111,8 +101,10 @@ const Home = () => {
               </section>
               <Footer />
             </section>
-            <section className="fixed  w-[20rem] right-0">
-              <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+            <section className="fixed right-[15%] top-[2.5rem]">
+              <section className=" cursor-pointer ">
+                <NotifyBadge />
+              </section>
             </section>
           </section>
         </section>

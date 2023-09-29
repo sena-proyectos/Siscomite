@@ -1,31 +1,26 @@
-import './NotifyBar.css'
-import { Divider } from '@nextui-org/react'
-import { useState, useEffect } from 'react' // Asegúrate de importar useState desde React
-import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
-import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { getMessageById, sendEmail, updateStateMessage } from '../../../api/httpRequest'
-import { Link } from 'react-router-dom'
+import './NotifyBar.css' // Importa un archivo de estilo NotifyBar.css.
+import { Divider } from '@nextui-org/react' // Importa el componente Divider de una biblioteca externa.
+import { useState, useEffect } from 'react' // Importa los hooks useState y useEffect de React.
+import { getMessageById, sendEmail, updateStateMessage } from '../../../api/httpRequest' // Importa funciones para contar mensajes, obtener mensajes por ID, enviar correos electrónicos y actualizar estados de mensajes.
+import { useNavigate } from 'react-router-dom' // Importa el componente Link de React Router para crear enlaces.
+import { userInformationStore, requestStore } from '../../../store/config' // Importa una función para obtener información del usuario desde una tienda.
 
-const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate()
+const daysInMonth = (year, month) => new Date(year, month + 1, 0).getDate() // Función para obtener el número de días en un mes.
 
 export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
   const currentDate = new Date()
-  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear())
-  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth())
-  const [message, setMessage] = useState([])
+  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear()) // Estado para el año actual.
+  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth()) // Estado para el mes actual.
+  const [message, setMessage] = useState([]) // Estado para almacenar mensajes.
 
-  const [isLoading, setIsLoading] = useState(true)
+  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay() // Día de la semana en que comienza el mes.
 
-  const [hasSentEmail, setHasSentEmail] = useState(false) // Nuevo estado para controlar si se ha enviado el correo
-  const [newMessageCount, setNewMessageCount] = useState(0)
-  const [latestMessage, setLatestMessage] = useState(null)
+  const daysCount = daysInMonth(currentYear, currentMonth) // Número de días en el mes.
+  const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1) // Arreglo de días del mes.
 
-  const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay()
+  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'] // Nombres de los meses.
 
-  const daysCount = daysInMonth(currentYear, currentMonth)
-  const daysArray = Array.from({ length: daysCount }, (_, i) => i + 1)
-
-  const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+  const navigate = useNavigate()
 
   // Función que maneja el evento de hacer clic en el botón para retroceder al mes anterior.
   const handlePrevMonth = () => {
@@ -51,86 +46,39 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
     setCurrentYear(newYear)
   }
 
+  const { userInformation } = userInformationStore() // Obtiene información del usuario desde una tienda.
+  const { setRequestInformation } = requestStore() // Obtiene información del usuario desde una tienda.
+
   useEffect(() => {
-    const fetchData = async () => {
-      const token = Cookie.get('token')
-      const information = jwt(token)
-      const userID = information.id_usuario
-
-      try {
-        const response = await getMessageById(userID)
-        const res = response.data.result
-        setMessage(res)
-
-        if (res.length > message.length) {
-          // Si hay nuevos mensajes, actualiza el estado
-          const newMessages = res.slice(message.length)
-          setNewMessageCount(newMessages.length)
-          setLatestMessage(newMessages[0])
-          setHasSentEmail(false)
+    if (isOpen) {
+      // Función para obtener mensajes si el componente está abierto.
+      const fetchData = async () => {
+        try {
+          const response = await getMessageById(userInformation.id_usuario) // Obtiene mensajes por ID de usuario.
+          const res = response.data.result
+          setMessage(res) // Almacena los mensajes en el estado.
+        } catch (error) {
+          // Maneja errores si ocurren.
         }
-        handleNewNotification()
-        // sendMail()
-      } catch (error) {
-        // Manejar errores
-      } finally {
-        setIsLoading(false)
+      }
+      fetchData() // Llama a la función fetchData inmediatamente.
+
+      const intervalId = setInterval(fetchData, 100) // Establece un intervalo para actualizar los mensajes cada 100 milisegundos.
+
+      return () => {
+        clearInterval(intervalId) // Limpia el intervalo cuando el componente se desmonta.
       }
     }
+  }, [isOpen]) // Se ejecuta cuando isOpen cambia.
 
-    const intervalId = setInterval(fetchData, 2000)
-
-    return () => clearInterval(intervalId)
-  }, [message])
-
-  const sendMail = async () => {
-    if (latestMessage && !hasSentEmail) {
-      // Verifica si hay un último mensaje y no se ha enviado un correo
-      const token = Cookie.get('token')
-      const information = jwt(token)
-      const dataValue = { to: information.email_sena, subject: 'Novedad en las solicitudes a comité', text: latestMessage.mensaje }
-      try {
-        await sendEmail(dataValue)
-        setHasSentEmail(true) // Marcar que se ha enviado el correo
-      } catch (error) {}
-    }
-  }
-
-  const changeMessageState = async (idMessage) => {
+  /* Actualizar el estado del mensaje al hacer clic */
+  const changeMessageState = async (idMessage, idRequest) => {
+    setRequestInformation({ id_solicitud: idRequest })
+    navigate('/requests')
     try {
-      await updateStateMessage(idMessage)
-    } catch (error) {}
-  }
-
-  // Función para mostrar una notificación
-  function showNotification(title, options) {
-    // Verificamos si el navegador admite notificaciones
-    if (!('Notification' in window)) {
-      console.log('Este navegador no admite notificaciones.')
-      return
-    }
-
-    // Verificamos si el usuario ha permitido las notificaciones
-    if (Notification.permission === 'granted') {
-      // Si el usuario ha permitido las notificaciones, mostramos una notificación
-      new Notification(title, options)
-    } else if (Notification.permission !== 'denied') {
-      // Si el usuario no ha decidido sobre las notificaciones, solicitamos permiso
-      Notification.requestPermission().then(function (permission) {
-        if (permission === 'granted') {
-          // Si se concede el permiso, mostramos la notificación
-          new Notification(title, options)
-        }
-      })
-    }
-  }
-
-  // En tu componente Notify, después de recibir una nueva notificación
-  // Puedes llamar a la función showNotification para mostrarla en el escritorio
-  const handleNewNotification = () => {
-    if (newMessageCount > 0 && latestMessage) {
-      showNotification('Nuevo mensaje', { body: latestMessage.mensaje })
-      setNewMessageCount(0) // Marca los nuevos mensajes como manejados
+      await updateStateMessage(idMessage); // Actualiza el estado del mensaje al hacer clic.
+    } catch (error) {
+      // Maneja errores si ocurren.
     }
   }
 
@@ -181,9 +129,8 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
           {message &&
             message.length > 0 &&
             message.map((item) => (
-              <Link to={`/requests/${item.id_solicitud}`} key={item.id_mensaje}>
-                <div onClick={onNotifyClic}>
-                  <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={() => changeMessageState(item.id_mensaje)}>
+                <div onClick={onNotifyClic} key={item.id_mensaje}>
+                  <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={() => changeMessageState(item.id_mensaje, item.id_solicitud)}>
                     <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
                     <section className="items-center">
                       <p className="font-semibold block">Cambios en la solicitud</p>
@@ -191,9 +138,8 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
                     </section>
                   </section>
                 </div>
-              </Link>
             ))}
-          <Divider />
+          <Divider /> {/* Agrega un separador. */}
         </section>
         {message.length === 0 && <h1 className="h-full max-h-[45vh] grid items-center text-center text-gray-500 ">No tienes mensajes disponibles</h1>}
       </section>

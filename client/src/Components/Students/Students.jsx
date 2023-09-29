@@ -1,12 +1,12 @@
 import './Students.css'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Search } from '../Search/Search'
-import { Card, CardHeader, CardBody, Button, Pagination, Badge } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import { useEffect, useState } from 'react'
 import { ModalAddStudents } from '../Utils/Modals/ModalAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { useParams, useNavigate } from 'react-router-dom'
 import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
@@ -23,9 +23,6 @@ const Students = () => {
   const [apprenticesSearch, setApprenticesSearch] = useState([])
   const [error, setError] = useState(null)
   const [reloadFetch, setReloadFetch] = useState(false)
-
-  // Estado para controlar la apertura de la notificación
-  const [notifyOpen, setNotifyOpen] = useState(false)
 
   // Número de elementos por página
   const itemsPerPage = 9
@@ -92,10 +89,6 @@ const Students = () => {
       setError(message)
       setApprenticesSearch([])
     }
-  }
-
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
   }
 
   //Abrir Modal para agregar estudiantes
@@ -216,7 +209,11 @@ const Students = () => {
               </p>
             </button>
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+          <section className="fixed right-[10%] top-[2rem]">
+            <section className=" cursor-pointer ">
+              <NotifyBadge />
+            </section>
+          </section>
           <Footer />
         </section>
       </main>

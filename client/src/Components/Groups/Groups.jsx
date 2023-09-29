@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react'
 import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Badge, Chip } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
 import { getFichas } from '../../api/httpRequest'
+import { fichaInformationStore } from '../../store/config'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import './Groups.css'
 
 /* Definicion del componente */
@@ -83,14 +84,7 @@ const Groups = () => {
   const modalAddGroups = () => {
     setModalGroups(!modalGroups)
   }
-
-  // Barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
+ 
   // .................Tabla............
   // Estado para controlar la visibilidad de la tabla y las cards
   const [isCardVisible, setIsCardVisible] = useState(true)
@@ -184,17 +178,6 @@ const Groups = () => {
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
               <Search ficha filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} searchStudent={searchGroupsByName} searchResults={searchResults} searchValue={searchValue} selectedEstado={selectedEstado} setSelectedEstado={setSelectedEstado} setSelectedJornada={setSelectedJornada} setSelectedEtapa={setSelectedEtapa} />
-            </section>
-            <section className="mr-[80%] pb-[.7rem] cursor-pointer">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size="sm">
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                  </section>
-                </Badge>
-              )}
             </section>
           </header>
           <section className="flex justify-center items-center mt-[16px]">
@@ -323,7 +306,11 @@ const Groups = () => {
                 Agregar fichas
               </p>
             </button>
-            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+            <section className="fixed right-[22%] top-[2rem]">
+              <section className=" cursor-pointer ">
+                <NotifyBadge />
+              </section>
+            </section>
           </section>
           <Footer />
         </section>

@@ -177,6 +177,14 @@ export const getMessageById = (userID) => {
   return response
 }
 
+/* get messages */
+export const countMessage = (userID) => {
+  const URL = `${BaseUrl}${api}/countMessageId/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}
+
 /* update message state */
 export const updateStateMessage = (messageID) => {
   const URL = `${BaseUrl}${api}/updateMessageState/${messageID}`
@@ -201,13 +209,15 @@ export const usersById = (userID) => {
   return response
 }
 
+/* get teachers */
 export const getTeacher = () => {
-  const URL = `${BaseUrl}${api}/getTeacher`
+  const URL = `${BaseUrl}${api}/teachers`
   const response = axios.get(URL)
 
   return response
 }
 
+/* send email */
 export const sendEmail = (data) => {
   const URL = `${BaseUrl}${api}/sendEmail`
   const response = axios.post(URL, data)

@@ -3,8 +3,9 @@ import { ViewPdf } from '../ViewPDF/ViewPDF' // Importar el componente ViewPdf
 import React, { useState } from 'react' // Importar React y useState
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Badge } from '@nextui-org/react' // Importar componentes de Next UI
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Textarea, Button, Input, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter } from '@nextui-org/react' // Importar componentes de Next UI
+
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 // Componente Rules
 const Rules = () => {
@@ -76,14 +77,6 @@ const Rules = () => {
       setIsLoading(false)
       setIsEditModalOpen(false)
     }, 2000)
-  }
-
-  // Barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
-  // Función para alternar la visibilidad de la barra de notificaciones
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
   }
 
   return (
@@ -201,19 +194,6 @@ const Rules = () => {
 
       <main className="h-screen flex">
         <Sliderbar />
-        <section className="absolute left-[34%] mt-[2rem] cursor-pointer ">
-          {notifyOpen ? (
-            <></>
-          ) : (
-            <>
-            <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size='sm'>
-                    <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                      <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                    </section>
-                  </Badge>
-            </>
-          )}
-        </section>
         <section className="w-full h-screen overflow-auto">
           <section className="grid h-screen grid-cols-3 ">
             <section className="grid place-items-center">
@@ -226,7 +206,11 @@ const Rules = () => {
               <ViewPdf />
             </section>
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
+          <section className="fixed left-[24%] top-[2rem]">
+            <section className=" cursor-pointer ">
+              <NotifyBadge />
+            </section>
+          </section>
           <Footer />
         </section>
       </main>
