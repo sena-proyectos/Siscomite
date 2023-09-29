@@ -84,7 +84,7 @@ const Groups = () => {
   const modalAddGroups = () => {
     setModalGroups(!modalGroups)
   }
- 
+
   // .................Tabla............
   // Estado para controlar la visibilidad de la tabla y las cards
   const [isCardVisible, setIsCardVisible] = useState(true)
@@ -126,41 +126,39 @@ const Groups = () => {
   const [selectedJornada, setSelectedJornada] = useState('')
   const [selectedEtapa, setSelectedEtapa] = useState('')
 
-
   const searchGroupsByName = (searchValue) => {
-    setSearchValue(searchValue);
-  
+    setSearchValue(searchValue)
+
     // Filtrar las solicitudes según el nombre, el número de ficha y el estado seleccionado
     const filteredResults = fichas.filter((item) => {
-      const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase());
-      const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString());
-      const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada;
-      const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa;
-      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado;
-  
-      return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches;
-    });
-  
+      const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
+      const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
+      const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
+      const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
+      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+
+      return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
+    })
+
     // Ordenar la lista de resultados en función del estado sortOrder
     const sortedResults = [...filteredResults].sort((a, b) => {
-      const nameA = a.nombre_programa.toLowerCase();
-      const nameB = b.nombre_programa.toLowerCase();
-  
-      if (sortOrder === "asc") {
-        return nameA.localeCompare(nameB);
+      const nameA = a.nombre_programa.toLowerCase()
+      const nameB = b.nombre_programa.toLowerCase()
+
+      if (sortOrder === 'asc') {
+        return nameA.localeCompare(nameB)
       } else {
-        return nameB.localeCompare(nameA);
+        return nameB.localeCompare(nameA)
       }
-    });
-  
-    setSearchResults(sortedResults);
-  };
-  
+    })
+
+    setSearchResults(sortedResults)
+  }
 
   // Filtrar las solicitudes por nombre, estado y jornada
   const filteredGroups = visibleCards.filter((item) => {
     const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
-    const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString());
+    const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
     const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
     const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
     const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
@@ -177,7 +175,22 @@ const Groups = () => {
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
-              <Search ficha filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} searchStudent={searchGroupsByName} searchResults={searchResults} searchValue={searchValue} selectedEstado={selectedEstado} setSelectedEstado={setSelectedEstado} setSelectedJornada={setSelectedJornada} setSelectedEtapa={setSelectedEtapa} />
+              <Search
+                ficha
+                filtro={filtroVisible}
+                placeholder={'Buscar ficha'}
+                icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
+                searchStudent={searchGroupsByName}
+                searchResults={searchResults}
+                searchValue={searchValue}
+                selectedEstado={selectedEstado}
+                setSelectedEstado={setSelectedEstado}
+                setSelectedJornada={setSelectedJornada}
+                setSelectedEtapa={setSelectedEtapa}
+              />
+            </section>
+            <section className="w-full h-full flex items-center justify-center">
+                <NotifyBadge />
             </section>
           </header>
           <section className="flex justify-center items-center mt-[16px]">
@@ -306,11 +319,6 @@ const Groups = () => {
                 Agregar fichas
               </p>
             </button>
-            <section className="fixed right-[22%] top-[2rem]">
-              <section className=" cursor-pointer ">
-                <NotifyBadge />
-              </section>
-            </section>
           </section>
           <Footer />
         </section>

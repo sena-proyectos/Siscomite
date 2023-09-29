@@ -233,16 +233,13 @@ const Create = () => {
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
       <section className="w-full overflow-auto">
-        <section className="fixed z-20 w-[20rem] right-0">
-          <section className="fixed right-[12%] top-[1rem]">
-            <section className=" cursor-pointer ">
+        <section className="fixed z-20 w-[20rem] right-0"></section>
+        <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
+          <section className="flex justify-center w-[90%]">
+            <h1 className="text-2xl font-semibold">Crear solicitud</h1>
+            <section className="absolute right-[20%] flex justify-center z-20">
               <NotifyBadge />
             </section>
-          </section>
-        </section>
-        <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
-          <section className="flex">
-            <h1 className="text-2xl font-semibold">Crear solicitud</h1>
           </section>
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>

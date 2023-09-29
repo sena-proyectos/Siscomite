@@ -84,7 +84,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
 
   return (
     <main>
-      <section className={`p-[1rem] h-[95vh] rounded-2xl m-[1rem] fixed top-0 right-0 w-[20rem] bg-white shadow-md  overflow-auto ${isOpen ? 'visible' : 'out'} `}>
+      <section className={`p-[1rem] h-[95vh] rounded-2xl m-[1rem] fixed top-0 right-0 w-[20rem] bg-white shadow-md overflow-auto ${isOpen ? 'visible' : 'out'}`}>
         <header className="flex">
           <section className="cursor-pointer" onClick={toggleNotify}>
             <i className="fi fi-sr-angle-circle-right text-xl"></i>

@@ -42,23 +42,10 @@ const Home = () => {
         <section className="w-full overflow-auto ">
           <section className="flex max-w-[100%]">
             <section className="w-full h-screen ">
-              <header className="mt-8 grid grid-cols-2-column-table ">
-                <section className="flex justify-end">
-                  <h1 className="text-[2rem] font-extrabold   border-b-[1.5px] border-[#0799b6]  ">Siscomite</h1>
-                </section>
-                <section className="pb-[.4rem] flex justify-center  ">
-                  {notifyOpen ? (
-                    <></>
-                  ) : (
-                    <>
-                      <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size="sm">
-                        <Button className="muve" radius="full" variant="flat" color="primary" onClick={toggleNotify}>
-                          Mensajes
-                          <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                        </Button>
-                      </Badge>
-                    </>
-                  )}
+              <header className="mt-8 grid grid-cols-2-column-table place-items-end">
+                <h1 className=" text-[2rem] font-extrabold border-b-[1.5px] border-[#0799b6]   ">Siscomite</h1>
+                <section className="w-full h-full flex justify-center items-center">
+                  <NotifyBadge />
                 </section>
               </header>
 
@@ -98,13 +85,9 @@ const Home = () => {
                     </section>
                   </section>
                 </section>
+                
               </section>
               <Footer />
-            </section>
-            <section className="fixed right-[15%] top-[2.5rem]">
-              <section className=" cursor-pointer ">
-                <NotifyBadge />
-              </section>
             </section>
           </section>
         </section>

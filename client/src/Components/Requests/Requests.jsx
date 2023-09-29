@@ -241,18 +241,8 @@ const Requests = () => {
                 setSelectedDateFilter={setSelectedDateFilter}
               />
             </section>
-            <section className="mr-[80%] pb-[.4rem] cursor-pointer">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <>
-                  <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size='sm'>
-                    <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                      <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                    </section>
-                  </Badge>
-                </>
-              )}
+            <section className="w-full h-full flex justify-center items-center">
+              <NotifyBadge />
             </section>
           </header>
 
@@ -282,12 +272,7 @@ const Requests = () => {
               </TableBody>
             </Table>
             <section className="grid place-items-center w-full mt-[.5rem] ">
-              <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />
-            </section>
-            <section className="fixed right-[22%] top-[2rem]">
-              <section className=" cursor-pointer ">
-                <NotifyBadge />
-              </section>
+              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />
             </section>
           </section>
           <Footer />

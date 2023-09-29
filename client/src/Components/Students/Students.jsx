@@ -120,15 +120,6 @@ const Students = () => {
             <Button color="danger" variant="bordered">
               Deshabilitar
             </Button>
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <Badge onClick={toggleNotify} content="99" shape="circle" color="danger" size="sm">
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                  </section>
-                </Badge>
-              )}
             </section>
           </header>
 
