@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Card, CardHeader, CardBody, CardFooter, Divider, Input, Button } from '@nextui-org/react'
 
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { updateUser, usersById } from '../../api/httpRequest'
+import { updateUser, usersById, stateUser } from '../../api/httpRequest'
 
 import { Toaster, toast } from 'sonner'
+import sw from 'sweetalert2'
 
 const Setting = () => {
-  // Funcion para ver el estado del botón de deactivar cuenta
-  const [activo, setActivo] = useState(true)
+  // Estado para ver la informacion del usuario
   const [information, setInformation] = useState([])
 
   const [emailSena, setEmailSena] = useState(null)
@@ -20,6 +21,8 @@ const Setting = () => {
   const [telefonoFijo, setTelefonoFijo] = useState(null)
   const [contrasena, setContrasena] = useState(null)
   const [nuevaContrasena, setNuevaContrasena] = useState(null)
+
+  const navigate = useNavigate()
 
   // Campo para cambiar si la contraseña es visible o no
   // Vieja contraseña
@@ -37,7 +40,26 @@ const Setting = () => {
 
   // Cambiar el estado el botón
   const handleClick = () => {
-    setActivo(!activo) // Cambia el estado de activo cada vez que se hace clic
+    try {
+      sw.fire({
+        title: '¿Estás seguro que quieres deshabilitar tu cuenta?',
+        text: 'Estos cambios serán irreversibles',
+        showDenyButton: true,
+        confirmButtonText: 'Deshabilitar',
+        denyButtonText: `Cancelar`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await stateUser(information.id_usuario)
+          const message = response.data.message
+          toast.success('Genial!!', {
+            description: message
+          })
+          setTimeout(() => {
+            navigate('/')
+          }, 2000)
+        }
+      })
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -97,8 +119,8 @@ const Setting = () => {
                     <p className="text-small text-default-500">{information.email_sena}</p>
                   </samp>
                 </section>
-                <Button onClick={handleClick} className={`px-4 py-2 text-white ${activo ? 'bg-red-200 text-red-700' : 'bg-green-200 text-green-700'}`}>
-                  {activo ? 'Desactivar cuenta' : 'Activar cuenta'}
+                <Button onClick={handleClick} className={`px-4 py-2 bg-red-200 text-red-700 `}>
+                  Desactivar cuenta
                 </Button>
               </CardHeader>
               <Divider className="bg-blue-500" />

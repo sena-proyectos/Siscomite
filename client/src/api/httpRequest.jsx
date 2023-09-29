@@ -11,6 +11,14 @@ export const getUsers = () => {
   return response
 }
 
+/* update state account user */
+export const stateUser = (userID) => {
+  const URL = `${BaseUrl}${api}/stateUser/${userID}`
+  const response = axios.patch(URL)
+
+  return response
+}
+
 /* Get teachers */
 export const getTeachers = () => {
   const URL = `${BaseUrl}${api}/teachers`
