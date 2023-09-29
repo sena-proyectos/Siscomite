@@ -6,10 +6,13 @@ import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
-import { getFichas } from '../../api/httpRequest'
+import { changeStateGroups, getFichas } from '../../api/httpRequest'
 import { fichaInformationStore } from '../../store/config'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import './Groups.css'
+
+import { Toaster, toast } from 'sonner'
+import sw from 'sweetalert2'
 
 /* Definicion del componente */
 const Groups = () => {
@@ -119,6 +122,32 @@ const Groups = () => {
     setIsCardVisible((prevVisibility) => !prevVisibility)
   }
 
+  // funcion para deshabilitar ficha
+  const StateGroups = (id) => {
+    try {
+      sw.fire({
+        title: '¿Estás seguro que quieres desactivar esta ficha?',
+        text: 'Estos cambios serán irreversibles',
+        showDenyButton: true,
+        confirmButtonText: 'Desactivar',
+        denyButtonText: `Cancelar`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await changeStateGroups(id)
+          const message = response.data.message
+          toast.success('Genial!!', {
+            description: message
+          })
+        }
+      })
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
+    }
+  }
+
   // ---------------- Filtros --------------------
   const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
   const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
@@ -172,6 +201,7 @@ const Groups = () => {
 
       <main className="flex h-screen">
         <Sliderbar />
+        <Toaster position="top-right" closeButton richColors />
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
@@ -242,7 +272,7 @@ const Groups = () => {
                               placements="bottom"
                               showArrow={true}
                               content={
-                                <Button variant="light" color="danger">
+                                <Button variant="light" color="danger" onClick={() => StateGroups(card.id_ficha)}>
                                   Desactivar ficha
                                 </Button>
                               }

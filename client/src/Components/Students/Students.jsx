@@ -9,7 +9,9 @@ import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { changeStateGroups, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { Toaster, toast } from 'sonner'
+import sw from 'sweetalert2'
 
 const Students = () => {
   // Obtener el parámetro id_ficha desde la URL
@@ -103,6 +105,32 @@ const Students = () => {
     setIdStudent(id)
   }
 
+  const StateGroups = () => {
+    try {
+      sw.fire({
+        title: '¿Estás seguro que quieres desactivar esta ficha?',
+        text: 'Estos cambios serán irreversibles',
+        showDenyButton: true,
+        confirmButtonText: 'Desactivar',
+        denyButtonText: `Cancelar`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await changeStateGroups(id_ficha)
+          const message = response.data.message
+          toast.success('Genial!!', {
+            description: message
+          })
+          navigate('/groups')
+        }
+      })
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
+    }
+  }
+
   return (
     <>
       {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
@@ -111,13 +139,14 @@ const Students = () => {
 
       <main className="flex h-screen">
         <Sliderbar />
+        <Toaster position="top-right" closeButton richColors />
         <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
               <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} />
             </section>
             <section className="flex items-center mr-[50%]   cursor-pointer ">
-            <Button color="danger" variant="bordered">
+            <Button color="danger" variant="bordered" onClick={StateGroups}>
               Deshabilitar
             </Button>
             </section>

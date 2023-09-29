@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { updateFicha, createFicha, getFichas, getFichaBynumFicha, getFichasById } from '../controller/fichas.controller.js'
+import { updateFicha, createFicha, getFichas, getFichaBynumFicha, getFichasById, changeStateGroups } from '../controller/fichas.controller.js'
 import { createDataFicha, checkFichaExist } from '../middlewares/fichas.middleware.js'
 
 const router = Router()
@@ -17,5 +17,6 @@ router.post('/createFicha', createDataFicha, checkFichaExist, createFicha)
 
 // UPDATE FICHA
 router.patch('/updateFicha/:id', createDataFicha, checkFichaExist, updateFicha)
+router.patch('/stateFicha/:id', changeStateGroups)
 
 export default router

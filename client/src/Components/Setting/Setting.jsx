@@ -9,7 +9,7 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 import { updateUser, usersById, stateUser } from '../../api/httpRequest'
 
 import { Toaster, toast } from 'sonner'
-import { Test } from '../Test/Test'
+import sw from 'sweetalert2'
 
 const Setting = () => {
   // Estado para ver la informacion del usuario
