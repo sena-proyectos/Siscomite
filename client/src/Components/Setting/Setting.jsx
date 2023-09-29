@@ -120,7 +120,7 @@ const Setting = () => {
                   </samp>
                 </section>
                 <Button onClick={handleClick} className={`px-4 py-2 bg-red-200 text-red-700 `}>
-                  Desactivar cuenta
+                  Deshabilitar cuenta
                 </Button>
               </CardHeader>
               <Divider className="bg-blue-500" />

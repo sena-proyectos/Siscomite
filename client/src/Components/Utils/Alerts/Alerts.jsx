@@ -30,7 +30,9 @@ export const Alerts = ({ cerrarAlert, contenido, recordatorio, descargarExcel })
 
               {descargarExcel && (
                 <Button color="success" size="sm" variant="flat" className="">
-                  Descargar excel <i className="fi fi-rr-download"></i>
+                  <a href="../../../../public/Reporte de Aprendices.xlsx" download={'Reporte de Aprendices.xlsx'}>
+                    Descargar excel <i className="fi fi-rr-download"></i>
+                  </a>
                 </Button>
               )}
             </section>
