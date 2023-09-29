@@ -1,7 +1,7 @@
 /* Importaciones de modulos y componentes */
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Badge } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Badge, Chip } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
 import { Notify } from '../Utils/NotifyBar/NotifyBar'
@@ -277,7 +277,7 @@ const Groups = () => {
                 </section>
               ) : (
                 <section className="w-full flex justify-center mt-3">
-                  <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-full">
+                  <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-full overflow-auto">
                     <table className="w-full">
                       <thead className="text-default-500">
                         <tr className="grid grid-cols-6-column-table text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">

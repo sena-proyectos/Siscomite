@@ -27,7 +27,6 @@ export const validationGroups = Joi.object({
     nombre_programa: Joi.string().required().min(2).max(100),
     jornada: Joi.string().required().min(5).max(60),
     etapa_programa: Joi.string().required().min(5).max(35),
-    numero_trimestre: Joi.number().required().min(0).max(20),
   })
 
 // Validaciones para ingresar aprendices manualmente

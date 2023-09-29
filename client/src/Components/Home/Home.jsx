@@ -52,9 +52,11 @@ const Home = () => {
         <section className="w-full overflow-auto ">
           <section className="flex max-w-[100%]">
             <section className="w-full h-screen ">
-              <header className="mt-8 flex justify-center text-[23px]">
-                <h1 className=" text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
-                <section className="absolute right-[15%] cursor-pointer ">
+              <header className="mt-8 grid grid-cols-2-column-table ">
+                <section className="flex justify-end">
+                  <h1 className="text-[2rem] font-extrabold   border-b-[1.5px] border-[#0799b6]  ">Siscomite</h1>
+                </section>
+                <section className="pb-[.4rem] flex justify-center  ">
                   {notifyOpen ? (
                     <></>
                   ) : (
@@ -71,19 +73,19 @@ const Home = () => {
               </header>
 
               <section className="h-[85vh] flex flex-col items-center mt-[1rem]">
-                <section className="w-[95%] grid grid-cols-4 gap-x-10 place-items-center">
+                <section className="w-[95%] grid grid-cols-4 gap-x-10 place-items-center max-[900px]:grid-cols-2 max-[900px]:grid max-[500px]:grid-cols-1">
                   {data.map((x, i) => (
                     <Link to={x.Link} key={i}>
-                      <section className="h-[28%] mt-6 text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
+                      <section className="h-[28%] mt-6 max-[900px]:mt-20 text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
                         <Card inside image={x.image} titleHome={x.titleHome} descripciónHome={x.descripciónHome} />
                       </section>
                     </Link>
                   ))}
                 </section>
-                <section className="w-full mt-[5rem]">
+                <section className="w-full mt-[5rem] ">
                   <section className="flex flex-col items-center">
                     <p className="font-extrabold text-xl">Recomendaciones</p>
-                    <section className=" max-w-[70%] bg-white shadow-lg rounded-xl mt-2 p-[1rem]">
+                    <section className=" max-w-[70%] max-[900px]:max-w-[85%] bg-white shadow-lg rounded-xl mt-2 p-[1rem]">
                       <section className="grid place-items-center">
                         <p className="font-bold text-red-500 text-xl">
                           <i className="fi fi-rr-triangle-warning mr-[.5rem] text-red-500"></i>

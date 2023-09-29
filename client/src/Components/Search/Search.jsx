@@ -52,14 +52,14 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
 
   return (
     <form className="flex flex-col" method="get" onChange={handleSearch} onSubmit={evnt}>
-      <section className="flex items-center w-full">
-        <input type="text" name="buscar" className="shadow-md outline-none rounded-xl p-[10px] w-full" placeholder={placeholder} ref={search} autoComplete="off" />
+      <section className="flex items-center w-full  ">
+        <input type="text" name="buscar" className="shadow-md outline-none rounded-xl p-[10px] w-full max-[900px]:w-[20rem]" placeholder={placeholder} ref={search} autoComplete="off" />
         {icon}
       </section>
 
       {filtro && (
-        <section className="w-[27rem] z-10 animate-appearance-in absolute mt-[3rem]">
-          <section className="bg-white border grid shadow-md w-full rounded-xl p-[10px]">
+        <section className="w-[27rem]  z-10 animate-appearance-in absolute mt-[3rem]">
+          <section className="bg-white max-[900px]:w-[12rem] border grid shadow-md w-full rounded-xl p-[10px]">
             <p className="font-semibold pb-0 text-default-400">
               Filtrar por
               <i className="fi fi-sr-filter ml-2 text-xs" />
@@ -82,7 +82,7 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
                 </section>
               </Button>
               {request && (
-                <section className="w-full gap-5 grid grid-cols-2 px-[1rem]">
+                <section className="w-full gap-5 grid grid-cols-2 max-[900px]:flex max-[900px]:flex-col px-[1rem]">
                   <Dropdown>
                     <DropdownTrigger>
                       <Button size="sm" color="primary" variant="bordered" className="w-full">

@@ -23,7 +23,8 @@ module.exports = {
       },
       gridTemplateColumns: {
         '2-50-50': ' 50% 50%',
-        '6-column-table': '1fr 3fr 1fr 1fr 2fr 1fr'
+        '6-column-table': '1fr 3fr 1fr 1fr 2fr 1fr',
+        '2-column-table': '1fr, .8fr '
        },
     },
   },

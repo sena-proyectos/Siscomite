@@ -29,8 +29,7 @@ const Procedures = () => {
     <main className="flex h-secreen">
       <Sliderbar />
       <section className="w-full overflow-auto">
-        <header className="w-full flex right-0 relative bg-red-900">
-            <p className='text-4rem'>Hola</p>
+        <header className="w-full flex right-0 relative ">
           <section className=" pb-[.4rem]   cursor-pointer ">
             {notifyOpen ? (
               <></>

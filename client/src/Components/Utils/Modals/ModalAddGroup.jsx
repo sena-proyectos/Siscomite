@@ -49,7 +49,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
       if (error) {
         const errorDetails = error.details[0] // Obtén el primer detalle de error del objeto "error".
 
-        if (!numeroFicha || !jornada || !etapaPrograma || !numeroTrimestre || !idModalidad || !coordinadores) {
+        if (!numeroFicha || !jornada || !etapaPrograma || !idModalidad || !coordinadores) {
           toast.error('Todos los campos tienen que ser rellenados')
         } else if (errorDetails.path[0] === 'numero_ficha') {
           toast.error('El número de ficha debe ser un valor numérico')
