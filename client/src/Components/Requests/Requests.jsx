@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react' // Importar el hook de estado
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Badge } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
@@ -15,7 +15,7 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
-import { useParams } from 'react-router-dom'
+import { requestStore } from '../../store/config'
 
 // Componente Requests
 const Requests = () => {
@@ -95,14 +95,6 @@ const Requests = () => {
     setRequestId(id)
   }
 
-  // Estado para controlar la apertura de la barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
-  // Función para alternar la visibilidad de la barra de notificaciones
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
   useEffect(() => {
     /* Llamar la funcion de obtener solicitudes */
     getRequets()
@@ -146,15 +138,25 @@ const Requests = () => {
     return format(date, 'dd/MM/yyyy')
   }
 
-  useEffect(() => {
-    handleNotifyClick()
-  }, [])
+  const { requestInformation, setRequestInformation } = requestStore()
 
-  // Función para manejar los clics en las notificaciones
-  const { id_solicitud } = useParams()
-  const handleNotifyClick = () => {
-    setHighlightedRequestId(id_solicitud)
-  }
+  useEffect(() => {
+    const idSolicitud = requestInformation.id_solicitud
+
+    // Verifica si hay un id_solicitud en el requestInformation antes de aplicar la clase
+    if (idSolicitud) {
+      setHighlightedRequestId(idSolicitud)
+
+      // Aplica la lógica para resaltar la fila utilizando una referencia al elemento HTML
+      const highlightedRow = document.getElementById(`row-${idSolicitud}`)
+      if (highlightedRow) {
+        highlightedRow.classList.add('highlighted-row')
+
+        // Elimina el valor id_solicitud del estado después de usarlo
+      }
+      setRequestInformation({ id_solicitud: null })
+    }
+  }, [requestInformation])
 
   return (
     <>

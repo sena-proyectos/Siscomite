@@ -211,7 +211,7 @@ export const usersById = (userID) => {
 
 /* get teachers */
 export const getTeacher = () => {
-  const URL = `${BaseUrl}${api}/getTeacher`
+  const URL = `${BaseUrl}${api}/teachers`
   const response = axios.get(URL)
 
   return response

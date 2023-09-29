@@ -27,7 +27,7 @@ export const NotifyBadge = () => {
         const res = response.data.result[0].num_message // Obtiene el número actual de notificaciones.
 
         if (prevNumCount !== 0 && res > prevNumCount) {
-          sendMail() // Envía un correo electrónico.
+          // sendMail() // Envía un correo electrónico.
 
           // Muestra una notificación en el sistema operativo si es posible.
           if ('Notification' in window && Notification.permission === 'granted') {
