@@ -188,3 +188,22 @@ export const updateUserById = async (req, res) => {
     res.status(500).send({ message: 'Error al obtener el usuario' })
   }
 }
+
+/* Cambiar el estado de la cuenta */
+export const changeStateAccount = async (req, res) => {
+  const { estado } = req.body
+  const { id } = req.params
+
+  try {
+    const [result] = await pool.query('UPDATE usuarios SET estado = IFNULL(?, estado) WHERE id_usuario = ?', [estado, id])
+
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al usuario` })
+    } else {
+      res.status(200).send({ message: 'Cuenta deshabilitada correctamente' })
+    }
+  } catch (error) {
+    
+    res.status(500).send({ message: 'Error al deshabilitar el usuario' })
+  }
+}

@@ -101,6 +101,19 @@ export const comparePassword = async (req, res, next) => {
   }
 }
 
+/* validar si el usuario esta activo */
+export const validateUser = async (req, res, next) => {
+  const { numero_documento } = req.body
+  try {
+    const [validate] = await pool.query('SELECT estado FROM usuarios WHERE numero_documento = ?', numero_documento)
+    if (validate[0].estado === 'INACTIVO') return res.status(401).json({ message: 'No se puede iniciar sesión, su estado es inactivo, comuniquese con el administrador para volver a activar su cuenta' })
+
+    next()
+  } catch (error) {
+    return res.status(500).json({ message: 'Error inesperado' })
+  }
+}
+
 // Middleware para generar un token JWT después de iniciar sesión
 export const createToken = async (req, res, next) => {
   const { numero_documento } = req.body
