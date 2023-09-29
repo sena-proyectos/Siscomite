@@ -1,12 +1,11 @@
 /* Importaciones de modulos y componentes */
 import './Home.css'
-import { useState } from 'react'
 import { Card } from '../Utils/Card/Card'
-import { Button, Divider } from '@nextui-org/react'
+import { Button, Divider, Badge } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 const Home = () => {
   /* matriz para las cards de acceso rapido del home */
@@ -36,16 +35,6 @@ const Home = () => {
       Link: '/rules'
     }
   ]
-
-  /* Estado para las notificaciones */
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
-  /* Cambiar estado de las notificaciones */
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
-
   return (
     <>
       <main className="flex h-screen w-full">
@@ -55,18 +44,6 @@ const Home = () => {
             <section className="w-full h-screen ">
               <header className="mt-8 flex justify-center text-[23px]">
                 <h1 className=" text-[2rem] place-items-center font-extrabold border-b-[1.5px] border-[#0799b6]">Siscomite</h1>
-                <section className="absolute right-[15%] cursor-pointer ">
-                  {notifyOpen ? (
-                    <></>
-                  ) : (
-                    <>
-                      <Button className="muve" radius="full" variant="flat" color="primary" onClick={toggleNotify}>
-                        Mensajes
-                        <i className="fi fi-ss-bell pl-[.5rem]" />
-                      </Button>
-                    </>
-                  )}
-                </section>
               </header>
 
               <section className="h-[85vh] flex justify-center items-start">
@@ -86,7 +63,9 @@ const Home = () => {
                         <p className="text-sm">
                           Para poder agregar aprendices a una ficha en necesario descargar el excel y llenar los campos solicitados sin modificarlo, ya que este es el único formato que permite el progama.
                           <Button color="success" size="sm" variant="light" className="">
-                            Descargar excel <i className="fi fi-rr-download"></i>
+                            <a href="../../../public/Reporte de Aprendices.xlsx" download={'Reporte de Aprendices.xlsx'}>
+                              Descargar excel <i className="fi fi-rr-download"></i>
+                            </a>
                           </Button>
                         </p>
                       </section>
@@ -104,8 +83,10 @@ const Home = () => {
               </section>
               <Footer />
             </section>
-            <section className="fixed  w-[20rem] right-0">
-              <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
+            <section className="fixed right-[15%] top-[2.5rem]">
+              <section className=" cursor-pointer ">
+                <NotifyBadge />
+              </section>
             </section>
           </section>
         </section>

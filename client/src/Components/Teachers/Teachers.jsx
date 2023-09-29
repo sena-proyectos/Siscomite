@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Search } from '../Search/Search'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
-import { Button, Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { getTeacher } from '../../api/httpRequest'
 
@@ -38,7 +38,7 @@ const Teachers = () => {
       const res = response.data.result
       setTeacher(res)
     } catch (error) {
-      // console.log(error)
+      console.log(error)
     }
   }
 
@@ -69,17 +69,6 @@ const Teachers = () => {
         <header className="p-[1.5rem] flex justify-center items-center">
           <section className="w-[40%]">
             <Search filtro={filtroVisible} placeholder={'Buscar instructor'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
-          </section>
-          <section className="absolute right-[20%] cursor-pointer justify-center ">
-            {notifyOpen ? (
-              <></>
-            ) : (
-              <>
-                <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                  <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                </section>
-              </>
-            )}
           </section>
         </header>
         <section className=" flex justify-center">
@@ -119,7 +108,11 @@ const Teachers = () => {
         <section className="grid place-items-center pt-[1rem] mb-[2rem]">
           <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
         </section>
-        <Notify isOpen={notifyOpen} toggleNotify={toggleNotify}/>
+        <section className="fixed right-[22%] top-[2rem]">
+          <section className=" cursor-pointer ">
+            <NotifyBadge />
+          </section>
+        </section>
         <Footer />
       </section>
     </main>

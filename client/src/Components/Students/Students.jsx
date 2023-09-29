@@ -6,7 +6,7 @@ import { Footer } from '../Footer/Footer'
 import { useEffect, useState } from 'react'
 import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { useParams, useNavigate } from 'react-router-dom'
 import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
@@ -24,11 +24,8 @@ const Students = () => {
   const [error, setError] = useState(null)
   const [reloadFetch, setReloadFetch] = useState(false)
 
-  // Estado para controlar la apertura de la notificación
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
   // Número de elementos por página
-  const itemsPerPage = 9 
+  const itemsPerPage = 9
   const [activePage, setActivePage] = useState(1)
 
   // Calcula los datos a mostrar en la página actual
@@ -38,9 +35,8 @@ const Students = () => {
   const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
 
   const navigate = useNavigate()
-  const [isOpen, setIsOpen] = useState(false)
 
-    // Función para obtener los aprendices por ID de ficha
+  // Función para obtener los aprendices por ID de ficha
   const getApprentices = async () => {
     try {
       const response = await getApprenticesByIdFicha(id_ficha)
@@ -59,7 +55,7 @@ const Students = () => {
   }, [apprentices, reloadFetch])
 
   useEffect(() => {
-       // Obtener información de las fichas por ID de ficha
+    // Obtener información de las fichas por ID de ficha
     const getFichasByIdFicha = async () => {
       try {
         const response = await getFichasById(id_ficha)
@@ -75,7 +71,7 @@ const Students = () => {
     setActivePage(pageNumber)
   }
 
-    // Función para buscar aprendices
+  // Función para buscar aprendices
   const searchApprentices = async (nombres) => {
     const idFicha = id_ficha
     try {
@@ -93,10 +89,6 @@ const Students = () => {
       setError(message)
       setApprenticesSearch([])
     }
-  }
-
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
   }
 
   //Abrir Modal para agregar estudiantes
@@ -127,15 +119,6 @@ const Students = () => {
             <Button color="danger" variant="bordered">
               Deshabilitar
             </Button>
-            <section className="absolute right-[5%] cursor-pointer ">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <section className="bg-green-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                  <i className="fi fi-ss-bell text-green-400 p-[.3rem] mt-[]" />
-                </section>
-              )}
-            </section>
           </header>
 
           <section className=" flex justify-between px-[4rem] ">
@@ -215,7 +198,11 @@ const Students = () => {
               </p>
             </button>
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+          <section className="fixed right-[10%] top-[2rem]">
+            <section className=" cursor-pointer ">
+              <NotifyBadge />
+            </section>
+          </section>
           <Footer />
         </section>
       </main>

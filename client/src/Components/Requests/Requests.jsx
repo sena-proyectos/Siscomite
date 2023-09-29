@@ -5,7 +5,7 @@ import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sli
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
-import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
 import { getRequest, getRequestByIdUser } from '../../api/httpRequest'
@@ -15,7 +15,7 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
-import { useParams } from 'react-router-dom'
+import { requestStore } from '../../store/config'
 
 // Componente Requests
 const Requests = () => {
@@ -95,14 +95,6 @@ const Requests = () => {
     setRequestId(id)
   }
 
-  // Estado para controlar la apertura de la barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
-  // Función para alternar la visibilidad de la barra de notificaciones
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
   useEffect(() => {
     /* Llamar la funcion de obtener solicitudes */
     getRequets()
@@ -146,15 +138,25 @@ const Requests = () => {
     return format(date, 'dd/MM/yyyy')
   }
 
-  useEffect(() => {
-    handleNotifyClick()
-  }, [])
+  const { requestInformation, setRequestInformation } = requestStore()
 
-  // Función para manejar los clics en las notificaciones
-  const { id_solicitud } = useParams()
-  const handleNotifyClick = () => {
-    setHighlightedRequestId(id_solicitud)
-  }
+  useEffect(() => {
+    const idSolicitud = requestInformation.id_solicitud
+
+    // Verifica si hay un id_solicitud en el requestInformation antes de aplicar la clase
+    if (idSolicitud) {
+      setHighlightedRequestId(idSolicitud)
+
+      // Aplica la lógica para resaltar la fila utilizando una referencia al elemento HTML
+      const highlightedRow = document.getElementById(`row-${idSolicitud}`)
+      if (highlightedRow) {
+        highlightedRow.classList.add('highlighted-row')
+
+        // Elimina el valor id_solicitud del estado después de usarlo
+      }
+      setRequestInformation({ id_solicitud: null })
+    }
+  }, [requestInformation])
 
   return (
     <>
@@ -167,17 +169,6 @@ const Requests = () => {
           <header className="p-[1.5rem] flex justify-center items-center">
             <section className="w-[40%]">
               <Search filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} aria-label="Buscar solicitud" />
-            </section>
-            <section className="absolute right-[20%] cursor-pointer justify-center ">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <>
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                  </section>
-                </>
-              )}
             </section>
           </header>
 
@@ -210,7 +201,11 @@ const Requests = () => {
             <section className="grid place-items-center w-full mt-[.5rem] ">
               <Pagination className="z-0" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={(request && request.length) || (requestById && requestById.length)} onChange={handlePageChange} />
             </section>
-            <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} onNotifyClic={handleNotifyClick} />
+            <section className="fixed right-[22%] top-[2rem]">
+              <section className=" cursor-pointer ">
+                <NotifyBadge />
+              </section>
+            </section>
           </section>
           <Footer />
         </section>
