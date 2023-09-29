@@ -66,9 +66,12 @@ const Teachers = () => {
     <main className="h-screen flex">
       <Sliderbar />
       <section className="w-full overflow-auto">
-        <header className="p-[1.5rem] flex justify-center items-center">
-          <section className="w-[40%]">
-            <Search filtro={filtroVisible} placeholder={'Buscar instructor'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+        <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+          <section className="w-[60%] col-span-2 right-0 relative">
+            <Search teacher filtro={filtroVisible} placeholder={'Buscar instructor'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+          </section>
+          <section className="w-full h-full flex justify-center items-center">
+            <NotifyBadge />
           </section>
         </header>
         <section className=" flex justify-center">
@@ -108,11 +111,7 @@ const Teachers = () => {
         <section className="grid place-items-center pt-[1rem] mb-[2rem]">
           <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
         </section>
-        <section className="fixed right-[22%] top-[2rem]">
-          <section className=" cursor-pointer ">
-            <NotifyBadge />
-          </section>
-        </section>
+
         <Footer />
       </section>
     </main>

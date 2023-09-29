@@ -9,6 +9,8 @@ import { Groups } from './Components/Groups/Groups'
 import { Rules } from './Components/Rules/Rules'
 import { Setting } from './Components/Setting/Setting'
 import { Teachers } from './Components/Teachers/Teachers'
+import { Procedures } from './Components/Procedure/Procedures'
+import { ForgotPassword } from './Components/ForgotPassword/ForgotPassword'
 import { Test } from './Components/Test/Test'
 import './App.css'
 
@@ -25,6 +27,8 @@ function App() {
       <Route path="/rules" element={<Rules />} />
       <Route path="/setting" element={<Setting />} />
       <Route path="/teachers" element={<Teachers />} />
+      <Route path="/procedures" element={<Procedures />} />
+      <Route path="/password" element={<ForgotPassword />} />
       <Route path="/test" element={<Test />} />
     </Routes>
   )

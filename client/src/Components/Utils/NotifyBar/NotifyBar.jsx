@@ -22,7 +22,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
 
   const navigate = useNavigate()
 
-  // Función para retroceder un mes.
+  // Función que maneja el evento de hacer clic en el botón para retroceder al mes anterior.
   const handlePrevMonth = () => {
     let newMonth = currentMonth - 1
     let newYear = currentYear
@@ -34,7 +34,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
     setCurrentYear(newYear)
   }
 
-  // Función para avanzar un mes.
+  // Función que maneja el evento de hacer clic en el botón para avanzar al mes siguiente.
   const handleNextMonth = () => {
     let newMonth = currentMonth + 1
     let newYear = currentYear
@@ -84,7 +84,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
 
   return (
     <main>
-      <section className={`p-[1rem] h-[95vh] rounded-2xl m-[1rem] fixed top-0 right-0 w-[20rem] bg-white shadow-md  overflow-auto ${isOpen ? 'visible' : 'out'} `}>
+      <section className={`p-[1rem] h-[95vh] rounded-2xl m-[1rem] fixed top-0 right-0 w-[20rem] bg-white shadow-md overflow-auto ${isOpen ? 'visible' : 'out'}`}>
         <header className="flex">
           <section className="cursor-pointer" onClick={toggleNotify}>
             <i className="fi fi-sr-angle-circle-right text-xl"></i>
@@ -104,18 +104,21 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
             </button>
           </h2>
           <section className="grid grid-cols-7 mb-1">
+            {/* Renderiza los nombres de los días de la semana */}
             {['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sab'].map((day) => (
               <section className="font-bold text-sm" key={day}>
                 {day}
               </section>
             ))}
+            {/* Renderiza espacios en blanco para los días previos al primer día del mes */}
             {Array(firstDayOfMonth)
               .fill(null)
               .map((_, index) => (
                 <section key={`empty-${index}`} />
               ))}
+            {/* Renderiza los números de los días del mes */}
             {daysArray.map((day) => (
-              <section key={day} className={`text-center py-1 ${day === currentDate.getDate() ? 'bg-[#2e323e] text-white rounded-full' : ''}`}>
+              <section key={day} className={`text-center py-1 ${currentMonth === currentDate.getMonth() && day === currentDate.getDate() ? 'bg-[#2e323e] text-white rounded-full' : ''}`}>
                 {day}
               </section>
             ))}

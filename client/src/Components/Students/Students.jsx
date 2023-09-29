@@ -4,7 +4,7 @@ import { Search } from '../Search/Search'
 import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import { useEffect, useState } from 'react'
-import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
+import { ModalAddStudents } from '../Utils/Modals/ModalAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
@@ -141,13 +141,15 @@ const Students = () => {
         <Sliderbar />
         <Toaster position="top-right" closeButton richColors />
         <section className="w-full h-screen overflow-auto">
-          <header className="p-[1.5rem] flex items-center justify-center">
-            <section className="w-[40%] max-md:max-w-[10rem]">
-              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+            <section className="w-[60%] col-span-2 right-0 relative">
+              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} />
             </section>
+            <section className="flex items-center mr-[50%]   cursor-pointer ">
             <Button color="danger" variant="bordered" onClick={StateGroups}>
-              Deshabilitar ficha
+              Deshabilitar
             </Button>
+            </section>
           </header>
 
           <section className=" flex justify-between px-[4rem] ">

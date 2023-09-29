@@ -219,21 +219,27 @@ const Create = () => {
     }
   }
 
+  const [file, setFile] = useState(null)
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0]
+    if (selectedFile) {
+      setFile(selectedFile)
+    }
+  }
+
   return (
     <main className="relative h-screen flex ">
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
       <section className="w-full overflow-auto">
-        <section className="fixed z-20 w-[20rem] right-0">
-          <section className="fixed right-[12%] top-[1rem]">
-            <section className=" cursor-pointer ">
+        <section className="fixed z-20 w-[20rem] right-0"></section>
+        <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
+          <section className="flex justify-center w-[90%]">
+            <h1 className="text-2xl font-semibold">Crear solicitud</h1>
+            <section className="absolute right-[20%] flex justify-center z-20">
               <NotifyBadge />
             </section>
-          </section>
-        </section>
-        <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
-          <section className="flex">
-            <h1 className="text-2xl font-semibold">Crear solicitud</h1>
           </section>
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>
@@ -364,10 +370,10 @@ const Create = () => {
               </section>
               <section className="">
                 <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
-                  <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
-                    Subir evidencia
+                  <label className="inline-block bg-[#2E323E] text-white w-[12rem] p-[16px] rounded-xl cursor-pointer select-none text-center">
+                    {file ? `Evidencia Subida` : 'Subir evidencia'}
                     <i className="fi fi-rr-upload px-[.5rem]" />
-                    <input type="file" className="hidden" />
+                    <input type="file" className="hidden" onChange={handleFileChange} />
                   </label>
                 </Tooltip>
               </section>
@@ -394,34 +400,6 @@ const Create = () => {
                     </CardBody>
                   </Card>
                 </Tab>
-                {/*  <Tab key="disciplinarias" title="Disciplinarias">
-                  <Card>
-                    <CardBody>
-                      <CheckboxGroup>
-                        <Checkbox value="rules" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                        <Checkbox value="tati" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                      </CheckboxGroup>
-                    </CardBody>
-                  </Card>
-                </Tab>
-                <Tab key="otros" title="Otros">
-                  <Card>
-                    <CardBody>
-                      <CheckboxGroup>
-                        <Checkbox value="rules" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                        <Checkbox value="tati" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                      </CheckboxGroup>
-                    </CardBody>
-                  </Card>
-                </Tab> */}
               </Tabs>
             </section>
           </section>

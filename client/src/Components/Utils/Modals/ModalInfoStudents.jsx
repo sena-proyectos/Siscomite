@@ -45,7 +45,6 @@ export const ModalInfoStudents = ({ cerrarModal, idStudents }) => {
               <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer"  />
             </section>
           </header>
-          <section className="bodyModal"></section>
 
           {/* Mostrar los datos del estudiante */}
           {dataInfoStudent.map((item) => {
