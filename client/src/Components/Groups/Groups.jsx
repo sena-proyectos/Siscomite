@@ -1,8 +1,7 @@
 /* Importaciones de modulos y componentes */
-
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Badge } from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Badge, Chip } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
@@ -21,7 +20,6 @@ const Groups = () => {
   const [actualView, setActualView] = useState(null)
   const [filtroVisible, setFiltroVisible] = useState(false)
   const [reloadFetch, setReloadFetch] = useState(false)
-  const { fichaInformation, setFichaInformation } = fichaInformationStore()
 
   // Hacer uso de la funcion obtener fichas
   useEffect(() => {
@@ -29,14 +27,13 @@ const Groups = () => {
     if (reloadFetch === true) {
       setReloadFetch(false)
     }
-  }, [fichaInformation, reloadFetch])
+  }, [fichas, reloadFetch])
 
   /* Funcion para obtener las fichas guardadas en la base de datos */
   const getFicha = async () => {
     try {
       const response = await getFichas()
       const res = response.data.result
-      setFichaInformation(res)
       setFichas(res)
     } catch (error) {
       console.error(error)
@@ -50,7 +47,7 @@ const Groups = () => {
     setActivePage(pageNumber)
   }
 
-  const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado
+  const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado de fichas a mostrar
 
   /* establecer paginado y numero de paginacion */
   const startIdx = (activePage - 1) * itemsPerPage
@@ -87,7 +84,7 @@ const Groups = () => {
   const modalAddGroups = () => {
     setModalGroups(!modalGroups)
   }
- 
+
   // .................Tabla............
   // Estado para controlar la visibilidad de la tabla y las cards
   const [isCardVisible, setIsCardVisible] = useState(true)
@@ -122,16 +119,78 @@ const Groups = () => {
     setIsCardVisible((prevVisibility) => !prevVisibility)
   }
 
+  // ---------------- Filtros --------------------
+  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
+  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
+  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
+  const [selectedJornada, setSelectedJornada] = useState('')
+  const [selectedEtapa, setSelectedEtapa] = useState('')
+
+  const searchGroupsByName = (searchValue) => {
+    setSearchValue(searchValue)
+
+    // Filtrar las solicitudes según el nombre, el número de ficha y el estado seleccionado
+    const filteredResults = fichas.filter((item) => {
+      const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
+      const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
+      const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
+      const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
+      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+
+      return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
+    })
+
+    // Ordenar la lista de resultados en función del estado sortOrder
+    const sortedResults = [...filteredResults].sort((a, b) => {
+      const nameA = a.nombre_programa.toLowerCase()
+      const nameB = b.nombre_programa.toLowerCase()
+
+      if (sortOrder === 'asc') {
+        return nameA.localeCompare(nameB)
+      } else {
+        return nameB.localeCompare(nameA)
+      }
+    })
+
+    setSearchResults(sortedResults)
+  }
+
+  // Filtrar las solicitudes por nombre, estado y jornada
+  const filteredGroups = visibleCards.filter((item) => {
+    const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
+    const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
+    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+    const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
+    const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
+
+    return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
+  })
+
   return (
     <>
       {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={setReloadFetch} />}
 
-      <main className="flex h-screen select-none">
+      <main className="flex h-screen">
         <Sliderbar />
         <section className="w-screen overflow-auto">
-          <header className="p-[1.5rem] flex justify-center items-center">
-            <section className="w-[40%]">
-              <Search filtro={filtroVisible} placeholder={'Buscar ficha'} icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+            <section className="w-[60%] col-span-2 right-0 relative">
+              <Search
+                ficha
+                filtro={filtroVisible}
+                placeholder={'Buscar ficha'}
+                icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
+                searchStudent={searchGroupsByName}
+                searchResults={searchResults}
+                searchValue={searchValue}
+                selectedEstado={selectedEstado}
+                setSelectedEstado={setSelectedEstado}
+                setSelectedJornada={setSelectedJornada}
+                setSelectedEtapa={setSelectedEtapa}
+              />
+            </section>
+            <section className="w-full h-full flex items-center justify-center">
+                <NotifyBadge />
             </section>
           </header>
           <section className="flex justify-center items-center mt-[16px]">
@@ -172,7 +231,7 @@ const Groups = () => {
             <section className="mx-auto w-[90%]">
               {actualView === 'grid' ? (
                 <section className="gap-8 grid grid-cols-3 mt-3 max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
-                  {visibleCards.map((card) => (
+                  {filteredGroups.map((card) => (
                     <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="no-underline">
                       {/* Envuelve toda la tarjeta dentro del enlace */}
                       <Card className={`w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
@@ -192,7 +251,7 @@ const Groups = () => {
                             </Tooltip>
                           </section>
                         </CardHeader>
-                        <CardBody className="h-[5rem]">
+                        <CardBody className="h-[5rem] pt-0 pb-0">
                           <p className="text-[16px]">{card.nombre_programa}</p>
                         </CardBody>
 
@@ -214,12 +273,12 @@ const Groups = () => {
                 </section>
               ) : (
                 <section className="w-full flex justify-center mt-3">
-                  <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-full">
+                  <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-full overflow-auto">
                     <table className="w-full">
                       <thead className="text-default-500">
-                        <tr className="grid grid-cols-7 text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">
+                        <tr className="grid grid-cols-6-column-table text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">
                           <th>N° Ficha</th>
-                          <th className="col-span-2">Programa formación</th>
+                          <th>Programa formación</th>
                           <th>Jornada</th>
                           <th>Etapa</th>
                           <th>Coordinador</th>
@@ -227,18 +286,18 @@ const Groups = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {visibleCards.map((card) => (
+                        {filteredGroups.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
-                            <tr className="grid grid-cols-7 text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
-                              <td className="bg-yellow">{card.numero_ficha}</td>
-                              <td className="col-span-2">{card.nombre_programa}</td>
+                            <tr className="grid grid-cols-6-column-table text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
+                              <td>{card.numero_ficha}</td>
+                              <td>{card.nombre_programa}</td>
                               <td>{card.jornada}</td>
                               <td>{card.etapa_programa}</td>
                               <td>{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
                               <td className="z-100">
-                                <Button size="sm" color="success" variant="flat" radius="full">
+                                <Chip size="sm" color="success" variant="flat" radius="full" key={'activo'}>
                                   Activo
-                                </Button>
+                                </Chip>
                               </td>
                             </tr>
                           </Link>
@@ -251,7 +310,7 @@ const Groups = () => {
             </section>
           </section>
           <section className="grid place-items-center  pt-[1rem] mb-[2rem]">
-            <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
+            <Pagination className={`relative z-0 max-[935px]:pb-[3rem] `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-[59px]">
             <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
@@ -260,11 +319,6 @@ const Groups = () => {
                 Agregar fichas
               </p>
             </button>
-            <section className="fixed right-[22%] top-[2rem]">
-              <section className=" cursor-pointer ">
-                <NotifyBadge />
-              </section>
-            </section>
           </section>
           <Footer />
         </section>

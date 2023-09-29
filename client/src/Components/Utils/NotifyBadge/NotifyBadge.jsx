@@ -74,15 +74,15 @@ export const NotifyBadge = () => {
         <></>
       ) : (
         <>
-          <Badge onClick={toggleNotify} content={numCount || '0'} shape="circle" color="danger" size="sm">
-            <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
+          <Badge onClick={toggleNotify} content={numCount || '0'} shape="circle" color="danger" size="sm" className="cursor-pointer">
+            <section className="bg-blue-200 cursor-pointer rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
               <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
             </section>
           </Badge>
         </>
       )}
 
-      <section className="fixed  w-[20rem] right-0">
+      <section className="fixed z-10 w-[20rem] right-0">
         <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
       </section>
     </>

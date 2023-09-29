@@ -265,8 +265,8 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                       <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
                     </section>
                     <section>
-                      <Popover placement="top" backdrop="opaque" showArrow>
-                        <PopoverTrigger className=" w-full">
+                      <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>
+                        <PopoverTrigger >
                           <Button color="primary" variant="flat">
                             Numerales infringidos
                           </Button>
@@ -285,8 +285,8 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                         </PopoverContent>
                       </Popover>
                     </section>
-                    <section>
-                      <Popover showArrow backdrop="opaque" placement="top">
+                    <section >
+                      <Popover placement="top-end" size='lg' backdrop="opaque" showArrow>
                         <PopoverTrigger className="w-full">
                           <Button color="primary" variant="flat">
                             Descripción caso
@@ -294,7 +294,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                         </PopoverTrigger>
                         <PopoverContent>
                           <section className="px-1 py-2">
-                            <section className="text-sm w-[10rem]">
+                            <section>
                               <p>{descripcionCaso}</p>
                             </section>
                           </section>

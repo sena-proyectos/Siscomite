@@ -6,6 +6,7 @@ import { Toaster, toast } from 'sonner'
 import { readExcelFile } from '../../ReadExcelFile/readexcelfile'
 import { Input, Button } from '@nextui-org/react'
 import { Alerts } from '../Alerts/Alerts'
+import { validationStudents } from '../../../Validations/validations'
 
 export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
   /* aprendices values */
@@ -44,9 +45,10 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
     e.preventDefault()
 
     try {
+      /* Enviar datos capturados al servidor  */
       const dataValue = {
-        nombres_aprendiz: nombresAprendiz,
-        apellidos_aprendiz: apellidosAprendiz,
+        nombres_aprendiz: nombresAprendiz.toUpperCase(),
+        apellidos_aprendiz: apellidosAprendiz.toUpperCase(),
         numero_documento_aprendiz: numeroDocumento,
         email_aprendiz_sena: emailSena,
         email_aprendiz_personal: emailAlterno,
@@ -54,20 +56,42 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
         id_documento: tipoDocumento,
         id_ficha
       }
-
-      const response = await createApprentices(dataValue)
-
-      const res = response.data.message
-      toast.success('Genial!!', {
-        description: res
-      })
-      reloadFetchState(true)
-      setTimeout(() => {
-        cerrarModal()
-      }, 1500)
+      // Validacion de datos
+      const { error } = validationStudents.validate(dataValue, { stripUnknown: true })
+      // Realiza la validación de los datos utilizando la función "validate" de "validationStudents".
+      // "dataValue" es el conjunto de datos a validar y "stripUnknown: true" elimina cualquier campo desconocido.
+      if (error) {
+        // Si hay un error de validación:
+        const errorDetails = error.details[0] // Obtén el primer detalle de error del objeto "error".
+        if (!nombresAprendiz || !apellidosAprendiz || !numeroDocumento || !emailSena || !numeroCelular || !tipoDocumento) {
+          toast.error('Todos los campos con (*) son deben ser digitados')
+        } else if (errorDetails.path[0] === 'numero_documento_aprendiz') {
+          toast.error('El número de documento debe ser un valor numérico')
+        } else if (errorDetails.path[0] === 'email_aprendiz_sena') {
+          toast.error('Formato de correo institucional inválido')
+        } else if (errorDetails.path[0] === 'email_aprendiz_personal' && emailAprendizPersonal !== '') {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // Expresión regular para validar el formato de correo electrónico
+          if (!emailRegex.test(emailAprendizPersonal)) {
+            toast.error('Formato de correo alterno inválido')
+          }
+        } else if (errorDetails.path[0] === 'celular_aprendiz') {
+          toast.error('El número debe ser un valor numérico')
+        }
+      } else {
+        // Si no hay errores de validación, procede con la creación de el aprendiz
+        const response = await createApprentices(dataValue)
+        const res = response.data.message
+        toast.success('Genial!!', {
+          description: res
+        })
+        reloadFetchState(true)
+        setTimeout(() => {
+          cerrarModal()
+        }, 1500)
+      }
     } catch (error) {
-      const message = error.response.data.message
-      toast.error('Opss!!', {
+      const message = error?.response?.data?.message
+      toast.error('¡Opps!', {
         description: message
       })
     }
@@ -81,7 +105,7 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center ">
-        <Alerts descargarExcel contenido={'Los datos deben coincidir con los registrados en Sofía Plus'} recordatorio={"Para subir aprendices es neceario utilizar esta plantilla de Excel"} />
+        <Alerts descargarExcel contenido={'Los datos deben coincidir con los registrados en Sofía Plus'} recordatorio={'Para subir aprendices es neceario utilizar esta plantilla de Excel'} />
         <Toaster position="top-right" closeButton richColors />
         <section className={'bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
@@ -123,12 +147,12 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
                 </section>
                 <section className="modalInput ">
                   <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input isRequired size="md" type="text" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
+                    <Input isRequired size="md" type="email" label="Correo Institucional" labelPlacement={'outside'} variant={'flat'} value={emailSena} onChange={(e) => setEmailSena(e.target.value)} />
                   </div>
                 </section>
                 <section className="modalInput ">
                   <div className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
-                    <Input size="md" type="text" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} value={emailAlterno} onChange={(e) => setEmailAlterno(e.target.value)} />
+                    <Input size="md" type="email" label="Correo alterno" labelPlacement={'outside'} variant={'flat'} value={emailAlterno} onChange={(e) => setEmailAlterno(e.target.value)} />
                   </div>
                 </section>
                 <section className="modalInput ">
