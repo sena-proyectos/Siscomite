@@ -76,7 +76,7 @@ const Home = () => {
                       <p className="font-bold">Agregar aprendices</p>
                       <section className="flex mt-1">
                         <p className="text-sm">
-                          Para poder agregar aprendices a una ficha en necesario descargar el excel y llenar los campos solicitados sin modificarlo, ya que este es el único formato que permite el progama.
+                          Para poder agregar aprendices a una ficha es necesario descargar el excel y llenar los campos solicitados sin modificarlo, ya que este es el único formato que permite el programa.
                           <Button color="success" size="sm" variant="light" className="">
                             <a href="../../../public/Reporte de Aprendices.xlsx" download={'Reporte de Aprendices.xlsx'}>
                               Descargar excel <i className="fi fi-rr-download"></i>

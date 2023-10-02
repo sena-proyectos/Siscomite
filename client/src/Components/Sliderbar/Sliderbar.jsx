@@ -24,7 +24,7 @@ const Sliderbar = () => {
   }, [])
 
   const { setUserInformation, userInformation } = userInformationStore()
-  
+
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
     const information = jwt(token) // Decodificar el token JWT
@@ -110,18 +110,22 @@ const Sliderbar = () => {
               <span className="slideText ml-[10px]">Reglamento</span>
             </li>
           </Link>
-          <Link className="line" to={'/teachers'}>
-            <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/teachers') ? 'bg-[#1a1d24]' : ''}`}>
-              <i className={`fi fi-rs-book-bookmark`} title="Instructores" />
-              <span className="slideText ml-[10px]">Instructores</span>
-            </li>
-          </Link>
+          {elements.adminCoordi && (
+            <Link className="line" to={'/teachers'}>
+              <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/teachers') ? 'bg-[#1a1d24]' : ''}`}>
+                <i className={`fi fi-rs-book-bookmark`} title="Instructores" />
+                <span className="slideText ml-[10px]">Instructores</span>
+              </li>
+            </Link>
+          )}
+          {elements.administration &&
           <Link className="line" to={'/procedures'}>
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/procedures') ? 'bg-[#1a1d24]' : ''}`}>
               <i className={`fi fi-rs-stamp`} title="Trámites solicitud" />
               <span className="slideText ml-[10px]">Trámites solicitud</span>
             </li>
           </Link>
+          }
         </ul>
       </section>
       <section className="absolute bottom-[0.5em]">
