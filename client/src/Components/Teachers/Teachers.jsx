@@ -85,12 +85,12 @@ const Teachers = () => {
         </section>
         <section className="flex justify-center min-h-[65vh] ">
           <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] ">
-            {visibleData.map((item, index) => (
+            {visibleData && visibleData.map((item, index) => (
               <Card className="h-[13rem] -z-0" key={item.id_usuario}>
                 <CardHeader>
                   <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
                 </CardHeader>
-                <CardBody className="pt-2 pb-0 ">{item.nombres}</CardBody>
+                <CardBody className="pt-2 pb-0 ">{item.nombres + ' ' + item.apellidos}</CardBody>
                 <CardFooter>
                   {/* <Dropdown>
                     <DropdownTrigger>

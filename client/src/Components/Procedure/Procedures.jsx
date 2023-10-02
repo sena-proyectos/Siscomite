@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Notify } from '../Utils/NotifyBar/NotifyBar' // Importar el componente Notify para notificaciones
-import { Button, Input } from '@nextui-org/react'
+import { Button, Input, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Card, CardBody } from '@nextui-org/react'
+import { emailFile, getTemplates, templateID } from '../../api/httpRequest'
+import { Toaster, toast } from 'sonner'
 
 const Procedures = () => {
   const [file, setFile] = useState(null)
+  const [email, setEmail] = useState(null)
+
+  const [templatesName, setTemplatesName] = useState([])
+  const [htmlContent, setHtmlContent] = useState(null)
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0]
@@ -16,47 +21,99 @@ const Procedures = () => {
     }
   }
 
-  // Estado para controlar la apertura de la barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false)
+  const [selectedKeys, setSelectedKeys] = useState(new Set(['Seleccione una plantilla']))
+  const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')), [selectedKeys])
 
-  // Función para alternar la visibilidad de la barra de notificaciones
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
+  const idTemplate = async (id) => {
+    try {
+      const result = await templateID(id)
+      const data = result.data.result[0].html_content
+      setHtmlContent(data)
+    } catch (error) {}
   }
- 
+
+  const sendEmailFile = async (id) => {
+    const formData = new FormData()
+    formData.append('to', email) // Reemplaza con la dirección de correo deseada
+    formData.append('subject', 'Prueba de correo con archivo')
+    formData.append('text', 'Este correo es una prueba para probar si funciona enviando archivos')
+    formData.append('html', htmlContent)
+    formData.append('file', file)
+
+    try {
+      const response = await emailFile(formData)
+      const res = response.data.message
+
+      toast.success('Genial!!', {
+        description: res
+      })
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
+    }
+  }
+
+  useEffect(() => {
+    const templatesGet = async () => {
+      try {
+        const response = await getTemplates()
+        const res = response.data.result
+        setTemplatesName(res)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    templatesGet()
+  }, [])
 
   return (
     <main className="flex h-secreen">
       <Sliderbar />
+      <Toaster position="top-right" closeButton richColors />
       <section className="w-full overflow-auto">
         <header className="w-full flex right-0 relative ">
-          <section className=" pb-[.4rem]   cursor-pointer ">
-            {notifyOpen ? (
-              <></>
-            ) : (
-              <>
-                <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify} aria-label="Notificaciones">
-                  <i className="fi fi-ss-bell text-blue-400 p-[.3rem]" />
-                </section>
-              </>
-            )}
+          <section className="absolute right-[20%] flex justify-center top-[2rem]">
+            <NotifyBadge />
           </section>
         </header>
-        <section className="h-[85vh] grid grid-cols-2 gap-4 p-[3rem] bg-red-">
-          <section className="h-full p-20 grid place-items-center">
+        <section className="h-[85vh] grid grid-cols-2 gap-1">
+          <section className="w-full flex flex-col justify-center gap-5  p-20">
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="flat" className="capitalize" color="primary">
+                  {selectedValue}
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedKeys={selectedKeys} onSelectionChange={setSelectedKeys}>
+                {templatesName.map((item) => (
+                  <DropdownItem key={item.nombre_plantilla} onClick={() => idTemplate(item.id_plantilla)}>
+                    {item.nombre_plantilla}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+
             <label htmlFor="upload" className="w-full flex flex-col items-center justify-center gap-2 p-10 cursor-pointer bg-white rounded-md border border-blue-600 shadow-md">
               <i className="fi fi-rr-add-document text-blue-600 text-3xl" />
               <span className="text-gray-600 font-se">{file ? `Archivo seleccionado: ${file.name}` : 'Subir archivo'}</span>
             </label>
             <input id="upload" type="file" className="hidden" onChange={handleFileChange} />
-          </section>
-          <section className="w-full flex flex-col justify-center gap-5  p-20">
-            <Input isRequired type="email" label="Agregar email" labelPlacement="outside" className="w-full " />
-            <Button color="primary" variant="shadow">
+
+            <Input isRequired type="email" label="Agregar email" labelPlacement="outside" className="w-full mt-[1rem]" onChange={(e) => setEmail(e.target.value)} />
+            <Button color="primary" variant="shadow" onClick={sendEmailFile}>
               Enviar
             </Button>
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+          <section className="h-full grid mt-[3rem] place-items-center">
+            <Card>
+              <CardBody>
+                <div dangerouslySetInnerHTML={{ __html: htmlContent ? htmlContent : 'Seleccione una plantilla para visualizarla' }} />
+              </CardBody>
+            </Card>
+          </section>
         </section>
         <Footer />
       </section>
