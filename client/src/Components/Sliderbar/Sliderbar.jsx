@@ -77,11 +77,11 @@ const Sliderbar = () => {
         <p>{rol}</p>
       </section>
       <section className="pages absolute top-[30%] w-full flex justify-center">
-        <ul className="p-0">
+        <ul className="p-0 text-base">
           <Link to={'/home'} className="line">
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/home') ? 'bg-[#1a1d24]' : ''}`}>
               <i className={`fi fi-rr-home `} title="Inicio" />
-              <span className="slideText ml-[10px]">Inicio</span>
+              <span className="slideText ml-[10px] ">Inicio</span>
             </li>
           </Link>
 
@@ -125,7 +125,7 @@ const Sliderbar = () => {
         </ul>
       </section>
       <section className="absolute bottom-[0.5em]">
-        <ul className="p-0 flex flex-col  items-center justify-end mb-[20px]">
+        <ul className="p-0 flex flex-col text-base items-center justify-end mb-[20px]">
           <Link className="line" to={'/setting'}>
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/setting') ? 'bg-[#1a1d24]' : ''}`}>
               <i className="fi fi-rr-gears" id="icon" title="Configuración" />

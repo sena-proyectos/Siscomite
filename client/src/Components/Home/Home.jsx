@@ -53,7 +53,7 @@ const Home = () => {
                 <section className="w-[95%] grid grid-cols-4 gap-x-10 place-items-center max-[900px]:grid-cols-2 max-[900px]:grid max-[500px]:grid-cols-1">
                   {data.map((x, i) => (
                     <Link to={x.Link} key={i}>
-                      <section className="h-[28%] mt-6 max-[900px]:mt-20 text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
+                      <section className="h-[28%] mt-6 max-[900px]:mt-[5rem] text-black cardHome" style={{ transition: '0.4s ease-in-out' }}>
                         <Card inside image={x.image} titleHome={x.titleHome} descripciónHome={x.descripciónHome} />
                       </section>
                     </Link>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Search } from '../Search/Search'
-import { Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { getTeacher } from '../../api/httpRequest'
@@ -83,8 +83,8 @@ const Teachers = () => {
             </select>
           </section>
         </section>
-        <section className="flex justify-center min-h-[65vh] ">
-          <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] ">
+        <section className="flex justify-center min-h-[65vh] max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5">
+          <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
             {visibleData.map((item, index) => (
               <Card className="h-[13rem] -z-0" key={item.id_usuario}>
                 <CardHeader>

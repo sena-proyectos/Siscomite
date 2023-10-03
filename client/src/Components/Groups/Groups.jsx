@@ -220,7 +220,7 @@ const Groups = () => {
               />
             </section>
             <section className="w-full h-full flex items-center justify-center">
-                <NotifyBadge />
+              <NotifyBadge />
             </section>
           </header>
           <section className="flex justify-center items-center mt-[16px]">
@@ -307,23 +307,23 @@ const Groups = () => {
                     <table className="w-full">
                       <thead className="text-default-500">
                         <tr className="grid grid-cols-6-column-table text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">
-                          <th>N° Ficha</th>
-                          <th>Programa formación</th>
-                          <th>Jornada</th>
-                          <th>Etapa</th>
-                          <th>Coordinador</th>
-                          <th>Estado</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">N° Ficha</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Programa formación</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Jornada</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Etapa</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Coordinador</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Estado</th>
                         </tr>
                       </thead>
                       <tbody>
                         {filteredGroups.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
                             <tr className="grid grid-cols-6-column-table text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
-                              <td>{card.numero_ficha}</td>
-                              <td>{card.nombre_programa}</td>
-                              <td>{card.jornada}</td>
-                              <td>{card.etapa_programa}</td>
-                              <td>{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
+                              <td className="px-3 relative  whitespace-normal text-small">{card.numero_ficha}</td>
+                              <td className="px-3 relative whitespace-normal text-small">{card.nombre_programa}</td>
+                              <td className="px-3 relative whitespace-normal text-small">{card.jornada}</td>
+                              <td className="px-3 relative whitespace-normal text-small">{card.etapa_programa}</td>
+                              <td className="px-3 relative whitespace-normal text-small">{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
                               <td className="z-100">
                                 <Chip size="sm" color="success" variant="flat" radius="full" key={'activo'}>
                                   Activo
