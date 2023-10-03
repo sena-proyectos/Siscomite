@@ -62,13 +62,28 @@ const Teachers = () => {
     setSelectedKeysArray(newSelectedKeysArray)
   }
 
+  // ------------ Filtros ----------
+  const [searchValue, setSearchValue] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+
+  const searchGroupsByName = (searchValue) => {
+    setSearchValue(searchValue)
+
+    const filteredResults = teacher.filter((item) => {
+      const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
+
+      return nombreMatches
+    })
+    setSearchResults(filteredResults) 
+  }
+
   return (
     <main className="h-screen flex">
       <Sliderbar />
       <section className="w-full overflow-auto">
         <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
           <section className="w-[60%] col-span-2 right-0 relative">
-            <Search teacher filtro={filtroVisible} placeholder={'Buscar instructor'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />} />
+            <Search teacher filtro={filtroVisible} placeholder={'Buscar instructor'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} searchStudent={searchGroupsByName} searchResults={searchResults} searchValue={searchValue} />} />
           </section>
           <section className="w-full h-full flex justify-center items-center">
             <NotifyBadge />

@@ -160,7 +160,7 @@ const Groups = () => {
 
     // Filtrar las solicitudes según el nombre, el número de ficha y el estado seleccionado
     const filteredResults = fichas.filter((item) => {
-      const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
+      const nombreMatches = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
       const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
       const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
       const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
@@ -169,19 +169,7 @@ const Groups = () => {
       return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
     })
 
-    // Ordenar la lista de resultados en función del estado sortOrder
-    const sortedResults = [...filteredResults].sort((a, b) => {
-      const nameA = a.nombre_programa.toLowerCase()
-      const nameB = b.nombre_programa.toLowerCase()
-
-      if (sortOrder === 'asc') {
-        return nameA.localeCompare(nameB)
-      } else {
-        return nameB.localeCompare(nameA)
-      }
-    })
-
-    setSearchResults(sortedResults)
+    setSearchResults(filteredResults)
   }
 
   // Filtrar las solicitudes por nombre, estado y jornada
@@ -264,39 +252,40 @@ const Groups = () => {
                   {filteredGroups.map((card) => (
                     <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="no-underline">
                       {/* Envuelve toda la tarjeta dentro del enlace */}
-                      <Card className={`w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
-                        <CardHeader className="gap-3 flex justify-center z-0">
-                          <section className="flex bg-blue-200 py-2 justify-center items-center rounded-xl w-full">
-                            <p className="text-xl font-bold ">{card.numero_ficha}</p>
-                            <Tooltip
-                              placements="bottom"
-                              showArrow={true}
-                              content={
-                                <Button variant="light" color="danger" onClick={() => StateGroups(card.id_ficha)}>
-                                  Desactivar ficha
-                                </Button>
-                              }
-                            >
-                              <i className="fi fi-br-menu-dots-vertical relative left-[30%]"></i>
-                            </Tooltip>
-                          </section>
-                        </CardHeader>
-                        <CardBody className="h-[5rem] pt-0 pb-0">
-                          <p className="text-[16px]">{card.nombre_programa}</p>
-                        </CardBody>
+                      <section className="relative flex flex-col ">
+                        <Card className={`w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
+                          <CardHeader className="gap-3 flex justify-center z-0">
+                            <section className="flex bg-blue-200 py-2 justify-center items-center rounded-xl w-full">
+                              <p className="text-xl font-bold ">{card.numero_ficha}</p>
+                              <Tooltip
+                                placements="bottom"
+                                showArrow={true}
+                                content={
+                                  <Button variant="light" color="danger" onClick={() => StateGroups(card.id_ficha)}>
+                                    Desactivar ficha
+                                  </Button>
+                                }
+                              >
+                                <i className="fi fi-br-menu-dots-vertical relative left-[30%]"></i>
+                              </Tooltip>
+                            </section>
+                          </CardHeader>
+                          <CardBody className="h-[5rem] pt-0 pb-0">
+                            <p className="text-[16px]">{card.nombre_programa}</p>
+                          </CardBody>
 
-                        <CardFooter>
-                          <p className="text-gray-500 text-md">{card.nombre_coordinador + ' ' + card.apellido_coordinador}</p>
-                        </CardFooter>
-                      </Card>
-
-                      <section className={`animate-appearance-in mt-[-11rem] ml-[2.5rem] z-10 p-4 w-[14rem] shadow-lg rounded-xl bg-blue-300 text-white  ${hoveredCards[card.id_ficha] ? '' : 'hidden'}`}>
-                        <p className="font-bold">
-                          Jornada: <span className="font-normal">{card.jornada}</span>
-                        </p>
-                        <p className="font-bold">
-                          Etapa: <span className="font-normal">{card.etapa_programa}</span>
-                        </p>
+                          <CardFooter>
+                            <p className="text-gray-500 text-md">{card.nombre_coordinador + ' ' + card.apellido_coordinador}</p>
+                          </CardFooter>
+                        </Card>
+                        <section className={`animate-appearance-in absolute z-10 p-4 w-[12rem] shadow-lg rounded-xl bg-blue-300 text-white ${hoveredCards[card.id_ficha] ? '' : 'hidden'}`}>
+                          <p className="font-bold">
+                            Jornada: <span className="font-normal">{card.jornada}</span>
+                          </p>
+                          <p className="font-bold">
+                            Etapa: <span className="font-normal">{card.etapa_programa}</span>
+                          </p>
+                        </section>
                       </section>
                     </Link>
                   ))}

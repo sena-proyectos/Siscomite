@@ -107,11 +107,11 @@ const Setting = () => {
     <main className="h-screen flex">
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
-      <section className="w-full  overflow-auto">
-        <section className="h-screen grid grid-cols-2 gap-4 place-items-center">
+      <section className="w-full max-[900px]:min-w-[80%] overflow-auto">
+        <section className="h-screen grid grid-cols-2 gap-4 place-items-center max-[900px]:grid-cols-1 max-[900px]:place-items-center">
           <form className="p-[1rem] w-full">
             <Card className=" h-full overflow-auto">
-              <CardHeader className="flex justify-between items-start  pb-0">
+              <CardHeader className="flex justify-between items-start pb-0 ">
                 <section className="flex gap-3">
                   <i className="fi fi-rr-settings text-[2.5rem]" />
                   <samp className="flex flex-col">
@@ -119,7 +119,7 @@ const Setting = () => {
                     <p className="text-small text-default-500">{information.email_sena}</p>
                   </samp>
                 </section>
-                <Button onClick={handleClick} className={`px-4 py-2 bg-red-200 text-red-700 `}>
+                <Button onClick={handleClick} className={`px-4 py-2 bg-red-200 text-red-700 min-w-[10rem]`}>
                   Deshabilitar cuenta
                 </Button>
               </CardHeader>

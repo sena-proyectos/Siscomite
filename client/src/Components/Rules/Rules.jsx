@@ -195,20 +195,20 @@ const Rules = () => {
       <main className="h-screen flex">
         <Sliderbar />
         <section className="w-full h-screen overflow-auto">
-          <section className="grid h-screen grid-cols-3 ">
-            <section className="grid place-items-center">
-              <Button size="lg" onClick={handleOpenEditModal} color="primary" variant="shadow">
-                Editar reglamento
-                <i className="fi fi-rr-pencil"></i>
-              </Button>
+          <section className="grid h-screen grid-cols-3 max-[1030px]:grid-cols-1">
+            <section className="grid grid-rows-2 max-[1030px]:flex max-[1030px]:grid-cols-1 max-[1030px]:grid-flow-col  max-[1030px]:w-full max-[1030px]:px-[6rem] max-[1030px]:py-[1rem] ">
+              <section className="w-full flex items-start justify-end p-[1rem]">
+                <NotifyBadge />
+              </section>
+              <section className="flex justify-center">
+                <Button size="lg" onClick={handleOpenEditModal} color="primary" variant="shadow">
+                  Editar reglamento
+                  <i className="fi fi-rr-pencil"></i>
+                </Button>
+              </section>
             </section>
             <section className="col-span-2 z-0">
               <ViewPdf />
-            </section>
-          </section>
-          <section className="fixed left-[24%] top-[2rem]">
-            <section className=" cursor-pointer ">
-              <NotifyBadge />
             </section>
           </section>
           <Footer />
