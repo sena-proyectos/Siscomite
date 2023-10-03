@@ -239,3 +239,27 @@ export const sendEmail = (data) => {
 
   return response
 }
+
+/* send email with file */
+export const emailFile = (data) => {
+  const URL = `${BaseUrl}${api}/emailFile`
+  const response = axios.post(URL, data)
+
+  return response
+}
+
+/* get templates */
+export const getTemplates = () => {
+  const URL = `${BaseUrl}${api}/getTemplate`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* get template by id  */
+export const templateID = (IdTemplate) => {
+  const URL = `${BaseUrl}${api}/getTemplateById/${IdTemplate}`
+  const response = axios.get(URL)
+
+  return response
+}

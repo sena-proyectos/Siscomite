@@ -62,7 +62,7 @@ const Requests = () => {
   // Calcula los datos a mostrar en la página actual
   const indexOfLastItem = activePage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentItems = request && request.length > 0 ? request.slice(indexOfFirstItem, indexOfLastItem) : []
+  const currentItems = elements.adminCoordi ? (request && request.length > 0 ? request.slice(indexOfFirstItem, indexOfLastItem) : []) : elements.instructor ? (requestById && requestById.length > 0 ? requestById.slice(indexOfFirstItem, indexOfLastItem) : []) : []
   const totalPages = Math.ceil(request && request.length / itemsPerPage)
 
   // Función para cambiar de página

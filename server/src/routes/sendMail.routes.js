@@ -1,8 +1,15 @@
 import { Router } from 'express'
-import { sendEmail } from '../controller/sendMail.controller.js'
+import { sendEmail, sendEmailWithAttachment } from '../controller/sendMail.controller.js'
 import { checkEmail } from '../middlewares/email.middleware.js'
-const router = Router()
+import multer from 'multer'
 
+const router = Router()
+const upload = multer()
+
+/* enviar email */
 router.post('/sendEmail', checkEmail, sendEmail)
+
+/* enviar email con archivo */
+router.post('/emailFile', upload.single('file'), sendEmailWithAttachment)
 
 export default router

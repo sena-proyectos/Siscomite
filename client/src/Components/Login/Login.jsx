@@ -61,11 +61,10 @@ export const Login = () => {
       navigate('/home')
     } catch (error) {
       const message = error?.response?.data?.message
-      if (message) {
-        toast.error(message, {
-          description: message
-        })
-      }
+      console.log(message);
+      toast.error('Oppss!!', {
+        description: message
+      })
     } finally {
       setIsLoading(false)
     }

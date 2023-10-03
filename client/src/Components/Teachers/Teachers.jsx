@@ -90,7 +90,7 @@ const Teachers = () => {
                 <CardHeader>
                   <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
                 </CardHeader>
-                <CardBody className="pt-2 pb-0 ">{item.nombres}</CardBody>
+                <CardBody className="pt-2 pb-0 ">{item.nombres + ' ' + item.apellidos}</CardBody>
                 <CardFooter>
                   {/* <Dropdown>
                     <DropdownTrigger>
