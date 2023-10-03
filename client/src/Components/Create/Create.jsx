@@ -392,6 +392,7 @@ const Create = () => {
                             <strong>{item.titulo_capitulo}</strong>
                             <p>{item.numero_articulo}</p>
                             <Checkbox value={item.id_numeral} className="flex items-start" checked={numSeleccionados.includes(item.id_numeral)} onChange={(e) => handleNumeralChange(e, item.id_numeral)}>
+                              <strong> {item.numero_numeral}. </strong>
                               {item.descripcion_numeral}
                             </Checkbox>
                           </React.Fragment>
