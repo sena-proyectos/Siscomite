@@ -5,7 +5,7 @@ import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
 import { Search } from '../Search/Search'
-import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest, countMessage } from '../../api/httpRequest'
+import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import { userInformationStore } from '../../store/config'
@@ -392,6 +392,7 @@ const Create = () => {
                             <strong>{item.titulo_capitulo}</strong>
                             <p>{item.numero_articulo}</p>
                             <Checkbox value={item.id_numeral} className="flex items-start" checked={numSeleccionados.includes(item.id_numeral)} onChange={(e) => handleNumeralChange(e, item.id_numeral)}>
+                              <strong> {item.numero_numeral}. </strong>
                               {item.descripcion_numeral}
                             </Checkbox>
                           </React.Fragment>

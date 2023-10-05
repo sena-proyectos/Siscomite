@@ -147,7 +147,7 @@ const Students = () => {
             </section>
             <section className="flex items-center mr-[50%]   cursor-pointer ">
             <Button color="danger" variant="bordered" onClick={StateGroups}>
-              Deshabilitar
+              Deshabilitar ficha
             </Button>
             </section>
           </header>
