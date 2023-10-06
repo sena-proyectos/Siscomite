@@ -56,6 +56,7 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
         try {
           const response = await getMessageById(userInformation.id_usuario) // Obtiene mensajes por ID de usuario.
           const res = response.data.result
+          console.log(res);
           setMessage(res) // Almacena los mensajes en el estado.
         } catch (error) {
           // Maneja errores si ocurren.

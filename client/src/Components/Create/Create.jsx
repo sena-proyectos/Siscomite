@@ -5,7 +5,7 @@ import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
 import { Search } from '../Search/Search'
-import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest, uploadFile } from '../../api/httpRequest'
+import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import { userInformationStore } from '../../store/config'
@@ -34,8 +34,6 @@ const Create = () => {
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
   const [descripcion, setDescripcion] = useState(null)
-
-  const { userInformation } = userInformationStore()
 
   const [selectFile, setSelectFile] = useState()
 
@@ -92,7 +90,7 @@ const Create = () => {
     setSelectFile(file)
   }
 
-  const sendData = async (e) => {
+  const sendData = async () => {
     try {
       const solicitudFormData = new FormData()
       solicitudFormData.append('tipo_solicitud', tipoSolicitud)
@@ -383,7 +381,7 @@ const Create = () => {
               <section className="">
                 <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
                   <label className="inline-block bg-[#2E323E] text-white w-[12rem] p-[16px] rounded-xl cursor-pointer select-none text-center">
-                    {file ? `Evidencia Subida` : 'Subir evidencia'}
+                    {selectFile ? `Evidencia Subida` : 'Subir evidencia'}
                     <i className="fi fi-rr-upload px-[.5rem]" />
                     <input type="file" id="archivo" name="archivo" className="hidden" onChange={handleFileChange} />
                   </label>

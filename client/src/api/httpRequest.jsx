@@ -168,12 +168,12 @@ export const getRules = () => {
 }
 
 /* Subir archivo */
-export const uploadFile = (formData) => {
+/* export const uploadFile = (formData) => {
   const URL = `${BaseUrl}${api}/subirArchivo`; // Asegúrate de que esta sea la ruta correcta en tu servidor
   const response = axios.post(URL, formData);
 
   return response;
-}
+} */
 
 /* Obtener lista de archivos */
 export const getFiles = async () => {

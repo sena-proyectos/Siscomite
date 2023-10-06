@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react' // Importa los hooks useEffect y useState de React.
-import { userInformationStore } from '../../../store/config' // Importa una función para obtener información del usuario.
 import { countMessage, sendEmail } from '../../../api/httpRequest' // Importa funciones para contar mensajes y enviar correos electrónicos.
 import { Notify } from '../NotifyBar/NotifyBar' // Importa el componente Notify.
-import { notificationStore } from '../../../store/config' // Importa una función para gestionar notificaciones.
+import { notificationStore, userInformationStore } from '../../../store/config' // Importa una función para gestionar notificaciones.
 
 import { Badge } from '@nextui-org/react' // Importa el componente Badge de una biblioteca externa.
 
@@ -25,6 +24,7 @@ export const NotifyBadge = () => {
         // Realiza una solicitud para contar los mensajes del usuario.
         const response = await countMessage(userInformation.id_usuario)
         const res = response.data.result[0].num_message // Obtiene el número actual de notificaciones.
+        console.log(userInformation.id_usuario);
 
         if (prevNumCount !== 0 && res > prevNumCount) {
           // sendMail() // Envía un correo electrónico.
@@ -36,6 +36,7 @@ export const NotifyBadge = () => {
             })
           }
         }
+
 
         setNumCount(res) // Actualiza el número de notificaciones.
         setPrevNumCount(res) // Actualiza el número de notificaciones anterior.

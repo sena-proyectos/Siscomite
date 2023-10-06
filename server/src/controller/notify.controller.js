@@ -20,6 +20,7 @@ export const countMessageById = async (req, res) => {
 
     res.status(200).send({ result })
   } catch (error) {
+    console.log(error);
     res.status(404).send({ message: `Error al mostrar los mensajes` })
   }
 }
