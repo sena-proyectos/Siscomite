@@ -24,6 +24,7 @@ const Sliderbar = () => {
   }, [])
 
   const { setUserInformation, userInformation } = userInformationStore()
+
   const getElementsByRole = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
     const information = jwt(token) // Decodificar el token JWT
@@ -55,7 +56,7 @@ const Sliderbar = () => {
     if (information.id_rol === 3) information.id_rol = 'Administrador'
 
     setRol(information.id_rol) // Establecer el rol en el estado
-    setUserInformation({ nombres, apellidos, id_usuario: information.id_usuario })
+    setUserInformation({ nombres, apellidos, id_usuario: information.id_usuario, email_sena: information.email_sena, email_personal: information.email_personal })
   }
 
   // Función para cerrar sesión
@@ -75,7 +76,7 @@ const Sliderbar = () => {
         </h3>
         <p>{rol}</p>
       </section>
-      <section className="pages absolute top-[30%]  w-full flex justify-center">
+      <section className="pages absolute top-[30%] w-full flex justify-center">
         <ul className="p-0">
           <Link to={'/home'} className="line">
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/home') ? 'bg-[#1a1d24]' : ''}`}>
@@ -113,14 +114,22 @@ const Sliderbar = () => {
             <Link className="line" to={'/teachers'}>
               <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/teachers') ? 'bg-[#1a1d24]' : ''}`}>
                 <i className={`fi fi-rs-book-bookmark`} title="Instructores" />
-                <span className="slideText ml-[10px]">Instructores</span>
+                <span className="slideText ml-[10px]">Usuarios</span>
               </li>
             </Link>
           )}
+          {elements.administration &&
+          <Link className="line" to={'/procedures'}>
+            <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/procedures') ? 'bg-[#1a1d24]' : ''}`}>
+              <i className={`fi fi-rs-stamp`} title="Trámites solicitud" />
+              <span className="slideText ml-[10px]">Trámites solicitud</span>
+            </li>
+          </Link>
+          }
         </ul>
       </section>
       <section className="absolute bottom-[0.5em]">
-        <ul className="p-0 flex flex-col items-center justify-end mb-[20px]">
+        <ul className="p-0 flex flex-col  items-center justify-end mb-[20px]">
           <Link className="line" to={'/setting'}>
             <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/setting') ? 'bg-[#1a1d24]' : ''}`}>
               <i className="fi fi-rr-gears" id="icon" title="Configuración" />

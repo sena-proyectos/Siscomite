@@ -4,12 +4,14 @@ import { Search } from '../Search/Search'
 import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import { useEffect, useState } from 'react'
-import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
+import { ModalAddStudents } from '../Utils/Modals/ModalAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { changeStateGroups, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { Toaster, toast } from 'sonner'
+import sw from 'sweetalert2'
 
 const Students = () => {
   // Obtener el parámetro id_ficha desde la URL
@@ -24,11 +26,8 @@ const Students = () => {
   const [error, setError] = useState(null)
   const [reloadFetch, setReloadFetch] = useState(false)
 
-  // Estado para controlar la apertura de la notificación
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
   // Número de elementos por página
-  const itemsPerPage = 9 
+  const itemsPerPage = 9
   const [activePage, setActivePage] = useState(1)
 
   // Calcula los datos a mostrar en la página actual
@@ -38,9 +37,8 @@ const Students = () => {
   const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
 
   const navigate = useNavigate()
-  const [isOpen, setIsOpen] = useState(false)
 
-    // Función para obtener los aprendices por ID de ficha
+  // Función para obtener los aprendices por ID de ficha
   const getApprentices = async () => {
     try {
       const response = await getApprenticesByIdFicha(id_ficha)
@@ -59,7 +57,7 @@ const Students = () => {
   }, [apprentices, reloadFetch])
 
   useEffect(() => {
-       // Obtener información de las fichas por ID de ficha
+    // Obtener información de las fichas por ID de ficha
     const getFichasByIdFicha = async () => {
       try {
         const response = await getFichasById(id_ficha)
@@ -75,7 +73,7 @@ const Students = () => {
     setActivePage(pageNumber)
   }
 
-    // Función para buscar aprendices
+  // Función para buscar aprendices
   const searchApprentices = async (nombres) => {
     const idFicha = id_ficha
     try {
@@ -95,10 +93,6 @@ const Students = () => {
     }
   }
 
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
   //Abrir Modal para agregar estudiantes
   const [modalAddStudent, setModalStudentAdd] = useState(false)
   const modalStudents = () => {
@@ -111,6 +105,32 @@ const Students = () => {
     setIdStudent(id)
   }
 
+  const StateGroups = () => {
+    try {
+      sw.fire({
+        title: '¿Estás seguro que quieres desactivar esta ficha?',
+        text: 'Estos cambios serán irreversibles',
+        showDenyButton: true,
+        confirmButtonText: 'Desactivar',
+        denyButtonText: `Cancelar`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await changeStateGroups(id_ficha)
+          const message = response.data.message
+          toast.success('Genial!!', {
+            description: message
+          })
+          navigate('/groups')
+        }
+      })
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
+    }
+  }
+
   return (
     <>
       {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
@@ -119,22 +139,16 @@ const Students = () => {
 
       <main className="flex h-screen">
         <Sliderbar />
+        <Toaster position="top-right" closeButton richColors />
         <section className="w-full h-screen overflow-auto">
-          <header className="p-[1.5rem] flex items-center justify-center">
-            <section className="w-[40%] max-md:max-w-[10rem]">
-              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+            <section className="w-[60%] col-span-2 right-0 relative">
+              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} />
             </section>
-            <Button color="danger" variant="bordered">
-              Deshabilitar
+            <section className="flex items-center mr-[50%]   cursor-pointer ">
+            <Button color="danger" variant="bordered" onClick={StateGroups}>
+              Deshabilitar ficha
             </Button>
-            <section className="absolute right-[5%] cursor-pointer ">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <section className="bg-green-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                  <i className="fi fi-ss-bell text-green-400 p-[.3rem] mt-[]" />
-                </section>
-              )}
             </section>
           </header>
 
@@ -215,7 +229,11 @@ const Students = () => {
               </p>
             </button>
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
+          <section className="fixed right-[10%] top-[2rem]">
+            <section className=" cursor-pointer ">
+              <NotifyBadge />
+            </section>
+          </section>
           <Footer />
         </section>
       </main>

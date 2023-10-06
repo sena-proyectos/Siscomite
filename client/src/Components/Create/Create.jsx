@@ -2,12 +2,12 @@
 import './Create.css'
 import React, { useEffect, useState } from 'react'
 import { Footer } from '../Footer/Footer'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest, uploadFile } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import { userInformationStore } from '../../store/config'
 
 // Definición del componente Create
@@ -17,7 +17,6 @@ const Create = () => {
   const [userSearch, setUserSearch] = useState([])
   const [error, setError] = useState(null)
   const [errorUser, setErrorUser] = useState(null)
-  const [userID, setUserID] = useState('')
 
   const [selectedApprentice, setSelectedApprentice] = useState([])
   const [selectedInstructor, setSelectedInstructor] = useState([])
@@ -35,6 +34,8 @@ const Create = () => {
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
   const [descripcion, setDescripcion] = useState(null)
+
+  const { userInformation } = userInformationStore()
 
   const [selectFile, setSelectFile] = useState()
 
@@ -226,13 +227,6 @@ const Create = () => {
     }
   }
 
-  // Estado y función para controlar la barra de notificaciones
-  const [notifyOpen, setNotifyOpen] = useState(false)
-
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
   // Función para manejar cambios en la selección de checkboxes de numerales
   const handleNumeralChange = (e, numeralId) => {
     const checked = e.target.checked
@@ -251,22 +245,12 @@ const Create = () => {
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
       <section className="w-full overflow-auto">
-        <section className="fixed z-20 w-[20rem] right-0">
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
-        </section>
+        <section className="fixed z-20 w-[20rem] right-0"></section>
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
-          <section className="flex">
+          <section className="flex justify-center w-[90%]">
             <h1 className="text-2xl font-semibold">Crear solicitud</h1>
-            <section className="absolute right-[15%] cursor-pointer ">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <>
-                  <section className="bg-blue-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                    <i className="fi fi-ss-bell text-blue-400 p-[.3rem] " />
-                  </section>
-                </>
-              )}
+            <section className="absolute right-[20%] flex justify-center z-20">
+              <NotifyBadge />
             </section>
           </section>
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
@@ -398,8 +382,8 @@ const Create = () => {
               </section>
               <section className="">
                 <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
-                  <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
-                    Subir evidencia
+                  <label className="inline-block bg-[#2E323E] text-white w-[12rem] p-[16px] rounded-xl cursor-pointer select-none text-center">
+                    {file ? `Evidencia Subida` : 'Subir evidencia'}
                     <i className="fi fi-rr-upload px-[.5rem]" />
                     <input type="file" id="archivo" name="archivo" className="hidden" onChange={handleFileChange} />
                   </label>
@@ -420,6 +404,7 @@ const Create = () => {
                             <strong>{item.titulo_capitulo}</strong>
                             <p>{item.numero_articulo}</p>
                             <Checkbox value={item.id_numeral} className="flex items-start" checked={numSeleccionados.includes(item.id_numeral)} onChange={(e) => handleNumeralChange(e, item.id_numeral)}>
+                              <strong> {item.numero_numeral}. </strong>
                               {item.descripcion_numeral}
                             </Checkbox>
                           </React.Fragment>
@@ -428,34 +413,6 @@ const Create = () => {
                     </CardBody>
                   </Card>
                 </Tab>
-                {/*  <Tab key="disciplinarias" title="Disciplinarias">
-                  <Card>
-                    <CardBody>
-                      <CheckboxGroup>
-                        <Checkbox value="rules" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                        <Checkbox value="tati" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                      </CheckboxGroup>
-                    </CardBody>
-                  </Card>
-                </Tab>
-                <Tab key="otros" title="Otros">
-                  <Card>
-                    <CardBody>
-                      <CheckboxGroup>
-                        <Checkbox value="rules" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                        <Checkbox value="tati" className="flex  items-start">
-                          Numerales
-                        </Checkbox>
-                      </CheckboxGroup>
-                    </CardBody>
-                  </Card>
-                </Tab> */}
               </Tabs>
             </section>
           </section>

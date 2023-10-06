@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "1.0.0",
+  "version": "2.8.10",
   "description": "",
   "main": "index.js",
   "type": "module",
@@ -19,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "1.4.5-lts.1",
     "mysql2": "latest",
+    "nodemailer": "^6.9.5",
     "nodemon": "^3.0.1"
   }
 }

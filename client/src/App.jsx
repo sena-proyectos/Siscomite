@@ -11,7 +11,9 @@ import { Test } from './Components/Test/Test'
 import { ViewFiles} from './Components/viewFiles/viewFiles'
 import { Setting } from './Components/Setting/Setting'
 import { Teachers } from './Components/Teachers/Teachers'
-
+import { Procedures } from './Components/Procedure/Procedures'
+import { ForgotPassword } from './Components/ForgotPassword/ForgotPassword'
+import { Test } from './Components/Test/Test'
 import './App.css'
 
 function App() {
@@ -30,6 +32,9 @@ function App() {
 
       <Route path="/setting" element={<Setting />} />
       <Route path="/teachers" element={<Teachers />} />
+      <Route path="/procedures" element={<Procedures />} />
+      <Route path="/password" element={<ForgotPassword />} />
+      <Route path="/test" element={<Test />} />
     </Routes>
   )
 }

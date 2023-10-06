@@ -7,9 +7,10 @@ import { pool } from '../db.js'
 export const getFichas = async (req, res) => {
   try {
     const [result] = await pool.query(`
-      SELECT fichas.*, usuarios.nombres AS nombre_coordinador, usuarios.apellidos AS apellido_coordinador
-      FROM fichas
-      INNER JOIN usuarios ON fichas.id_usuario_coordinador = usuarios.id_usuario;
+    SELECT fichas.*, usuarios.nombres AS nombre_coordinador, usuarios.apellidos AS apellido_coordinador
+    FROM fichas 
+    INNER JOIN usuarios ON fichas.id_usuario_coordinador = usuarios.id_usuario
+    WHERE fichas.estado = 'ACTIVO';
     `)
 
     res.status(200).send({ result })
@@ -56,7 +57,7 @@ export const getFichaBynumFicha = async (req, res) => {
 export const createFicha = async (req, res) => {
   const { numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, id_modalidad, id_usuario_coordinador } = req.body
   try {
-    await pool.query('INSERT INTO fichas (numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, estado, id_modalidad, id_usuario_coordinador) VALUES (?, ?, ?, ?, ?, "EN EJECUCIÓN", ?, ?)', [numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, id_modalidad, id_usuario_coordinador])
+    await pool.query('INSERT INTO fichas (numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, estado, id_modalidad, id_usuario_coordinador) VALUES (?, ?, ?, ?, ?, "ACTIVO", ?, ?)', [numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, id_modalidad, id_usuario_coordinador])
 
     res.status(201).send({ message: 'Ficha creada exitosamente' })
   } catch (error) {
@@ -76,5 +77,22 @@ export const updateFicha = async (req, res) => {
     res.status(200).send({ message: 'Ficha actualizada exitosamente' })
   } catch (error) {
     res.status(500).send({ message: 'Error al actualizar ficha' })
+  }
+}
+
+/* Cambiar el estado de la ficha */
+export const changeStateGroups = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const [result] = await pool.query('UPDATE fichas SET estado = "INACTIVO" WHERE id_ficha = ?', [id])
+
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró la ficha` })
+    } else {
+      res.status(200).send({ message: 'ficha deshabilitada correctamente' })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al deshabilitar la ficha' })
   }
 }

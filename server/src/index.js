@@ -15,6 +15,8 @@ import ParagraphRouter from './routes/paragraph.routes.js' // Rutas relacionadas
 import chapterRouter from './routes/chapter.routes.js' // Rutas relacionadas con los capítulos
 import fileRouter from './routes/file.routes.js' // Rutas relacionadas con los archivos
 import notifyRouter from './routes/notify.routes.js' // Rutas relacionadas con los archivos
+import sendEmail from './routes/sendMail.routes.js'
+import templateRoute from './routes/template.routes.js'
 import { PORT } from './config.js/' // Importar el puerto desde la configuración
 
 const app = express() // Crear una instancia de la aplicación Express
@@ -34,9 +36,11 @@ app.use('/api', documentsRoutes)
 app.use('/api', modalitiesRouter)
 app.use('/api', chapterRouter)
 app.use('/api', ArticleNumberRouter)
-app.use('/api', ParagraphRouter)
+app.use('/api', ParagraphRouter)  
 app.use('/api', fileRouter)
 app.use('/api', notifyRouter)
+app.use('/api', sendEmail)
+app.use('/api', templateRoute)
 
 // Configurar un manejador para rutas no encontradas (404)
 app.use((req, res) => {

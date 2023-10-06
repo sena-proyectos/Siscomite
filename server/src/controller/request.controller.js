@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise'
 
 export const getsolicitud = async (req, res) => {
   try {
-    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.id_solicitud, solicitud.tipo_solicitud,solicitud.nombre_coordinacion,solicitud.estado, solicitud.estado_descripcion,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario;')
+    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.id_solicitud, solicitud.tipo_solicitud,solicitud.nombre_coordinacion,solicitud.estado,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario ORDER BY fecha_creacion DESC;')
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar las solictudes' })
@@ -358,7 +358,7 @@ export const updateRequest = async (req, res) => {
   const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, estado, estado_descripcion, categoria_causa, calificacion_causa, descripcion_caso } = req.body
 
   try {
-    const [result] = await pool.query('UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), estado = COALESCE(?, estado),estado_descripcion = COALESCE(?, estado_descripcion), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso) WHERE id_solicitud = ?', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, estado, estado_descripcion, categoria_causa, calificacion_causa, descripcion_caso, id])
+    const [result] = await pool.query('UPDATE solicitud SET tipo_solicitud = COALESCE(?, tipo_solicitud), nombre_coordinacion = COALESCE(?, nombre_coordinacion), id_usuario_solicitante = COALESCE(?, id_usuario_solicitante), estado = COALESCE(?, estado),estado_descripcion = COALESCE(?, estado_descripcion), categoria_causa = COALESCE(?, categoria_causa), calificacion_causa = COALESCE(?, calificacion_causa), descripcion_caso = COALESCE(?, descripcion_caso) WHERE id_solicitud = ? ', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, estado, estado_descripcion, categoria_causa, calificacion_causa, descripcion_caso, id])
 
     if (result.affectedRows === 0) {
       res.status(404).send({ message: `No se pudo encontrar la solicitud` })
@@ -393,7 +393,7 @@ export const deleteRequest = async (req, res) => {
 export const getRequestByIdUser = async (req, res) => {
   const { id } = req.params
   try {
-    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.id_solicitud, solicitud.tipo_solicitud,solicitud.nombre_coordinacion, solicitud.estado,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario WHERE id_usuario_solicitante = ?;', [id])
+    const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.id_solicitud, solicitud.tipo_solicitud,solicitud.nombre_coordinacion, solicitud.estado,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario WHERE id_usuario_solicitante = ? ORDER BY fecha_creacion DESC;', [id])
 
     if (result.affectedRows === 0) return res.status(404).send({ message: `No has realizado ninguna solicitud` })
 
