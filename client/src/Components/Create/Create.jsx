@@ -229,7 +229,7 @@ const Create = () => {
   }
 
   return (
-    <main className="relative h-screen flex ">
+    <main className="relative flex h-screen ">
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
       <section className="w-full overflow-auto">
@@ -284,10 +284,10 @@ const Create = () => {
         </header>
         <section className=" relative top-[1.6rem] place-items-center grid grid-cols-2  gap-0 ">
           <section className="w-[85%] ml-[3rem] h-full ">
-            <section className=" relative ">
+            <section className="relative ">
               <Search className="relative " placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
-                <h3 className="text-white grid justify-center ">Instructores</h3>
+                <h3 className="grid justify-center text-white ">Instructores</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1  max-h-[10rem]">
                   {(teacherSearch.length > 0 || selectedInstructor.length > 0) && error === null ? (
                     <>
@@ -327,7 +327,7 @@ const Create = () => {
             <section className="relative top-[1rem] ">
               <Search className="relative w-[100%]  " placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl">
-                <h3 className="text-white grid justify-center">Aprendices</h3>
+                <h3 className="grid justify-center text-white">Aprendices</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1 overflow-auto max-h-[10rem]">
                   {(userSearch.length > 0 || selectedApprentice.length > 0) && errorUser === null ? (
                     <>
@@ -365,7 +365,7 @@ const Create = () => {
               </section>
             </section>
             <section className="py-[.5rem] relative top-[2.1rem] place-items-center grid grid-cols-2 gap-4 ">
-              <section className=" w-full">
+              <section className="w-full ">
                 <Textarea label="Descripción" labelPlacement="outside" placeholder="Ingresa tu descripción" className="max-w-[300px]" onChange={(e) => setDescripcion(e.target.value)} />
               </section>
               <section className="">
@@ -381,7 +381,7 @@ const Create = () => {
           </section>
 
           <section className="mr-[3.1rem] w-[85%] h-full">
-            <section className="flex w-full h-full flex-col">
+            <section className="flex flex-col w-full h-full">
               <Tabs>
                 <Tab key="academica" title="Acádemicas">
                   <Card className="overflow-auto max-h-[50vh]">
@@ -406,7 +406,7 @@ const Create = () => {
           </section>
         </section>
         <section className="grid place-items-center relative top-[2rem] ">
-          <Button className="" size="md" color="primary" onClick={sendData}>
+          <Button className="" size="md" color="success" onClick={sendData}>
             Enviar
             <i className="fi fi-br-check"></i>
           </Button>

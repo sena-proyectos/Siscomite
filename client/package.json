@@ -1,7 +1,7 @@
 {
   "name": "siscomite",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "type": "module",
   "scripts": {
     "tailwind": "npx tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
