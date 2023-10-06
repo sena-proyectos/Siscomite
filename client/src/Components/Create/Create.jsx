@@ -407,7 +407,7 @@ const Create = () => {
           </section>
         </section>
         <section className="grid place-items-center relative top-[2rem] ">
-          <Button className="" size="md" color="success" onClick={sendData}>
+          <Button className="" size="md" color="primary" onClick={sendData}>
             Enviar
             <i className="fi fi-br-check"></i>
           </Button>
