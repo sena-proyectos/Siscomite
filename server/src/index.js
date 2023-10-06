@@ -34,7 +34,6 @@ app.use(cors()); // Configurar el middleware CORS para manejar las solicitudes d
 app.use(express.json()) // Habilitar el análisis del cuerpo de solicitud JSON
 
 io.on('connection', (socket) => {
-  console.log('a user connected', socket.id)
   socket.emit('nerf', 'Nerfeen a chamber')
   socket.on('message', () => {
     console.log('HOLAA')
