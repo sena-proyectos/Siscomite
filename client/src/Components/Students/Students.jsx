@@ -24,7 +24,6 @@ const Students = () => {
   const [idStudent, setIdStudent] = useState()
   const [apprenticesSearch, setApprenticesSearch] = useState([])
   const [error, setError] = useState(null)
-  const [reloadFetch, setReloadFetch] = useState(false)
 
   // Número de elementos por página
   const itemsPerPage = 9
@@ -44,17 +43,15 @@ const Students = () => {
       const response = await getApprenticesByIdFicha(id_ficha)
       const res = response.data.result
       setApprentices(res)
+      setMessage(null)
     } catch (error) {
       setMessage(error.response.data.message)
     }
   }
   useEffect(() => {
     getApprentices()
-    if (reloadFetch === true) {
-      setMessage(null)
-      setReloadFetch(false)
-    }
-  }, [apprentices, reloadFetch])
+    setMessage(null)
+  }, [])
 
   useEffect(() => {
     // Obtener información de las fichas por ID de ficha
@@ -133,7 +130,7 @@ const Students = () => {
 
   return (
     <>
-      {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
+      {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={getApprentices} />}
 
       {modalInfoStudents && <ModalInfoStudents cerrarModal={infoStudents} idStudents={idStudent} />}
 
@@ -146,9 +143,9 @@ const Students = () => {
               <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} />
             </section>
             <section className="flex items-center mr-[50%]   cursor-pointer ">
-            <Button color="danger" variant="bordered" onClick={StateGroups}>
-              Deshabilitar ficha
-            </Button>
+              <Button color="danger" variant="bordered" onClick={StateGroups}>
+                Deshabilitar ficha
+              </Button>
             </section>
           </header>
 
@@ -163,12 +160,12 @@ const Students = () => {
             </section>
           </section>
           <section className="h-[65vh] max-sm:h-[190%] max-[935px]:h-[115%]">
-            <section className="grid grid-cols-3 gap-5 items-center justify-center px-9 max-sm:grid-cols-1 max-[935px]:grid-cols-2 ">
+            <section className="grid grid-cols-3 gap-5 px-9 max-sm:grid-cols-1 max-[935px]:grid-cols-2 w-full h-full ">
               {error ? (
-                <h1>{error}</h1>
+                <h1 className="text-gray-500 text-center grid place-content-center max-w-[590px]">{error}</h1>
               ) : (
                 <>
-                  {message && <h1>{message}</h1>}
+                  {message && <h1 className="text-gray-500 text-center grid place-content-center">{message}</h1>}
                   {apprenticesSearch.length > 0 ? (
                     <>
                       {apprenticesSearch.map((item) => (
