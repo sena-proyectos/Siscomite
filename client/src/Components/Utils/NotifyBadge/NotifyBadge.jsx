@@ -47,7 +47,7 @@ export const NotifyBadge = () => {
 
     const intervalId = setInterval(messageCount, 1000) // Ejecuta la función cada segundo.
 
-    // Limpia el intervalo cuando el componente se desmonta.
+    // Limpia el intervalo cuando el componente se desmonta.  
     return () => {
       clearInterval(intervalId)
     }

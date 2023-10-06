@@ -26,8 +26,8 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
     const currentFile = excelFileRef.current.files[0]
 
     const checkFile = excelFileRef.current.files[0].name.split('.')
+    reloadFetchState()
     if (checkFile[1] !== 'xlsx' && checkFile[1] !== 'xls') {
-      reloadFetchState(true)
       Swal.fire({
         icon: 'error',
         title: '¡Error!',
@@ -37,7 +37,7 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
       excelFileRef.current.value = ''
       return
     }
-    readExcelFile(currentFile, id_ficha)
+    readExcelFile(currentFile, id_ficha, reloadFetchState)
   }
 
   /* enviar datos de aprendiz */
@@ -84,7 +84,7 @@ export const ModalAddStudents = ({ cerrarModal, reloadFetchState }) => {
         toast.success('Genial!!', {
           description: res
         })
-        reloadFetchState(true)
+        reloadFetchState()
         setTimeout(() => {
           cerrarModal()
         }, 1500)
