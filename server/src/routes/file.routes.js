@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { handleFileUpload, uploadFile, getFiles, downloadFile } from "../controller/file.controller.js";
+import { getFiles, downloadFile } from "../controller/file.controller.js";
 
 
 
@@ -10,7 +10,7 @@ router.get('/archivos', getFiles);
 // Obtener un archivo por su nombre
 //router.get('/obtenerArchivo/:nombreArchivo', getSingleFile);
 // Subir archivo
-router.post('/subirArchivo', uploadFile, handleFileUpload);
+//router.post('/subirArchivo', uploadFile, handleFileUpload);
 router.get('/descargarArchivo/:archivoId', downloadFile);
 
 export default router;

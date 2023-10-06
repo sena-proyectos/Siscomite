@@ -52,11 +52,10 @@ export const getApprenticesById = (userId) => {
 }
 
 /* Create Request */
-export const createRequest = (data) => {
-  const URL = `${BaseUrl}${api}/createSolicitud`
-  const response = axios.post(URL, data)
-
-  return response
+export const createRequest = (formData) => {
+  const URL = `${BaseUrl}${api}/createSolicitud`;
+  const response = axios.post(URL, formData);
+  return response;
 }
 
 /* Login */

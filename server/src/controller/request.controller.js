@@ -1,10 +1,5 @@
 import { pool } from '../db.js'
 import mysql from 'mysql2/promise'
-import multerMiddleware from '../middlewares/files.middlewares.js';
-import path from 'path';
-import fs from 'fs';
-
-export const uploadFile = multerMiddleware.single('archivo');
 
 export const getsolicitud = async (req, res) => {
   try {
@@ -273,7 +268,6 @@ export const getRules = async (req, res) => {
     const [result] = await pool.query(sqlQuery)
     res.status(200).json({ result })
   } catch (error) {
-    console.error(error)
     res.status(500).json({ message: 'Error al obtener el reglamento' })
   }
 }
@@ -285,50 +279,33 @@ export const getRules = async (req, res) => {
 export const createRequest = async (req, res) => {
   const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
 
-  await pool.beginTransaction();  // Antes de comenzar las inserciones, inicia la transacción
-  
   try {
-    const { filename } = req.file;
-    const fileType = req.file.mimetype;
-
-    // Verifica si hay un archivo existente
-    if (!req.file) {
-      await pool.rollback();
-      return res.status(400).send({ message: 'Necesita subir un archivo' });
-    }
-
-    // Verifica el tipo de archivo
+     /* Verifica el tipo de archivo */
     if (req.fileValidationError) {
-      await pool.rollback();
-      return res.status(400).send({ message: 'Tipo de archivo no permitido' });
-    }
-
-    // Inserta los datos en la tabla archivos
-    const resultFile = await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `uploads/${filename}`, fileType]);
-    const archivoId = resultFile.insertId;
-
-    // Verificar si se obtuvo el ID del archivo
-    if (!archivoId) {
-      await pool.rollback();
-      return res.status(500).send({ message: 'Error al subir el archivo' });
+      return res.status(400).send({ message: 'Tipo de archivo no permitido' })
     }
 
     /* Validar selección de numerales */
     if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {
-      await pool.rollback();
-      return res.status(400).send({ message: 'Debe seleccionar al menos un numeral' });
+      return res.status(400).send({ message: 'Debe seleccionar al menos un numeral' })
     }
 
     /* Validar selección de aprendices */
     if (!aprendicesSeleccionados || aprendicesSeleccionados.length === 0) {
-      await pool.rollback();
       return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
     }
 
+   /*  Subir el archivo y obtener su ID */
+    const { filename } = req.file
+    const fileType = req.file.mimetype
+
+     /* Insertar el archivo en la base de datos si es necesario */
+    const resultFile = await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `uploads/${filename}`, fileType])
+    const fileId = resultFile[0].insertId
+
     /* Crear la solicitud */
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ') // Formato YYYY-MM-DD HH:mm:ss
-    const result = await pool.query('INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, estado_descripcion, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, 'En proceso', 'Verificando información para la aprobación de la solicitud', currentDate])
-
+    const result = await pool.query('INSERT INTO solicitud (tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, estado, estado_descripcion, fecha_creacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, fileId, 'En proceso', 'Verificando información para la aprobación de la solicitud', currentDate])
     const solicitudId = result[0].insertId
 
     /* Insertar numerales infringidos */
@@ -336,7 +313,6 @@ export const createRequest = async (req, res) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_numerales (id_solicitud, id_numeral) VALUES (?, ?)', [solicitudId, numeroId])
       } catch (error) {
-        await pool.rollback();
         res.status(400).send({ message: 'No se pudieron asociar los numerales a la solicitud' })
         return
       }
@@ -344,18 +320,19 @@ export const createRequest = async (req, res) => {
 
     /* Insertar aprendiz relacionado */
     if (!aprendicesSeleccionados) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
-    aprendicesSeleccionados.forEach(async (aprendizId) => {
+    const aprendicesArray = Array.from(aprendicesSeleccionados)
+    aprendicesArray.forEach(async (aprendizId) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
       } catch (error) {
-        await pool.rollback();
         res.status(400).send({ message: 'Aprendiz seleccionado incorrectamente' })
         return
       }
     })
-
-    /* Insertar instructores relacionados */
-    instructoresSeleccionados.forEach(async (usuarioId) => {
+    
+    /* Insertar instructor relacionado */
+    const instructoresArray = Array.from(instructoresSeleccionados)
+    instructoresArray.forEach(async (usuarioId) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
       } catch (error) {
@@ -366,9 +343,7 @@ export const createRequest = async (req, res) => {
 
     /* Enviar respuesta existosa */
     res.status(201).send({ message: 'Solicitud creada exitosamente' })
-    // res.status(201).send({ result })
   } catch (error) {
-    await pool.rollback();  // Si ocurre un error, realiza un rollback
     res.status(500).send({ message: 'Error al crear la solicitud' })
   }
 }
@@ -391,7 +366,6 @@ export const updateRequest = async (req, res) => {
       res.status(200).send({ message: `Solicitud actualizada exitosamente` })
     }
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: 'Error al actualizar la solicitud' })
   }
 }

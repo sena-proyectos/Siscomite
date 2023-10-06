@@ -6,7 +6,7 @@ import { Notify } from '../Utils/NotifyBar/NotifyBar'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Card, CardBody, Textarea, CheckboxGroup, Checkbox, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, RadioGroup, Radio, Tooltip, Tabs, Tab } from '@nextui-org/react'
 import { Search } from '../Search/Search'
-import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest } from '../../api/httpRequest'
+import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordination, getInstructorById, getRules, createRequest, uploadFile } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { userInformationStore } from '../../store/config'
 
@@ -35,8 +35,7 @@ const Create = () => {
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
   const [descripcion, setDescripcion] = useState(null)
-  
-  //Recuperar la imagen
+
   const [selectFile, setSelectFile] = useState()
 
   /* Estado para almacenar el reglamento obtenido de la base de datos */
@@ -87,37 +86,50 @@ const Create = () => {
 
   const { userInformation } = userInformationStore()
 
-  // Función para enviar datos
-  const sendData = async () => {
-    const dataValue = {
-      tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
-      nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
-      id_usuario_solicitante: `${userInformation.id_usuario}`,
-      descripcion_caso: descripcion,
-      calificacion_causa: selectedValueFalta,
-      aprendicesSeleccionados: selectedApprentice.map((item) => item.id_aprendiz),
-      instructoresSeleccionados: selectedInstructor.map((item) => item.id_usuario),
-      numeralesSeleccionados: numSeleccionados,
-      categoria_causa: 'Academica',
-      id_archivo: '13'
-    }
-    console.log(dataValue)
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0]
+    setSelectFile(file)
+  }
+
+  const sendData = async (e) => {
     try {
-      const response = await createRequest(dataValue)
-      const res = response.data.message
+      const solicitudFormData = new FormData()
+      solicitudFormData.append('tipo_solicitud', tipoSolicitud)
+      solicitudFormData.append('nombre_coordinacion', selectedValue.join(', '))
+      solicitudFormData.append('id_usuario_solicitante', `${userInformation.id_usuario}`)
+      solicitudFormData.append('descripcion_caso', descripcion)
+      solicitudFormData.append('calificacion_causa', selectedValueFalta)
+      solicitudFormData.append('categoria_causa', 'Academica')
+      solicitudFormData.append('archivo', selectFile)
+
+      // Agrega los IDs de los aprendices seleccionados al FormData
+      selectedApprentice.forEach((item) => {
+        solicitudFormData.append('aprendicesSeleccionados', item.id_aprendiz)
+      })
+
+      // Agrega los IDs de los instructores seleccionados al FormData
+      selectedInstructor.forEach((item) => {
+        solicitudFormData.append('instructoresSeleccionados', item.id_usuario)
+      })
+
+      // Agrega los IDs de los numerales seleccionados al FormData
+      numSeleccionados.forEach((numeralId) => {
+        solicitudFormData.append('numeralesSeleccionados', numeralId)
+      })
+
+      // Envia la solicitud con el ID del archivo
+      const response = await createRequest(solicitudFormData)
+      const res = response?.data?.message
       toast.success('Genial!!', {
         description: res
       })
     } catch (error) {
-      const message = error.response.data.message
-    toast.error('Opss!!', {
+      console.error('Error al enviar la solicitud:', error)
+      const message = error.response?.data?.message
+      toast.error('Opss!!', {
         description: message
       })
     }
-  }
-
-  const getFile = (event) => {
-   setSelectFile (event.target.files[0])
   }
 
   /* Funcion para obtener los instructores */
@@ -211,7 +223,6 @@ const Create = () => {
       const res = response.data.result
       setRules(res)
     } catch (error) {
-      console.log(error)
     }
   }
 
@@ -390,7 +401,7 @@ const Create = () => {
                   <label className="inline-block bg-[#2E323E] text-white p-[13px] rounded-xl cursor-pointer select-none">
                     Subir evidencia
                     <i className="fi fi-rr-upload px-[.5rem]" />
-                    <input type="file" onChange={getFile} id="FileId" className="hidden" />
+                    <input type="file" id="archivo" name="archivo" className="hidden" onChange={handleFileChange} />
                   </label>
                 </Tooltip>
               </section>

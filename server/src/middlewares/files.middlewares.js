@@ -2,7 +2,7 @@ import multer from 'multer';
 import fs from 'fs';
 
 // Directorio donde se guardarán los archivos subidos
-const uploadDirectory = 'src/uploads/';
+const uploadDirectory = 'uploads';
 
 // Verificar si el directorio existe y crearlo si no
 if (!fs.existsSync(uploadDirectory)) {
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
     // Obtener el tipo de archivo a partir de la extensión del nombre
     const ext = file.originalname.split('.').pop().toLowerCase();
     const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'docx', 'txt', 'xlsx', 'xls', 'zip']; // Agrega las extensiones permitidas
-    
+
     if (allowedExtensions.includes(ext)) {
       cb(null, Date.now() + '-' + file.originalname);
     } else {
@@ -26,11 +26,11 @@ const storage = multer.diskStorage({
   }
 });
 
-const upload = multer({
+const multerMiddleware = multer({
   storage,
   fileFilter: (req, file, cb) => {
     cb(null, true); // Permite todos los archivos por defecto
   }
 });
 
-export default upload;
+export default multerMiddleware;
