@@ -32,8 +32,6 @@ const Requests = () => {
   const [requestId, setRequestId] = useState(null)
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
 
-  const [reloadFetch, setReloadFetch] = useState(false) // Estado para el valor de estado seleccionado
-
   const [highlightedRequestId, setHighlightedRequestId] = useState(null)
 
   // Obtener los elementos que se deben mostrar según el rol
@@ -98,7 +96,7 @@ const Requests = () => {
     /* Llamar la funcion de obtener solicitudes */
     getRequets()
     getRequetsById()
-  }, [currentItems, reloadFetch])
+  }, [])
 
   /* Obtener las solicitudes echas */
   const getRequets = async () => {
@@ -171,12 +169,6 @@ const Requests = () => {
     setSearchResults(filteredResults)
   }
 
-  useEffect(() => {
-    /* Llamar la función de obtener solicitudes */
-    getRequets()
-    getRequetsById()
-  }, [currentItems, reloadFetch])
-
   // Filtrar las solicitudes por nombre y estado
   const filteredRequests = currentItems.filter((item) => {
     const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
@@ -220,7 +212,7 @@ const Requests = () => {
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} requestID={requestId} />}
-      {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} requestID={requestId} reloadFetchState={setReloadFetch} />}
+      {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} requestID={requestId} />}
 
       <main className="h-screen flex">
         <Sliderbar />

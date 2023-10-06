@@ -232,7 +232,7 @@ const Create = () => {
     <main className="relative h-screen flex ">
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
-      <section className="w-full overflow-auto">
+      <form className="w-full overflow-auto" onSubmit={sendData}>
         <section className="fixed z-20 w-[20rem] right-0"></section>
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
           <section className="flex justify-center w-[90%]">
@@ -241,6 +241,7 @@ const Create = () => {
               <NotifyBadge />
             </section>
           </section>
+
           <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>
               <RadioGroup orientation="horizontal" onChange={(e) => setTipoSolicitud(e.target.value)}>
@@ -412,7 +413,7 @@ const Create = () => {
           </Button>
         </section>
         <Footer />
-      </section>
+      </form>
     </main>
   )
 }
