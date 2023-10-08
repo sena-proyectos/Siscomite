@@ -17,12 +17,31 @@ import fileRouter from './routes/file.routes.js' // Rutas relacionadas con los a
 import notifyRouter from './routes/notify.routes.js' // Rutas relacionadas con los archivos
 import sendEmail from './routes/sendMail.routes.js'
 import templateRoute from './routes/template.routes.js'
-import { PORT } from './config.js/' // Importar el puerto desde la configuración
+import { PORT } from './config.js' // Importar el puerto desde la configuración
+
+import http from 'http'
+import {Server} from 'socket.io'
 
 const app = express() // Crear una instancia de la aplicación Express
+const server = http.createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: '*'
+  }
+})
 
-app.use(cors()) // Configurar el middleware CORS para manejar las solicitudes de origen cruzado
+app.use(cors()); // Configurar el middleware CORS para manejar las solicitudes de origen cruzado
 app.use(express.json()) // Habilitar el análisis del cuerpo de solicitud JSON
+
+io.on('connection', (socket) => {
+  socket.emit('nerf', 'Nerfeen a chamber')
+  socket.on('message', () => {
+    console.log('HOLAA')
+  })
+})
+
+server.listen(3010)
+
 
 // Configurar las rutas para diferentes partes de la aplicación
 app.use(indexRoutes)

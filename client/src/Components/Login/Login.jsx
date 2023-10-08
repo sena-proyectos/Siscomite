@@ -60,6 +60,7 @@ export const Login = () => {
       // Redirige al usuario a la página de inicio ('/home').
       navigate('/home')
     } catch (error) {
+      console.log(error)
       const message = error?.response?.data?.message
       console.log(message);
       toast.error('Oppss!!', {
@@ -77,14 +78,14 @@ export const Login = () => {
           <img src="image/logoSena.webp" alt="Sena" className="w-[4rem]" />
         </section>
         <Toaster position="top-right" closeButton richColors />
-        <section className="grid place-items-center  h-screen " style={{ animation: 'show 0.8s ease-in-out' }}>
+        <section className="grid h-screen place-items-center " style={{ animation: 'show 0.8s ease-in-out' }}>
           <form className="relative w-[400px] bg-white  p-[1rem] rounded-xl grid text-center shadow-lg place-items-center" onSubmit={sendData}>
             <h2 className="text-[1.5rem] font-bold mb-7">Iniciar Sesión</h2>
             <section className="grid w-[80%] gap-8  ">
-              <section className="flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0 z-0">
+              <section className="z-0 flex flex-wrap items-end w-full gap-4 mb-6 inputContent md:flex-nowrap md:mb-0">
                 <Input type="text" isRequired label="Número documento" labelPlacement={'outside'} autoComplete="off" value={numeroDocumento} onChange={(e) => setNumeroDocumento(e.target.value)} />
               </section>
-              <section className="flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0 z-0">
+              <section className="z-0 flex flex-wrap items-end w-full gap-4 mb-6 md:flex-nowrap md:mb-0">
                 <Input
                   isRequired
                   label="Contraseña"

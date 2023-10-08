@@ -1,7 +1,7 @@
 {
   "name": "siscomite",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.0.1",
   "type": "module",
   "scripts": {
     "tailwind": "npx tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
@@ -25,6 +25,7 @@
     "react-loading-skeleton": "^3.3.1",
     "react-pdf": "^7.3.3",
     "react-router-dom": "^6.16.0",
+    "socket.io-client": "^4.7.2",
     "sonner": "^1.0.3",
     "sweetalert2": "^11.7.31",
     "xlsx": "^0.18.5",

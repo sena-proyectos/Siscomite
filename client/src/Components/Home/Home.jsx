@@ -1,13 +1,33 @@
 /* Importaciones de modulos y componentes */
 import './Home.css'
 import { Card } from '../Utils/Card/Card'
-import { Button, Divider, Badge } from '@nextui-org/react'
+import { Button, Divider } from '@nextui-org/react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
+import { io } from 'socket.io-client'
+import { useEffect } from 'react'
 
 const Home = () => {
+  useEffect(() => {
+    // Conectar al servidor de Socket.io
+    const socket = io('http://localhost:3010') // Reemplaza con la URL de tu servidor Socket.io
+
+    // Escuchar eventos desde el servidor
+    socket.on('nerf', (data) => {
+      console.log('Mensaje recibido desde el servidor:', data)
+    })
+
+    // Emitir eventos al servidor
+    socket.emit('message', '¡Hola, servidor!') // Puedes enviar datos adicionales
+
+    // Importante: Limpiar la conexión al desmontar el componente
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+
   /* matriz para las cards de acceso rapido del home */
   const data = [
     {
@@ -37,14 +57,14 @@ const Home = () => {
   ]
   return (
     <>
-      <main className="flex h-screen w-full">
+      <main className="flex w-full h-screen">
         <Sliderbar />
         <section className="w-full overflow-auto ">
           <section className="flex max-w-[100%]">
             <section className="w-full h-screen ">
-              <header className="mt-8 grid grid-cols-2-column-table place-items-end">
+              <header className="grid mt-8 grid-cols-2-column-table place-items-end">
                 <h1 className=" text-[2rem] font-extrabold border-b-[1.5px] border-[#0799b6]   ">Siscomite</h1>
-                <section className="w-full h-full flex justify-center items-center">
+                <section className="flex items-center justify-center w-full h-full">
                   <NotifyBadge />
                 </section>
               </header>
@@ -61,10 +81,10 @@ const Home = () => {
                 </section>
                 <section className="w-full mt-[5rem] ">
                   <section className="flex flex-col items-center">
-                    <p className="font-extrabold text-xl">Recomendaciones</p>
+                    <p className="text-xl font-extrabold">Recomendaciones</p>
                     <section className=" max-w-[70%] max-[900px]:max-w-[85%] bg-white shadow-lg rounded-xl mt-2 p-[1rem]">
                       <section className="grid place-items-center">
-                        <p className="font-bold text-red-500 text-xl">
+                        <p className="text-xl font-bold text-red-500">
                           <i className="fi fi-rr-triangle-warning mr-[.5rem] text-red-500"></i>
                           Importante
                         </p>

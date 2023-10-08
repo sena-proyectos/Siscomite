@@ -9,7 +9,7 @@ import { Toaster, toast } from 'sonner'
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
-export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetchState }) => {
+export const ModalEditRequest = ({ cerrarModal, requestID }) => {
   /* estado para almacenar los datos de la solicitud */
   const [requestData, setRequestData] = useState([])
 
@@ -76,7 +76,6 @@ export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetchState }) =
     try {
       const response = await updateRequest(valueArea, requestID)
       const res = response.data.message
-      reloadFetchState(true)
       toast.success('Genial!!', {
         description: res
       })
