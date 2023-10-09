@@ -198,16 +198,16 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
                     </DropdownTrigger>
                     <DropdownMenu>
                       <DropdownMenu>
-                        <DropdownItem key="todos" onClick={() => handleEstadoChange('')}>
+                        <DropdownItem key="todos">
                           Todos
                         </DropdownItem>
-                        <DropdownItem key="activo" onClick={() => handleEstadoChange('Activo')}>
+                        <DropdownItem key="activo">
                           Activo
                         </DropdownItem>
-                        <DropdownItem key="deshabilitado" onClick={() => handleEstadoChange('Deshabilitado')}>
+                        <DropdownItem key="deshabilitado">
                           Deshabilitado
                         </DropdownItem>
-                      </DropdownMenu>{' '}
+                      </DropdownMenu>
                     </DropdownMenu>
                   </Dropdown>
                   <Dropdown>

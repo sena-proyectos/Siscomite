@@ -293,7 +293,7 @@ const Groups = () => {
               ) : (
                 <section className="w-full flex justify-center mt-3">
                   <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-full overflow-auto">
-                    <table className="w-full">
+                    <table className="w-full overflow-auto">
                       <thead className="text-default-500">
                         <tr className="grid grid-cols-6-column-table text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">
                           <th className="px-3 whitespace-nowrap datransition-colors">N° Ficha</th>

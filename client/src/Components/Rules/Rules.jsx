@@ -196,8 +196,8 @@ const Rules = () => {
         <Sliderbar />
         <section className="w-full h-screen overflow-auto">
           <section className="grid h-screen grid-cols-3 max-[1030px]:grid-cols-1">
-            <section className="grid grid-rows-2 max-[1030px]:flex max-[1030px]:grid-cols-1 max-[1030px]:grid-flow-col  max-[1030px]:w-full max-[1030px]:px-[6rem] max-[1030px]:py-[1rem] ">
-              <section className="w-full flex items-start justify-end p-[1rem]">
+            <section className="grid grid-rows-2 max-[1030px]:flex max-[1030px]:w-full max-[1030px]:px-[6rem] max-[1030px]:py-[1rem] ">
+              <section className="w-full flex items-start justify-end p-[1rem] max-[1030px]:justify-center">
                 <NotifyBadge />
               </section>
               <section className="flex justify-center">

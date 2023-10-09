@@ -9,7 +9,6 @@ import { getTeacher } from '../../api/httpRequest'
 
 const Teachers = () => {
   const [filtroVisible, setFiltroVisible] = useState(false) // Estado para controlar la visibilidad del filtro de búsqueda
-  const [notifyOpen, setNotifyOpen] = useState(false) //   Estado para activar la barra de notificaciones
   const [teacher, setTeacher] = useState([])
 
   const [activePage, setActivePage] = useState(1) // Funciones para la paginación y selección de elementos mostar por página
@@ -46,11 +45,6 @@ const Teachers = () => {
   const visibleData = teacher.slice(startIdx, startIdx + itemsPerPage)
   const totalPages = Math.ceil(teacher.length / itemsPerPage)
 
-  // Barra de notificaciones
-
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
 
   // Crear un array de estados para mantener el estado de cada Dropdown
   const [selectedKeysArray, setSelectedKeysArray] = React.useState(Array(teacher.length).fill(new Set(['Instructor'])))
@@ -123,8 +117,8 @@ const Teachers = () => {
             ))}
           </section>
         </section>
-        <section className="grid place-items-center pt-[1rem] mb-[2rem]">
-          <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
+        <section className="grid place-items-center mt-[1rem] mb-[2rem] max-[935px]:mt-[3rem]">
+          <Pagination className="relative z-0" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
         </section>
 
         <Footer />
