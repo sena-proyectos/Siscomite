@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BaseUrl = 'http://localhost:3002'
+const BaseUrl = 'http://localhost:3000'
 const api = '/api'
 
 /* Get users */
