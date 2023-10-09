@@ -4,7 +4,7 @@ import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
 import { Button, Card } from '@nextui-org/react'
-import pdfFile from '../../../public/Reglamento-Aprendiz-sena-2023.pdf' // Asegúrate de que la ruta sea correcta
+import pdfFile from '/Reglamento-Aprendiz-sena-2023.pdf' 
 
 // Configuración de pdf.js
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`

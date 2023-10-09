@@ -7,7 +7,7 @@ const router = Router()
 const upload = multer()
 
 /* enviar email */
-router.post('/sendEmail', checkEmail, sendEmail)
+router.post('/sendEmail', sendEmail)
 
 /* enviar email con archivo */
 router.post('/emailFile', upload.single('file'), sendEmailWithAttachment)

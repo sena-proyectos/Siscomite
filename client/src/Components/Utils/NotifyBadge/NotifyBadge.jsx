@@ -46,7 +46,7 @@ export const NotifyBadge = () => {
 
     const intervalId = setInterval(messageCount, 1000) // Ejecuta la función cada segundo.
 
-    // Limpia el intervalo cuando el componente se desmonta.
+    // Limpia el intervalo cuando el componente se desmonta.  
     return () => {
       clearInterval(intervalId)
     }
@@ -56,8 +56,7 @@ export const NotifyBadge = () => {
   const sendMail = async () => {
     const dataValue = {
       to: userInformation.email_sena,
-      subject: 'Novedad en las solicitudes a comité',
-      text: 'Tienes un mensaje nuevo en tu bandeja de notificaciones de Siscomité. Te recomendamos revisarlo para mantenerte informado sobre las últimas novedades en las solicitudes.'
+      subject: 'Novedades en Siscomite'
     }
 
     try {

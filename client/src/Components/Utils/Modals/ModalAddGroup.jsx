@@ -63,7 +63,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
         toast.success('¡Genial!', {
           description: res
         })
-        reloadFetchState(true)
+        reloadFetchState()
         setTimeout(() => {
           cerrarModal()
         }, 1000)

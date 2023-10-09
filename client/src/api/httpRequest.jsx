@@ -19,6 +19,22 @@ export const stateUser = (userID) => {
   return response
 }
 
+/* update state account teacher */
+export const stateTeacher = (userID, data) => {
+  const URL = `${BaseUrl}${api}/stateTeacher/${userID}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* change rol account teacher */
+export const changeRolTeacher = (userID, data) => {
+  const URL = `${BaseUrl}${api}/changeRol/${userID}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
 /* Get teachers */
 export const getTeachers = () => {
   const URL = `${BaseUrl}${api}/teachers`
@@ -30,6 +46,14 @@ export const getTeachers = () => {
 /* Get teachers by name */
 export const getTeacherByName = (nombres) => {
   const URL = `${BaseUrl}${api}/searchTeacher?nombres=${nombres}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* Get teachers by name */
+export const search = (nombres) => {
+  const URL = `${BaseUrl}${api}/search?nombres=${nombres}`
   const response = axios.get(URL)
 
   return response

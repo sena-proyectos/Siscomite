@@ -110,11 +110,11 @@ const Sliderbar = () => {
               <span className="slideText ml-[10px]">Reglamento</span>
             </li>
           </Link>
-          {elements.adminCoordi && (
+          {elements.coordination && (
             <Link className="line" to={'/teachers'}>
               <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]  ${isActiveRoute(location.pathname, '/teachers') ? 'bg-[#1a1d24]' : ''}`}>
                 <i className={`fi fi-rs-book-bookmark`} title="Instructores" />
-                <span className="slideText ml-[10px]">Instructores</span>
+                <span className="slideText ml-[10px]">Usuarios</span>
               </li>
             </Link>
           )}

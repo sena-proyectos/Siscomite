@@ -231,15 +231,17 @@ const Create = () => {
     <main className="relative h-screen flex ">
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
-      <section className="w-full overflow-auto">
-        <header className="grid place-items-center py-[1rem]">
-          <section className="grid grid-cols-2-column-table w-full place-items-end">
-            <h1 className="text-2xl font-semibold ">Crear solicitud</h1>
-            <section className="mr-[50%] flex justify-center z-20 ">
+      <form className="w-full overflow-auto" onSubmit={sendData}>
+        <section className="fixed z-20 w-[20rem] right-0"></section>
+        <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
+          <section className="flex justify-center w-[90%]">
+            <h1 className="text-2xl font-semibold">Crear solicitud</h1>
+            <section className="absolute right-[20%] flex justify-center z-20">
               <NotifyBadge />
             </section>
           </section>
-          <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] shadow-lg rounded-xl max-[750px]:grid-cols-2 max-[750px]:gap-0 max-[750px]:place-content-start">
+
+          <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
             <section>
               <RadioGroup orientation="horizontal" onChange={(e) => setTipoSolicitud(e.target.value)}>
                 <Radio value="Grupal">Grupal</Radio>
@@ -389,6 +391,7 @@ const Create = () => {
                             <strong>{item.titulo_capitulo}</strong>
                             <p>{item.numero_articulo}</p>
                             <Checkbox value={item.id_numeral} className="flex items-start" checked={numSeleccionados.includes(item.id_numeral)} onChange={(e) => handleNumeralChange(e, item.id_numeral)}>
+                              <strong> {item.numero_numeral}. </strong>
                               {item.descripcion_numeral}
                             </Checkbox>
                           </React.Fragment>
@@ -408,7 +411,7 @@ const Create = () => {
           </Button>
         </section>
         <Footer />
-      </section>
+      </form>
     </main>
   )
 }

@@ -7,7 +7,6 @@ import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
 import { changeStateGroups, getFichas } from '../../api/httpRequest'
-import { fichaInformationStore } from '../../store/config'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import './Groups.css'
 
@@ -22,15 +21,11 @@ const Groups = () => {
   const [isGridView, setIsGridView] = useState(true)
   const [actualView, setActualView] = useState(null)
   const [filtroVisible, setFiltroVisible] = useState(false)
-  const [reloadFetch, setReloadFetch] = useState(false)
 
   // Hacer uso de la funcion obtener fichas
   useEffect(() => {
     getFicha()
-    if (reloadFetch === true) {
-      setReloadFetch(false)
-    }
-  }, [fichas, reloadFetch])
+  }, [])
 
   /* Funcion para obtener las fichas guardadas en la base de datos */
   const getFicha = async () => {
@@ -185,7 +180,7 @@ const Groups = () => {
 
   return (
     <>
-      {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={setReloadFetch} />}
+      {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={getFicha} />}
 
       <main className="flex h-screen">
         <Sliderbar />
@@ -248,7 +243,8 @@ const Groups = () => {
           <section className="max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5 min-h-[60vh]">
             <section className="mx-auto w-[90%]">
               {actualView === 'grid' ? (
-                <section className="gap-8 grid grid-cols-3 mt-3 max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
+                <section className="gap-8 grid grid-cols-3 mt-3 h-[50vh] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
+                  {filteredGroups.length === 0 ? <h1 className="grid place-content-center w-[70em] text-center text-gray-600 ">No se encontró la ficha</h1> : ''}
                   {filteredGroups.map((card) => (
                     <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="no-underline">
                       {/* Envuelve toda la tarjeta dentro del enlace */}
@@ -305,6 +301,7 @@ const Groups = () => {
                         </tr>
                       </thead>
                       <tbody>
+                        {filteredGroups.length === 0 ? <h1 className="p-[1rem] text-center text-gray-600">No existen fichas registradas</h1> : ''}
                         {filteredGroups.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
                             <tr className="grid grid-cols-6-column-table text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
