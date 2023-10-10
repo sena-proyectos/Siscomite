@@ -83,6 +83,7 @@ const Create = () => {
     coordinations()
   }, [])
 
+
   // Función para enviar datos
   const sendData = async () => {
     const dataValue = {
@@ -232,7 +233,6 @@ const Create = () => {
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
       <form className="w-full overflow-auto" onSubmit={sendData}>
-        <section className="fixed z-20 w-[20rem] right-0"></section>
         <header className="grid place-items-center py-[.5rem] relative top-[.5rem]">
           <section className="flex justify-center w-[90%]">
             <h1 className="text-2xl font-semibold">Crear solicitud</h1>
@@ -241,7 +241,7 @@ const Create = () => {
             </section>
           </section>
 
-          <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3 gap-[6rem]  w-[90%] p-[.5rem] p shadow-lg rounded-xl">
+          <section className="bg-white relative top-[1rem] place-items-center  grid grid-cols-3  min-w-[90%] p-[.5rem] shadow-lg rounded-xl ">
             <section>
               <RadioGroup orientation="horizontal" onChange={(e) => setTipoSolicitud(e.target.value)}>
                 <Radio value="Grupal">Grupal</Radio>
@@ -283,8 +283,8 @@ const Create = () => {
         </header>
         <section className="grid grid-cols-2 gap-4 mx-[4rem] mt-[1rem] max-[750px]:grid max-[750px]:grid-cols-1">
           <section className="h-full ">
-            <section className=" relative ">
-              <Search placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getTeacher} />
+            <section className="relative mt-2">
+              <Search placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchUser={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
                 <h3 className="text-white grid justify-center ">Instructores</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1  max-h-[10rem]">
@@ -324,7 +324,7 @@ const Create = () => {
               </section>
             </section>
             <section className="relative top-[1rem] ">
-              <Search className="relative w-full" placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchStudent={getUser} />
+              <Search className="relative w-full" placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchUser={getUser} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl">
                 <h3 className="text-white grid justify-center">Aprendices</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1 overflow-auto max-h-[10rem]">
@@ -379,7 +379,7 @@ const Create = () => {
             </section>
           </section>
 
-          <section className=" h-full max-[900px]:mt-[3rem]">
+          <section className=" h-full max-[900px]:mt-[3rem] mt-2">
             <section className="flex w-full h-full flex-col max-[900px]:mt-[]">
               <Tabs>
                 <Tab key="academica" title="Acádemicas">

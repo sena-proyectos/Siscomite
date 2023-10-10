@@ -168,11 +168,11 @@ const Requests = () => {
     const filteredResults = currentItems.filter((item) => item.nombres.toLowerCase().includes(searchValue.toLowerCase()) && (selectedEstado === '' || item.estado === selectedEstado))
     setSearchResults(filteredResults)
   }
-
   // Filtrar las solicitudes por nombre y estado
   const filteredRequests = currentItems.filter((item) => {
     const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
     const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+
     return nombreMatches && estadoMatches
   })
 
@@ -207,6 +207,7 @@ const Requests = () => {
     })
     // Devuelve las solicitudes filtradas o todas las solicitudes si no hay filtro aplicado
     return filteredRequests
+    
   }
 
   return (
@@ -224,7 +225,7 @@ const Requests = () => {
                 filtro={filtroVisible}
                 placeholder={'Buscar solicitud'}
                 icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                searchStudent={searchRequestsByName}
+                searchUser={searchRequestsByName}
                 searchResults={searchResults}
                 searchValue={searchValue}
                 selectedEstado={selectedEstado}

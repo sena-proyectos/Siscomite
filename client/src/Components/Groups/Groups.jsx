@@ -21,6 +21,16 @@ const Groups = () => {
   const [isGridView, setIsGridView] = useState(true)
   const [actualView, setActualView] = useState(null)
   const [filtroVisible, setFiltroVisible] = useState(false)
+  const [isCardVisible, setIsCardVisible] = useState(true) // Estado para controlar la visibilidad de la tabla y las cards
+
+  const [hoveredCards, setHoveredCards] = useState({})
+  const [activePage, setActivePage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado de fichas a mostrar
+  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
+  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
+  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
+  const [selectedJornada, setSelectedJornada] = useState('')
+  const [selectedEtapa, setSelectedEtapa] = useState('')
 
   // Hacer uso de la funcion obtener fichas
   useEffect(() => {
@@ -38,14 +48,9 @@ const Groups = () => {
     }
   }
 
-  // Funciones para la paginación y selección de elementos mostar por página
-  const [activePage, setActivePage] = useState(1)
-
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber)
   }
-
-  const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado de fichas a mostrar
 
   /* establecer paginado y numero de paginacion */
   const startIdx = (activePage - 1) * itemsPerPage
@@ -59,7 +64,6 @@ const Groups = () => {
   }
 
   // Hover cards
-  const [hoveredCards, setHoveredCards] = useState({})
 
   // Función para activar el hover en una card
   const handleCardHover = (id) => {
@@ -84,8 +88,6 @@ const Groups = () => {
   }
 
   // .................Tabla............
-  // Estado para controlar la visibilidad de la tabla y las cards
-  const [isCardVisible, setIsCardVisible] = useState(true)
 
   // Almacenar la preferencia del usuario en localStorage
   useEffect(() => {
@@ -144,15 +146,9 @@ const Groups = () => {
   }
 
   // ---------------- Filtros --------------------
-  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
-  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
-  const [selectedJornada, setSelectedJornada] = useState('')
-  const [selectedEtapa, setSelectedEtapa] = useState('')
-
   const searchGroupsByName = (searchValue) => {
-    setSearchValue(searchValue)
 
+    setSearchValue(searchValue)
     // Filtrar las solicitudes según el nombre, el número de ficha y el estado seleccionado
     const filteredResults = fichas.filter((item) => {
       const nombreMatches = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
@@ -165,18 +161,21 @@ const Groups = () => {
     })
 
     setSearchResults(filteredResults)
+    setActivePage(1)
   }
 
   // Filtrar las solicitudes por nombre, estado y jornada
   const filteredGroups = visibleCards.filter((item) => {
-    const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
+    const nombreMatches = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
     const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
     const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
     const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
     const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
 
     return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
+    
   })
+  console.log(filteredGroups)
 
   return (
     <>
@@ -193,10 +192,9 @@ const Groups = () => {
                 filtro={filtroVisible}
                 placeholder={'Buscar ficha'}
                 icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                searchStudent={searchGroupsByName}
+                searchUser={searchGroupsByName}
                 searchResults={searchResults}
                 searchValue={searchValue}
-                selectedEstado={selectedEstado}
                 setSelectedEstado={setSelectedEstado}
                 setSelectedJornada={setSelectedJornada}
                 setSelectedEtapa={setSelectedEtapa}
@@ -233,7 +231,7 @@ const Groups = () => {
                   ></i>
                 </section>
               )}
-              <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="outline-none rounded-xl px-[8px] py-[5px]">
+              <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]-">
                 <option value={6}>6 Elementos por página</option>
                 <option value={12}>12 Elementos por página</option>
                 <option value={24}>24 Elementos por página</option>
@@ -244,7 +242,7 @@ const Groups = () => {
             <section className="mx-auto w-[90%]">
               {actualView === 'grid' ? (
                 <section className="gap-8 grid grid-cols-3 mt-3 h-[50vh] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
-                  {filteredGroups.length === 0 ? <h1 className="grid place-content-center w-[70em] text-center text-gray-600 ">No se encontró la ficha</h1> : ''}
+                  {filteredGroups.length === 0 ? <h1 className="grid place-content-center col-span-3 text-center text-gray-600">No se encontró la ficha</h1> : ''}
                   {filteredGroups.map((card) => (
                     <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="no-underline">
                       {/* Envuelve toda la tarjeta dentro del enlace */}

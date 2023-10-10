@@ -4,9 +4,7 @@ import { useRef, useEffect, useState } from 'react' // Importar React, useRef, u
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react' // Importar componentes de Next UI
 
 // Componente Search
-const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teacher, setSelectedEstado, setSelectedDateFilter, setSelectedJornada, setSelectedEtapa }) => {
-  // Estado para controlar la rotación del icono
-  const [iconRow, setIconRow] = useState(false)
+const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher, setSelectedEstado, setSelectedDateFilter, setSelectedJornada, setSelectedEtapa, setSelectedRol }) => {
   // Referencia al elemento de entrada de texto para búsqueda
   const search = useRef()
   // Referencia para el temporizador de debounce
@@ -17,7 +15,7 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
     const searchValue = search.current.value
     clearTimeout(debounceTimeout.current)
     debounceTimeout.current = setTimeout(() => {
-      searchStudent(searchValue)
+      searchUser(searchValue)
     }, 300)
   }
 
@@ -36,6 +34,20 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
     setSelectedEtapa(etapaFilter)
   }
 
+  const handleRol = (rolFilter) => {
+    setSelectedRol(rolFilter)
+  }
+
+  const resetFilter = () => {
+    if(setSelectedEstado)setSelectedEstado('')
+    if (setSelectedDateFilter)setSelectedDateFilter('')
+    if (setSelectedJornada)setSelectedJornada('')
+    if (setSelectedEtapa)setSelectedEtapa('')
+    if (setSelectedRol)setSelectedRol('')
+  }
+
+
+
   // Función para prevenir la acción predeterminada del formulario
   const evnt = (e) => {
     e.preventDefault()
@@ -48,10 +60,8 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
     }
   }, [])
 
-  const [sortOrder, setSortOrder] = useState("asc"); // Estado para el orden de los nombres
-
   return (
-    <form className="flex flex-col" method="get" onChange={handleSearch} onSubmit={evnt}>
+    <main className="flex flex-col" method="get" onChange={handleSearch} onSubmit={evnt}>
       <section className="flex items-center w-full  ">
         <input type="text" name="buscar" className="shadow-md outline-none rounded-xl p-[10px] w-full max-[900px]:w-[20rem]" placeholder={placeholder} ref={search} autoComplete="off" />
         {icon}
@@ -60,36 +70,26 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
       {filtro && (
         <section className="w-[27rem]  z-10 animate-appearance-in absolute mt-[3rem]">
           <section className="bg-white max-[900px]:w-[12rem] border grid shadow-md w-full rounded-xl p-[10px]">
-            <p className="font-semibold pb-0 text-default-400">
-              Filtrar por
-              <i className="fi fi-sr-filter ml-2 text-xs" />
-            </p>
-            <section className="flex gap-x-3 mt-[1rem]  items-center">
-              <Button
-                size="sm"
-                color="primary"
-                variant="bordered"
-                radius="sm"
-                className="w-[7rem]"
-                onClick={() => {
-                  setIconRow(!iconRow)
-                  setSortOrder(sortOrder === "asc" ? "desc" : "asc")
-                }}
-              >
-                <p className="cursor-pointer">Nombre</p>
-                <section className={`w-fit ${iconRow ? 'rotate-180' : 'rotate-0'}`}>
-                  <i className="fi fi-br-arrow-up cursor-pointer " />
-                </section>
+            <section className="flex justify-between">
+              <p className="font-semibold pb-0 text-default-400">
+                Filtrar por
+                <i className="fi fi-sr-filter ml-2 text-xs" />
+              </p>
+              <Button size="sm" radius="full" color="primary" variant="flat" className="h-6 font-semibold" onClick={resetFilter}>
+                <i className="fi fi-rr-eraser"/>
+                Limpiar
               </Button>
+            </section>
+            <section className="flex gap-x-3 mt-[1rem]  items-center">
               {request && (
-                <section className="w-full gap-5 grid grid-cols-2 max-[900px]:flex max-[900px]:flex-col px-[1rem]">
+                <section className="w-full gap-5 grid grid-cols-2 max-[900px]:flex max-[900px]:flex-col px-[1rem] relative">
                   <Dropdown>
                     <DropdownTrigger>
                       <Button size="sm" color="primary" variant="bordered" className="w-full">
                         Fecha
                       </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
+                    <DropdownMenu aria-label="Static Actions">
                       <DropdownItem key="week" onClick={() => handleDateFilterChange('week')}>
                         Hace una semana
                       </DropdownItem>
@@ -108,11 +108,8 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
                         Estado
                       </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
-                      <DropdownItem key="todos" onClick={() => handleEstadoChange('')}>
-                        Todos
-                      </DropdownItem>
-                      <DropdownItem key="" onClick={() => handleEstadoChange('En proceso')}>
+                    <DropdownMenu aria-label="Static Actions">
+                      <DropdownItem key="enProceso" onClick={() => handleEstadoChange('En proceso')}>
                         En proceso
                       </DropdownItem>
                       <DropdownItem key="aprobado" onClick={() => handleEstadoChange('Aprobado')}>
@@ -133,14 +130,11 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
                         Estado
                       </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
-                      <DropdownItem key="todos" onClick={() => handleEstadoChange('')}>
-                        Todos
-                      </DropdownItem>
+                    <DropdownMenu aria-label="Static Actions">
                       <DropdownItem key="activo" onClick={() => handleEstadoChange('Activo')}>
                         Activo
                       </DropdownItem>
-                      <DropdownItem key="deshabilitado" onClick={() => handleEstadoChange('Deshabilitado')}>
+                      <DropdownItem key="deshabilitado" onClick={() => handleEstadoChange('Inactivo')}>
                         Deshabilitado
                       </DropdownItem>
                     </DropdownMenu>
@@ -151,10 +145,7 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
                         Jornada
                       </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
-                      <DropdownItem key="todos" onClick={() => handleJornadaFilterChange('')}>
-                        Todos
-                      </DropdownItem>
+                    <DropdownMenu aria-label="Static Actions">
                       <DropdownItem key={'mañana'} onClick={() => handleJornadaFilterChange('MAÑANA')}>
                         Mañana
                       </DropdownItem>
@@ -178,12 +169,9 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
                         Etapa
                       </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
-                      <DropdownItem key="todos" onClick={() => handleEtapaChange('')}>
-                        Todos
-                      </DropdownItem>
+                    <DropdownMenu aria-label="Static Actions">
                       <DropdownItem onClick={() => handleEtapaChange('LECTIVA')}>Lectiva</DropdownItem>
-                      <DropdownItem onClick={() => handleEtapaChange('PRACTICA')}>Práctica</DropdownItem>
+                      <DropdownItem onClick={() => handleEtapaChange('PRÁCTICA')}>Práctica</DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </section>
@@ -192,34 +180,35 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
                 <section className="gap-3 w-full grid grid-cols-2 ">
                   <Dropdown>
                     <DropdownTrigger>
-                      <Button variant="bordered" size="sm" color="primary" className="w-full">
-                        Estado
+                      <Button size="sm" color="primary" variant="bordered" className="w-full">
+                        Rol
                       </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
-                      <DropdownMenu>
-                        <DropdownItem key="todos">
-                          Todos
-                        </DropdownItem>
-                        <DropdownItem key="activo">
-                          Activo
-                        </DropdownItem>
-                        <DropdownItem key="deshabilitado">
-                          Deshabilitado
-                        </DropdownItem>
-                      </DropdownMenu>
+                    <DropdownMenu aria-label="Static Actions">
+                      <DropdownItem key="coordinado" onClick={() => handleRol(1)}>
+                        Coordinador
+                      </DropdownItem>
+                      <DropdownItem key="instructor" onClick={() => handleRol(2)}>
+                        Instructor
+                      </DropdownItem>
+                      <DropdownItem key="administrador" onClick={() => handleRol(3)}>
+                        Administrador
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                   <Dropdown>
                     <DropdownTrigger>
                       <Button size="sm" color="primary" variant="bordered" className="w-full">
-                        Rol
+                        Estado
                       </Button>
                     </DropdownTrigger>
-                    <DropdownMenu>
-                      <DropdownItem key="coordinado">Coordinado</DropdownItem>
-                      <DropdownItem key="instructor">Instructor</DropdownItem>
-                      <DropdownItem key="ddministrador">Administrador</DropdownItem>
+                    <DropdownMenu aria-label="Static Actions">
+                      <DropdownItem key="activo" onClick={() => handleEstadoChange('ACTIVO')}>
+                        Activo
+                      </DropdownItem>
+                      <DropdownItem key="deshabilitado" onClick={() => handleEstadoChange('INACTIVO')}>
+                        Desahabilitado
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </section>
@@ -228,7 +217,7 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
           </section>
         </section>
       )}
-    </form>
+    </main>
   )
 }
 

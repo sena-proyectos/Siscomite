@@ -140,7 +140,7 @@ const Students = () => {
         <section className="w-full h-screen overflow-auto">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
-              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} />
+              <Search placeholder={'Buscar aprendiz'} searchUser={searchApprentices} />
             </section>
             <section className="flex items-center mr-[50%]   cursor-pointer ">
               <Button color="danger" variant="bordered" onClick={StateGroups}>
@@ -169,7 +169,7 @@ const Students = () => {
                   {apprenticesSearch.length > 0 ? (
                     <>
                       {apprenticesSearch.map((item) => (
-                        <Card className="w-full  z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
+                        <Card className="w-full max-h-[8rem] z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
                           <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
                             <div className="flex gap-5">
                               <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>

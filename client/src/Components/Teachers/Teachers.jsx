@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Search } from '../Search/Search'
-import { Button, Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
+import { Button, Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { changeRolTeacher, getTeacher, search, stateTeacher, stateUser } from '../../api/httpRequest'
@@ -136,17 +136,28 @@ const Teachers = () => {
   // ------------ Filtros ----------
   const [searchValue, setSearchValue] = useState('')
   const [searchResults, setSearchResults] = useState([])
+  const [selectedRol, setSelectedRol] = useState('')
+  const [selectedEstado, setSelectedEstado] = useState('')
 
   const searchGroupsByName = (searchValue) => {
     setSearchValue(searchValue)
 
     const filteredResults = teacher.filter((item) => {
       const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
+      const rolMatches = selectedRol === '' || item.id_rol === selectedRol
+      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
 
-      return nombreMatches
+      return nombreMatches && rolMatches && estadoMatches
     })
-    setSearchResults(filteredResults) 
+    setSearchResults(filteredResults)
   }
+  const filteredteacher = visibleData.filter((item) => {
+    const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
+    const rolMatches = selectedRol === '' || item.id_rol === selectedRol
+    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+
+    return nombreMatches && rolMatches && estadoMatches
+  })
 
   return (
     <main className="h-screen flex">
@@ -155,7 +166,17 @@ const Teachers = () => {
       <section className="w-full overflow-auto">
         <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
           <section className="w-[60%] col-span-2 right-0 relative">
-            <Search teacher filtro={filtroVisible} placeholder={'Buscar instructor'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} searchStudent={searchGroupsByName} searchResults={searchResults} searchValue={searchValue} />} />
+            <Search
+              teacher
+              filtro={filtroVisible}
+              placeholder={'Buscar instructor'}
+              icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
+              searchUser={searchGroupsByName}
+              searchResults={searchResults}
+              searchValue={searchValue}
+              setSelectedRol={setSelectedRol}
+              setSelectedEstado={setSelectedEstado}
+            />
           </section>
           <section className="w-full h-full flex justify-center items-center">
             <NotifyBadge />
@@ -163,18 +184,20 @@ const Teachers = () => {
         </header>
         <section className=" flex justify-center">
           <section className="w-[85%] flex justify-end ">
-            <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="outline-none rounded-xl px-[8px] py-[5px] border border-primary">
-              <option value={6}>6 Elementos por página</option>
+            <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]">
+              <option value={6} className="bg-red-800">
+                6 Elementos por página
+              </option>
               <option value={12}>12 Elementos por página</option>
               <option value={24}>24 Elementos por página</option>
             </select>
           </section>
         </section>
-        <section className="flex justify-center min-h-[65vh]  max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5">
-          <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] " aria-label="Instructores registrados">
+        <section className="flex justify-center min-h-[65vh] max-[900px]:h-screen max-sm:h-[210%] max-[935px]:p-5">
+          <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] max-[900px]:grid-cols-2 max-[700px]:grid-cols-1" aria-label="Instructores registrados">
             {message && <h1>{message}</h1>}
             {!message && userSearch && userSearch.length === 0
-              ? visibleData.map((item, index) => (
+              ? filteredteacher.map((item, index) => (
                   // ... Código para renderizar los datos regulares
                   <Card className="h-[13rem] -z-0" key={item.id_usuario}>
                     <CardHeader>
@@ -194,7 +217,7 @@ const Teachers = () => {
                             {selectedKeysArray[index] || 'Cambiar rol'}
                           </Button>
                         </DropdownTrigger>
-                        <DropdownMenu>
+                        <DropdownMenu aria-label="Static Actions">
                           <DropdownItem onClick={() => handleDropdownChange(index, 'Coordinador', item.id_usuario)} aria-label="Seleccionar Coordinador">
                             Coordinador
                           </DropdownItem>
