@@ -2,7 +2,7 @@ import multer from 'multer';
 import fs from 'fs';
 
 // Directorio donde se guardarán los archivos subidos
-const uploadDirectory = 'uploads';
+const uploadDirectory = 'Downloads/Evidencias-Siscomite/';
 
 // Verificar si el directorio existe y crearlo si no
 if (!fs.existsSync(uploadDirectory)) {
@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
     const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'docx', 'txt', 'xlsx', 'xls', 'zip']; // Agrega las extensiones permitidas
 
     if (allowedExtensions.includes(ext)) {
-      cb(null, Date.now() + '-' + file.originalname);
+      cb(null, Date.now() + '_' + file.originalname);
     } else {
       cb(new Error('Tipo de archivo no permitido'), false);
     }

@@ -103,17 +103,17 @@ const Create = () => {
 
       // Agrega los IDs de los aprendices seleccionados al FormData
       selectedApprentice.forEach((item) => {
-        solicitudFormData.append('aprendicesSeleccionados', item.id_aprendiz)
+        solicitudFormData.append('aprendicesSeleccionados', [item.id_aprendiz])
       })
 
       // Agrega los IDs de los instructores seleccionados al FormData
       selectedInstructor.forEach((item) => {
-        solicitudFormData.append('instructoresSeleccionados', item.id_usuario)
+        solicitudFormData.append('instructoresSeleccionados', [item.id_usuario])
       })
 
       // Agrega los IDs de los numerales seleccionados al FormData
       numSeleccionados.forEach((numeralId) => {
-        solicitudFormData.append('numeralesSeleccionados', numeralId)
+        solicitudFormData.append('numeralesSeleccionados', [numeralId])
       })
 
       // Envia la solicitud con el ID del archivo
@@ -221,8 +221,7 @@ const Create = () => {
       const response = await getRules()
       const res = response.data.result
       setRules(res)
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   // Función para manejar cambios en la selección de checkboxes de numerales

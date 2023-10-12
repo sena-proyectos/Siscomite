@@ -19,6 +19,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
   const [descripcionCaso, setDescripcionCaso] = useState(null)
   const [fechaCreacion, setFechaCreacion] = useState(null)
 
+
   /* estados para almacenar los datos de las infracciones */
   const [numeroArticulo, setNumeroArticulo] = useState(null)
   const [numerales, setNumerales] = useState([])
@@ -154,6 +155,8 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
     return format(date, 'yyyy-MM-dd')
   }
 
+  
+
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
@@ -262,7 +265,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                       <Input type="text" variant="underlined" label="Artículo" defaultValue={numeroArticulo} isReadOnly />
                     </section>
                     <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
+                      <Button size='md' >DESCARGAR</Button>
                     </section>
                     <section>
                       <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>

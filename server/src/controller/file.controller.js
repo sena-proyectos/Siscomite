@@ -25,6 +25,21 @@ export const handleFileUpload = async (req, res) => {
   }
 }
 
+const getFileById = async (fileId) => {
+  try {
+    const [rows, fields] = await pool.promise().query('SELECT * FROM archivos WHERE id_archivo = ?', [fileId]);
+    if (rows.length === 0) {
+      throw new Error('Archivo no encontrado');
+    }
+    return rows[0];
+  } catch (error) {
+    console.error('Error al buscar el archivo:', error);
+  }
+};
+
+// // const file = await getFileById(fileId);
+// const filePath = file.ruta_archivo;
+// const fileName = file.nombre_archivo;
 
 /*Mostrar todos los archivos*/
 export const getFiles = async (req, res) => {

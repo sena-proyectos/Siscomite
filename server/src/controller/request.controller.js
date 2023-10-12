@@ -279,8 +279,12 @@ export const getRules = async (req, res) => {
 export const createRequest = async (req, res) => {
   const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
 
+  const numeralesArray = Array.isArray(numeralesSeleccionados) ? numeralesSeleccionados : [numeralesSeleccionados]
+  const instructoresArray = Array.isArray(instructoresSeleccionados) ? instructoresSeleccionados : [instructoresSeleccionados]
+  const aprendicesArray = Array.isArray(aprendicesSeleccionados) ? aprendicesSeleccionados : [aprendicesSeleccionados]
+
   try {
-     /* Verifica el tipo de archivo */
+    /* Verifica el tipo de archivo */
     if (req.fileValidationError) {
       return res.status(400).send({ message: 'Tipo de archivo no permitido' })
     }
@@ -295,12 +299,12 @@ export const createRequest = async (req, res) => {
       return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
     }
 
-   /*  Subir el archivo y obtener su ID */
+    /*  Subir el archivo y obtener su ID */
     const { filename } = req.file
     const fileType = req.file.mimetype
 
-     /* Insertar el archivo en la base de datos si es necesario */
-    const resultFile = await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `uploads/${filename}`, fileType])
+    /* Insertar el archivo en la base de datos si es necesario */
+    const resultFile = await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `Downloads/Evidencias-Siscomite${filename}`, fileType])
     const fileId = resultFile[0].insertId
 
     /* Crear la solicitud */
@@ -309,7 +313,7 @@ export const createRequest = async (req, res) => {
     const solicitudId = result[0].insertId
 
     /* Insertar numerales infringidos */
-    numeralesSeleccionados.forEach(async (numeroId) => {
+    numeralesArray.forEach(async (numeroId) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_numerales (id_solicitud, id_numeral) VALUES (?, ?)', [solicitudId, numeroId])
       } catch (error) {
@@ -319,8 +323,7 @@ export const createRequest = async (req, res) => {
     })
 
     /* Insertar aprendiz relacionado */
-    if (!aprendicesSeleccionados) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
-    const aprendicesArray = Array.from(aprendicesSeleccionados)
+    if (!aprendicesArray) return res.status(400).send({ message: 'Debe seleccionar al menos un aprendiz' })
     aprendicesArray.forEach(async (aprendizId) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_aprendices (id_solicitud, id_aprendiz) VALUES (?, ?)', [solicitudId, aprendizId])
@@ -329,9 +332,8 @@ export const createRequest = async (req, res) => {
         return
       }
     })
-    
+
     /* Insertar instructor relacionado */
-    const instructoresArray = Array.from(instructoresSeleccionados)
     instructoresArray.forEach(async (usuarioId) => {
       try {
         await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
