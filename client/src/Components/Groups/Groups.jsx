@@ -27,7 +27,6 @@ const Groups = () => {
   const [activePage, setActivePage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado de fichas a mostrar
   const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
   const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
   const [selectedJornada, setSelectedJornada] = useState('')
   const [selectedEtapa, setSelectedEtapa] = useState('')
@@ -48,6 +47,7 @@ const Groups = () => {
     }
   }
 
+  // Paginación
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber)
   }
@@ -146,36 +146,29 @@ const Groups = () => {
   }
 
   // ---------------- Filtros --------------------
-  const searchGroupsByName = (searchValue) => {
-
+  const filterNames = (searchValue) => {
     setSearchValue(searchValue)
-    // Filtrar las solicitudes según el nombre, el número de ficha y el estado seleccionado
-    const filteredResults = fichas.filter((item) => {
-      const nombreMatches = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
-      const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
-      const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
-      const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
-      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
 
-      return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
-    })
-
-    setSearchResults(filteredResults)
-    setActivePage(1)
+    if (!searchValue) {
+      getFicha()
+    } else {
+      const filterFichas = fichas.filter((item) => {
+        const nombre = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
+        const numero = item.numero_ficha.toString().includes(searchValue.toString())
+        
+        return nombre || numero 
+      })
+      setFichas(filterFichas)
+    }
   }
 
-  // Filtrar las solicitudes por nombre, estado y jornada
   const filteredGroups = visibleCards.filter((item) => {
-    const nombreMatches = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
-    const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
     const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
     const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
     const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
 
-    return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
-    
+    return estadoMatches && jornadaMatches && etapaMatches
   })
-  console.log(filteredGroups)
 
   return (
     <>
@@ -192,8 +185,7 @@ const Groups = () => {
                 filtro={filtroVisible}
                 placeholder={'Buscar ficha'}
                 icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                searchUser={searchGroupsByName}
-                searchResults={searchResults}
+                searchUser={filterNames}
                 searchValue={searchValue}
                 setSelectedEstado={setSelectedEstado}
                 setSelectedJornada={setSelectedJornada}

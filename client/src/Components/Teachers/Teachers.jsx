@@ -185,9 +185,7 @@ const Teachers = () => {
         <section className=" flex justify-center">
           <section className="w-[85%] flex justify-end ">
             <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]">
-              <option value={6} className="bg-red-800">
-                6 Elementos por página
-              </option>
+              <option value={6} >6 Elementos por página</option>
               <option value={12}>12 Elementos por página</option>
               <option value={24}>24 Elementos por página</option>
             </select>
@@ -279,7 +277,7 @@ const Teachers = () => {
                 ))}
           </section>
         </section>
-        <section className="grid place-items-center mt-[1rem] mb-[2rem] max-[935px]:mt-[3rem]">
+        <section className="grid place-items-center mt-[1rem] mb-[1rem] max-[935px]:mt-[3rem]">
           <Pagination className="relative z-0" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
         </section>
 

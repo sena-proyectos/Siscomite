@@ -2,15 +2,18 @@
 import './Search.css' // Importar el archivo CSS para estilos específicos
 import { useRef, useEffect, useState } from 'react' // Importar React, useRef, useEffect y useState desde React
 import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react' // Importar componentes de Next UI
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 // Componente Search
-const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher, setSelectedEstado, setSelectedDateFilter, setSelectedJornada, setSelectedEtapa, setSelectedRol }) => {
+const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher, onDateChange, setSelectedJornada, setSelectedEtapa, setSelectedRol, setSelectedEstado }) => {
   // Referencia al elemento de entrada de texto para búsqueda
   const search = useRef()
   // Referencia para el temporizador de debounce
   const debounceTimeout = useRef(null)
-
   // Función para manejar la búsqueda con debounce
+  const [selectedDate, setSelectedDate] = useState(null)
+
   const handleSearch = () => {
     const searchValue = search.current.value
     clearTimeout(debounceTimeout.current)
@@ -23,13 +26,10 @@ const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher
     setSelectedEstado(estado)
   }
 
-  const handleDateFilterChange = (dateFilter) => {
-    setSelectedDateFilter(dateFilter) // Actualiza el estado de la fecha seleccionada
-  }
-
   const handleJornadaFilterChange = (jornadaFilter) => {
     setSelectedJornada(jornadaFilter)
   }
+
   const handleEtapaChange = (etapaFilter) => {
     setSelectedEtapa(etapaFilter)
   }
@@ -37,16 +37,13 @@ const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher
   const handleRol = (rolFilter) => {
     setSelectedRol(rolFilter)
   }
-
+  
   const resetFilter = () => {
-    if(setSelectedEstado)setSelectedEstado('')
-    if (setSelectedDateFilter)setSelectedDateFilter('')
-    if (setSelectedJornada)setSelectedJornada('')
-    if (setSelectedEtapa)setSelectedEtapa('')
-    if (setSelectedRol)setSelectedRol('')
+    setSelectedEstado('') // Limpia el estado
+    setSelectedJornada('')
+    setSelectedEtapa('')
+    setSelectedRol('')
   }
-
-
 
   // Función para prevenir la acción predeterminada del formulario
   const evnt = (e) => {
@@ -76,32 +73,16 @@ const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher
                 <i className="fi fi-sr-filter ml-2 text-xs" />
               </p>
               <Button size="sm" radius="full" color="primary" variant="flat" className="h-6 font-semibold" onClick={resetFilter}>
-                <i className="fi fi-rr-eraser"/>
+                <i className="fi fi-rr-eraser" />
                 Limpiar
               </Button>
             </section>
             <section className="flex gap-x-3 mt-[1rem]  items-center">
               {request && (
                 <section className="w-full gap-5 grid grid-cols-2 max-[900px]:flex max-[900px]:flex-col px-[1rem] relative">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button size="sm" color="primary" variant="bordered" className="w-full">
-                        Fecha
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions">
-                      <DropdownItem key="week" onClick={() => handleDateFilterChange('week')}>
-                        Hace una semana
-                      </DropdownItem>
-                      <DropdownItem key="month" onClick={() => handleDateFilterChange('month')}>
-                        Hace un mes
-                      </DropdownItem>
-                      <DropdownItem key="year" onClick={() => handleDateFilterChange('year')}>
-                        Hace un año
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-
+                  <section>
+                    <DatePicker selected={selectedDate} onChange={(date) => onDateChange(date)} dateFormat="dd/MM/yyyy" isClearable placeholderText="Selecciona una fecha" className="cursor-pointer border-2 border-primary hover:border-primary hover:border-2 px-5 py-[5px] text-sm rounded-lg outline-none" />
+                  </section>
                   <Dropdown>
                     <DropdownTrigger>
                       <Button size="sm" color="primary" variant="bordered" className="w-full">
@@ -109,7 +90,7 @@ const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher
                       </Button>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions">
-                      <DropdownItem key="enProceso" onClick={() => handleEstadoChange('En proceso')}>
+                      <DropdownItem key="enProceso"onClick={() => handleEstadoChange('En proceso')}>
                         En proceso
                       </DropdownItem>
                       <DropdownItem key="aprobado" onClick={() => handleEstadoChange('Aprobado')}>

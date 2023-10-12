@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react' // Importar el hook de estado
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination,  Chip } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
-import { getRequest, getRequestByIdUser } from '../../api/httpRequest'
+import { getRequest, getRequestByIdUser, search } from '../../api/httpRequest'
 
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
@@ -157,58 +157,73 @@ const Requests = () => {
 
   // ---------------- Filtros --------------------
   const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
-  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
-  const [selectedDateFilter, setSelectedDateFilter] = useState('') // Estado para la fecha seleccionada
+  const [selectedDate, setSelectedDate] = useState(new Date()) // Agregar el estado para la fecha seleccionada
+  const [selectedEstado, setSelectedEstado] = useState('') // Agrega un estado para el filtro de estado
+  const [filteredRequestsByEstado, setFilteredRequestsByEstado] = useState([])
 
   // Función para manejar la búsqueda de solicitudes por nombre
-  const searchRequestsByName = (searchValue) => {
+  // Función para manejar la búsqueda de solicitudes por nombre y filtro de grupos
+  const filterNames = (searchValue) => {
     setSearchValue(searchValue)
-    // Filtrar las solicitudes según el nombre y el estado seleccionado
-    const filteredResults = currentItems.filter((item) => item.nombres.toLowerCase().includes(searchValue.toLowerCase()) && (selectedEstado === '' || item.estado === selectedEstado))
-    setSearchResults(filteredResults)
-  }
-  // Filtrar las solicitudes por nombre y estado
-  const filteredRequests = currentItems.filter((item) => {
-    const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
-    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
 
-    return nombreMatches && estadoMatches
-  })
+    if (!searchValue) {
+      // Si no hay un valor de búsqueda, obtén todas las solicitudes
+      getRequets()
+      getRequetsById()
+    } else {
+      // Filtrar solicitudes por nombre
+      const filteredRequests = request.filter((item) => {
+        const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
+        const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
+        const estado = selectedEstado === '' || item.estado === selectedEstado
 
-  // Función para aplicar el filtro de fecha
-  const filterRequestsByDate = (requests, dateFilter) => {
-    if (!dateFilter) {
-      // Si no hay fecha seleccionada, devuelve todas las solicitudes
-      return requests
+        console.log(selectedEstado)
+        return (nombre || apellido) && estado
+      })
+
+      setRequest(filteredRequests)
     }
-    const currentDate = new Date()
-    const filteredRequests = requests.filter((item) => {
-      switch (dateFilter) {
-        case 'week':
-          // Filtrar solicitudes de la última semana
-          const oneWeekAgo = new Date()
-          oneWeekAgo.setDate(currentDate.getDate() - 7)
-          return new Date(item.fecha_creacion) >= oneWeekAgo
-        case 'month':
-          // Filtrar solicitudes del último mes
-          const oneMonthAgo = new Date()
-          oneMonthAgo.setMonth(currentDate.getMonth() - 1)
-          return new Date(item.fecha_creacion) >= oneMonthAgo
-        case 'year':
-          // Filtrar solicitudes del último año
-          const oneYearAgo = new Date()
-          oneYearAgo.setFullYear(currentDate.getFullYear() - 1)
-          return new Date(item.fecha_creacion) >= oneYearAgo
-        default:
-          // No se aplica ningún filtro de fecha
-          return true
-      }
-    })
-    // Devuelve las solicitudes filtradas o todas las solicitudes si no hay filtro aplicado
-    return filteredRequests
-    
   }
+
+  // Función para manejar el cambio de fecha
+  const handleDateChange = (date) => {
+    setSelectedDate(date)
+    if (date) {
+      const filteredRequests = request.filter((item) => {
+        const requestDate = new Date(item.fecha_creacion)
+
+        return requestDate.toDateString() === date.toDateString()
+      })
+      setRequest(filteredRequests)
+    } else {
+      setRequest(request)
+    }
+  }
+
+  const [sortOrder, setSortOrder] = useState('asc'); // Estado para rastrear el orden de clasificación
+
+  // Función para ordenar la lista de solicitudes por nombre
+  const sortRequestsByName = () => {
+    const sortedRequests = [...request];
+    sortedRequests.sort((a, b) => {
+      const nameA = `${a.nombres} ${a.apellidos}`.toLowerCase();
+      const nameB = `${b.nombres} ${b.apellidos}`.toLowerCase();
+      if (sortOrder === 'asc') {
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
+      } else {
+        if (nameA > nameB) return -1;
+        if (nameA < nameB) return 1;
+      }
+      return 0;
+    });
+
+    // Cambiar el orden de clasificación para la próxima vez
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+
+    setRequest(sortedRequests);
+  };
+
 
   return (
     <>
@@ -225,13 +240,11 @@ const Requests = () => {
                 filtro={filtroVisible}
                 placeholder={'Buscar solicitud'}
                 icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                searchUser={searchRequestsByName}
-                searchResults={searchResults}
+                searchUser={filterNames}
                 searchValue={searchValue}
-                selectedEstado={selectedEstado}
+                dateArray={request}
+                onDateChange={handleDateChange}
                 setSelectedEstado={setSelectedEstado}
-                selectedDateFilter={selectedDateFilter}
-                setSelectedDateFilter={setSelectedDateFilter}
               />
             </section>
             <section className="w-full h-full flex justify-center items-center">
@@ -242,7 +255,11 @@ const Requests = () => {
           <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
             <Table className="h-full select-none" aria-label="Tabla para ver las solicitudes">
               <TableHeader>
-                <TableColumn aria-label="Nombre del solicitante">Nombre del solicitante</TableColumn>
+                <TableColumn aria-label="Nombre del solicitante">
+                  Nombre del solicitante
+                  <span onClick={sortRequestsByName} size='sm' className='ml-2'>({sortOrder === 'asc' ? <i class="fi fi-rr-arrow-up cursor-pointer"/> : <i class="fi fi-rr-arrow-down cursor-pointer"/>})
+                  </span>
+                  </TableColumn>
                 <TableColumn aria-label="Fecha de la solicitud">Fecha de la solicitud</TableColumn>
                 <TableColumn aria-label="Tipo de solicitud">Tipo de solicitud</TableColumn>
                 <TableColumn aria-label="Estado">Estado</TableColumn>
@@ -250,7 +267,7 @@ const Requests = () => {
               </TableHeader>
 
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
-                {filterRequestsByDate(filteredRequests, selectedDateFilter).map((item) => (
+                {currentItems.map((item) => (
                   <TableRow key={item.id_solicitud} className={`hover:bg-gray-200 transition-all ${item.id_solicitud === parseInt(highlightedRequestId) ? 'highlighted-row' : ''}`}>
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
                     <TableCell>{formatDate(item.fecha_creacion)}</TableCell>
