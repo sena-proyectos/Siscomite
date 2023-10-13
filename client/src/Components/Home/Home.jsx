@@ -6,8 +6,31 @@ import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 
 const Home = () => {
+  const getElementsByRole = () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
+
+    // Mapear los ID de rol a nombres de rol
+    if (rolToken === 1) rolToken = 'Coordinador'
+    if (rolToken === 2) rolToken = 'Instructor'
+    if (rolToken === 3) rolToken = 'Administrador'
+
+    return {
+      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+      administration: rolToken === 'Administrador',
+      coordination: rolToken === 'Coordinador',
+      instructor: rolToken === 'Instructor'
+    }
+  }
+
+  // Obtener los elementos que se deben mostrar según el rol
+  const elements = getElementsByRole()
+
   /* matriz para las cards de acceso rapido del home */
   const data = [
     {
@@ -17,10 +40,10 @@ const Home = () => {
       Link: '/requests'
     },
     {
-      titleHome: 'Crear solicitud',
+      titleHome: `${elements.administration ? 'Trámites solicitud' : elements.coordination ? 'Usuarios' : 'Crear solicitud'}`,
       image: '/image/solicitud.webp',
-      descripciónHome: 'Aquí podrás crear una solicitud para un comité de evalución.',
-      Link: '/create'
+      descripciónHome: `${elements.administration ? 'Aquí podrás realizar trámites de las solicitudes como enviar archivos a los distintos correos con su respectiva plantilla.' : elements.coordination ? 'Aquí puedes visualizar todos los usuarios registrados en la plataforma, revisar su estado y gestionar sus permisos.' : 'Aquí podrás crear una solicitud para un comité de evaluación.'}`,
+      Link: `${elements.administration ? '/procedures' : elements.coordination ? '/teachers' : '/create'}`
     },
     {
       titleHome: 'Fichas',
@@ -35,6 +58,7 @@ const Home = () => {
       Link: '/rules'
     }
   ]
+
   return (
     <>
       <main className="flex h-screen w-full">
@@ -87,7 +111,6 @@ const Home = () => {
                     </section>
                   </section>
                 </section>
-                
               </section>
               <Footer />
             </section>
