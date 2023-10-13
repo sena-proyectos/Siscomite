@@ -10,20 +10,16 @@ cadena con una longitud mínima de 8 caracteres y una longitud máxima de 50 car
 una longitud máxima de 300 caracteres y debe coincidir con el patrón de expresión regular de
 contraseña especificado. */
 export const loginDataSchema = Joi.object({
-    numero_documento: Joi.string().required().min(8).max(50),
-    contrasena: Joi.string().required().min(8).max(300).pattern(PASSWORD_REGEX),
+  numero_documento: Joi.string().required().min(8).max(50),
+  contrasena: Joi.string().required().min(8).max(300).pattern(PASSWORD_REGEX)
 })
 
 /* El código está definiendo un esquema para validar los datos necesarios para el registro del usuario. */
 export const registerDataSchema = Joi.object({
-    nombres: Joi.string().required().min(2).max(50),
-    apellidos: Joi.string().required().min(2).max(45),
-    email_sena: Joi.string().email().required().min(5).max(60),
-    numero_celular: Joi.string().required().min(5).max(15),
-    numero_documento: Joi.string().required().min(8).max(50),
-    contrasena: Joi.string().required().min(8).max(300).pattern(PASSWORD_REGEX),
-})
-
-export const searchUsers = Joi.object({
-    
+  nombres: Joi.string().required().min(2).max(50),
+  apellidos: Joi.string().required().min(2).max(45),
+  email_sena: Joi.string().email().required().min(5).max(60),
+  numero_celular: Joi.string().required().min(5).max(15),
+  numero_documento: Joi.string().required().min(8).max(50),
+  contrasena: Joi.string().required().min(8).max(300).pattern(PASSWORD_REGEX)
 })
