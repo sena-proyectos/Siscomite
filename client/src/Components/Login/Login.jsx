@@ -61,7 +61,6 @@ export const Login = () => {
       navigate('/home')
     } catch (error) {
       const message = error?.response?.data?.message
-      console.log(message);
       toast.error('Oppss!!', {
         description: message
       })
@@ -101,15 +100,13 @@ export const Login = () => {
                   className="max-w-xs"
                 />
               </section>
-              <p className="text-sm cursor-pointer hover:text-[#587fff]">
-                <Link to="/password">¿Olvidaste tu contraseña?</Link>
-              </p>
+              <p className="text-sm cursor-pointer hover:text-[#587fff]">{/* <Link to="/password">¿Olvidaste tu contraseña?</Link> */}</p>
               <button className="bg-[#3c3c3c] text-white w-full cursor-pointer rounded-md font-light text-xs py-3" disabled={isLoading}>
                 {/* Deshabilitamos el botón mientras se realiza el inicio de sesión */}
                 {isLoading ? 'Cargando...' : 'Iniciar sesión'}
               </button>
               <p className="text-sm">
-                ¿Nuevo usuario?
+                ¿Nuevo usuario?{' '}
                 <Link className="text-sm text-[#587fff]" to={'/Register'}>
                   Registrate
                 </Link>

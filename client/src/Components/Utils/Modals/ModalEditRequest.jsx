@@ -9,7 +9,7 @@ import { Toaster, toast } from 'sonner'
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
-export const ModalEditRequest = ({ cerrarModal, requestID }) => {
+export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetch, fetchById }) => {
   /* estado para almacenar los datos de la solicitud */
   const [requestData, setRequestData] = useState([])
 
@@ -66,7 +66,9 @@ export const ModalEditRequest = ({ cerrarModal, requestID }) => {
       setRequestData(res)
       setSelectedKeys(new Set([res[0]?.estado]))
     } catch (error) {
-      console.log(error)
+      toast.error('¡Opss!', {
+        description: 'Error inesperado'
+      })
     }
   }
 
@@ -79,6 +81,8 @@ export const ModalEditRequest = ({ cerrarModal, requestID }) => {
       toast.success('Genial!!', {
         description: res
       })
+      fetchById()
+      reloadFetch()
     } catch (error) {
       const message = error.response.data.message
       toast.error('Opss!!', {
