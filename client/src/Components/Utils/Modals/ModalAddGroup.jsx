@@ -132,7 +132,7 @@ export const ModalAddGroups = ({ cerrarModal, reloadFetchState }) => {
                 <select className="bg-default-100  px-[12px] shadow-sm w-full text-small gap-3 rounded-medium h-unit-10 outline-none" required onChange={handleEtapaChange} value={etapaPrograma}>
                   <option value="">Etapa*</option>
                   <option value="Lectiva">Lectiva</option>
-                  <option value="Práctica">Práctica</option>
+                  <option value="Productiva">Productiva</option>
                 </select>
               </section>
               <section>
