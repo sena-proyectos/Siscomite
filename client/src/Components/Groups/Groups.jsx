@@ -31,7 +31,6 @@ const Groups = () => {
   const [selectedJornada, setSelectedJornada] = useState('')
   const [selectedEtapa, setSelectedEtapa] = useState('')
   const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
-  const popoverRef = useRef();
 
 
   // Hacer uso de la funcion obtener fichas
@@ -207,8 +206,6 @@ const Groups = () => {
   // Función para aplicar filtros
   const applyFilters = () => {
     filterFichas()
-    // Cerrar el Popover
-    popoverRef.current.close()
   }
 
   // Función para limpiar los filtros
@@ -238,7 +235,7 @@ const Groups = () => {
             <section className="flex justify-between items-center  bg-[#2e323e] w-[90%] rounded-xl py-2 px-3 ">
               <section>
                 <Button onClick={sortFichasByName} color='primary' variant='shadow' className="mr-2 text-lg">
-                  {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-down cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
+                  {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-up cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
                 </Button>
                 <Popover placement="right">
                   <PopoverTrigger>
@@ -247,7 +244,7 @@ const Groups = () => {
                       Filtros
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent ref={popoverRef}>
+                  <PopoverContent>
                     <section className="px-1 py-2 flex flex-col gap-y-4">
                       <p className="font-semibold text-default-400">
                         Filtrar por
@@ -272,7 +269,6 @@ const Groups = () => {
                         <option value="">Etapa</option>
                         <option value="LECTIVA">Lectiva</option>
                         <option value="PRÁCTICA">Práctica</option>
-                        {/* Agregar más opciones de etapa según sea necesario */}
                       </select>
                       <section className="flex">
                         <Button className="ml-3" color="primary" variant="light" onClick={clearFilter}>
@@ -289,7 +285,7 @@ const Groups = () => {
                 </Popover>
               </section>
 
-              <sectio className="flex items-center">
+              <section className="flex items-center">
                 {actualView === 'grid' ? (
                   <>
                     <section className="pr-[3rem] flex">
@@ -320,7 +316,7 @@ const Groups = () => {
                   <option value={12}>12 Elementos por página</option>
                   <option value={24}>24 Elementos por página</option>
                 </select>
-              </sectio>
+              </section>
             </section>
           </section>
           <section className="max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5 min-h-[60vh]">

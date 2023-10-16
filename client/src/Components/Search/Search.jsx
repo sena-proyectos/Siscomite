@@ -5,8 +5,9 @@ import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
+
 // Componente Search
-const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher, onDateChange, setSelectedJornada, setSelectedEtapa, setSelectedRol, setSelectedEstado }) => {
+const Search = ({ searchUser, placeholder, icon, filtro, request, teacher, onDateChange, setSelectedRol, setSelectedEstado }) => {
   // Referencia al elemento de entrada de texto para búsqueda
   const search = useRef()
   // Referencia para el temporizador de debounce
@@ -22,28 +23,10 @@ const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher
     }, 300)
   }
 
-  const handleEstadoChange = (estado) => {
-    setSelectedEstado(estado)
-  }
-
-  const handleJornadaFilterChange = (jornadaFilter) => {
-    setSelectedJornada(jornadaFilter)
-  }
-
-  const handleEtapaChange = (etapaFilter) => {
-    setSelectedEtapa(etapaFilter)
-  }
-
-  const handleRol = (rolFilter) => {
-    setSelectedRol(rolFilter)
-  }
+  
 
   const resetFilter = () => {
-    if (setSelectedEstado) setSelectedEstado('')
     if (setSelectedDate) setSelectedDate('')
-    if (setSelectedJornada) setSelectedJornada('')
-    if (setSelectedEtapa) setSelectedEtapa('')
-    if (setSelectedRol) setSelectedRol('')
   }
 
   // Función para prevenir la acción predeterminada del formulario
@@ -83,45 +66,7 @@ const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher
                 <section className="w-full max-[900px]:flex max-[900px]:flex-col px-[1rem] relative">
                   <DatePicker selected={selectedDate} onChange={(date) => onDateChange(date)} dateFormat="dd/MM/yyyy" isClearable placeholderText="Selecciona una fecha" className="cursor-pointer border-2 border-primary hover:border-primary hover:border-2 px-5 py-[5px] text-sm rounded-lg outline-none" />
                 </section>
-              )}
-
-              {teacher && (
-                <section className="gap-3 w-full grid grid-cols-2 ">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button size="sm" color="primary" variant="bordered" className="w-full">
-                        Rol
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions">
-                      <DropdownItem key="coordinado" onClick={() => handleRol(1)}>
-                        Coordinador
-                      </DropdownItem>
-                      <DropdownItem key="instructor" onClick={() => handleRol(2)}>
-                        Instructor
-                      </DropdownItem>
-                      <DropdownItem key="administrador" onClick={() => handleRol(3)}>
-                        Administrador
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button size="sm" color="primary" variant="bordered" className="w-full">
-                        Estado
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions">
-                      <DropdownItem key="activo" onClick={() => handleEstadoChange('ACTIVO')}>
-                        Activo
-                      </DropdownItem>
-                      <DropdownItem key="deshabilitado" onClick={() => handleEstadoChange('INACTIVO')}>
-                        Desahabilitado
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </section>
-              )}
+              )}              
             </section>
           </section>
         </section>

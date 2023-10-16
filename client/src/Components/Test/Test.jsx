@@ -1,193 +1,297 @@
-/* Importaciones de modulos y componentes */
-import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Input, Chip, Button } from '@nextui-org/react'
-import { Search } from '../Search/Search'
-import { Footer } from '../Footer/Footer'
+import React, { useEffect, useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { ModalAddGroups } from '../Utils/Modals/ModalAddGroup'
-import { changeStateGroups, getFichas } from '../../api/httpRequest'
+import { Footer } from '../Footer/Footer'
+import { Search } from '../Search/Search'
+import { Button, Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
+
+import { changeRolTeacher, getTeacher, search, stateTeacher, stateUser } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
+
 import sw from 'sweetalert2'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
 
-/* Definicion del componente */
-const Test = ({ count, page, rowsPerPage, onChangePage }) => {
-  /* Estado y variables de estado del componente */
-  const [isOpen] = useState(false)
-  const [fichas, setFichas] = useState([])
-  const [isGridView, setIsGridView] = useState(true)
-  const [actualView, setActualView] = useState(null)
+const Test = () => {
   const [filtroVisible, setFiltroVisible] = useState(false)
-  const [isCardVisible, setIsCardVisible] = useState(true) // Estado para controlar la visibilidad de la tabla y las cards
-  const [hoveredCards, setHoveredCards] = useState({})
-
+  const [teacher, setTeacher] = useState([])
+  const [userSearch, setUserSearch] = useState([])
+  const [message, setMessage] = useState(null)
   const [activePage, setActivePage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(4) // Establece un valor predeterminado de fichas a mostrar
-  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
-  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
-  const [selectedJornada, setSelectedJornada] = useState('')
-  const [selectedEtapa, setSelectedEtapa] = useState('')
+  const [itemsPerPage, setItemsPerPage] = useState(6)
 
-  // Hacer uso de la funcion obtener fichas
+  const [selectedKeysArray, setSelectedKeysArray] = useState(Array(teacher.length).fill(''))
+
+  const startIdx = (activePage - 1) * itemsPerPage
+  const endIdx = startIdx + itemsPerPage
+  const visibleData = teacher.slice(startIdx, endIdx)
+  const totalPages = Math.ceil(teacher.length / itemsPerPage)
+
   useEffect(() => {
-    getFicha()
+    getTeachers()
   }, [])
 
-  /* Funcion para obtener las fichas guardadas en la base de datos */
-  const getFicha = async () => {
+  const getTeachers = async () => {
     try {
-      const response = await getFichas()
+      const response = await getTeacher()
       const res = response.data.result
-      setFichas(res)
+      setTeacher(res)
     } catch (error) {
       console.error(error)
     }
   }
 
-  // Paginación
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber)
   }
-  /* establecer paginado y numero de paginacion */
-  const startIdx = (activePage - 1) * itemsPerPage
-  const visibleCards = fichas.slice(startIdx, startIdx + itemsPerPage)
-  const totalPages = Math.ceil(fichas.length / itemsPerPage)
 
-  // Modal detalles
-  const [modalGroups, setModalGroups] = useState(false)
-  const modalAddGroups = () => {
-    setModalGroups(!modalGroups)
+  const handleItemsPerPageChange = (event) => {
+    const newItemsPerPage = parseInt(event.target.value)
+    setItemsPerPage(newItemsPerPage)
+    setActivePage(1)
   }
 
-  // .................Tabla............
+  const handleDropdownChange = async (index, newValue, userID) => {
+    const newSelectedKeysArray = [...selectedKeysArray]
+    newSelectedKeysArray[index] = newValue
+    setSelectedKeysArray(newSelectedKeysArray)
 
-  // Almacenar la preferencia del usuario en localStorage
-  useEffect(() => {
-    checkTableView()
-  }, [])
-
-  /* Obtener el el estado guardado en el localStorage */
-  const checkTableView = () => {
-    const item = localStorage.getItem('view')
-    if (item) {
-      setActualView(item)
-      return
+    const id_rol = mapRolToId(newValue) // Función para mapear roles a IDs
+    if (id_rol !== null) {
+      try {
+        // Llama a la función para cambiar el rol del profesor
+        const response = await changeRolTeacher(userID, { id_rol })
+        const message = response.data.message
+        toast.success('¡Genial!', {
+          description: message
+        })
+      } catch (error) {
+        const message = error?.response?.data?.message
+        toast.error('¡Opss!', {
+          description: message
+        })
+      }
     }
   }
 
-  /* Enviar estado de la tabla al localStorage */
-  const tableView = (value) => {
-    localStorage.setItem('view', value)
-    setActualView(value)
+  const mapRolToId = (rol) => {
+    // Mapea nombres de rol a IDs según tus necesidades
+    switch (rol) {
+      case 'Coordinador':
+        return 1
+      case 'Instructor':
+        return 2
+      case 'Administrador':
+        return 3
+      default:
+        return null // Retorna null si no se encuentra un rol válido
+    }
   }
 
-  // Cambiar la vista entre cards y tabla
-  const toggleView = () => {
-    setIsGridView((prevView) => !prevView)
+  const toggleUserState = async (user) => {
+    const idUser = user.id_usuario
+    const action = user.estado === 'ACTIVO' ? 'deshabilitar' : 'habilitar' // Determina la acción según el estado actual
+    try {
+      sw.fire({
+        title: `${action === 'habilitar' ? '¿Estás seguro que quieres volver a habilitar este usuario?' : '¿Estás seguro que quieres deshabilitar este usuario?'}`,
+        text: `${action === 'habilitar' ? 'El usuario podrá usar nuevamente Siscomite' : 'El usuario no podrá usar Siscomite si está inhabilitado'}`,
+        showDenyButton: true,
+        confirmButtonText: `${action === 'habilitar' ? 'Habilitar' : 'Deshabilitar'}`,
+        denyButtonText: `Cancelar`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await stateTeacher(idUser, { action })
+          const message = response.data.message
+          toast.success('¡Genial!', {
+            description: message
+          })
+
+          const updatedTeacher = teacher.map((t) => {
+            if (t.id_usuario === user.id_usuario) {
+              // Cambia el valor de estado para el usuario seleccionado
+              return {
+                ...t,
+                estado: user.estado === 'ACTIVO' ? 'INACTIVO' : 'ACTIVO'
+              }
+            }
+            return t
+          })
+          setTeacher(updatedTeacher)
+        }
+      })
+    } catch (error) {
+      const message = error?.response?.data?.message
+      toast.error('¡Opss!', {
+        description: message
+      })
+    }
   }
 
-  // Cambiar la visibilidad de la tarjeta
-  const toggleContent = () => {
-    setIsCardVisible((prevVisibility) => !prevVisibility)
+  const searchUser = async (value) => {
+    try {
+      if (value.trim() === '') {
+        userSearch([])
+        setMessage(null)
+      } else {
+        const response = await search(value)
+        setUserSearch(response.data.user)
+        setMessage(null)
+      }
+    } catch (error) {
+      const message = error?.response?.data?.message
+      setMessage(message)
+      teacher([])
+      userSearch([])
+    }
   }
 
-  const filterNames = (searchValue) => {
+  // ------------ Filtros ----------
+  const [searchValue, setSearchValue] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [selectedRol, setSelectedRol] = useState('')
+  const [selectedEstado, setSelectedEstado] = useState('')
+
+  const searchGroupsByName = (searchValue) => {
     setSearchValue(searchValue)
 
-    if (!searchValue) {
-      getFicha()
-    } else {
-      const filterFichas = fichas.filter((item) => {
-        const nombre = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
-        const numero = item.numero_ficha.toString().includes(searchValue.toString())
-        return nombre || numero
-      })
-      setFichas(filterFichas)
-    }
+    const filteredResults = teacher.filter((item) => {
+      const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
+      const rolMatches = selectedRol === '' || item.id_rol === selectedRol
+      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+
+      return nombreMatches && rolMatches && estadoMatches
+    })
+    setSearchResults(filteredResults)
   }
-
-  const filteredGroups = visibleCards.filter((item) => {
+  const filteredteacher = visibleData.filter((item) => {
+    const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
+    const rolMatches = selectedRol === '' || item.id_rol === selectedRol
     const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
-    const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
-    const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
 
-    return estadoMatches && jornadaMatches && etapaMatches
+    return nombreMatches && rolMatches && estadoMatches
   })
 
-  const [selectedDate, setSelectedDate] = useState(null);
-  const dateArray = [
-    new Date('2023-10-01'),
-    new Date('2023-10-05'),
-    new Date('2023-10-10'),
-    new Date('2023-10-15'),
-    new Date('2023-10-20'),
-    new Date('2023-10-25'),
-  ];
-
-   // Función para filtrar fechas
-   const filteredDates = dateArray.filter((date) => {
-    // Si no se ha seleccionado una fecha, muestra todas las fechas.
-    if (!selectedDate) {
-      return true;
-    }
-
-    // Compara las fechas para ver si coinciden.
-    return date.toDateString() === selectedDate.toDateString();
-  });
-
   return (
-    <main className="h-screen w-full flex flex-col items-center">
-      <header className="w-[50%] mt-[2rem]">
-        <h2 className="font-bold text-2xl">Filtro prueba</h2>
-        <Search
-          ficha
-          filtro={filtroVisible}
-          placeholder={'Buscar ficha'}
-          icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
-          searchUser={filterNames}
-          searchResults={searchResults}
-          searchValue={searchValue}
-          setSelectedEstado={setSelectedEstado}
-          setSelectedJornada={setSelectedJornada}
-          setSelectedEtapa={setSelectedEtapa}
-        />
-      </header>
-      <section className="h-full grid place-content-center">
-        {filteredGroups.map((prueba) => {
-          return (
-            <ul key={prueba.id_ficha} className="flex gap-x-4">
-              <li>{prueba.numero_ficha}</li>
-              <li> {prueba.nombre_programa}</li>
-              <li>{prueba.jornada}</li>
-              <li>{prueba.etapa_programa}</li>
-            </ul>
-          )
-        })}
+    <main className="h-screen flex">
+      <Sliderbar />
+      <Toaster position="top-right" closeButton richColors />
+      <section className="w-full overflow-auto">
+        <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+          <section className="w-[60%] col-span-2 right-0 relative">
+            <Search
+              teacher
+              filtro={filtroVisible}
+              placeholder={'Buscar instructor'}
+              icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
+              searchUser={searchGroupsByName}
+              searchResults={searchResults}
+              searchValue={searchValue}
+              setSelectedRol={setSelectedRol}
+              setSelectedEstado={setSelectedEstado}
+            />
+          </section>
+          <section className="w-full h-full flex justify-center items-center">
+            <NotifyBadge />
+          </section>
+        </header>
+        <section className=" flex justify-center">
+          <section className="w-[85%] flex justify-end ">
+            <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]">
+              <option value={6} >6 Elementos por página</option>
+              <option value={12}>12 Elementos por página</option>
+              <option value={24}>24 Elementos por página</option>
+            </select>
+          </section>
+        </section>
+        <section className="flex justify-center min-h-[65vh] max-[900px]:h-screen max-sm:h-[210%] max-[935px]:p-5">
+          <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] max-[900px]:grid-cols-2 max-[700px]:grid-cols-1" aria-label="Instructores registrados">
+            {message && <h1>{message}</h1>}
+            {!message && userSearch.length > 0
+              ? userSearch.map((item, index) => (
+                  // ... Código para renderizar los resultados de búsqueda
+                  <Card className="h-[13rem] -z-0" key={item.id_usuario}>
+                    {/* ... Resto del código de renderizado para los resultados de búsqueda */}
+                    <Card className="h-[13rem] -z-0" key={item.id_usuario}>
+                      <CardHeader>
+                        <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
+                      </CardHeader>
+                      <CardBody className="pt-2 pb-0 ">
+                        <strong>{item.nombres + ' ' + item.apellidos}</strong>
+                        <section className="flex gap-2">
+                          Rol actual:
+                          <p className="text-gray-500"> {item.id_rol === 1 ? 'Coordinador' : item.id_rol === 2 ? 'Instructor' : 'Administrador'}</p>
+                        </section>
+                      </CardBody>
+                      <CardFooter className="flex justify-between">
+                        <Dropdown aria-label="Seleccionar el rol">
+                          <DropdownTrigger aria-label={`Establecer el rol para ${item.nombres} ${item.apellidos}`}>
+                            <Button variant="faded" aria-label={`Desplegar lista de roles para ${item.nombres} ${item.apellidos}`} onClick={() => handleDropdownChange(index, 'Cambiar rol', item.id_usuario)}>
+                              {selectedKeysArray[index] || 'Cambiar rol'}
+                            </Button>
+                          </DropdownTrigger>
+                          <DropdownMenu>
+                            <DropdownItem onClick={() => handleDropdownChange(index, 'Coordinador', item.id_usuario)} aria-label="Seleccionar Coordinador">
+                              Coordinador
+                            </DropdownItem>
+                            <DropdownItem onClick={() => handleDropdownChange(index, 'Instructor', item.id_usuario)} aria-label="Seleccionar Instructor">
+                              Instructor
+                            </DropdownItem>
+                            <DropdownItem onClick={() => handleDropdownChange(index, 'Administrador', item.id_usuario)} aria-label="Seleccionar Administrador">
+                              Administrador
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                        <Button variant="bordered" color={item.estado === 'ACTIVO' ? 'danger' : 'success'} className="mr-1" onClick={() => toggleUserState(item)}>
+                          {item.estado === 'ACTIVO' ? 'Deshabilitar usuario' : 'Habilitar usuario'}
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </Card>
+                ))
+              : filteredteacher.map((item, index) => (
+                  // ... Código para renderizar los datos regulares
+                  <Card className="h-[13rem] -z-0" key={item.id_usuario}>
+                    <CardHeader>
+                      <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
+                    </CardHeader>
+                    <CardBody className="pt-2 pb-0 ">
+                      <strong>{item.nombres + ' ' + item.apellidos}</strong>
+                      <section className="flex gap-2">
+                        Rol actual:
+                        <p className="text-gray-500"> {item.id_rol === 1 ? 'Coordinador' : item.id_rol === 2 ? 'Instructor' : 'Administrador'}</p>
+                      </section>
+                    </CardBody>
+                    <CardFooter className="flex justify-between">
+                      <Dropdown aria-label="Seleccionar el rol">
+                        <DropdownTrigger aria-label={`Establecer el rol para ${item.nombres} ${item.apellidos}`}>
+                          <Button variant="faded" aria-label={`Desplegar lista de roles para ${item.nombres} ${item.apellidos}`} onClick={() => handleDropdownChange(index, 'Cambiar rol', item.id_usuario)}>
+                            {selectedKeysArray[index] || 'Cambiar rol'}
+                          </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu>
+                          <DropdownItem onClick={() => handleDropdownChange(index, 'Coordinador', item.id_usuario)} aria-label="Seleccionar Coordinador">
+                            Coordinador
+                          </DropdownItem>
+                          <DropdownItem onClick={() => handleDropdownChange(index, 'Instructor', item.id_usuario)} aria-label="Seleccionar Instructor">
+                            Instructor
+                          </DropdownItem>
+                          <DropdownItem onClick={() => handleDropdownChange(index, 'Administrador', item.id_usuario)} aria-label="Seleccionar Administrador">
+                            Administrador
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                      <Button variant="bordered" color={item.estado === 'ACTIVO' ? 'danger' : 'success'} className="mr-1" onClick={() => toggleUserState(item)}>
+                        {item.estado === 'ACTIVO' ? 'Deshabilitar usuario' : 'Habilitar usuario'}
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
+          </section>
+        </section>
 
+        <section className="grid place-items-center pt-[1rem] mb-[2rem]">
+          <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
+        </section>
 
-        <Pagination className={`relative z-0 max-[935px]:pb-[3rem] `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
-        <div>
-      <h1>Date Picker y Filtrado de Fechas en React</h1>
-      <DatePicker
-        selected={selectedDate}
-        onChange={(date) => setSelectedDate(date)}
-        dateFormat="dd/MM/yyyy"
-        isClearable
-        placeholderText="Selecciona una fecha"
-      />
-      <div>
-        <h2>Fechas Filtradas</h2>
-        <ul>
-          {filteredDates.map((date, index) => (
-            <li key={index}>{date.toDateString()}</li>
-          ))}
-        </ul>
-      </div>
-    </div>
+        <Footer />
       </section>
     </main>
   )

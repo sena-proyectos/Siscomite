@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react' // Importar el hook de estado
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Popover, PopoverTrigger, PopoverContent, Button } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Popover, PopoverTrigger, PopoverContent, Button, Divider } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
@@ -186,7 +186,7 @@ const Requests = () => {
       getRequets()
       getRequetsById()
     } else {
-      // Filtrar solicitudes por nombre y estado
+      // Filtrar usuarios por nombre y apellido
       const filteredRequests = request.filter((item) => {
         const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
         const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
@@ -264,7 +264,7 @@ const Requests = () => {
                 <TableColumn aria-label="Nombre del solicitante" className="flex items-center">
                   Nombre del solicitante
                   <span onClick={sortRequestsByName} className="ml-2 hover:bg-default-500 hover:text-white text-[16px] p-2 rounded-full flex items-center">
-                    {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-down cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
+                    {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-up cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
                   </span>
                 </TableColumn>
                 <TableColumn aria-label="Fecha de la solicitud">Fecha de la solicitud</TableColumn>
@@ -278,7 +278,12 @@ const Requests = () => {
                       </section>
                     </PopoverTrigger>
                     <PopoverContent>
-                      <div className="px-1 py-2 flex flex-col gap-4">
+                      <section className="px-1 py-2 flex flex-col gap-4">
+                        <p className="font-semibold text-default-400">
+                          Filtrar por
+                          <i className="fi fi-sr-filter ml-2 text-sm" />
+                        </p>
+                        <Divider className="m-0 p-0"/>
                         <Button size="sm" className="bg-yellow-200 text-warning" onClick={() => filterByStatus('En proceso')}>
                           En proceso
                         </Button>
@@ -288,10 +293,11 @@ const Requests = () => {
                         <Button size="sm" className="bg-[#45d48383] text-success" onClick={() => filterByStatus('Aprobado')}>
                           Aprobado
                         </Button>
-                        <Button size="sm" onClick={clearFilter}>
-                          Limpiar filtro
+                        <Button  color="primary" variant="light" onClick={clearFilter}>
+                          <i className="fi fi-rr-eraser " />
+                          Limpiar
                         </Button>
-                      </div>
+                      </section>
                     </PopoverContent>
                   </Popover>
                 </TableColumn>

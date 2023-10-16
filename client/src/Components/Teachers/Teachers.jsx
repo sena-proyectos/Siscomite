@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Search } from '../Search/Search'
-import { Button, Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { Button, Pagination, Card, CardHeader, CardBody, CardFooter, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Popover, PopoverTrigger, PopoverContent, Divider } from '@nextui-org/react'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { changeRolTeacher, getTeacher, search, stateTeacher, stateUser } from '../../api/httpRequest'
@@ -13,10 +13,12 @@ import sw from 'sweetalert2'
 const Teachers = () => {
   const [filtroVisible, setFiltroVisible] = useState(false)
   const [teacher, setTeacher] = useState([])
-  const [userSearch, setUserSearch] = useState([])
-  const [message, setMessage] = useState(null)
   const [activePage, setActivePage] = useState(1)
   const [itemsPerPage, setItemsPerPage] = useState(6)
+  const [searchValue, setSearchValue] = useState('')
+  const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
+  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
+  const [selectedRol, setSelectedRol] = useState('')
 
   const [selectedKeysArray, setSelectedKeysArray] = useState(Array(teacher.length).fill(''))
 
@@ -125,165 +127,184 @@ const Teachers = () => {
     }
   }
 
-  const searchUser = async (value) => {
-    try {
-      if (value.trim() === '') {
-        userSearch([])
-        setMessage(null)
-      } else {
-        const response = await search(value)
-        setUserSearch(response.data.user)
-        setMessage(null)
-      }
-    } catch (error) {
-      const message = error?.response?.data?.message
-      setMessage(message)
-      teacher([])
-      userSearch([])
+  // ------------ Filtros ----------
+  // Función para manejar la búsqueda de usuarios por nombre
+  const filterNames = (searchValue) => {
+    setSearchValue(searchValue)
+
+    if (!searchValue) {
+      // Si no hay un valor de búsqueda, obtén todos los usuarios
+      getTeachers()
+    } else {
+      // Filtrar usuarios por nombre y apellido
+      const filteredUser = teacher.filter((item) => {
+        const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
+        const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
+
+        return nombre || apellido
+      })
+
+      setTeacher(filteredUser)
     }
   }
 
-  // ------------ Filtros ----------
-  const [searchValue, setSearchValue] = useState('')
-  const [searchResults, setSearchResults] = useState([])
-  const [selectedRol, setSelectedRol] = useState('')
-  const [selectedEstado, setSelectedEstado] = useState('')
-
-  const searchGroupsByName = (searchValue) => {
-    setSearchValue(searchValue)
-
-    const filteredResults = teacher.filter((item) => {
-      const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
-      const rolMatches = selectedRol === '' || item.id_rol === selectedRol
-      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
-
-      return nombreMatches && rolMatches && estadoMatches
+  // Función para ordenar la lista de usuarios por nombre
+  const sortTeacherByName = () => {
+    const sortedTecher = [...teacher]
+    sortedTecher.sort((a, b) => {
+      const nameA = `${a.nombres} ${a.apellidos}`.toLowerCase()
+      const nameB = `${b.nombres} ${b.apellidos}`.toLowerCase()
+      if (sortOrder === 'asc') {
+        return nameA.localeCompare(nameB)
+      } else {
+        return nameB.localeCompare(nameA)
+      }
     })
-    setSearchResults(filteredResults)
-  }
-  const filteredteacher = visibleData.filter((item) => {
-    const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
-    const rolMatches = selectedRol === '' || item.id_rol === selectedRol
-    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
 
-    return nombreMatches && rolMatches && estadoMatches
-  })
+    // Cambiar el orden de clasificación para la próxima vez
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+
+    setTeacher(sortedTecher)
+  }
+
+  // Función para filtrar las usuarios por estado y rol
+  const filterTeacher = () => {
+    // Filtrar usuarios por estado y rol
+    let filteredTeacher = teacher
+
+    if (selectedEstado) {
+      filteredTeacher = filteredTeacher.filter((teacher) => teacher.estado.toLowerCase() === selectedEstado.toLowerCase())
+    }
+
+    if (selectedRol) {
+      filteredTeacher = filteredTeacher.filter((teacher) => teacher.id_rol.toString() === selectedRol.toString())
+    }
+
+    // Actualizar la lista de usuarios después de aplicar los filtros
+    setTeacher(filteredTeacher)
+  }
+
+  // // Función para aplicar filtros
+  const applyFilters = () => {
+    filterTeacher()
+  }
+
+  // Función para limpiar los filtros
+  const clearFilter = () => {
+    setSelectedEstado('')
+    setSelectedRol('')
+    getTeachers() // Recarga los usuarios originales
+  }
 
   return (
     <main className="h-screen flex">
       <Sliderbar />
       <Toaster position="top-right" closeButton richColors />
       <section className="w-full overflow-auto">
-        <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
+        <header className="p-[1.25rem] grid grid-cols-3 place-items-end">
           <section className="w-[60%] col-span-2 right-0 relative">
-            <Search
-              teacher
-              filtro={filtroVisible}
-              placeholder={'Buscar instructor'}
-              icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
-              searchUser={searchGroupsByName}
-              searchResults={searchResults}
-              searchValue={searchValue}
-              setSelectedRol={setSelectedRol}
-              setSelectedEstado={setSelectedEstado}
-            />
+            <Search teacher filtro={filtroVisible} placeholder={'Buscar instructor'} icon={<i className="fi fi-br-search relative right-[3rem]" />} searchUser={filterNames} searchValue={searchValue} />
           </section>
           <section className="w-full h-full flex justify-center items-center">
             <NotifyBadge />
           </section>
         </header>
         <section className=" flex justify-center">
-          <section className="w-[85%] flex justify-end ">
-            <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]">
-              <option value={6} >6 Elementos por página</option>
-              <option value={12}>12 Elementos por página</option>
-              <option value={24}>24 Elementos por página</option>
-            </select>
+          <section className="w-[85%] flex justify-between ">
+            <section>
+              <Button onClick={sortTeacherByName} color="primary" variant="solid" className="mr-2 text-lg">
+                {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-up cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
+              </Button>
+              <Popover placement="right">
+                <PopoverTrigger>
+                  <Button variant='bordered' color='primary' className="text-[15px] font-bold">
+                    <i className="fi fi-rr-settings-sliders relative cursor-pointer " />
+                    Filtros
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <section className="px-1 py-2 flex flex-col gap-y-4">
+                    <p className="font-semibold text-default-400">
+                      Filtrar por
+                      <i className="fi fi-sr-filter ml-2 text-sm" />
+                    </p>
+                    <Divider />
+                    <select name="estado" onChange={(e) => setSelectedEstado(e.target.value)} value={selectedEstado} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
+                      <option value="">Estado</option>
+                      <option value="Activo">Activo</option>
+                      <option value="Inactivo">Deshabilitado</option>
+                    </select>
+                    <select name="rol" onChange={(e) => setSelectedRol(e.target.value)} value={selectedRol} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
+                      <option value="">Rol</option>
+                      <option value="1">Coordinador</option>
+                      <option value="2">Instructor</option>
+                      <option value="3">Administrador</option>
+                    </select>
+
+                    <section className="">
+                      <Button className="ml-3" color="primary" variant="light" onClick={clearFilter}>
+                        <i className="fi fi-rr-eraser " />
+                        Limpiar
+                      </Button>
+                      <Button className="ml-3" color="success" variant="light" onClick={applyFilters}>
+                        <i className="fi fi-br-check" />
+                        Aplicar
+                      </Button>
+                    </section>
+                  </section>
+                </PopoverContent>
+              </Popover>
+            </section>
+            <section>
+              <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]">
+                <option value={6}>6 Elementos por página</option>
+                <option value={12}>12 Elementos por página</option>
+                <option value={24}>24 Elementos por página</option>
+              </select>
+            </section>
           </section>
         </section>
         <section className="flex justify-center min-h-[65vh] max-[900px]:h-screen max-sm:h-[210%] max-[935px]:p-5">
           <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] max-[900px]:grid-cols-2 max-[700px]:grid-cols-1" aria-label="Instructores registrados">
-            {message && <h1>{message}</h1>}
-            {!message && userSearch.length > 0
-              ? userSearch.map((item, index) => (
-                  // ... Código para renderizar los resultados de búsqueda
-                  <Card className="h-[13rem] -z-0" key={item.id_usuario}>
-                    {/* ... Resto del código de renderizado para los resultados de búsqueda */}
-                    <Card className="h-[13rem] -z-0" key={item.id_usuario}>
-                      <CardHeader>
-                        <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
-                      </CardHeader>
-                      <CardBody className="pt-2 pb-0 ">
-                        <strong>{item.nombres + ' ' + item.apellidos}</strong>
-                        <section className="flex gap-2">
-                          Rol actual:
-                          <p className="text-gray-500"> {item.id_rol === 1 ? 'Coordinador' : item.id_rol === 2 ? 'Instructor' : 'Administrador'}</p>
-                        </section>
-                      </CardBody>
-                      <CardFooter className="flex justify-between">
-                        <Dropdown aria-label="Seleccionar el rol">
-                          <DropdownTrigger aria-label={`Establecer el rol para ${item.nombres} ${item.apellidos}`}>
-                            <Button variant="faded" aria-label={`Desplegar lista de roles para ${item.nombres} ${item.apellidos}`} onClick={() => handleDropdownChange(index, 'Cambiar rol', item.id_usuario)}>
-                              {selectedKeysArray[index] || 'Cambiar rol'}
-                            </Button>
-                          </DropdownTrigger>
-                          <DropdownMenu>
-                            <DropdownItem onClick={() => handleDropdownChange(index, 'Coordinador', item.id_usuario)} aria-label="Seleccionar Coordinador">
-                              Coordinador
-                            </DropdownItem>
-                            <DropdownItem onClick={() => handleDropdownChange(index, 'Instructor', item.id_usuario)} aria-label="Seleccionar Instructor">
-                              Instructor
-                            </DropdownItem>
-                            <DropdownItem onClick={() => handleDropdownChange(index, 'Administrador', item.id_usuario)} aria-label="Seleccionar Administrador">
-                              Administrador
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </Dropdown>
-                        <Button variant="bordered" color={item.estado === 'ACTIVO' ? 'danger' : 'success'} className="mr-1" onClick={() => toggleUserState(item)}>
-                          {item.estado === 'ACTIVO' ? 'Deshabilitar usuario' : 'Habilitar usuario'}
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </Card>
-                ))
-              : filteredteacher.map((item, index) => (
-                  // ... Código para renderizar los datos regulares
-                  <Card className="h-[13rem] -z-0" key={item.id_usuario}>
-                    <CardHeader>
-                      <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
-                    </CardHeader>
-                    <CardBody className="pt-2 pb-0 ">
-                      <strong>{item.nombres + ' ' + item.apellidos}</strong>
-                      <section className="flex gap-2">
-                        Rol actual:
-                        <p className="text-gray-500"> {item.id_rol === 1 ? 'Coordinador' : item.id_rol === 2 ? 'Instructor' : 'Administrador'}</p>
-                      </section>
-                    </CardBody>
-                    <CardFooter className="flex justify-between">
-                      <Dropdown aria-label="Seleccionar el rol">
-                        <DropdownTrigger aria-label={`Establecer el rol para ${item.nombres} ${item.apellidos}`}>
-                          <Button variant="faded" aria-label={`Desplegar lista de roles para ${item.nombres} ${item.apellidos}`} onClick={() => handleDropdownChange(index, 'Cambiar rol', item.id_usuario)}>
-                            {selectedKeysArray[index] || 'Cambiar rol'}
-                          </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu>
-                          <DropdownItem onClick={() => handleDropdownChange(index, 'Coordinador', item.id_usuario)} aria-label="Seleccionar Coordinador">
-                            Coordinador
-                          </DropdownItem>
-                          <DropdownItem onClick={() => handleDropdownChange(index, 'Instructor', item.id_usuario)} aria-label="Seleccionar Instructor">
-                            Instructor
-                          </DropdownItem>
-                          <DropdownItem onClick={() => handleDropdownChange(index, 'Administrador', item.id_usuario)} aria-label="Seleccionar Administrador">
-                            Administrador
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                      <Button variant="bordered" color={item.estado === 'ACTIVO' ? 'danger' : 'success'} className="mr-1" onClick={() => toggleUserState(item)}>
-                        {item.estado === 'ACTIVO' ? 'Deshabilitar usuario' : 'Habilitar usuario'}
+            {visibleData.length === 0 ? <h1 className="grid place-content-center col-span-3 text-center text-gray-600">No se encontró al usuario</h1> : ''}
+            {visibleData.map((item, index) => (
+              // ... Código para renderizar los datos regulares
+              <Card className="h-[13rem] -z-0" key={item.id_usuario}>
+                <CardHeader>
+                  <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
+                </CardHeader>
+                <CardBody className="pt-2 pb-0 ">
+                  <strong>{item.nombres + ' ' + item.apellidos}</strong>
+                  <section className="flex gap-2">
+                    Rol actual:
+                    <p className="text-gray-500"> {item.id_rol === 1 ? 'Coordinador' : item.id_rol === 2 ? 'Instructor' : 'Administrador'}</p>
+                  </section>
+                </CardBody>
+                <CardFooter className="flex justify-between">
+                  <Dropdown aria-label="Seleccionar el rol">
+                    <DropdownTrigger aria-label={`Establecer el rol para ${item.nombres} ${item.apellidos}`}>
+                      <Button variant="faded" aria-label={`Desplegar lista de roles para ${item.nombres} ${item.apellidos}`} onClick={() => handleDropdownChange(index, 'Cambiar rol', item.id_usuario)}>
+                        {selectedKeysArray[index] || 'Cambiar rol'}
                       </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                      <DropdownItem onClick={() => handleDropdownChange(index, 'Coordinador', item.id_usuario)} aria-label="Seleccionar Coordinador">
+                        Coordinador
+                      </DropdownItem>
+                      <DropdownItem onClick={() => handleDropdownChange(index, 'Instructor', item.id_usuario)} aria-label="Seleccionar Instructor">
+                        Instructor
+                      </DropdownItem>
+                      <DropdownItem onClick={() => handleDropdownChange(index, 'Administrador', item.id_usuario)} aria-label="Seleccionar Administrador">
+                        Administrador
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
+                  <Button variant="bordered" color={item.estado === 'ACTIVO' ? 'danger' : 'success'} className="mr-1" onClick={() => toggleUserState(item)}>
+                    {item.estado === 'ACTIVO' ? 'Deshabilitar usuario' : 'Habilitar usuario'}
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
           </section>
         </section>
 
