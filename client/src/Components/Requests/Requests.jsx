@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react' // Importar el hook de estado
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination,  Chip } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Popover, PopoverTrigger, PopoverContent, Button } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
@@ -23,6 +23,8 @@ const Requests = () => {
   const [filtroVisible, setFiltroVisible] = useState(false) // Estado para controlar la visibilidad del filtro de búsqueda
   const [request, setRequest] = useState([]) // estado para guardar las solicitudes de la base de datos
   const [requestById, setRequestById] = useState([]) // estado para guardar las solicitudes de usuarios de la base de datos
+
+  const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
 
   // Paginación
   // Número de elementos por página
@@ -111,7 +113,7 @@ const Requests = () => {
       }
     } catch (error) {
       toast.error('¡Opss!', {
-        description: "Error al obtener las solicitudes"
+        description: 'Error al obtener las solicitudes'
       })
     }
   }
@@ -162,11 +164,20 @@ const Requests = () => {
   // ---------------- Filtros --------------------
   const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
   const [selectedDate, setSelectedDate] = useState(new Date()) // Agregar el estado para la fecha seleccionada
-  const [selectedEstado, setSelectedEstado] = useState('') // Agrega un estado para el filtro de estado
-  const [filteredRequestsByEstado, setFilteredRequestsByEstado] = useState([])
+  // Agregar un estado para el filtro de estado
+  const [selectedStatus, setSelectedStatus] = useState('')
+
+  // Crear una función para filtrar las solicitudes por estado
+  const filterByStatus = (status) => {
+    // Filtrar solicitudes por estado
+    const filteredRequests = request.filter((item) => {
+      return item.estado.toLowerCase() === status.toLowerCase()
+    })
+
+    setRequest(filteredRequests)
+  }
 
   // Función para manejar la búsqueda de solicitudes por nombre
-  // Función para manejar la búsqueda de solicitudes por nombre y filtro de grupos
   const filterNames = (searchValue) => {
     setSearchValue(searchValue)
 
@@ -175,14 +186,12 @@ const Requests = () => {
       getRequets()
       getRequetsById()
     } else {
-      // Filtrar solicitudes por nombre
+      // Filtrar solicitudes por nombre y estado
       const filteredRequests = request.filter((item) => {
         const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
         const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
-        const estado = selectedEstado === '' || item.estado === selectedEstado
 
-        console.log(selectedEstado)
-        return (nombre || apellido) && estado
+        return nombre || apellido
       })
 
       setRequest(filteredRequests)
@@ -199,35 +208,38 @@ const Requests = () => {
         return requestDate.toDateString() === date.toDateString()
       })
       setRequest(filteredRequests)
-    } else {
-      setRequest(request)
     }
   }
 
-  const [sortOrder, setSortOrder] = useState('asc'); // Estado para rastrear el orden de clasificación
-
   // Función para ordenar la lista de solicitudes por nombre
   const sortRequestsByName = () => {
-    const sortedRequests = [...request];
+    const sortedRequests = [...request]
     sortedRequests.sort((a, b) => {
-      const nameA = `${a.nombres} ${a.apellidos}`.toLowerCase();
-      const nameB = `${b.nombres} ${b.apellidos}`.toLowerCase();
+      const nameA = `${a.nombres} ${a.apellidos}`.toLowerCase()
+      const nameB = `${b.nombres} ${b.apellidos}`.toLowerCase()
       if (sortOrder === 'asc') {
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
+        if (nameA < nameB) return -1
+        if (nameA > nameB) return 1
       } else {
-        if (nameA > nameB) return -1;
-        if (nameA < nameB) return 1;
+        if (nameA > nameB) return -1
+        if (nameA < nameB) return 1
       }
-      return 0;
-    });
+      return 0
+    })
 
     // Cambiar el orden de clasificación para la próxima vez
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
 
-    setRequest(sortedRequests);
-  };
+    setRequest(sortedRequests)
+  }
 
+  // Función para eliminar el filtro
+  const clearFilter = () => {
+    setSelectedStatus('')
+    // Vuelve a obtener todas las solicitudes
+    getRequets()
+    getRequetsById()
+  }
 
   return (
     <>
@@ -239,17 +251,7 @@ const Requests = () => {
         <section className="w-full overflow-auto ">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
-              <Search
-                request
-                filtro={filtroVisible}
-                placeholder={'Buscar solicitud'}
-                icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                searchUser={filterNames}
-                searchValue={searchValue}
-                dateArray={request}
-                onDateChange={handleDateChange}
-                setSelectedEstado={setSelectedEstado}
-              />
+              <Search request filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full " onClick={() => setFiltroVisible(!filtroVisible)} />} searchUser={filterNames} searchValue={searchValue} dateArray={request} onDateChange={handleDateChange} />
             </section>
             <section className="w-full h-full flex justify-center items-center">
               <NotifyBadge />
@@ -259,14 +261,40 @@ const Requests = () => {
           <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
             <Table className="h-full select-none" aria-label="Tabla para ver las solicitudes">
               <TableHeader>
-                <TableColumn aria-label="Nombre del solicitante">
+                <TableColumn aria-label="Nombre del solicitante" className="flex items-center">
                   Nombre del solicitante
-                  <span onClick={sortRequestsByName} size='sm' className='ml-2'>({sortOrder === 'asc' ? <i class="fi fi-rr-arrow-up cursor-pointer"/> : <i class="fi fi-rr-arrow-down cursor-pointer"/>})
+                  <span onClick={sortRequestsByName} className="ml-2 hover:bg-default-500 hover:text-white text-[16px] p-2 rounded-full flex items-center">
+                    {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-down cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
                   </span>
-                  </TableColumn>
+                </TableColumn>
                 <TableColumn aria-label="Fecha de la solicitud">Fecha de la solicitud</TableColumn>
                 <TableColumn aria-label="Tipo de solicitud">Tipo de solicitud</TableColumn>
-                <TableColumn aria-label="Estado">Estado</TableColumn>
+                <TableColumn aria-label="Estado" className="flex items-center gap-x-4">
+                  Estado
+                  <Popover placement="right">
+                    <PopoverTrigger>
+                      <section className="w-4 cursor-pointer">
+                        <i className="fi fi-br-menu-dots-vertical text-sm" />
+                      </section>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <div className="px-1 py-2 flex flex-col gap-4">
+                        <Button size="sm" className="bg-yellow-200 text-warning" onClick={() => filterByStatus('En proceso')}>
+                          En proceso
+                        </Button>
+                        <Button size="sm" className="bg-red-200 text-danger" onClick={() => filterByStatus('Rechazado')}>
+                          Rechazado
+                        </Button>
+                        <Button size="sm" className="bg-[#45d48383] text-success" onClick={() => filterByStatus('Aprobado')}>
+                          Aprobado
+                        </Button>
+                        <Button size="sm" onClick={clearFilter}>
+                          Limpiar filtro
+                        </Button>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </TableColumn>
                 <TableColumn aria-label="Detalles">Detalles</TableColumn>
               </TableHeader>
 

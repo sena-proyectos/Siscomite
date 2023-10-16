@@ -37,12 +37,13 @@ const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher
   const handleRol = (rolFilter) => {
     setSelectedRol(rolFilter)
   }
-  
+
   const resetFilter = () => {
-    setSelectedEstado('') // Limpia el estado
-    setSelectedJornada('')
-    setSelectedEtapa('')
-    setSelectedRol('')
+    if (setSelectedEstado) setSelectedEstado('')
+    if (setSelectedDate) setSelectedDate('')
+    if (setSelectedJornada) setSelectedJornada('')
+    if (setSelectedEtapa) setSelectedEtapa('')
+    if (setSelectedRol) setSelectedRol('')
   }
 
   // Función para prevenir la acción predeterminada del formulario
@@ -79,84 +80,11 @@ const Search = ({ searchUser, placeholder, icon, filtro, ficha, request, teacher
             </section>
             <section className="flex gap-x-3 mt-[1rem]  items-center">
               {request && (
-                <section className="w-full gap-5 grid grid-cols-2 max-[900px]:flex max-[900px]:flex-col px-[1rem] relative">
-                  <section>
-                    <DatePicker selected={selectedDate} onChange={(date) => onDateChange(date)} dateFormat="dd/MM/yyyy" isClearable placeholderText="Selecciona una fecha" className="cursor-pointer border-2 border-primary hover:border-primary hover:border-2 px-5 py-[5px] text-sm rounded-lg outline-none" />
-                  </section>
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button size="sm" color="primary" variant="bordered" className="w-full">
-                        Estado
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions">
-                      <DropdownItem key="enProceso"onClick={() => handleEstadoChange('En proceso')}>
-                        En proceso
-                      </DropdownItem>
-                      <DropdownItem key="aprobado" onClick={() => handleEstadoChange('Aprobado')}>
-                        Aprobado
-                      </DropdownItem>
-                      <DropdownItem key="rechazado" onClick={() => handleEstadoChange('Rechazado')}>
-                        Rechazado
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
+                <section className="w-full max-[900px]:flex max-[900px]:flex-col px-[1rem] relative">
+                  <DatePicker selected={selectedDate} onChange={(date) => onDateChange(date)} dateFormat="dd/MM/yyyy" isClearable placeholderText="Selecciona una fecha" className="cursor-pointer border-2 border-primary hover:border-primary hover:border-2 px-5 py-[5px] text-sm rounded-lg outline-none" />
                 </section>
               )}
-              {ficha && (
-                <section className="gap-3 w-full grid grid-cols-3">
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button variant="bordered" size="sm" color="primary">
-                        Estado
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions">
-                      <DropdownItem key="activo" onClick={() => handleEstadoChange('Activo')}>
-                        Activo
-                      </DropdownItem>
-                      <DropdownItem key="deshabilitado" onClick={() => handleEstadoChange('Inactivo')}>
-                        Deshabilitado
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button size="sm" color="primary" variant="bordered">
-                        Jornada
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions">
-                      <DropdownItem key={'mañana'} onClick={() => handleJornadaFilterChange('MAÑANA')}>
-                        Mañana
-                      </DropdownItem>
-                      <DropdownItem key={'tarde'} onClick={() => handleJornadaFilterChange('TARDE')}>
-                        Tarde
-                      </DropdownItem>
-                      <DropdownItem key={'noche'} onClick={() => handleJornadaFilterChange('NOCHE')}>
-                        Noche
-                      </DropdownItem>
-                      <DropdownItem key={'vitual'} onClick={() => handleJornadaFilterChange('VIRTUAL')}>
-                        Virtual
-                      </DropdownItem>
-                      <DropdownItem key={'finesDeSenama'} onClick={() => handleJornadaFilterChange('FINES DE SEMANA')}>
-                        Fines de semana
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                  <Dropdown>
-                    <DropdownTrigger>
-                      <Button size="sm" color="primary" variant="bordered">
-                        Etapa
-                      </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions">
-                      <DropdownItem onClick={() => handleEtapaChange('LECTIVA')}>Lectiva</DropdownItem>
-                      <DropdownItem onClick={() => handleEtapaChange('PRÁCTICA')}>Práctica</DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </section>
-              )}
+
               {teacher && (
                 <section className="gap-3 w-full grid grid-cols-2 ">
                   <Dropdown>

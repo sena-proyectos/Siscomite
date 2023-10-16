@@ -246,7 +246,7 @@ const Teachers = () => {
                     </Card>
                   </Card>
                 ))
-              : visibleData.map((item, index) => (
+              : filteredteacher.map((item, index) => (
                   // ... Código para renderizar los datos regulares
                   <Card className="h-[13rem] -z-0" key={item.id_usuario}>
                     <CardHeader>

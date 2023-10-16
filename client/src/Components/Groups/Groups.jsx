@@ -1,7 +1,7 @@
 /* Importaciones de modulos y componentes */
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Badge, Chip } from '@nextui-org/react'
+import { useEffect, useState, useRef } from 'react'
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Chip, Popover, PopoverTrigger, PopoverContent, Button, Divider } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
@@ -30,6 +30,9 @@ const Groups = () => {
   const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
   const [selectedJornada, setSelectedJornada] = useState('')
   const [selectedEtapa, setSelectedEtapa] = useState('')
+  const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
+  const popoverRef = useRef();
+
 
   // Hacer uso de la funcion obtener fichas
   useEffect(() => {
@@ -155,21 +158,66 @@ const Groups = () => {
       const filterFichas = fichas.filter((item) => {
         const nombre = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
         const numero = item.numero_ficha.toString().includes(searchValue.toString())
-        
-        return nombre || numero 
+
+        return nombre || numero
       })
       setFichas(filterFichas)
     }
   }
 
-  const filteredGroups = visibleCards.filter((item) => {
-    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
-    const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
-    const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
+  // Función para filtrar las fichas por estado, jornada y etapa
+  const filterFichas = () => {
+    // Filtrar fichas por estado, jornada y etapa
+    let filteredFichas = fichas
 
-    return estadoMatches && jornadaMatches && etapaMatches
-  })
+    if (selectedEstado) {
+      filteredFichas = filteredFichas.filter((ficha) => ficha.estado.toLowerCase() === selectedEstado.toLowerCase())
+    }
 
+    if (selectedJornada) {
+      filteredFichas = filteredFichas.filter((ficha) => ficha.jornada.toLowerCase() === selectedJornada.toLowerCase())
+    }
+
+    if (selectedEtapa) {
+      filteredFichas = filteredFichas.filter((ficha) => ficha.etapa_programa.toLowerCase() === selectedEtapa.toLowerCase())
+    }
+    // Actualizar la lista de fichas después de aplicar los filtros
+    setFichas(filteredFichas)
+  }
+
+  // Función para ordenar la lista de fichas por nombre
+  const sortFichasByName = () => {
+    const sortedFichas = [...fichas]
+    sortedFichas.sort((a, b) => {
+      const nameA = a.nombre_programa.toLowerCase()
+      const nameB = b.nombre_programa.toLowerCase()
+      if (sortOrder === 'asc') {
+        return nameA.localeCompare(nameB)
+      } else {
+        return nameB.localeCompare(nameA)
+      }
+    })
+
+    // Cambiar el orden de clasificación para la próxima vez
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+
+    setFichas(sortedFichas)
+  }
+
+  // Función para aplicar filtros
+  const applyFilters = () => {
+    filterFichas()
+    // Cerrar el Popover
+    popoverRef.current.close()
+  }
+
+  // Función para limpiar los filtros
+  const clearFilter = () => {
+    setSelectedEstado('')
+    setSelectedJornada('')
+    setSelectedEtapa('')
+    getFicha() // Recarga las fichas originales
+  }
   return (
     <>
       {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={getFicha} />}
@@ -180,62 +228,107 @@ const Groups = () => {
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
-              <Search
-                ficha
-                filtro={filtroVisible}
-                placeholder={'Buscar ficha'}
-                icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                searchUser={filterNames}
-                searchValue={searchValue}
-                setSelectedEstado={setSelectedEstado}
-                setSelectedJornada={setSelectedJornada}
-                setSelectedEtapa={setSelectedEtapa}
-              />
+              <Search placeholder={'Buscar ficha'} icon={<i className="fi fi-br-search relative left-[-3rem]" />} searchUser={filterNames} searchValue={searchValue} />
             </section>
             <section className="w-full h-full flex items-center justify-center">
               <NotifyBadge />
             </section>
           </header>
           <section className="flex justify-center items-center mt-[16px]">
-            <section className="flex justify-end items-center  bg-[#2e323e] w-[90%] rounded-xl py-2 px-3 ">
-              {actualView === 'grid' ? (
-                <>
+            <section className="flex justify-between items-center  bg-[#2e323e] w-[90%] rounded-xl py-2 px-3 ">
+              <section>
+                <Button onClick={sortFichasByName} color='primary' variant='shadow' className="mr-2 text-lg">
+                  {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-down cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
+                </Button>
+                <Popover placement="right">
+                  <PopoverTrigger>
+                    <Button className='text-[15px] font-bold' >
+                      <i className="fi fi-rr-settings-sliders relative cursor-pointer " />
+                      Filtros
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent ref={popoverRef}>
+                    <section className="px-1 py-2 flex flex-col gap-y-4">
+                      <p className="font-semibold text-default-400">
+                        Filtrar por
+                        <i className="fi fi-sr-filter ml-2 text-sm" />
+                      </p>
+                      <Divider />
+                      <select name="estado" onChange={(e) => setSelectedEstado(e.target.value)} value={selectedEstado} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
+                        <option value="">Estado</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Deshabilitado">Deshabilitado</option>
+                      </select>
+
+                      <select name="jornada" onChange={(e) => setSelectedJornada(e.target.value)} value={selectedJornada} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
+                        <option value="">Jornada</option>
+                        <option value="MAÑANA">Mañana</option>
+                        <option value="TARDE">Tarde</option>
+                        <option value="NOCHE">Noche</option>
+                        <option value="VIRTUAL">Virtual</option>
+                        <option value="FINES DE SEMANA">Fines de semana</option>
+                      </select>
+                      <select name="etapa" onChange={(e) => setSelectedEtapa(e.target.value)} value={selectedEtapa} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
+                        <option value="">Etapa</option>
+                        <option value="LECTIVA">Lectiva</option>
+                        <option value="PRÁCTICA">Práctica</option>
+                        {/* Agregar más opciones de etapa según sea necesario */}
+                      </select>
+                      <section className="flex">
+                        <Button className="ml-3" color="primary" variant="light" onClick={clearFilter}>
+                          <i className="fi fi-rr-eraser " />
+                          Limpiar
+                        </Button>
+                        <Button className="ml-3" color="success" variant="light" onClick={applyFilters}>
+                          <i className="fi fi-br-check" />
+                          Aplicar
+                        </Button>
+                      </section>
+                    </section>
+                  </PopoverContent>
+                </Popover>
+              </section>
+
+              <sectio className="flex items-center">
+                {actualView === 'grid' ? (
+                  <>
+                    <section className="pr-[3rem] flex">
+                      <i
+                        className={`fi fi-rr-list block cursor-pointer text-xl text-white opacity-100`}
+                        onClick={() => {
+                          toggleView()
+                          toggleContent()
+                          tableView('table')
+                        }}
+                      ></i>
+                    </section>
+                  </>
+                ) : (
                   <section className="pr-[3rem] flex">
                     <i
-                      className={`fi fi-rr-list block cursor-pointer text-xl text-white opacity-100`}
+                      className={`fi fi-rr-grid block cursor-pointer text-xl text-white opacity-100`}
                       onClick={() => {
                         toggleView()
                         toggleContent()
-                        tableView('table')
+                        tableView('grid')
                       }}
                     ></i>
                   </section>
-                </>
-              ) : (
-                <section className="pr-[3rem] flex">
-                  <i
-                    className={`fi fi-rr-grid block cursor-pointer text-xl text-white opacity-100`}
-                    onClick={() => {
-                      toggleView()
-                      toggleContent()
-                      tableView('grid')
-                    }}
-                  ></i>
-                </section>
-              )}
-              <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]-">
-                <option value={6}>6 Elementos por página</option>
-                <option value={12}>12 Elementos por página</option>
-                <option value={24}>24 Elementos por página</option>
-              </select>
+                )}
+                <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]-">
+                  <option value={6}>6 Elementos por página</option>
+                  <option value={12}>12 Elementos por página</option>
+                  <option value={24}>24 Elementos por página</option>
+                </select>
+              </sectio>
             </section>
           </section>
           <section className="max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5 min-h-[60vh]">
             <section className="mx-auto w-[90%]">
               {actualView === 'grid' ? (
-                <section className="gap-8 grid grid-cols-3 mt-3 h-[50vh] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
-                  {filteredGroups.length === 0 ? <h1 className="grid place-content-center col-span-3 text-center text-gray-600">No se encontró la ficha</h1> : ''}
-                  {filteredGroups.map((card) => (
+                <section className="gap-8 grid grid-cols-3 mt-3 min-h-[50vh] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
+                  {visibleCards.length === 0 ? <h1 className="grid place-content-center col-span-3 text-center text-gray-600">No se encontró la ficha</h1> : ''}
+                  {visibleCards.map((card) => (
                     <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="no-underline">
                       {/* Envuelve toda la tarjeta dentro del enlace */}
                       <section className="relative flex flex-col ">
@@ -291,8 +384,8 @@ const Groups = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredGroups.length === 0 ? <h1 className="p-[1rem] text-center text-gray-600">No existen fichas registradas</h1> : ''}
-                        {filteredGroups.map((card) => (
+                        {visibleCards.length === 0 ? <h1 className="p-[1rem] text-center text-gray-600">No existen fichas registradas</h1> : ''}
+                        {visibleCards.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
                             <tr className="grid grid-cols-6-column-table text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
                               <td className="px-3 relative  whitespace-normal text-small">{card.numero_ficha}</td>
