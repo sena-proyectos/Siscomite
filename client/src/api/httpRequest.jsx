@@ -287,3 +287,11 @@ export const templateID = (IdTemplate) => {
 
   return response
 }
+
+/* Post rules */
+export const postRules = (data) => {
+  const URL = `${BaseUrl}${api}/createRule`
+  const response = axios.post(URL, data)
+  
+  return response
+}

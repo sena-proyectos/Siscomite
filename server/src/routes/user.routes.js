@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { checkUserExistRegister, checkUserExistLogin, hashPassword, checkRegisterData, comparePassword, checkLoginData, createToken, checkName, updatePassword, hashPasswordUpdate, validateUser } from '../middlewares/user.middleware.js'
-import { registerUser, getUser, loginUser, getTeacher, searchUser, searchTeacher, getCoordination, searchCoordination, userById, updateUserById, usersById, changeStateAccount, changeRol, changeStateUser, search } from '../controller/user.controller.js'
+import { registerUser, getUser, loginUser, getTeacher, searchUser, searchTeacher, getCoordination, searchCoordination, userById, updateUserById, usersById, changeStateAccount, changeRol, changeStateUser, search, forgotPassword } from '../controller/user.controller.js'
 
 const router = Router()
 /* get */
@@ -22,11 +22,9 @@ router.post('/login', checkLoginData, checkUserExistLogin, validateUser, compare
 
 /* patch */
 router.patch('/updateUser/:id', updatePassword, hashPasswordUpdate, updateUserById)
-
 router.patch('/stateUser/:id', changeStateAccount)
-
 router.patch('/stateTeacher/:id', changeStateUser)
-
 router.patch('/changeRol/:id', changeRol)
+router.patch('/forgotPassword/',forgotPassword)
 
 export default router

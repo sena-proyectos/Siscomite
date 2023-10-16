@@ -1,7 +1,7 @@
 {
   "name": "siscomite",
   "private": true,
-  "version": "3.0.0",
+  "version": "3.1.1",
   "type": "module",
   "scripts": {
     "tailwind": "npx tailwindcss -i ./src/index.css -o ./dist/output.css --watch",
@@ -13,12 +13,13 @@
   "dependencies": {
     "@flaticon/flaticon-uicons": "^2.4.0",
     "@nextui-org/react": "^2.1.13",
+    "@tinymce/tinymce-react": "^4.3.0",
     "axios": "^1.5.0",
     "date-fns": "^2.30.0",
-    "framer-motion": "^10.16.2",
     "joi": "^17.10.2",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^3.1.2",
+    "mammoth": "^1.6.0",
     "react": "^18.2.0",
     "react-datepicker": "^4.20.0",
     "react-dom": "^18.2.0",

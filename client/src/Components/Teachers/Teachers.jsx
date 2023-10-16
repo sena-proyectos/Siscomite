@@ -8,6 +8,8 @@ import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import { changeRolTeacher, getTeacher, search, stateTeacher, stateUser } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 
+import sw from 'sweetalert2'
+
 const Teachers = () => {
   const [filtroVisible, setFiltroVisible] = useState(false)
   const [teacher, setTeacher] = useState([])
@@ -88,25 +90,33 @@ const Teachers = () => {
     const idUser = user.id_usuario
     const action = user.estado === 'ACTIVO' ? 'deshabilitar' : 'habilitar' // Determina la acción según el estado actual
     try {
-      // Envía la acción en el cuerpo de la solicitud
-      const response = await stateTeacher(idUser, { action })
-      const message = response.data.message
-      toast.success('¡Genial!', {
-        description: message
-      })
+      sw.fire({
+        title: `${action === 'habilitar' ? '¿Estás seguro que quieres volver a habilitar este usuario?' : '¿Estás seguro que quieres deshabilitar este usuario?'}`,
+        text: `${action === 'habilitar' ? 'El usuario podrá usar nuevamente Siscomite' : 'El usuario no podrá usar Siscomite si está inhabilitado'}`,
+        showDenyButton: true,
+        confirmButtonText: `${action === 'habilitar' ? 'Habilitar' : 'Deshabilitar'}`,
+        denyButtonText: `Cancelar`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await stateTeacher(idUser, { action })
+          const message = response.data.message
+          toast.success('¡Genial!', {
+            description: message
+          })
 
-      // Actualiza el estado del usuario en la lista
-      const updatedTeacher = teacher.map((t) => {
-        if (t.id_usuario === user.id_usuario) {
-          // Cambia el valor de estado para el usuario seleccionado
-          return {
-            ...t,
-            estado: user.estado === 'ACTIVO' ? 'INACTIVO' : 'ACTIVO'
-          }
+          const updatedTeacher = teacher.map((t) => {
+            if (t.id_usuario === user.id_usuario) {
+              // Cambia el valor de estado para el usuario seleccionado
+              return {
+                ...t,
+                estado: user.estado === 'ACTIVO' ? 'INACTIVO' : 'ACTIVO'
+              }
+            }
+            return t
+          })
+          setTeacher(updatedTeacher)
         }
-        return t
       })
-      setTeacher(updatedTeacher)
     } catch (error) {
       const message = error?.response?.data?.message
       toast.error('¡Opss!', {
@@ -117,7 +127,7 @@ const Teachers = () => {
 
   const searchUser = async (value) => {
     try {
-      if (value.trim() === ' ') {
+      if (value.trim() === '') {
         userSearch([])
         setMessage(null)
       } else {
@@ -194,47 +204,8 @@ const Teachers = () => {
         <section className="flex justify-center min-h-[65vh] max-[900px]:h-screen max-sm:h-[210%] max-[935px]:p-5">
           <section className="grid grid-cols-3 gap-4 mt-[1rem] w-[85%] max-[900px]:grid-cols-2 max-[700px]:grid-cols-1" aria-label="Instructores registrados">
             {message && <h1>{message}</h1>}
-            {!message && userSearch && userSearch.length === 0
-              ? filteredteacher.map((item, index) => (
-                  // ... Código para renderizar los datos regulares
-                  <Card className="h-[13rem] -z-0" key={item.id_usuario}>
-                    <CardHeader>
-                      <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
-                    </CardHeader>
-                    <CardBody className="pt-2 pb-0 ">
-                      <strong>{item.nombres + ' ' + item.apellidos}</strong>
-                      <section className="flex gap-2">
-                        Rol actual:
-                        <p className="text-gray-500"> {item.id_rol === 1 ? 'Coordinador' : item.id_rol === 2 ? 'Instructor' : 'Administrador'}</p>
-                      </section>
-                    </CardBody>
-                    <CardFooter className="flex justify-between">
-                      <Dropdown aria-label="Seleccionar el rol">
-                        <DropdownTrigger aria-label={`Establecer el rol para ${item.nombres} ${item.apellidos}`}>
-                          <Button variant="faded" aria-label={`Desplegar lista de roles para ${item.nombres} ${item.apellidos}`} onClick={() => handleDropdownChange(index, 'Cambiar rol', item.id_usuario)}>
-                            {selectedKeysArray[index] || 'Cambiar rol'}
-                          </Button>
-                        </DropdownTrigger>
-                        <DropdownMenu aria-label="Static Actions">
-                          <DropdownItem onClick={() => handleDropdownChange(index, 'Coordinador', item.id_usuario)} aria-label="Seleccionar Coordinador">
-                            Coordinador
-                          </DropdownItem>
-                          <DropdownItem onClick={() => handleDropdownChange(index, 'Instructor', item.id_usuario)} aria-label="Seleccionar Instructor">
-                            Instructor
-                          </DropdownItem>
-                          <DropdownItem onClick={() => handleDropdownChange(index, 'Administrador', item.id_usuario)} aria-label="Seleccionar Administrador">
-                            Administrador
-                          </DropdownItem>
-                        </DropdownMenu>
-                      </Dropdown>
-                      <Button variant="bordered" color={item.estado === 'ACTIVO' ? 'danger' : 'success'} className="mr-1" onClick={() => toggleUserState(item)}>
-                        {item.estado === 'ACTIVO' ? 'Deshabilitar usuario' : 'Habilitar usuario'}
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))
-              : !message &&
-                userSearch.map((item, index) => (
+            {!message && userSearch.length > 0
+              ? userSearch.map((item, index) => (
                   // ... Código para renderizar los resultados de búsqueda
                   <Card className="h-[13rem] -z-0" key={item.id_usuario}>
                     {/* ... Resto del código de renderizado para los resultados de búsqueda */}
@@ -274,11 +245,50 @@ const Teachers = () => {
                       </CardFooter>
                     </Card>
                   </Card>
+                ))
+              : visibleData.map((item, index) => (
+                  // ... Código para renderizar los datos regulares
+                  <Card className="h-[13rem] -z-0" key={item.id_usuario}>
+                    <CardHeader>
+                      <img src="/image/teacherFondo.jpg" alt="Fondo" className="h-[4rem] w-full rounded-lg" />
+                    </CardHeader>
+                    <CardBody className="pt-2 pb-0 ">
+                      <strong>{item.nombres + ' ' + item.apellidos}</strong>
+                      <section className="flex gap-2">
+                        Rol actual:
+                        <p className="text-gray-500"> {item.id_rol === 1 ? 'Coordinador' : item.id_rol === 2 ? 'Instructor' : 'Administrador'}</p>
+                      </section>
+                    </CardBody>
+                    <CardFooter className="flex justify-between">
+                      <Dropdown aria-label="Seleccionar el rol">
+                        <DropdownTrigger aria-label={`Establecer el rol para ${item.nombres} ${item.apellidos}`}>
+                          <Button variant="faded" aria-label={`Desplegar lista de roles para ${item.nombres} ${item.apellidos}`} onClick={() => handleDropdownChange(index, 'Cambiar rol', item.id_usuario)}>
+                            {selectedKeysArray[index] || 'Cambiar rol'}
+                          </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu>
+                          <DropdownItem onClick={() => handleDropdownChange(index, 'Coordinador', item.id_usuario)} aria-label="Seleccionar Coordinador">
+                            Coordinador
+                          </DropdownItem>
+                          <DropdownItem onClick={() => handleDropdownChange(index, 'Instructor', item.id_usuario)} aria-label="Seleccionar Instructor">
+                            Instructor
+                          </DropdownItem>
+                          <DropdownItem onClick={() => handleDropdownChange(index, 'Administrador', item.id_usuario)} aria-label="Seleccionar Administrador">
+                            Administrador
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                      <Button variant="bordered" color={item.estado === 'ACTIVO' ? 'danger' : 'success'} className="mr-1" onClick={() => toggleUserState(item)}>
+                        {item.estado === 'ACTIVO' ? 'Deshabilitar usuario' : 'Habilitar usuario'}
+                      </Button>
+                    </CardFooter>
+                  </Card>
                 ))}
           </section>
         </section>
-        <section className="grid place-items-center mt-[1rem] mb-[1rem] max-[935px]:mt-[3rem]">
-          <Pagination className="relative z-0" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
+
+        <section className="grid place-items-center pt-[1rem] mb-[2rem]">
+          <Pagination className="relative z-0 max-[935px]:pb-[3rem]" total={totalPages || 1} current={activePage} color={'primary'} onChange={handlePageChange} />
         </section>
 
         <Footer />

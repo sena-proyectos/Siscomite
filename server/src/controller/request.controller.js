@@ -279,6 +279,7 @@ export const getRules = async (req, res) => {
  */
 export const createRequest = async (req, res) => {
   const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, id_archivo, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
+
   try {
     /* Validar selección de numerales */
     if (!numeralesSeleccionados || numeralesSeleccionados.length === 0) {

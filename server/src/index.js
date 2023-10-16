@@ -17,7 +17,8 @@ import fileRouter from './routes/file.routes.js' // Rutas relacionadas con los a
 import notifyRouter from './routes/notify.routes.js' // Rutas relacionadas con los archivos
 import sendEmail from './routes/sendMail.routes.js'
 import templateRoute from './routes/template.routes.js'
-import { PORT } from './config.js/' // Importar el puerto desde la configuración
+import rulesRoute from './routes/rules.routes.js'
+import { PORT } from './config.js' // Importar el puerto desde la configuración
 
 const app = express() // Crear una instancia de la aplicación Express
 
@@ -41,6 +42,7 @@ app.use('/api', fileRouter)
 app.use('/api', notifyRouter)
 app.use('/api', sendEmail)
 app.use('/api', templateRoute)
+app.use('/api', rulesRoute)
 
 // Configurar un manejador para rutas no encontradas (404)
 app.use((req, res) => {

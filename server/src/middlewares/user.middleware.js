@@ -106,7 +106,7 @@ export const validateUser = async (req, res, next) => {
   const { numero_documento } = req.body
   try {
     const [validate] = await pool.query('SELECT estado FROM usuarios WHERE numero_documento = ?', numero_documento)
-    if (validate[0].estado === 'INACTIVO') return res.status(401).json({ message: 'No se puede iniciar sesión, su estado es inactivo, comuniquese con el administrador para volver a activar su cuenta' })
+    if (validate[0].estado === 'INACTIVO') return res.status(401).json({ message: 'No se puede iniciar sesión, su estado es inactivo, comuniquese con el coordinador para volver a activar su cuenta' })
 
     next()
   } catch (error) {

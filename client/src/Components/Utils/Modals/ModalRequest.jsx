@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { getRequestById } from '../../../api/httpRequest'
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
+import { TinyEditor } from '../tinyEditor/TinyEditor'
+import mammoth from 'mammoth'
 
 export const ModalRequest = ({ cerrarModal, requestID }) => {
   // Estados para almacenar los datos completos de aprendices, usuarios y numerales
@@ -17,11 +19,17 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
   const [categoriaCausa, setCategoriaCausa] = useState(null)
   const [calificacionCausa, setCalificacionCausa] = useState(null)
   const [descripcionCaso, setDescripcionCaso] = useState(null)
+  const [TituloCapitulo, setTituloCapitulo] = useState(null)
   const [fechaCreacion, setFechaCreacion] = useState(null)
+  const [archivoID, setArchivoId] = useState(null)
 
   /* estados para almacenar los datos de las infracciones */
   const [numeroArticulo, setNumeroArticulo] = useState(null)
   const [numerales, setNumerales] = useState([])
+
+  const [modalCitation, setModalCitation] = useState(false)
+  const [file, setFile] = useState(null)
+  const [valueFile, setValuefile] = useState(null)
 
   useEffect(() => {
     getIdRequest(requestID)
@@ -98,7 +106,9 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
       const categoriaCausa = [...new Set(datosUnicosArray.map((item) => item.categoria_causa))]
       const calificacionCausa = [...new Set(datosUnicosArray.map((item) => item.calificacion_causa))]
       const descripcionCaso = [...new Set(datosUnicosArray.map((item) => item.descripcion_caso))]
+      const tituloCapitulo = [...new Set(datosUnicosArray.map((item) => item.titulo_capitulo))]
       const fechaCreacion = [...new Set(datosUnicosArray.map((item) => item.fecha_creacion))]
+      const idArchivo = [...new Set(datosUnicosArray.map((item) => item.id_archivo_solicitud))]
 
       // Convertir los objetos únicos de nuevo a objetos JSON de las infracciones
       const numeroArticulo = [...new Set(datosUnicosArray.map((item) => item.numero_articulo))]
@@ -119,13 +129,17 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
       setCategoriaCausa(categoriaCausa)
       setCalificacionCausa(calificacionCausa)
       setDescripcionCaso(descripcionCaso)
+      setTituloCapitulo(tituloCapitulo)
       setFechaCreacion(fechaCreacion[0])
+      setArchivoId(idArchivo)
 
       /* Datos de las infracciones */
       setNumeroArticulo(numeroArticulo)
       setNumerales(uniqueNumerales)
     } catch (error) {
-      console.log(error)
+      toast.error('¡Opss!', {
+        description: 'Error inesperado'
+      })
     }
   }
 
@@ -154,10 +168,68 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
     return format(date, 'yyyy-MM-dd')
   }
 
+  const generateCitationModal = () => {
+    setModalCitation(!modalCitation)
+  }
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0]
+    if (selectedFile) {
+      setFile(selectedFile)
+    }
+  }
+
+  // ...
+
+  useEffect(() => {
+    const onFileUpload = async () => {
+      if (file) {
+        const reader = new FileReader()
+        reader.onload = async (e) => {
+          const arrayBuffer = e.target.result
+
+          try {
+            const result = await mammoth.convertToHtml({ arrayBuffer })
+            let content = result.value
+
+            // Construir una cadena de nombres de aprendices
+            const nombresAprendices = aprendices.map((aprendiz) => aprendiz.nombres + ' ' + aprendiz.apellidos).join(', ')
+            const correosAprendices = aprendices.map((aprendiz) => aprendiz.emailSena).join(', ')
+            const numeroFicha = aprendices.map((aprendiz) => aprendiz.numeroFicha).join(', ')
+            const programaFicha = aprendices.map((aprendiz) => aprendiz.nombreProgramaFicha).join(', ')
+
+            const nombresInstructores = usuarios.map((usuarios) => usuarios.nombre + ' ' + usuarios.apellidos).join(', ')
+            const faltas = numerales.map((numerales) => TituloCapitulo + numeroArticulo + `${numerales.numero}` + '. ' + numerales.descripcion).join(', ')
+
+            // Reemplazar el marcador con la cadena de nombres
+            content = content.replace('*NombreAprendiz*', nombresAprendices)
+            content = content.replace('*CorreoElectronico*', correosAprendices)
+            content = content.replace('*FichaCompleta*', numeroFicha)
+            content = content.replace('*ProgCompleto*', programaFicha)
+            content = content.replace('*Instructor*', nombresInstructores)
+            content = content.replace(
+              '“CAPÍTULO III. DEBERES DEL APRENDIZ SENA. ARTÍCULO 9o. “Se entiende por deber, la obligación legal, social y moral que compromete a la persona a cumplir con determinada actuación, asumiendo con responsabilidad todos sus actos, para propiciar la armonía, el respeto, la integración, el bienestar común, la sana convivencia, el servicio a los demás, la seguridad de las personas y de los bienes de la institución. Son deberes del aprendiz SENA durante el proceso de ejecución de la formación, los siguientes: 1. Cumplir con todas las actividades propias de su proceso de aprendizaje o del plan de mejoramiento, definidas durante su etapa lectiva y productiva. 13. Conocer y asumir las políticas y directrices institucionales establecidas, así como el Reglamento del Aprendiz SENA, y convivir en comunidad de acuerdo con ellos. CAPITULO IV PROHIBICIONES. ARTÍCULO 10. Se consideran prohibiciones para los aprendices del SENA',
+              faltas
+            )
+
+            setValuefile(content)
+          } catch (error) {
+            console.error('Error al procesar el archivo Word', error)
+          }
+        }
+        reader.readAsArrayBuffer(file)
+      }
+    }
+
+    onFileUpload()
+  }, [file, aprendices])
+
+  // ...
+
   return (
     <>
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
-        <section className={`bg-white w-[35rem] p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in `}>
+        <section className={`bg-white ${modalCitation ? 'w-[85rem] h-[45rem]' : 'w-[35rem]'} p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in `}>
           <header className="flex justify-center ">
             <h3 className="font-semibold text-2xl" id="solicitud-label">
               <i className="fi fi-rr-file-circle-info text-gray-500 px-3"></i>Detalle de solicitud
@@ -166,146 +238,169 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
               <i className="fi fi-br-cross relative top-[1px] text-gray-500 cursor-pointer" />
             </section>
           </header>
-
-          <section className="relative top-[1.6rem] ">
-            <section className="  place-items-center gap-4 flex justify-between">
-              <Button className={getStatusColorClass(estado ? estado[0] : '')}>{estado}</Button>
-              <section> 
-                <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" value={formatDate(fechaCreacion)} />
+          {modalCitation ? (
+            <section className="grid grid-cols-2 gap-2 mt-5">
+              <section className=" flex flex-col items-center justify-center">
+                <section className="flex w-[33rem] text-gray-500 gap-2 mb-2">
+                  <strong>Nota: </strong>
+                  <p > Debe seleccionar el archivo de la carta de citación a comité de evaluación y seguimiento y transcribir el texto al archivo original.</p>
+                </section>
+                <label htmlFor="upload" className="w-[80%] flex flex-col items-center justify-center gap-2 p-10 cursor-pointer bg-white rounded-md border border-blue-600 shadow-md">
+                  <i className="fi fi-rr-add-document text-blue-600 text-3xl" />
+                  <span className="text-gray-600 font-se">{file ? `Archivo seleccionado: ${file.name}` : 'Subir archivo'}</span>
+                </label>
+                <input id="upload" type="file" className="hidden" onChange={handleFileChange} />
+              </section>
+              <section>
+                <TinyEditor template={!valueFile ? '<h2><strong>Seleccione un archivo y podrás visualizarlo aquí.</strong></h2>' : valueFile} onContentChange={setValuefile} />
               </section>
             </section>
-            <section className="relative py-[1.5rem]">
-              <Accordion isCompact variant="bordered" aria-label="informacion en general de toda la solicitud">
-                <AccordionItem startContent={<i className="fi fi-rr-user text-purple-500"></i>} title="Información del/los instructor/es" aria-label="Información del instructor">
-                  <Table aria-label="Datos de Usuarios">
-                    <TableHeader
-                      columns={[
-                        { key: 'nombre', label: 'Nombre/s' },
-                        { key: 'apellidos', label: 'Apellidos' },
-                        { key: 'tipoDocumento', label: 'Tipo de Documento' },
-                        { key: 'numeroDocumento', label: 'Número de Documento' },
-                        { key: 'emailSena', label: 'Correo institucional' },
-                        { key: 'emailPersonal', label: 'Correo Personal' },
-                        { key: 'celular', label: 'Número de celular' },
-                        { key: 'fijo', label: 'Teléfono Fijo' }
-                      ]}
-                    >
-                      {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-                    </TableHeader>
-                    <TableBody items={usuarios}>
-                      {(item) => (
-                        <TableRow key={item.numeroDocumento}>
-                          <TableCell>{item.nombre}</TableCell>
-                          <TableCell>{item.apellidos}</TableCell>
-                          <TableCell>{item.tipoDocumento}</TableCell>
-                          <TableCell>{item.numeroDocumento}</TableCell>
-                          <TableCell>{item.emailSena}</TableCell>
-                          <TableCell>{!item.emailPersonal ? 'No disponible' : item.emailPersonal}</TableCell>
-                          <TableCell>{item.celular}</TableCell>
-                          <TableCell>{!item.fijo ? 'No disponible' : item.fijo}</TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </AccordionItem>
-                <AccordionItem startContent={<i className="fi fi-rs-book-alt text-red-500"></i>} title="Información del aprendiz" aria-label="Información del aprendiz">
-                  <Table aria-label="Datos de Aprendices">
-                    <TableHeader
-                      columns={[
-                        { key: 'nombre', label: 'Nombre/s' },
-                        { key: 'apellidos', label: 'Apellidos' },
-                        { key: 'tipoDocumento', label: 'Tipo de Documento' },
-                        { key: 'numeroDocumento', label: 'Número de Documento' },
-                        { key: 'emailSena', label: 'Correo institucional' },
-                        { key: 'emailPersonal', label: 'Correo Personal' },
-                        { key: 'celular', label: 'Número de celular' },
-                        { key: 'fijo', label: 'Teléfono Fijo' },
-                        { key: 'numeroFicha', label: 'Número de Ficha' },
-                        { key: 'nombreProgramaFicha', label: 'Nombre del Programa de Ficha' }
-                      ]}
-                    >
-                      {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-                    </TableHeader>
-                    <TableBody items={aprendices}>
-                      {(item) => (
-                        <TableRow key={item.numeroDocumento}>
-                          <TableCell>{item.nombres}</TableCell>
-                          <TableCell>{item.apellidos}</TableCell>
-                          <TableCell>{item.tipoDocumento}</TableCell>
-                          <TableCell>{item.numeroDocumento}</TableCell>
-                          <TableCell>{item.emailSena}</TableCell>
-                          <TableCell>{!item.emailPersonal ? 'No disponible' : item.emailPersonal}</TableCell>
-                          <TableCell>{item.celular}</TableCell>
-                          <TableCell>{!item.fijo ? 'No disponible' : item.fijo}</TableCell>
-                          <TableCell>{item.numeroFicha}</TableCell>
-                          <TableCell>{item.nombreProgramaFicha}</TableCell>
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </AccordionItem>
-                <AccordionItem aria-labelledby="solicitud-label" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información de la solicitud">
-                  <section className="grid grid-cols-2 gap-x-7 gap-y-2 pr-[1rem] max-h-[200px] overflow-auto">
-                    <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue={tipoSolicitud} isReadOnly />
-                    </section>
-                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="nombre del/la coordinador/a" defaultValue={nombreCoordinacion} isReadOnly />
-                    </section>
-                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Categoría causa" defaultValue={categoriaCausa} isReadOnly />
-                    </section>
-                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Calificación causa" defaultValue={calificacionCausa} isReadOnly />
-                    </section>
-                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Artículo" defaultValue={numeroArticulo} isReadOnly />
-                    </section>
-                    <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                      <Input type="text" variant="underlined" label="Evidencias" defaultValue="Descargar" isReadOnly />
-                    </section>
-                    <section>
-                      <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>
-                        <PopoverTrigger >
-                          <Button color="primary" variant="flat">
-                            Numerales infringidos
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                          <div className="px-1 py-2">
-                            {numerales.map((numeral) => (
-                              <div key={numeral.numero}>
-                                <strong>Numeral:</strong> {numeral.numero}
-                                <br />
-                                <strong>Descripción del numeral:</strong> {numeral.descripcion}
-                                <hr />
-                              </div>
-                            ))}
-                          </div>
-                        </PopoverContent>
-                      </Popover>
-                    </section>
-                    <section >
-                      <Popover placement="top-end" size='lg' backdrop="opaque" showArrow>
-                        <PopoverTrigger className="w-full">
-                          <Button color="primary" variant="flat">
-                            Descripción caso
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent>
-                          <section className="px-1 py-2">
-                            <section>
-                              <p>{descripcionCaso}</p>
+          ) : (
+            <section className="relative top-[1.6rem] ">
+              <section className="  place-items-center gap-4 flex justify-between">
+                <Button className={getStatusColorClass(estado ? estado[0] : '')}>{estado}</Button>
+                <section>
+                  <input type="date" readOnly className="bg-[#80808036]  text-zinc-500 px-[8px] shadow-sm w-[10rem] text-small gap-3 rounded-medium h-unit-9 outline-none block" value={formatDate(fechaCreacion)} />
+                </section>
+              </section>
+              <section className="relative py-[1.5rem]">
+                <Accordion isCompact variant="bordered" aria-label="informacion en general de toda la solicitud">
+                  <AccordionItem startContent={<i className="fi fi-rr-user text-purple-500"></i>} title="Información del/los instructor/es" aria-label="Información del instructor">
+                    <Table aria-label="Datos de Usuarios">
+                      <TableHeader
+                        columns={[
+                          { key: 'nombre', label: 'Nombre/s' },
+                          { key: 'apellidos', label: 'Apellidos' },
+                          { key: 'tipoDocumento', label: 'Tipo de Documento' },
+                          { key: 'numeroDocumento', label: 'Número de Documento' },
+                          { key: 'emailSena', label: 'Correo institucional' },
+                          { key: 'emailPersonal', label: 'Correo Personal' },
+                          { key: 'celular', label: 'Número de celular' },
+                          { key: 'fijo', label: 'Teléfono Fijo' }
+                        ]}
+                      >
+                        {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+                      </TableHeader>
+                      <TableBody items={usuarios}>
+                        {(item) => (
+                          <TableRow key={item.numeroDocumento}>
+                            <TableCell>{item.nombre}</TableCell>
+                            <TableCell>{item.apellidos}</TableCell>
+                            <TableCell>{item.tipoDocumento}</TableCell>
+                            <TableCell>{item.numeroDocumento}</TableCell>
+                            <TableCell>{item.emailSena}</TableCell>
+                            <TableCell>{!item.emailPersonal ? 'No disponible' : item.emailPersonal}</TableCell>
+                            <TableCell>{item.celular}</TableCell>
+                            <TableCell>{!item.fijo ? 'No disponible' : item.fijo}</TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </AccordionItem>
+                  <AccordionItem startContent={<i className="fi fi-rs-book-alt text-red-500"></i>} title="Información del aprendiz" aria-label="Información del aprendiz">
+                    <Table aria-label="Datos de Aprendices">
+                      <TableHeader
+                        columns={[
+                          { key: 'nombre', label: 'Nombre/s' },
+                          { key: 'apellidos', label: 'Apellidos' },
+                          { key: 'tipoDocumento', label: 'Tipo de Documento' },
+                          { key: 'numeroDocumento', label: 'Número de Documento' },
+                          { key: 'emailSena', label: 'Correo institucional' },
+                          { key: 'emailPersonal', label: 'Correo Personal' },
+                          { key: 'celular', label: 'Número de celular' },
+                          { key: 'fijo', label: 'Teléfono Fijo' },
+                          { key: 'numeroFicha', label: 'Número de Ficha' },
+                          { key: 'nombreProgramaFicha', label: 'Nombre del Programa de Ficha' }
+                        ]}
+                      >
+                        {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+                      </TableHeader>
+                      <TableBody items={aprendices}>
+                        {(item) => (
+                          <TableRow key={item.numeroDocumento}>
+                            <TableCell>{item.nombres}</TableCell>
+                            <TableCell>{item.apellidos}</TableCell>
+                            <TableCell>{item.tipoDocumento}</TableCell>
+                            <TableCell>{item.numeroDocumento}</TableCell>
+                            <TableCell>{item.emailSena}</TableCell>
+                            <TableCell>{!item.emailPersonal ? 'No disponible' : item.emailPersonal}</TableCell>
+                            <TableCell>{item.celular}</TableCell>
+                            <TableCell>{!item.fijo ? 'No disponible' : item.fijo}</TableCell>
+                            <TableCell>{item.numeroFicha}</TableCell>
+                            <TableCell>{item.nombreProgramaFicha}</TableCell>
+                          </TableRow>
+                        )}
+                      </TableBody>
+                    </Table>
+                  </AccordionItem>
+                  <AccordionItem aria-labelledby="solicitud-label" startContent={<i className="fi fi-sr-clip text-blue-500"></i>} title="Información de la solicitud">
+                    <section className="grid grid-cols-2 gap-x-7 gap-y-2 pr-[1rem] max-h-[200px] overflow-auto">
+                      <section className="flex flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <Input type="text" variant="underlined" label="Tipo solicitud" defaultValue={tipoSolicitud} isReadOnly />
+                      </section>
+                      <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <Input type="text" variant="underlined" label="nombre del/la coordinador/a" defaultValue={nombreCoordinacion} isReadOnly />
+                      </section>
+                      <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <Input type="text" variant="underlined" label="Categoría causa" defaultValue={categoriaCausa} isReadOnly />
+                      </section>
+                      <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <Input type="text" variant="underlined" label="Calificación causa" defaultValue={calificacionCausa} isReadOnly />
+                      </section>
+                      <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <Input type="text" variant="underlined" label="Artículo" defaultValue={numeroArticulo} isReadOnly />
+                      </section>
+                      <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <Input type="text" variant="underlined" label="Evidencias" defaultValue={archivoID} isReadOnly />
+                      </section>
+                      <section>
+                        <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>
+                          <PopoverTrigger>
+                            <Button color="primary" variant="flat">
+                              Numerales infringidos
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <div className="px-1 py-2">
+                              {numerales.map((numeral) => (
+                                <div key={numeral.numero}>
+                                  <strong> {TituloCapitulo}</strong> <br />
+                                  <strong>Numeral:</strong> {numeral.numero}
+                                  <br />
+                                  <strong>Descripción del numeral:</strong> {numeral.descripcion}
+                                  <hr />
+                                </div>
+                              ))}
+                            </div>
+                          </PopoverContent>
+                        </Popover>
+                      </section>
+                      <section>
+                        <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>
+                          <PopoverTrigger className="w-full">
+                            <Button color="primary" variant="flat">
+                              Descripción caso
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent>
+                            <section className="px-1 py-2">
+                              <section>
+                                <p>{descripcionCaso}</p>
+                              </section>
                             </section>
-                          </section>
-                        </PopoverContent>
-                      </Popover>
+                          </PopoverContent>
+                        </Popover>
+                      </section>
                     </section>
-                  </section>
-                </AccordionItem>
-              </Accordion>
+                  </AccordionItem>
+                </Accordion>
+              </section>
             </section>
-          </section>
+          )}
+
+          <Button className="w-full mt-5" variant="bordered" onClick={generateCitationModal}>
+            {modalCitation ? 'Ver datos de la solicitud' : 'Generar carta de citación'}
+          </Button>
         </section>
         <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>

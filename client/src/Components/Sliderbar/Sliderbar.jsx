@@ -49,14 +49,13 @@ const Sliderbar = () => {
     const information = jwt(token) // Decodificar el token JWT
     const nombres = information.nombres
     const apellidos = information.apellidos
-
     // Mapear los ID de rol a nombres de rol
     if (information.id_rol === 1) information.id_rol = 'Coordinador'
     if (information.id_rol === 2) information.id_rol = 'Instructor'
     if (information.id_rol === 3) information.id_rol = 'Administrador'
 
     setRol(information.id_rol) // Establecer el rol en el estado
-    setUserInformation({ nombres, apellidos, id_usuario: information.id_usuario, email_sena: information.email_sena, email_personal: information.email_personal })
+    setUserInformation({ nombres, apellidos, id_usuario: information.id_usuario, email_sena: information.email_sena, email_personal: information.email_personal, id_rol: information.id_rol })
   }
 
   // Función para cerrar sesión
@@ -120,7 +119,7 @@ const Sliderbar = () => {
           )}
           {elements.administration && (
             <Link className="line" to={'/procedures'}>
-              <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24]  ${isActiveRoute(location.pathname, '/procedures') ? 'bg-[#1a1d24]' : ''}`}>
+              <li className={`relative mb-[10px] rounded-lg px-2 py-1 hover:bg-[#1a1d24] ${isActiveRoute(location.pathname, '/procedures') ? 'bg-[#1a1d24]' : ''}`}>
                 <i className={`fi fi-rs-stamp`} title="Trámites solicitud" />
                 <span className="slideText ml-[10px]">Trámites solicitud</span>
               </li>

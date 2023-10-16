@@ -1,5 +1,6 @@
 // Importación del módulo 'pool' desde '../db.js'
 import { pool } from '../db.js'
+import { emailConfig } from '../config.js'
 
 // Controlador para obtener todos los usuarios
 export const getUser = async (req, res) => {
@@ -185,7 +186,7 @@ export const updateUserById = async (req, res) => {
       res.status(200).send({ message: 'Datos actualizados correctamente' })
     }
   } catch (error) {
-    res.status(500).send({ message: 'Error al obtener el usuario' })
+    res.status(500).send({ message: 'Error al actualizar el usuario' })
   }
 }
 
@@ -225,7 +226,7 @@ export const changeStateUser = async (req, res) => {
     if (result.affectedRows === 0) {
       res.status(404).send({ message: 'No se encontró al usuario' })
     } else {
-      res.status(200).send({ message: `Cuenta ${action === 'habilitar' ? 'habilitada' : 'deshabilitada'} correctamente.` })
+      res.status(200).send({ message: `Usuario ${action === 'habilitar' ? 'habilitado' : 'deshabilitado'} correctamente.` })
     }
   } catch (error) {
     res.status(500).send({ message: 'Error al cambiar el estado del usuario' })
@@ -267,5 +268,21 @@ export const search = async (req, res) => {
   } catch (error) {
     // Manejar errores y enviar una respuesta de error
     res.status(401).send({ message: 'Ha ocurrido un error inesperado' })
+  }
+}
+
+
+export const forgotPassword = async (req, res) => {
+  const { email_sena } = req.body
+  const { hashedPassword } = req
+
+  try {
+    await pool.query('UPDATE usuarios SET contrasena = IFNULL(?, contrasena) WHERE email_sena = ?', [hashedPassword, email_sena])
+
+    return res.status(200).json({ message: 'Contraseña actualizada correctamente' })
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send('Hubo un error al enviar el email')
   }
 }

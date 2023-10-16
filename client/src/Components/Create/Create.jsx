@@ -119,7 +119,9 @@ const Create = () => {
       const res = response.data.result
       setCoordination(res)
     } catch (error) {
-      console.log('Error al cargar las Coordinaciones')
+      toast.error('¡Opss!', {
+        description: 'Error al cargar las Coordinaciones'
+      })
     }
   }
 
@@ -202,7 +204,9 @@ const Create = () => {
       const res = response.data.result
       setRules(res)
     } catch (error) {
-      console.log(error)
+      toast.error('¡Opss!', {
+        description: 'Error al obtener el reglamento'
+      })
     }
   }
 
@@ -260,7 +264,7 @@ const Create = () => {
                 <DropdownMenu aria-label="Single selection actions" variant="flat" disallowEmptySelection selectionMode="single" selectedFalta={selectedFalta} onSelectionChange={setSelectedFalta}>
                   <DropdownItem key="leve">Leve</DropdownItem>
                   <DropdownItem key="grave">Grave</DropdownItem>
-                  <DropdownItem key="gravísimas">Gravísimas</DropdownItem>
+                  <DropdownItem key="gravísima">Gravísima</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </section>

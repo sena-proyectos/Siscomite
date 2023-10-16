@@ -49,6 +49,19 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
   const { userInformation } = userInformationStore() // Obtiene información del usuario desde una tienda.
   const { setRequestInformation } = requestStore() // Obtiene información del usuario desde una tienda.
 
+  /* Actualizar el estado del mensaje al hacer clic */
+  const changeMessageState = async (idMessage, idRequest) => {
+    setRequestInformation({ id_solicitud: idRequest })
+    navigate('/requests')
+    try {
+      await updateStateMessage(idMessage) // Actualiza el estado del mensaje al hacer clic.
+      fetchData()
+      isOpen(!isOpen)
+    } catch (error) {
+      // Maneja errores si ocurren.
+    }
+  }
+
   useEffect(() => {
     if (isOpen) {
       // Función para obtener mensajes si el componente está abierto.
@@ -62,25 +75,8 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
         }
       }
       fetchData() // Llama a la función fetchData inmediatamente.
-
-      const intervalId = setInterval(fetchData, 100) // Establece un intervalo para actualizar los mensajes cada 100 milisegundos.
-
-      return () => {
-        clearInterval(intervalId) // Limpia el intervalo cuando el componente se desmonta.
-      }
     }
   }, [isOpen]) // Se ejecuta cuando isOpen cambia.
-
-  /* Actualizar el estado del mensaje al hacer clic */
-  const changeMessageState = async (idMessage, idRequest) => {
-    setRequestInformation({ id_solicitud: idRequest })
-    navigate('/requests')
-    try {
-      await updateStateMessage(idMessage); // Actualiza el estado del mensaje al hacer clic.
-    } catch (error) {
-      // Maneja errores si ocurren.
-    }
-  }
 
   return (
     <main>
@@ -129,15 +125,15 @@ export const Notify = ({ isOpen, toggleNotify, onNotifyClic }) => {
           {message &&
             message.length > 0 &&
             message.map((item) => (
-                <div onClick={onNotifyClic} key={item.id_mensaje}>
-                  <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={() => changeMessageState(item.id_mensaje, item.id_solicitud)}>
-                    <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
-                    <section className="items-center">
-                      <p className="font-semibold block">Cambios en la solicitud</p>
-                      <p className="text-[13px] block">{item.mensaje}</p>
-                    </section>
+              <div onClick={onNotifyClic} key={item.id_mensaje}>
+                <section className="overflow-auto mt-5 mb-1 flex transition-transform duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg rounded-xl cursor-pointer" onClick={() => changeMessageState(item.id_mensaje, item.id_solicitud)}>
+                  <i className="fi fi-sr-bell-school text-green-500 pr-[8px] text-[2rem]"></i>
+                  <section className="items-center">
+                    <p className="font-semibold block">Cambios en la solicitud</p>
+                    <p className="text-[13px] block">{item.mensaje}</p>
                   </section>
-                </div>
+                </section>
+              </div>
             ))}
           <Divider /> {/* Agrega un separador. */}
         </section>

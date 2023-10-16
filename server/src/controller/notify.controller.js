@@ -4,7 +4,7 @@ export const getNotifyByUserId = async (req, res) => {
   const { id } = req.params
 
   try {
-    const [result] = await pool.query('SELECT * FROM mensajes WHERE id_usuario = ? and estado_mensaje = "Sin leer"', [id])
+    const [result] = await pool.query('SELECT * FROM mensajes WHERE id_usuario = ? and estado_mensaje = "Sin leer" ORDER BY id_mensaje DESC', [id])
 
     res.status(200).send({ result })
   } catch (error) {

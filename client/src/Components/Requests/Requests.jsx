@@ -110,7 +110,9 @@ const Requests = () => {
         setSelectedValueDetails('En proceso')
       }
     } catch (error) {
-      console.error(error)
+      toast.error('¡Opss!', {
+        description: "Error al obtener las solicitudes"
+      })
     }
   }
 
@@ -125,7 +127,9 @@ const Requests = () => {
       const res = response.data.result
       setRequestById(res)
     } catch (error) {
-      console.log(error)
+      toast.error('¡Opss!', {
+        description: 'Error al obtener las solicitudes'
+      })
     }
   }
 
@@ -228,7 +232,7 @@ const Requests = () => {
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} requestID={requestId} />}
-      {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} requestID={requestId} />}
+      {modalRequestEdit && <ModalEditRequest modalDetailsEdit={isOpen} cerrarModal={modalDetailsEdit} requestID={requestId} reloadFetch={getRequets} fetchById={getRequetsById} />}
 
       <main className="h-screen flex">
         <Sliderbar />

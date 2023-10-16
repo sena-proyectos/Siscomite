@@ -6,6 +6,7 @@ import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Button, Input, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Card, CardBody } from '@nextui-org/react'
 import { emailFile, getTemplates, templateID } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
+import { TinyEditor } from '../Utils/tinyEditor/TinyEditor'
 
 const Procedures = () => {
   const [file, setFile] = useState(null)
@@ -62,7 +63,9 @@ const Procedures = () => {
         const res = response.data.result
         setTemplatesName(res)
       } catch (error) {
-        console.log(error)
+        toast.error('¡Opss!', {
+          description: 'Error al obtener las plantillas'
+        })
       }
     }
 
@@ -108,11 +111,12 @@ const Procedures = () => {
             </Button>
           </section>
           <section className="h-full grid mt-[3rem] place-items-center">
-            <Card>
+            {/* <Card>
               <CardBody>
                 <div dangerouslySetInnerHTML={{ __html: htmlContent ? htmlContent : 'Seleccione una plantilla para visualizarla' }} />
               </CardBody>
-            </Card>
+            </Card> */}
+            <TinyEditor template={!htmlContent ? '<h2><strong>Seleccione una plantilla y podrás visualizarla aquí.</strong></h2>' : htmlContent} onContentChange={setHtmlContent}/>
           </section>
         </section>
         <Footer />
