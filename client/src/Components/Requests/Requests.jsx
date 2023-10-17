@@ -16,16 +16,14 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
 import { requestStore } from '../../store/config'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import DatePicker from 'react-datepicker' // Inporta bibloteca de react para el calendario
+import 'react-datepicker/dist/react-datepicker.css' // Estilos del calendario
 
 // Componente Requests
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
-  const [filtroVisible, setFiltroVisible] = useState(false) // Estado para controlar la visibilidad del filtro de búsqueda
   const [request, setRequest] = useState([]) // estado para guardar las solicitudes de la base de datos
   const [requestById, setRequestById] = useState([]) // estado para guardar las solicitudes de usuarios de la base de datos
-
   const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
 
   // Paginación
@@ -35,6 +33,10 @@ const Requests = () => {
 
   const [requestId, setRequestId] = useState(null)
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
+  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
+  // Agregar un estado para el filtro de estado
+  const [selectedStatus, setSelectedStatus] = useState('')
+  const [selectedDate, setSelectedDate] = useState(null) //Estado para seleccionar la fecha seleccionada
 
   const [highlightedRequestId, setHighlightedRequestId] = useState(null)
 
@@ -164,17 +166,13 @@ const Requests = () => {
   }, [requestInformation])
 
   // ---------------- Filtros --------------------
-  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  // Agregar un estado para el filtro de estado
-  const [selectedStatus, setSelectedStatus] = useState('')
-  const [selectedDate, setSelectedDate] = useState(null) //Estado para seleccionar la fecha seleccionada
-
   // Crear una función para filtrar las solicitudes por estado
   const filterByStatus = (status) => {
     // Filtrar solicitudes por estado
     const filteredRequests = request.filter((item) => {
       return item.estado.toLowerCase() === status.toLowerCase()
     })
+    console.log(filteredRequests)
 
     setRequest(filteredRequests)
   }
@@ -199,7 +197,6 @@ const Requests = () => {
   }
 
   // Funcion para filtrar fechas
-  // Funcion para filtrar fechas
   const handleDateSelect = (date) => {
     setSelectedDate(date)
 
@@ -209,6 +206,7 @@ const Requests = () => {
       return requestDate.toString().slice(0, 10) === date.toString().slice(0, 10)
     })
 
+    console.log(filtered)
     setRequest(filtered)
   }
 
@@ -234,7 +232,7 @@ const Requests = () => {
     setRequest(sortedRequests)
   }
 
-  // Función para eliminar el filtro
+  // // Función para eliminar el filtro
   const clearFilter = () => {
     setSelectedStatus('')
     setSelectedDate('')
@@ -282,7 +280,7 @@ const Requests = () => {
                 <TableColumn aria-label="Tipo de solicitud">Tipo de solicitud</TableColumn>
                 <TableColumn aria-label="Estado" className="flex items-center gap-x-4">
                   Estado
-                <Popover  Popover placement="right">
+                  <Popover placement="right">
                     <PopoverTrigger>
                       <section className="w-4 cursor-pointer">
                         <i className="fi fi-br-menu-dots-vertical text-sm" />
@@ -331,7 +329,7 @@ const Requests = () => {
               </TableBody>
             </Table>
             <section className="grid place-items-center w-full mt-[.5rem] ">
-              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />
+              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />{' '}
             </section>
           </section>
           <Footer />

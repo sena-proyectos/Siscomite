@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { sendEmail, sendEmailWithAttachment } from '../controller/sendMail.controller.js'
-import { checkEmail } from '../middlewares/email.middleware.js'
 import multer from 'multer'
 
 const router = Router()
