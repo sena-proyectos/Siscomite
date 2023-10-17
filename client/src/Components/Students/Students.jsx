@@ -138,14 +138,18 @@ const Students = () => {
         <Sliderbar />
         <Toaster position="top-right" closeButton richColors />
         <section className="w-full h-screen overflow-auto">
-          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
-            <section className="w-[60%] col-span-2 right-0 relative">
+          <header
+            className="p-[1.5rem] grid grid-cols-3 place-items-end max-[700px]:grid
+            max-[700px]:grid-rows-3   max-[900px]:place-items-center"
+          >
+            <section className="w-[60%] col-span-2 max-[700px]:col-span-2  right-0 relative">
               <Search placeholder={'Buscar aprendiz'} searchUser={searchApprentices} />
             </section>
-            <section className="flex items-center mr-[50%]   cursor-pointer ">
+            <section className="flex items-center mr-[40%] cursor-pointer gap-x-4">
               <Button color="danger" variant="bordered" onClick={StateGroups}>
                 Deshabilitar ficha
               </Button>
+              <NotifyBadge />
             </section>
           </header>
 
@@ -159,7 +163,7 @@ const Students = () => {
               <p className="flex justify-end">{informationGruops.numero_ficha}</p>
             </section>
           </section>
-          <section className="h-[65vh] max-sm:h-[190%] max-[935px]:h-[115%]">
+          <section className="min-h-[65vh]">
             <section className="grid grid-cols-3 gap-5 px-9 max-sm:grid-cols-1 max-[935px]:grid-cols-2 w-full h-full ">
               {error ? (
                 <h1 className="text-gray-500 text-center grid place-content-center max-w-[590px]">{error}</h1>
@@ -216,20 +220,13 @@ const Students = () => {
           </section>
 
           <section className="grid place-items-center ">
-            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[8px]  z-0 ${apprenticesSearch.length > 0 ? 'hidden' : ''}`} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
+            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[2rem] max-[935px]:mt-[8px]  z-0 ${apprenticesSearch.length > 0 ? 'hidden' : ''}`} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-[2.5%]">
-            <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalStudents}>
-              <p className="text-[15px] top-0 block">
-                <i className="fi fi-br-plus block" />
-                Agregar aprendices
-              </p>
+            <button className="w-[13rem] max-[800px]:w-[5rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalStudents}>
+              <i className="fi fi-br-plus" />
+              <p className="text-[15px] top-0 max-[800px]:hidden">Agregar aprendices</p>
             </button>
-          </section>
-          <section className="fixed right-[10%] top-[2rem]">
-            <section className=" cursor-pointer ">
-              <NotifyBadge />
-            </section>
           </section>
           <Footer />
         </section>

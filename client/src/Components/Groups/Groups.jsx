@@ -32,7 +32,6 @@ const Groups = () => {
   const [selectedEtapa, setSelectedEtapa] = useState('')
   const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
 
-
   // Hacer uso de la funcion obtener fichas
   useEffect(() => {
     getFicha()
@@ -234,12 +233,12 @@ const Groups = () => {
           <section className="flex justify-center items-center mt-[16px]">
             <section className="flex justify-between items-center  bg-[#2e323e] w-[90%] rounded-xl py-2 px-3 ">
               <section>
-                <Button onClick={sortFichasByName} color='primary' variant='shadow' className="mr-2 text-lg">
+                <Button onClick={sortFichasByName} color="primary" variant="shadow" className="mr-2 text-lg">
                   {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-up cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
                 </Button>
                 <Popover placement="right">
                   <PopoverTrigger>
-                    <Button className='text-[15px] font-bold' >
+                    <Button className="text-[15px] font-bold">
                       <i className="fi fi-rr-settings-sliders relative cursor-pointer " />
                       Filtros
                     </Button>
@@ -319,7 +318,7 @@ const Groups = () => {
               </section>
             </section>
           </section>
-          <section className="max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5 min-h-[60vh]">
+          <section className="max-[935px]:p-5 min-h-[60vh]">
             <section className="mx-auto w-[90%]">
               {actualView === 'grid' ? (
                 <section className="gap-8 grid grid-cols-3 mt-3 min-h-[50vh] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
@@ -408,11 +407,9 @@ const Groups = () => {
             <Pagination className={`relative z-0 max-[935px]:pb-[3rem] `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-[59px]">
-            <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
-              <p className="text-[15px] top-0 block">
-                <i className="fi fi-br-plus block" />
-                Agregar fichas
-              </p>
+            <button className="w-[13rem] max-[800px]:w-[5rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
+              <i className="fi fi-br-plus" />
+              <p className="text-[15px] top-0 max-[800px]:hidden">Agregar fichas</p>
             </button>
           </section>
           <Footer />

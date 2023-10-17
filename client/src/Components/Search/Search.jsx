@@ -1,20 +1,16 @@
 // Importaciones necesarias
 import './Search.css' // Importar el archivo CSS para estilos específicos
-import { useRef, useEffect, useState } from 'react' // Importar React, useRef, useEffect y useState desde React
-import { Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react' // Importar componentes de Next UI
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import { useRef, useEffect } from 'react' // Importar React, useRef, useEffect y useState desde React
 
 
 // Componente Search
-const Search = ({ searchUser, placeholder, icon, filtro, request, teacher, onDateChange, setSelectedRol, setSelectedEstado }) => {
+const Search = ({ searchUser, placeholder, icon  }) => {
   // Referencia al elemento de entrada de texto para búsqueda
   const search = useRef()
   // Referencia para el temporizador de debounce
   const debounceTimeout = useRef(null)
+  
   // Función para manejar la búsqueda con debounce
-  const [selectedDate, setSelectedDate] = useState(null)
-
   const handleSearch = () => {
     const searchValue = search.current.value
     clearTimeout(debounceTimeout.current)
@@ -23,11 +19,6 @@ const Search = ({ searchUser, placeholder, icon, filtro, request, teacher, onDat
     }, 300)
   }
 
-  
-
-  const resetFilter = () => {
-    if (setSelectedDate) setSelectedDate('')
-  }
 
   // Función para prevenir la acción predeterminada del formulario
   const evnt = (e) => {
@@ -48,29 +39,7 @@ const Search = ({ searchUser, placeholder, icon, filtro, request, teacher, onDat
         {icon}
       </section>
 
-      {filtro && (
-        <section className="w-[27rem]  z-10 animate-appearance-in absolute mt-[3rem]">
-          <section className="bg-white max-[900px]:w-[12rem] border grid shadow-md w-full rounded-xl p-[10px]">
-            <section className="flex justify-between">
-              <p className="font-semibold pb-0 text-default-400">
-                Filtrar por
-                <i className="fi fi-sr-filter ml-2 text-xs" />
-              </p>
-              <Button size="sm" radius="full" color="primary" variant="flat" className="h-6 font-semibold" onClick={resetFilter}>
-                <i className="fi fi-rr-eraser" />
-                Limpiar
-              </Button>
-            </section>
-            <section className="flex gap-x-3 mt-[1rem]  items-center">
-              {request && (
-                <section className="w-full max-[900px]:flex max-[900px]:flex-col px-[1rem] relative">
-                  <DatePicker selected={selectedDate} onChange={(date) => onDateChange(date)} dateFormat="dd/MM/yyyy" isClearable placeholderText="Selecciona una fecha" className="cursor-pointer border-2 border-primary hover:border-primary hover:border-2 px-5 py-[5px] text-sm rounded-lg outline-none" />
-                </section>
-              )}              
-            </section>
-          </section>
-        </section>
-      )}
+      
     </main>
   )
 }

@@ -16,6 +16,8 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
 import { requestStore } from '../../store/config'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 // Componente Requests
 const Requests = () => {
@@ -28,7 +30,7 @@ const Requests = () => {
 
   // Paginación
   // Número de elementos por página
-  const itemsPerPage = 9
+  const itemsPerPage = 8
   const [activePage, setActivePage] = useState(1)
 
   const [requestId, setRequestId] = useState(null)
@@ -163,9 +165,9 @@ const Requests = () => {
 
   // ---------------- Filtros --------------------
   const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  const [selectedDate, setSelectedDate] = useState(new Date()) // Agregar el estado para la fecha seleccionada
   // Agregar un estado para el filtro de estado
   const [selectedStatus, setSelectedStatus] = useState('')
+  const [selectedDate, setSelectedDate] = useState(null) //Estado para seleccionar la fecha seleccionada
 
   // Crear una función para filtrar las solicitudes por estado
   const filterByStatus = (status) => {
@@ -182,9 +184,7 @@ const Requests = () => {
     setSearchValue(searchValue)
 
     if (!searchValue) {
-      // Si no hay un valor de búsqueda, obtén todas las solicitudes
       getRequets()
-      getRequetsById()
     } else {
       // Filtrar usuarios por nombre y apellido
       const filteredRequests = request.filter((item) => {
@@ -198,17 +198,18 @@ const Requests = () => {
     }
   }
 
-  // Función para manejar el cambio de fecha
-  const handleDateChange = (date) => {
+  // Funcion para filtrar fechas
+  // Funcion para filtrar fechas
+  const handleDateSelect = (date) => {
     setSelectedDate(date)
-    if (date) {
-      const filteredRequests = request.filter((item) => {
-        const requestDate = new Date(item.fecha_creacion)
 
-        return requestDate.toDateString() === date.toDateString()
-      })
-      setRequest(filteredRequests)
-    }
+    // Filtra las fechas basadas en el valor seleccionado
+    const filtered = request.filter((item) => {
+      const requestDate = new Date(item.fecha_creacion)
+      return requestDate.toString().slice(0, 10) === date.toString().slice(0, 10)
+    })
+
+    setRequest(filtered)
   }
 
   // Función para ordenar la lista de solicitudes por nombre
@@ -236,6 +237,7 @@ const Requests = () => {
   // Función para eliminar el filtro
   const clearFilter = () => {
     setSelectedStatus('')
+    setSelectedDate('')
     // Vuelve a obtener todas las solicitudes
     getRequets()
     getRequetsById()
@@ -249,16 +251,25 @@ const Requests = () => {
       <main className="h-screen flex">
         <Sliderbar />
         <section className="w-full overflow-auto ">
-          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
-            <section className="w-[60%] col-span-2 right-0 relative">
-              <Search request filtro={filtroVisible} placeholder={'Buscar solicitud'} icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full " onClick={() => setFiltroVisible(!filtroVisible)} />} searchUser={filterNames} searchValue={searchValue} dateArray={request} onDateChange={handleDateChange} />
+          <header className="px-[1.5rem] pt-[1.5rem] pb-[.5rem]">
+            <section className="grid grid-cols-3 place-items-end">
+              <section className="w-[60%] col-span-2 right-0 relative">
+                <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} dateArray={request} />
+              </section>
+              <section className="w-full h-full flex justify-center items-center">
+                <NotifyBadge />
+              </section>
             </section>
-            <section className="w-full h-full flex justify-center items-center">
-              <NotifyBadge />
+            <section className="px-[.5rem] mt-5 flex">
+              <DatePicker selected={selectedDate} onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" isClearable placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
+              <Button color="primary" variant="light" onClick={clearFilter}>
+                <i className="fi fi-rr-eraser " />
+                Limpiar
+              </Button>
             </section>
           </header>
 
-          <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
+          <section className="px-[2rem] relative mr-auto h-[65vh]">
             <Table className="h-full select-none" aria-label="Tabla para ver las solicitudes">
               <TableHeader>
                 <TableColumn aria-label="Nombre del solicitante" className="flex items-center">
@@ -271,7 +282,7 @@ const Requests = () => {
                 <TableColumn aria-label="Tipo de solicitud">Tipo de solicitud</TableColumn>
                 <TableColumn aria-label="Estado" className="flex items-center gap-x-4">
                   Estado
-                  <Popover placement="right">
+                <Popover  Popover placement="right">
                     <PopoverTrigger>
                       <section className="w-4 cursor-pointer">
                         <i className="fi fi-br-menu-dots-vertical text-sm" />
@@ -283,7 +294,7 @@ const Requests = () => {
                           Filtrar por
                           <i className="fi fi-sr-filter ml-2 text-sm" />
                         </p>
-                        <Divider className="m-0 p-0"/>
+                        <Divider className="m-0 p-0" />
                         <Button size="sm" className="bg-yellow-200 text-warning" onClick={() => filterByStatus('En proceso')}>
                           En proceso
                         </Button>
@@ -293,7 +304,7 @@ const Requests = () => {
                         <Button size="sm" className="bg-[#45d48383] text-success" onClick={() => filterByStatus('Aprobado')}>
                           Aprobado
                         </Button>
-                        <Button  color="primary" variant="light" onClick={clearFilter}>
+                        <Button color="primary" variant="light" onClick={clearFilter}>
                           <i className="fi fi-rr-eraser " />
                           Limpiar
                         </Button>
