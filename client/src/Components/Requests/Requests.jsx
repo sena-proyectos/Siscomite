@@ -27,9 +27,8 @@ const Requests = () => {
   const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
 
   // Paginación
-  // Número de elementos por página
-  const itemsPerPage = 8
-  const [activePage, setActivePage] = useState(1)
+  const itemsPerPage = 8   // Número de elementos por página
+  const [activePage, setActivePage] = useState(1) // Estado para mostrar las solicitudes dese la primera página
 
   const [requestId, setRequestId] = useState(null)
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
@@ -67,6 +66,7 @@ const Requests = () => {
   const indexOfLastItem = activePage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = elements.adminCoordi ? (request && request.length > 0 ? request.slice(indexOfFirstItem, indexOfLastItem) : []) : elements.instructor ? (requestById && requestById.length > 0 ? requestById.slice(indexOfFirstItem, indexOfLastItem) : []) : []
+
   const totalPages = Math.ceil(request && request.length / itemsPerPage)
 
   // Función para cambiar de página
@@ -169,7 +169,7 @@ const Requests = () => {
   // Crear una función para filtrar las solicitudes por estado
   const filterByStatus = (status) => {
     // Filtrar solicitudes por estado
-    const filteredRequests = request.filter((item) => {
+    const filteredRequests = requestId.filter((item) => {
       return item.estado.toLowerCase() === status.toLowerCase()
     })
     console.log(filteredRequests)
@@ -185,7 +185,7 @@ const Requests = () => {
       getRequets()
     } else {
       // Filtrar usuarios por nombre y apellido
-      const filteredRequests = request.filter((item) => {
+      const filteredRequests = requestId.filter((item) => {
         const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
         const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
 
@@ -201,7 +201,7 @@ const Requests = () => {
     setSelectedDate(date)
 
     // Filtra las fechas basadas en el valor seleccionado
-    const filtered = request.filter((item) => {
+    const filtered = requestId.filter((item) => {
       const requestDate = new Date(item.fecha_creacion)
       return requestDate.toString().slice(0, 10) === date.toString().slice(0, 10)
     })
@@ -212,7 +212,7 @@ const Requests = () => {
 
   // Función para ordenar la lista de solicitudes por nombre
   const sortRequestsByName = () => {
-    const sortedRequests = [...request]
+    const sortedRequests = [...requestId]
     sortedRequests.sort((a, b) => {
       const nameA = `${a.nombres} ${a.apellidos}`.toLowerCase()
       const nameB = `${b.nombres} ${b.apellidos}`.toLowerCase()
