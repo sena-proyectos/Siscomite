@@ -2,7 +2,7 @@ import multer from 'multer'
 import fs from 'fs'
 
 // Directorio donde se guardarán los archivos subidos
-const uploadDirectory = 'uploads/'
+const uploadDirectory = 'uploads'
 
 // Verificar si el directorio existe y crearlo si no
 if (!fs.existsSync(uploadDirectory)) {
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
       cb(null, Date.now() + '-' + file.originalname)
     } else {
       cb(new Error('Tipo de archivo no permitido'), false)
-    }
+    } 
   }
 })
 

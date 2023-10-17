@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createRequest, getRequestById, getRequests, updateRequest, deleteRequest, getsolicitud, getRules, getRequestByIdUser } from '../controller/request.controller.js'
+import { createRequest, getRequestById, updateRequest, deleteRequest, getsolicitud, getRules, getRequestByIdUser } from '../controller/request.controller.js'
 import { createDataSolicitud } from '../middlewares/request.middlewares.js'
 const router = Router()
 

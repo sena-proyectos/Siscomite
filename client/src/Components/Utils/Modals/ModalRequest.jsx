@@ -1,5 +1,6 @@
 import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
 import { useState, useEffect } from 'react'
+import { Toaster, toast } from 'sonner'
 
 import { getRequestById } from '../../../api/httpRequest'
 
@@ -98,6 +99,8 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
           numerales.push(numeral)
         }
       })
+
+      console.log(res)
 
       // Convertir los objetos únicos de nuevo a objetos JSON de la solicitud
       const tipoSolicitud = [...new Set(datosUnicosArray.map((item) => item.tipo_solicitud))]
@@ -228,6 +231,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
 
   return (
     <>
+      <Toaster position="top-right" closeButton richColors />
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
         <section className={`bg-white ${modalCitation ? 'w-[85rem] h-[45rem]' : 'w-[35rem]'} p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in `}>
           <header className="flex justify-center ">
@@ -243,7 +247,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
               <section className=" flex flex-col items-center justify-center">
                 <section className="flex w-[33rem] text-gray-500 gap-2 mb-2">
                   <strong>Nota: </strong>
-                  <p > Debe seleccionar el archivo de la carta de citación a comité de evaluación y seguimiento y transcribir el texto al archivo original.</p>
+                  <p> Debe seleccionar el archivo de la carta de citación a comité de evaluación y seguimiento y transcribir el texto al archivo original.</p>
                 </section>
                 <label htmlFor="upload" className="w-[80%] flex flex-col items-center justify-center gap-2 p-10 cursor-pointer bg-white rounded-md border border-blue-600 shadow-md">
                   <i className="fi fi-rr-add-document text-blue-600 text-3xl" />

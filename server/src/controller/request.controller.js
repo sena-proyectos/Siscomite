@@ -136,11 +136,11 @@ export const getRequestById = async (req, res) => {
   LEFT JOIN detalle_solicitud_usuarios ON solicitud.id_solicitud = detalle_solicitud_usuarios.id_solicitud
   LEFT JOIN usuarios AS usuarios_involucrados ON detalle_solicitud_usuarios.id_usuario = usuarios_involucrados.id_usuario
   LEFT JOIN documentos AS documentos_involucrados ON usuarios_involucrados.id_documento = documentos_involucrados.id_documento
-  WHERE solicitud.id_solicitud = ?;
-
-   
-    `
+  WHERE solicitud.id_solicitud = ?;`
     const [result] = await pool.query(query, [id, id])
+
+    const rutaArchivos = result[0].ruta_archivo
+    const nombreArchivo = result[0].nombre_archivo
 
     if (result.length === 0) {
       res.status(404).send({ message: `No hay registros de la solicitud` })
