@@ -3,7 +3,7 @@ import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
-import { Button, Input, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Card, CardBody } from '@nextui-org/react'
+import { Button, Input, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Spinner, Card } from '@nextui-org/react'
 import { emailFile, getTemplates, templateID } from '../../api/httpRequest'
 import { Toaster, toast } from 'sonner'
 import { TinyEditor } from '../Utils/tinyEditor/TinyEditor'
@@ -14,6 +14,8 @@ const Procedures = () => {
 
   const [templatesName, setTemplatesName] = useState([])
   const [htmlContent, setHtmlContent] = useState(null)
+
+  const [loading, setLoading] = useState(false)
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0]
@@ -33,13 +35,26 @@ const Procedures = () => {
     } catch (error) {}
   }
 
-  const sendEmailFile = async (id) => {
+  const sendEmailFile = async () => {
     const formData = new FormData()
     formData.append('to', email) // Reemplaza con la dirección de correo deseada
     formData.append('subject', 'Prueba de correo con archivo')
     formData.append('text', 'Este correo es una prueba para probar si funciona enviando archivos')
     formData.append('html', htmlContent)
     formData.append('file', file)
+    setLoading(true)
+
+    if (!file) {
+      return toast.error('Opss!!', {
+        description: 'Debe seleccionar un archivo.'
+      })
+    }
+
+    if (!email) {
+      return toast.error('Opss!!', {
+        description: 'Debe digitar el correo a quien será remitido el mensaje.'
+      })
+    }
 
     try {
       const response = await emailFile(formData)
@@ -48,7 +63,9 @@ const Procedures = () => {
       toast.success('Genial!!', {
         description: res
       })
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       const message = error.response.data.message
       toast.error('Opss!!', {
         description: message
@@ -75,6 +92,13 @@ const Procedures = () => {
   return (
     <main className="flex h-secreen">
       <Sliderbar />
+      {loading && (
+        <section className="inset-0 bg-[#0000006a] z-50 absolute flex items-center justify-center backdrop-blur-[3px]">
+          <Card>
+            <Spinner label="Cargando..." color="primary" className='p-5'/>
+          </Card>
+        </section>
+      )}
       <Toaster position="top-right" closeButton richColors />
       <section className="w-full overflow-auto">
         <header className="w-full flex right-0 relative ">
@@ -111,12 +135,7 @@ const Procedures = () => {
             </Button>
           </section>
           <section className="h-full grid mt-[3rem] place-items-center">
-            {/* <Card>
-              <CardBody>
-                <div dangerouslySetInnerHTML={{ __html: htmlContent ? htmlContent : 'Seleccione una plantilla para visualizarla' }} />
-              </CardBody>
-            </Card> */}
-            <TinyEditor template={!htmlContent ? '<h2><strong>Seleccione una plantilla y podrás visualizarla aquí.</strong></h2>' : htmlContent} onContentChange={setHtmlContent}/>
+            <TinyEditor template={!htmlContent ? '<h2><strong>Seleccione una plantilla y podrás visualizarla aquí.</strong></h2>' : htmlContent} onContentChange={setHtmlContent} />
           </section>
         </section>
         <Footer />

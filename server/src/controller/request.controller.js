@@ -1,85 +1,8 @@
 import { pool } from '../db.js'
-import mysql from 'mysql2/promise'
 
 export const getsolicitud = async (req, res) => {
   try {
     const [result] = await pool.query('SELECT usuarios.nombres, usuarios.apellidos, solicitud.id_solicitud, solicitud.tipo_solicitud,solicitud.nombre_coordinacion,solicitud.estado,solicitud.fecha_creacion,solicitud.categoria_causa,solicitud.calificacion_causa,solicitud.descripcion_caso,solicitud.id_archivo FROM solicitud INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario ORDER BY fecha_creacion DESC;')
-    res.status(200).send({ result })
-  } catch (error) {
-    res.status(500).send({ message: 'Error al listar las solictudes' })
-  }
-}
-//BUSCAR TODAS LAS SOLICITUDES
-export const getRequests = async (req, res) => {
-  try {
-    const query = `
-        SELECT
-        -- Información de la solicitud
-        s.id_solicitud,
-        s.tipo_solicitud,
-        s.nombre_coordinacion,
-        s.estado,
-        s.fecha_creacion,
-        s.categoria_causa,
-        s.calificacion_causa,
-        s.descripcion_caso,
-        s.evidencias,
-    
-        -- Información del artículo
-        a.numero_articulo,
-        a.descripcion_articulo,
-    
-        -- Información del capítulo relacionado al artículo
-        c.titulo AS titulo_capitulo,
-        c.descripcion_capitulo,
-    
-        -- Información de los numerales relacionados al artículo
-        GROUP_CONCAT(n.numero_numeral ORDER BY n.id_numeral ASC) AS numeros_numerales,
-        GROUP_CONCAT(n.descripcion_numeral ORDER BY n.id_numeral ASC) AS descripciones_numerales,
-    
-        -- Información de los párrafos relacionados al artículo
-        GROUP_CONCAT(p.titulo_paragrafo ORDER BY p.id_paragrafo ASC) AS titulos_paragrafos,
-        GROUP_CONCAT(p.descripcion_paragrafos ORDER BY p.id_paragrafo ASC) AS descripciones_paragrafos,
-    
-        -- Información del usuario solicitante
-        u.nombres AS nombres_solicitante,
-        u.apellidos AS apellidos_solicitante,
-        u.email_sena AS email_sena_solicitante,
-        u.numero_celular AS numero_celular_solicitante,
-    
-        -- Tipo de documento del usuario solicitante (subconsulta)
-        (SELECT d.tipo_documento FROM documentos d WHERE d.id_documento = u.id_documento) AS tipo_documento_usuario,
-    
-        -- Información del aprendiz
-        ap.nombres_aprendiz,
-        ap.apellidos_aprendiz,
-        ap.email_aprendiz_sena,
-        ap.celular_aprendiz,
-    
-        -- Tipo de documento del aprendiz (subconsulta)
-        (SELECT d.tipo_documento FROM documentos d WHERE d.id_documento = ap.id_documento) AS tipo_documento_aprendiz,
-    
-        -- Información de la ficha
-        f.numero_ficha,
-        f.nombre_programa,
-        f.jornada,
-        f.etapa_programa,
-        f.numero_trimestre,
-    
-        -- Información de la modalidad
-        m.nombre_modalidad
-    FROM solicitud s
-    LEFT JOIN articulos a ON s.id_articulo = a.id_articulo
-    LEFT JOIN numerales n ON a.id_articulo = n.id_articulo
-    LEFT JOIN paragrafos p ON a.id_articulo = p.id_articulo
-    LEFT JOIN capitulos c ON a.id_capitulo = c.id_capitulo
-    LEFT JOIN usuarios u ON s.id_usuario_solicitante = u.id_usuario
-    LEFT JOIN aprendices ap ON s.id_aprendiz = ap.id_aprendiz
-    LEFT JOIN fichas f ON ap.id_ficha = f.id_ficha
-    LEFT JOIN modalidades m ON f.id_modalidad = m.id_modalidad
-    GROUP BY s.id_solicitud;
-    `
-    const [result] = await pool.query(query)
     res.status(200).send({ result })
   } catch (error) {
     res.status(500).send({ message: 'Error al listar las solictudes' })
