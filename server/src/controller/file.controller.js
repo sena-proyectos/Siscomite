@@ -1,51 +1,53 @@
-import { pool } from '../db.js';
-import multerMiddleware from '../middlewares/files.middlewares.js';
-import path from 'path';
-import fs from 'fs';
+import { pool } from '../db.js'
+import multerMiddleware from '../middlewares/files.middlewares.js'
+import { minioClient } from '../config.js'
 
-export const uploadFile = multerMiddleware.single('archivo');
+export const uploadFile = multerMiddleware.single('archivo')
 
 export const handleFileUpload = async (req, res) => {
-  const { filename } = req.file;
-  const fileType = req.file.mimetype; // Obtener el tipo de archivo desde Multer
-  
+  const { filename, mimetype } = req.file
+  const bucketName = 'uploads'
+  const objectName = `${filename}`
+  const serverUrl = 'http://localhost:9000'
+
+  const url = `${serverUrl}/${bucketName}/${objectName}`
 
   try {
-    await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `uploads/${filename}`, fileType]);
-    res.status(201).send({ message: 'Archivo subido y guardado exitosamente' });
+    // Inserta la URL del objeto de MinIO en la base de datos
+    await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, url, mimetype])
+
+    // Si la inserción en la base de datos es exitosa, entonces sube el archivo a MinIO
+    await minioClient.fPutObject(bucketName, objectName, req.file.path, {
+      'Content-Type': mimetype
+    })
+
+    res.status(201).send({ message: 'Archivo subido y guardado exitosamente' })
   } catch (error) {
-    res.status(500).send({ message: 'Error al subir y guardar el archivo' });
+    console.log(error)
+    res.status(500).send({ message: 'Error al subir y guardar el archivo' })
   }
-};
+}
 
 export const getFiles = async (req, res) => {
   try {
-    const files = await pool.query('SELECT * FROM archivos'); // Obtener todos los archivos desde la base de datos
+    const files = await pool.query('SELECT * FROM archivos') // Obtener todos los archivos desde la base de datos
 
-    res.status(200).send(files); // Enviar los archivos como respuesta
+    res.status(200).send(files) // Enviar los archivos como respuesta
   } catch (error) {
-    res.status(500).send({ message: 'Error al obtener los archivos' });
+    res.status(500).send({ message: 'Error al obtener los archivos' })
   }
-};
-
+}
 
 // Obtener un archivo por su nombre
 export const getSingleFile = async (req, res) => {
-  const { nombreArchivo } = req.params;
-  const currentFileUrl = import.meta.url;
-  const currentDir = path.dirname(new URL(currentFileUrl).pathname);
-  const rutaArchivo = path.join(currentDir, 'src/uploads/', nombreArchivo);
+  const { nombreArchivo } = req.params
 
   try {
-    // Verifica si el archivo existe antes de enviarlo
-    if (fs.existsSync(rutaArchivo)) {
-      res.sendFile(rutaArchivo);
-    } else {
-      // Si el archivo no existe, envía un mensaje de error 404
-      res.status(404).send('Archivo no encontrado: ' + nombreArchivo);
-    }
+    const file = await minioClient.getObject('uploads', nombreArchivo)
+
+    res.setHeader('Content-Type', file.type)
+    res.send(file.read())
   } catch (error) {
-    // Si ocurre cualquier excepción durante la verificación o el envío del archivo
-    res.status(500).send('Error interno del servidor');
+    res.status(500).send('Error interno del servidor')
   }
-};
+}

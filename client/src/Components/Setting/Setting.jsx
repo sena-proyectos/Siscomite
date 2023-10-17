@@ -169,7 +169,6 @@ const Setting = () => {
               </CardFooter>
             </Card>
           </form>
-          
         </section>
         <Footer />
       </section>

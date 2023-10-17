@@ -233,7 +233,7 @@ const Create = () => {
   }
 
   return (
-    <main className="relative h-screen flex ">
+    <main className="relative flex h-screen ">
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
       <form className="w-full overflow-auto" onSubmit={sendData}>
@@ -290,7 +290,7 @@ const Create = () => {
             <section className="relative mt-2">
               <Search placeholder={'Buscar Instructor'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchUser={getTeacher} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl  ">
-                <h3 className="text-white grid justify-center ">Instructores</h3>
+                <h3 className="grid justify-center text-white ">Instructores</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1  max-h-[10rem]">
                   {(teacherSearch.length > 0 || selectedInstructor.length > 0) && error === null ? (
                     <>
@@ -330,7 +330,7 @@ const Create = () => {
             <section className="relative top-[1rem] ">
               <Search className="relative w-full" placeholder={'Buscar aprendiz'} icon={<i className="fi fi-br-search relative cursor-pointer right-[3rem]" />} searchUser={getUser} />
               <section className="bg-[#2E323E] w-[97%] relative shadow-lg top-[.5rem] rounded-xl">
-                <h3 className="text-white grid justify-center">Aprendices</h3>
+                <h3 className="grid justify-center text-white">Aprendices</h3>
                 <section className="text-white relative mx-5 w-[90%] border-t-2 border-blue-500 p-1 overflow-auto max-h-[10rem]">
                   {(userSearch.length > 0 || selectedApprentice.length > 0) && errorUser === null ? (
                     <>
