@@ -18,7 +18,7 @@ import notifyRouter from './routes/notify.routes.js' // Rutas relacionadas con l
 import sendEmail from './routes/sendMail.routes.js'
 import templateRoute from './routes/template.routes.js'
 import { PORT } from './config.js' // Importar el puerto desde la configuración
-
+import rulesRoute from './routes/rules.routes.js'
 import http from 'http'
 import {Server} from 'socket.io'
 

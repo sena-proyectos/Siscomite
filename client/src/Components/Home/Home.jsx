@@ -6,27 +6,30 @@ import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
-import { io } from 'socket.io-client'
-import { useEffect } from 'react'
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 
 const Home = () => {
-  useEffect(() => {
-    // Conectar al servidor de Socket.io
-    const socket = io('http://localhost:3010') // Reemplaza con la URL de tu servidor Socket.io
+  const getElementsByRole = () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
 
-    // Escuchar eventos desde el servidor
-    socket.on('nerf', (data) => {
-      console.log('Mensaje recibido desde el servidor:', data)
-    })
+    // Mapear los ID de rol a nombres de rol
+    if (rolToken === 1) rolToken = 'Coordinador'
+    if (rolToken === 2) rolToken = 'Instructor'
+    if (rolToken === 3) rolToken = 'Administrador'
 
-    // Emitir eventos al servidor
-    socket.emit('message', '¡Hola, servidor!') // Puedes enviar datos adicionales
-
-    // Importante: Limpiar la conexión al desmontar el componente
-    return () => {
-      socket.disconnect()
+    return {
+      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+      administration: rolToken === 'Administrador',
+      coordination: rolToken === 'Coordinador',
+      instructor: rolToken === 'Instructor'
     }
-  }, [])
+  }
+
+  // Obtener los elementos que se deben mostrar según el rol
+  const elements = getElementsByRole()
 
   /* matriz para las cards de acceso rapido del home */
   const data = [
