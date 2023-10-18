@@ -21,15 +21,15 @@ const storage = multer.diskStorage({
       cb(null, Date.now() + '-' + file.originalname)
     } else {
       cb(new Error('Tipo de archivo no permitido'), false)
-    } 
+    }
   }
 })
 
-const upload = multer({
+const multerMiddleware = multer({
   storage,
   fileFilter: (req, file, cb) => {
     cb(null, true) // Permite todos los archivos por defecto
   }
 })
 
-export default upload
+export default multerMiddleware
