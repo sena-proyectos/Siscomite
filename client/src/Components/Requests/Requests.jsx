@@ -25,18 +25,15 @@ const Requests = () => {
   const [request, setRequest] = useState([]) // estado para guardar las solicitudes de la base de datos
   const [requestById, setRequestById] = useState([]) // estado para guardar las solicitudes de usuarios de la base de datos
   const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
-
   // Paginación
-  const itemsPerPage = 8   // Número de elementos por página
+  const itemsPerPage = 8 // Número de elementos por página
   const [activePage, setActivePage] = useState(1) // Estado para mostrar las solicitudes dese la primera página
-
   const [requestId, setRequestId] = useState(null)
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
   const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
   // Agregar un estado para el filtro de estado
   const [selectedStatus, setSelectedStatus] = useState('')
   const [selectedDate, setSelectedDate] = useState(null) //Estado para seleccionar la fecha seleccionada
-
   const [highlightedRequestId, setHighlightedRequestId] = useState(null)
 
   // Obtener los elementos que se deben mostrar según el rol
@@ -66,7 +63,6 @@ const Requests = () => {
   const indexOfLastItem = activePage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = elements.adminCoordi ? (request && request.length > 0 ? request.slice(indexOfFirstItem, indexOfLastItem) : []) : elements.instructor ? (requestById && requestById.length > 0 ? requestById.slice(indexOfFirstItem, indexOfLastItem) : []) : []
-
   const totalPages = Math.ceil(request && request.length / itemsPerPage)
 
   // Función para cambiar de página
@@ -168,14 +164,23 @@ const Requests = () => {
   // ---------------- Filtros --------------------
   // Crear una función para filtrar las solicitudes por estado
   const filterByStatus = (status) => {
-    // Filtrar solicitudes por estado
-    const filteredRequests = requestId.filter((item) => {
-      return item.estado.toLowerCase() === status.toLowerCase()
-    })
-    console.log(filteredRequests)
-
-    setRequest(filteredRequests)
-  }
+    // Obtén el rol del usuario
+    const userRole = getElementsByRole();
+    if (userRole.adminCoordi) {
+      // Realizar el filtrado basado en la variable request
+      const filteredRequests = request.filter((item) => {
+        return item.estado.toLowerCase() === status.toLowerCase();
+      });
+      setRequest(filteredRequests);
+    } else if (userRole.instructor) {
+      // Realizar el filtrado basado en la variable requestById
+      const filteredRequests = requestById.filter((item) => {
+        return item.estado.toLowerCase() === status.toLowerCase();
+      });
+      setRequestById(filteredRequests);
+    }
+  };
+  
 
   // Función para manejar la búsqueda de solicitudes por nombre
   const filterNames = (searchValue) => {
@@ -183,9 +188,10 @@ const Requests = () => {
 
     if (!searchValue) {
       getRequets()
+      getRequetsById()
     } else {
       // Filtrar usuarios por nombre y apellido
-      const filteredRequests = requestId.filter((item) => {
+      const filteredRequests = request.filter((item) => {
         const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
         const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
 
@@ -196,23 +202,39 @@ const Requests = () => {
     }
   }
 
-  // Funcion para filtrar fechas
+  // Función para manejar el cambio de fecha 
   const handleDateSelect = (date) => {
     setSelectedDate(date)
-
-    // Filtra las fechas basadas en el valor seleccionado
-    const filtered = requestId.filter((item) => {
-      const requestDate = new Date(item.fecha_creacion)
-      return requestDate.toString().slice(0, 10) === date.toString().slice(0, 10)
-    })
-
-    console.log(filtered)
-    setRequest(filtered)
+    const userRole = getElementsByRole()
+    if (date) {
+      if (userRole.adminCoordi) {
+        // Realizar la búsqueda basada en la variable request
+        const filteredRequests = request.filter((item) => {
+          const requestDateAdmincoordi = new Date(item.fecha_creacion)
+          return requestDateAdmincoordi.toDateString() === date.toDateString()
+        })
+        setRequest(filteredRequests)
+      } 
+      else if (userRole.instructor) {
+        // Realizar la búsqueda basada en la variable requestById
+        const filteredRequests = requestById.filter((item) => {
+          const requestDateInstructor = new Date(item.fecha_creacion)
+          return requestDateInstructor.toDateString() === date.toDateString()
+        })
+        setRequestById(filteredRequests)
+      }
+    } else {
+      if (userRole.adminCoordi) {
+        setRequest(request);
+      } else if (userRole.instructor){
+        setRequestById(requestById)
+      }
+    }
   }
 
   // Función para ordenar la lista de solicitudes por nombre
   const sortRequestsByName = () => {
-    const sortedRequests = [...requestId]
+    const sortedRequests = [...request]
     sortedRequests.sort((a, b) => {
       const nameA = `${a.nombres} ${a.apellidos}`.toLowerCase()
       const nameB = `${b.nombres} ${b.apellidos}`.toLowerCase()
@@ -235,11 +257,18 @@ const Requests = () => {
   // // Función para eliminar el filtro
   const clearFilter = () => {
     setSelectedStatus('')
+    // Vuelve a obtener todas las solicitudes
+    getRequets()
+    getRequetsById()
+  }
+  
+  const clearFilterDate = () => {
     setSelectedDate('')
     // Vuelve a obtener todas las solicitudes
     getRequets()
     getRequetsById()
   }
+
 
   return (
     <>
@@ -260,9 +289,9 @@ const Requests = () => {
             </section>
             <section className="px-[.5rem] mt-5 flex">
               <DatePicker selected={selectedDate} onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" isClearable placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
-              <Button color="primary" variant="light" onClick={clearFilter}>
+              <Button color="primary" variant="light" onClick={clearFilterDate}>
                 <i className="fi fi-rr-eraser " />
-                Limpiar
+                Limpiar fecha
               </Button>
             </section>
           </header>
@@ -272,9 +301,11 @@ const Requests = () => {
               <TableHeader>
                 <TableColumn aria-label="Nombre del solicitante" className="flex items-center">
                   Nombre del solicitante
-                  <span onClick={sortRequestsByName} className="ml-2 hover:bg-default-500 hover:text-white text-[16px] p-2 rounded-full flex items-center">
-                    {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-up cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
-                  </span>
+                  {elements.adminCoordi && (
+                    <span onClick={sortRequestsByName} className="ml-2 hover:bg-default-500 hover:text-white text-[16px] p-2 rounded-full flex items-center">
+                      {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-up cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
+                    </span>
+                  )}
                 </TableColumn>
                 <TableColumn aria-label="Fecha de la solicitud">Fecha de la solicitud</TableColumn>
                 <TableColumn aria-label="Tipo de solicitud">Tipo de solicitud</TableColumn>
