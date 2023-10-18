@@ -4,7 +4,6 @@ import { Editor } from '@tinymce/tinymce-react'
 export const TinyEditor = ({ template, onContentChange }) => {
   const editorRef = useRef(null)
 
-
   const handleEditorChange = (content) => {
     if (onContentChange) {
       onContentChange(content) // Actualiza el contenido en el estado local
@@ -27,7 +26,7 @@ export const TinyEditor = ({ template, onContentChange }) => {
         min_height: 500,
         max_height: 500,
         width: 600,
-        plugins: ['advlist', 'anchor', 'autolink', 'charmap', 'code', 'fullscreen', 'help', 'image', 'insertdatetime', 'link', 'lists', 'media', 'preview', 'searchreplace', 'table', 'visualblocks', 'pseu'],
+        plugins: ['fullscreen', 'image', 'link', 'lists', 'preview', 'table'],
         content_style: template
       }}
     />

@@ -82,7 +82,9 @@ export const readExcelFile = async (file, id_ficha, reloadFetchState) => {
         }
       }
     } catch (error) {
-      console.error('Error reading Excel file:', error)
+      toast.error('Opss!!', {
+        description: 'Error al leer el archivo excel'
+      })
     }
   }
 

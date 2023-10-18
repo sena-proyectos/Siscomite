@@ -271,7 +271,6 @@ export const search = async (req, res) => {
   }
 }
 
-
 export const forgotPassword = async (req, res) => {
   const { email_sena } = req.body
   const { hashedPassword } = req
@@ -280,9 +279,7 @@ export const forgotPassword = async (req, res) => {
     await pool.query('UPDATE usuarios SET contrasena = IFNULL(?, contrasena) WHERE email_sena = ?', [hashedPassword, email_sena])
 
     return res.status(200).json({ message: 'Contraseña actualizada correctamente' })
-
   } catch (error) {
-    console.error(error)
     return res.status(500).send('Hubo un error al enviar el email')
   }
 }
