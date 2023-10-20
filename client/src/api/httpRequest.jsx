@@ -129,6 +129,7 @@ export const getFichasById = (id) => {
 
   return response
 }
+
 /* change state groups */
 export const changeStateGroups = (idgroups) => {
   const URL = `${BaseUrl}${api}/stateFicha/${idgroups}`
@@ -312,3 +313,28 @@ export const downloadFile = (nameFile) => {
 
   return response
 }
+
+/* generate reports apprentices */
+/* ************************************ */
+export const fileReportApprentices = () => {
+  const URL = `${BaseUrl}${api}/generateReportApprentices`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* generate reports request */
+export const fileReportRequest = () => {
+  const URL = `${BaseUrl}${api}/generateReportRequest`
+  const response = axios.get(URL)
+
+  return response
+}
+
+export const fileReportByGroup = (numeroFicha) => {
+  const URL = `${BaseUrl}${api}/generateReportByGroup?numero_ficha=${numeroFicha}`
+  const response = axios.get(URL)
+
+  return response
+}
+/* ************************************ */

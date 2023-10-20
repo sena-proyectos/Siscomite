@@ -258,18 +258,21 @@ export const createRequest = async (req, res) => {
     })
 
     /* Insertar instructor relacionado */
-    instructoresArray.forEach(async (usuarioId) => {
-      try {
-        await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
-      } catch (error) {
-        res.status(400).send({ message: 'Instructor seleccionado incorrectamente' })
-        return
-      }
-    })
+    if (instructoresSeleccionados || instructoresArray) {
+      instructoresArray.forEach(async (usuarioId) => {
+        try {
+          await pool.query('INSERT INTO detalle_solicitud_usuarios (id_solicitud, id_usuario) VALUES (?, ?)', [solicitudId, usuarioId])
+        } catch (error) {
+          // res.status(400).send({ message: 'Instructor seleccionado incorrectamente' })
+          return
+        }
+      })
+    }
 
     /* Enviar respuesta existosa */
     res.status(201).send({ message: 'Solicitud creada exitosamente' })
   } catch (error) {
+    console.log(error)
     res.status(500).send({ message: 'Error al crear la solicitud' })
   }
 }
