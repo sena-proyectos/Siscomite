@@ -28,7 +28,7 @@ const ForgotPassword = () => {
           <form className="relative w-[25rem] bg-white p-[1rem] rounded-xl grid shadow-lg place-items-center form">
             <h2 className="text-[1.5rem] mb-[2rem] font-bold">Recuperar contraseña</h2>
             {showVerification ? (
-              <section className="grid gap-7 w-[80%]">
+              <section className="grid gap-10 w-[80%]">
                 <p className="text-sm text-default-400">Ingresa el código de verificación de 6 dígitos enviado a tu correo electrónico.</p>
 
                 <Input isRequired type="number" labelPlacement="outside" label="Código de Verificación" />
@@ -38,7 +38,7 @@ const ForgotPassword = () => {
                 </button>
               </section>
             ) : (
-              <section className="grid gap-4 w-[80%]">
+              <section className="grid gap-8 w-[80%]">
                 <p className="text-sm text-default-400">Ingresa tu correo electrónico para enviar la confirmación y el código para el cambio de contraseña.</p>
 
                 <Input isRequired type="email" labelPlacement="outside" label="Ingresa tu correo" value={email} onChange={handleEmailChange} description="We'll never share your email with anyone else." />

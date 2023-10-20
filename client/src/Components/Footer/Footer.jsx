@@ -5,10 +5,10 @@ import "./Footer.css";
 const Footer = () => {
   return (
     // Contenedor principal del pie de página
-    <main className="flex justify-center text-[15px]">
+    <main className="flex justify-center text-[15px] ">
       <section className="fixed bottom-0">
         {/* Texto y logotipo del pie de página */}
-        <p className="flex items-center ">
+        <p className="flex items-center">
           {/* Texto de copyright */}
           Siscomite © Centro Tecnológico del Mobiliario - SENA
           {/* Logotipo del SENA */}

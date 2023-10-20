@@ -1,7 +1,7 @@
 /* Importaciones de modulos y componentes */
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Button, Badge, Chip } from '@nextui-org/react'
+import { useEffect, useState, useRef } from 'react'
+import { Card, CardHeader, CardBody, CardFooter, Pagination, Tooltip, Chip, Popover, PopoverTrigger, PopoverContent, Button, Divider } from '@nextui-org/react'
 import { Search } from '../Search/Search'
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
@@ -21,6 +21,16 @@ const Groups = () => {
   const [isGridView, setIsGridView] = useState(true)
   const [actualView, setActualView] = useState(null)
   const [filtroVisible, setFiltroVisible] = useState(false)
+  const [isCardVisible, setIsCardVisible] = useState(true) // Estado para controlar la visibilidad de la tabla y las cards
+
+  const [hoveredCards, setHoveredCards] = useState({})
+  const [activePage, setActivePage] = useState(1)
+  const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado de fichas a mostrar
+  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
+  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
+  const [selectedJornada, setSelectedJornada] = useState('')
+  const [selectedEtapa, setSelectedEtapa] = useState('')
+  const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
 
   // Hacer uso de la funcion obtener fichas
   useEffect(() => {
@@ -36,14 +46,10 @@ const Groups = () => {
     } catch (error) {}
   }
 
-  // Funciones para la paginación y selección de elementos mostar por página
-  const [activePage, setActivePage] = useState(1)
-
+  // Paginación
   const handlePageChange = (pageNumber) => {
     setActivePage(pageNumber)
   }
-
-  const [itemsPerPage, setItemsPerPage] = useState(6) // Establece un valor predeterminado de fichas a mostrar
 
   /* establecer paginado y numero de paginacion */
   const startIdx = (activePage - 1) * itemsPerPage
@@ -57,7 +63,6 @@ const Groups = () => {
   }
 
   // Hover cards
-  const [hoveredCards, setHoveredCards] = useState({})
 
   // Función para activar el hover en una card
   const handleCardHover = (id) => {
@@ -82,8 +87,6 @@ const Groups = () => {
   }
 
   // .................Tabla............
-  // Estado para controlar la visibilidad de la tabla y las cards
-  const [isCardVisible, setIsCardVisible] = useState(true)
 
   // Almacenar la preferencia del usuario en localStorage
   useEffect(() => {
@@ -142,31 +145,48 @@ const Groups = () => {
   }
 
   // ---------------- Filtros --------------------
-  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
-  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
-  const [selectedJornada, setSelectedJornada] = useState('')
-  const [selectedEtapa, setSelectedEtapa] = useState('')
-
-  const searchGroupsByName = (searchValue) => {
+  const filterNames = (searchValue) => {
     setSearchValue(searchValue)
 
-    // Filtrar las solicitudes según el nombre, el número de ficha y el estado seleccionado
-    const filteredResults = fichas.filter((item) => {
-      const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
-      const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
-      const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
-      const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
-      const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
+    if (!searchValue) {
+      getFicha()
+    } else {
+      const filterFichas = fichas.filter((item) => {
+        const nombre = item.nombre_programa.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
+        const numero = item.numero_ficha.toString().includes(searchValue.toString())
 
-      return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
-    })
+        return nombre || numero
+      })
+      setFichas(filterFichas)
+    }
+  }
 
-    // Ordenar la lista de resultados en función del estado sortOrder
-    const sortedResults = [...filteredResults].sort((a, b) => {
+  // Función para filtrar las fichas por estado, jornada y etapa
+  const filterFichas = () => {
+    // Filtrar fichas por estado, jornada y etapa
+    let filteredFichas = fichas
+
+    if (selectedEstado) {
+      filteredFichas = filteredFichas.filter((ficha) => ficha.estado.toLowerCase() === selectedEstado.toLowerCase())
+    }
+
+    if (selectedJornada) {
+      filteredFichas = filteredFichas.filter((ficha) => ficha.jornada.toLowerCase() === selectedJornada.toLowerCase())
+    }
+
+    if (selectedEtapa) {
+      filteredFichas = filteredFichas.filter((ficha) => ficha.etapa_programa.toLowerCase() === selectedEtapa.toLowerCase())
+    }
+    // Actualizar la lista de fichas después de aplicar los filtros
+    setFichas(filteredFichas)
+  }
+
+  // Función para ordenar la lista de fichas por nombre
+  const sortFichasByName = () => {
+    const sortedFichas = [...fichas]
+    sortedFichas.sort((a, b) => {
       const nameA = a.nombre_programa.toLowerCase()
       const nameB = b.nombre_programa.toLowerCase()
-
       if (sortOrder === 'asc') {
         return nameA.localeCompare(nameB)
       } else {
@@ -174,20 +194,24 @@ const Groups = () => {
       }
     })
 
-    setSearchResults(sortedResults)
+    // Cambiar el orden de clasificación para la próxima vez
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+
+    setFichas(sortedFichas)
   }
 
-  // Filtrar las solicitudes por nombre, estado y jornada
-  const filteredGroups = visibleCards.filter((item) => {
-    const nombreMatches = item.nombre_programa.toLowerCase().includes(searchValue.toLowerCase())
-    const idFichaMatches = item.numero_ficha.toString().includes(searchValue.toString())
-    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
-    const jornadaMatches = selectedJornada === '' || item.jornada === selectedJornada
-    const etapaMatches = selectedEtapa === '' || item.etapa_programa === selectedEtapa
+  // Función para aplicar filtros
+  const applyFilters = () => {
+    filterFichas()
+  }
 
-    return (nombreMatches || idFichaMatches) && estadoMatches && jornadaMatches && etapaMatches
-  })
-
+  // Función para limpiar los filtros
+  const clearFilter = () => {
+    setSelectedEstado('')
+    setSelectedJornada('')
+    setSelectedEtapa('')
+    getFicha() // Recarga las fichas originales
+  }
   return (
     <>
       {modalGroups && <ModalAddGroups cerrarModal={modalAddGroups} reloadFetchState={getFicha} />}
@@ -198,99 +222,142 @@ const Groups = () => {
         <section className="w-screen overflow-auto">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
-              <Search
-                ficha
-                filtro={filtroVisible}
-                placeholder={'Buscar ficha'}
-                icon={<i className="fi fi-rr-settings-sliders relative cursor-pointer left-[-3rem]" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                searchStudent={searchGroupsByName}
-                searchResults={searchResults}
-                searchValue={searchValue}
-                selectedEstado={selectedEstado}
-                setSelectedEstado={setSelectedEstado}
-                setSelectedJornada={setSelectedJornada}
-                setSelectedEtapa={setSelectedEtapa}
-              />
+              <Search placeholder={'Buscar ficha'} icon={<i className="fi fi-br-search relative left-[-3rem]" />} searchUser={filterNames} searchValue={searchValue} />
             </section>
             <section className="w-full h-full flex items-center justify-center">
               <NotifyBadge />
             </section>
           </header>
           <section className="flex justify-center items-center mt-[16px]">
-            <section className="flex justify-end items-center  bg-[#2e323e] w-[90%] rounded-xl py-2 px-3 ">
-              {actualView === 'grid' ? (
-                <>
+            <section className="flex justify-between items-center  bg-[#2e323e] w-[90%] rounded-xl py-2 px-3 ">
+              <section>
+                <Button onClick={sortFichasByName} color="primary" variant="shadow" className="mr-2 text-lg">
+                  {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-up cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
+                </Button>
+                <Popover placement="right">
+                  <PopoverTrigger>
+                    <Button className="text-[15px] font-bold">
+                      <i className="fi fi-rr-settings-sliders relative cursor-pointer " />
+                      Filtros
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <section className="px-1 py-2 flex flex-col gap-y-4">
+                      <p className="font-semibold text-default-400">
+                        Filtrar por
+                        <i className="fi fi-sr-filter ml-2 text-sm" />
+                      </p>
+                      <Divider />
+                      <select name="estado" onChange={(e) => setSelectedEstado(e.target.value)} value={selectedEstado} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
+                        <option value="">Estado</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Deshabilitado">Deshabilitado</option>
+                      </select>
+
+                      <select name="jornada" onChange={(e) => setSelectedJornada(e.target.value)} value={selectedJornada} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
+                        <option value="">Jornada</option>
+                        <option value="MAÑANA">Mañana</option>
+                        <option value="TARDE">Tarde</option>
+                        <option value="NOCHE">Noche</option>
+                        <option value="VIRTUAL">Virtual</option>
+                        <option value="FINES DE SEMANA">Fines de semana</option>
+                      </select>
+                      <select name="etapa" onChange={(e) => setSelectedEtapa(e.target.value)} value={selectedEtapa} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
+                        <option value="">Etapa</option>
+                        <option value="LECTIVA">Lectiva</option>
+                        <option value="PRÁCTICA">Práctica</option>
+                      </select>
+                      <section className="flex">
+                        <Button className="ml-3" color="primary" variant="light" onClick={clearFilter}>
+                          <i className="fi fi-rr-eraser " />
+                          Limpiar
+                        </Button>
+                        <Button className="ml-3" color="success" variant="light" onClick={applyFilters}>
+                          <i className="fi fi-br-check" />
+                          Aplicar
+                        </Button>
+                      </section>
+                    </section>
+                  </PopoverContent>
+                </Popover>
+              </section>
+
+              <section className="flex items-center">
+                {actualView === 'grid' ? (
+                  <>
+                    <section className="pr-[3rem] flex">
+                      <i
+                        className={`fi fi-rr-list block cursor-pointer text-xl text-white opacity-100`}
+                        onClick={() => {
+                          toggleView()
+                          toggleContent()
+                          tableView('table')
+                        }}
+                      ></i>
+                    </section>
+                  </>
+                ) : (
                   <section className="pr-[3rem] flex">
                     <i
-                      className={`fi fi-rr-list block cursor-pointer text-xl text-white opacity-100`}
+                      className={`fi fi-rr-grid block cursor-pointer text-xl text-white opacity-100`}
                       onClick={() => {
                         toggleView()
                         toggleContent()
-                        tableView('table')
+                        tableView('grid')
                       }}
                     ></i>
                   </section>
-                </>
-              ) : (
-                <section className="pr-[3rem] flex">
-                  <i
-                    className={`fi fi-rr-grid block cursor-pointer text-xl text-white opacity-100`}
-                    onClick={() => {
-                      toggleView()
-                      toggleContent()
-                      tableView('grid')
-                    }}
-                  ></i>
-                </section>
-              )}
-              <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="outline-none rounded-xl px-[8px] py-[5px]">
-                <option value={6}>6 Elementos por página</option>
-                <option value={12}>12 Elementos por página</option>
-                <option value={24}>24 Elementos por página</option>
-              </select>
+                )}
+                <select id="itemsPerPage" name="itemsPerPage" value={itemsPerPage} onChange={handleItemsPerPageChange} className="px-3 inline-flex shadow-lg  bg-default-100 h-unit-10 rounded-medium items-start justify-center gap-0 outline-none py-2 border border-[#0b0b9771]-">
+                  <option value={6}>6 Elementos por página</option>
+                  <option value={12}>12 Elementos por página</option>
+                  <option value={24}>24 Elementos por página</option>
+                </select>
+              </section>
             </section>
           </section>
-          <section className="max-[935px]:h-screen max-sm:h-[200%] max-[935px]:p-5 min-h-[60vh]">
+          <section className="max-[935px]:p-5 min-h-[60vh]">
             <section className="mx-auto w-[90%]">
               {actualView === 'grid' ? (
-                <section className="gap-8 grid grid-cols-3 mt-3 h-[50vh] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
-                  {filteredGroups.length === 0 ? <h1 className="grid place-content-center w-[70em] text-center text-gray-600 ">No se encontró la ficha</h1> : ''}
-                  {filteredGroups.map((card) => (
+                <section className="gap-8 grid grid-cols-3 mt-3 min-h-[50vh] max-[935px]:w-full max-[935px]:grid-cols-2  max-sm:grid-cols-1">
+                  {visibleCards.length === 0 ? <h1 className="grid place-content-center col-span-3 text-center text-gray-600">No se encontró la ficha</h1> : ''}
+                  {visibleCards.map((card) => (
                     <Link to={`/students/${card.id_ficha}`} key={card.id_ficha} className="no-underline">
                       {/* Envuelve toda la tarjeta dentro del enlace */}
-                      <Card className={`w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
-                        <CardHeader className="gap-3 flex justify-center z-0">
-                          <section className="flex bg-blue-200 py-2 justify-center items-center rounded-xl w-full">
-                            <p className="text-xl font-bold ">{card.numero_ficha}</p>
-                            <Tooltip
-                              placements="bottom"
-                              showArrow={true}
-                              content={
-                                <Button variant="light" color="danger" onClick={() => StateGroups(card.id_ficha)}>
-                                  Desactivar ficha
-                                </Button>
-                              }
-                            >
-                              <i className="fi fi-br-menu-dots-vertical relative left-[30%]"></i>
-                            </Tooltip>
-                          </section>
-                        </CardHeader>
-                        <CardBody className="h-[5rem] pt-0 pb-0">
-                          <p className="text-[16px]">{card.nombre_programa}</p>
-                        </CardBody>
+                      <section className="relative flex flex-col ">
+                        <Card className={`w-full h-[11.5rem] border-2 border-blue-200 ${hoveredCards[card.id_ficha] ? 'hovered' : ''}`} onMouseEnter={() => handleCardHover(card.id_ficha)} onMouseLeave={() => handleCardLeave(card.id_ficha)}>
+                          <CardHeader className="gap-3 flex justify-center z-0">
+                            <section className="flex bg-blue-200 py-2 justify-center items-center rounded-xl w-full">
+                              <p className="text-xl font-bold ">{card.numero_ficha}</p>
+                              <Tooltip
+                                placements="bottom"
+                                showArrow={true}
+                                content={
+                                  <Button variant="light" color="danger" onClick={() => StateGroups(card.id_ficha)}>
+                                    Desactivar ficha
+                                  </Button>
+                                }
+                              >
+                                <i className="fi fi-br-menu-dots-vertical relative left-[30%]"></i>
+                              </Tooltip>
+                            </section>
+                          </CardHeader>
+                          <CardBody className="h-[5rem] pt-0 pb-0">
+                            <p className="text-[16px]">{card.nombre_programa}</p>
+                          </CardBody>
 
-                        <CardFooter>
-                          <p className="text-gray-500 text-md">{card.nombre_coordinador + ' ' + card.apellido_coordinador}</p>
-                        </CardFooter>
-                      </Card>
-
-                      <section className={`animate-appearance-in mt-[-11rem] ml-[2.5rem] z-10 p-4 w-[14rem] shadow-lg rounded-xl bg-blue-300 text-white  ${hoveredCards[card.id_ficha] ? '' : 'hidden'}`}>
-                        <p className="font-bold">
-                          Jornada: <span className="font-normal">{card.jornada}</span>
-                        </p>
-                        <p className="font-bold">
-                          Etapa: <span className="font-normal">{card.etapa_programa}</span>
-                        </p>
+                          <CardFooter>
+                            <p className="text-gray-500 text-md">{card.nombre_coordinador + ' ' + card.apellido_coordinador}</p>
+                          </CardFooter>
+                        </Card>
+                        <section className={`animate-appearance-in absolute z-10 p-4 w-[12rem] shadow-lg rounded-xl bg-blue-300 text-white ${hoveredCards[card.id_ficha] ? '' : 'hidden'}`}>
+                          <p className="font-bold">
+                            Jornada: <span className="font-normal">{card.jornada}</span>
+                          </p>
+                          <p className="font-bold">
+                            Etapa: <span className="font-normal">{card.etapa_programa}</span>
+                          </p>
+                        </section>
                       </section>
                     </Link>
                   ))}
@@ -298,27 +365,27 @@ const Groups = () => {
               ) : (
                 <section className="w-full flex justify-center mt-3">
                   <section className="shadow-md  border-1 border-default-300 p-[1rem] bg-white rounded-2xl w-full overflow-auto">
-                    <table className="w-full">
+                    <table className="w-full overflow-auto">
                       <thead className="text-default-500">
                         <tr className="grid grid-cols-6-column-table text-sm place-items-start bg-default-100 p-2 rounded-lg font-thin ">
-                          <th>N° Ficha</th>
-                          <th>Programa formación</th>
-                          <th>Jornada</th>
-                          <th>Etapa</th>
-                          <th>Coordinador</th>
-                          <th>Estado</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">N° Ficha</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Programa formación</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Jornada</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Etapa</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Coordinador</th>
+                          <th className="px-3 whitespace-nowrap datransition-colors">Estado</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredGroups.length === 0 ? <p className="p-[1rem] text-center text-gray-600">No existen fichas registradas</p> : ''}
-                        {filteredGroups.map((card) => (
+                        {visibleCards.length === 0 ? <h1 className="p-[1rem] text-center text-gray-600">No existen fichas registradas</h1> : ''}
+                        {visibleCards.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
                             <tr className="grid grid-cols-6-column-table text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">
-                              <td>{card.numero_ficha}</td>
-                              <td>{card.nombre_programa}</td>
-                              <td>{card.jornada}</td>
-                              <td>{card.etapa_programa}</td>
-                              <td>{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
+                              <td className="px-3 relative  whitespace-normal text-small">{card.numero_ficha}</td>
+                              <td className="px-3 relative whitespace-normal text-small">{card.nombre_programa}</td>
+                              <td className="px-3 relative whitespace-normal text-small">{card.jornada}</td>
+                              <td className="px-3 relative whitespace-normal text-small">{card.etapa_programa}</td>
+                              <td className="px-3 relative whitespace-normal text-small">{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
                               <td className="z-100">
                                 <Chip size="sm" color="success" variant="flat" radius="full" key={'activo'}>
                                   Activo
@@ -338,11 +405,9 @@ const Groups = () => {
             <Pagination className={`relative z-0 max-[935px]:pb-[3rem] `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={totalPages} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-[59px]">
-            <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
-              <p className="text-[15px] top-0 block">
-                <i className="fi fi-br-plus block" />
-                Agregar fichas
-              </p>
+            <button className="w-[13rem] max-[800px]:w-[5rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalAddGroups}>
+              <i className="fi fi-br-plus" />
+              <p className="text-[15px] top-0 max-[800px]:hidden">Agregar fichas</p>
             </button>
           </section>
           <Footer />

@@ -4,11 +4,11 @@ import { useState, useEffect } from 'react' // Importar el hook de estado
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Button } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Button, Popover, PopoverTrigger, PopoverContent, Button, Divider } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
-import { getRequest, getRequestByIdUser } from '../../api/httpRequest'
+import { getRequest, getRequestByIdUser, search } from '../../api/httpRequest'
 
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
@@ -18,22 +18,24 @@ import { format } from 'date-fns' // Importar biblioteca para formatear las fech
 import { requestStore } from '../../store/config'
 import { Toaster, toast } from 'sonner'
 import { ModalGenerateReport } from '../Utils/Modals/ModalGenerateReports'
+import DatePicker from 'react-datepicker' // Inporta bibloteca de react para el calendario
+import 'react-datepicker/dist/react-datepicker.css' // Estilos del calendario
 
 // Componente Requests
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
-  const [filtroVisible, setFiltroVisible] = useState(false) // Estado para controlar la visibilidad del filtro de búsqueda
   const [request, setRequest] = useState([]) // estado para guardar las solicitudes de la base de datos
   const [requestById, setRequestById] = useState([]) // estado para guardar las solicitudes de usuarios de la base de datos
-
+  const [sortOrder, setSortOrder] = useState('asc') // Estado para rastrear el orden de clasificación
   // Paginación
-  // Número de elementos por página
-  const itemsPerPage = 9
-  const [activePage, setActivePage] = useState(1)
-
+  const itemsPerPage = 8 // Número de elementos por página
+  const [activePage, setActivePage] = useState(1) // Estado para mostrar las solicitudes dese la primera página
   const [requestId, setRequestId] = useState(null)
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
-
+  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
+  // Agregar un estado para el filtro de estado
+  const [selectedStatus, setSelectedStatus] = useState('')
+  const [selectedDate, setSelectedDate] = useState(null) //Estado para seleccionar la fecha seleccionada
   const [highlightedRequestId, setHighlightedRequestId] = useState(null)
 
   const [modalOpen, setModalOpen] = useState(false)
@@ -164,61 +166,113 @@ const Requests = () => {
   }, [requestInformation])
 
   // ---------------- Filtros --------------------
-  const [searchValue, setSearchValue] = useState('') // Estado para el valor de búsqueda
-  const [searchResults, setSearchResults] = useState([]) // Estado para los resultados de la búsqueda
-  const [selectedEstado, setSelectedEstado] = useState('') // Estado inicial vacío para el filtro de estado la solicitud
-  const [selectedDateFilter, setSelectedDateFilter] = useState('') // Estado para la fecha seleccionada
-
-  // Función para manejar la búsqueda de solicitudes por nombre
-  const searchRequestsByName = (searchValue) => {
-    setSearchValue(searchValue)
-    // Filtrar las solicitudes según el nombre y el estado seleccionado
-    const filteredResults = currentItems.filter((item) => item.nombres.toLowerCase().includes(searchValue.toLowerCase()) && (selectedEstado === '' || item.estado === selectedEstado))
-    setSearchResults(filteredResults)
+  // Crear una función para filtrar las solicitudes por estado
+  const filterByStatus = (status) => {
+    // Obtén el rol del usuario
+    const userRole = getElementsByRole()
+    if (userRole.adminCoordi) {
+      // Realizar el filtrado basado en la variable request
+      const filteredRequests = request.filter((item) => {
+        return item.estado.toLowerCase() === status.toLowerCase()
+      })
+      setRequest(filteredRequests)
+    } else if (userRole.instructor) {
+      // Realizar el filtrado basado en la variable requestById
+      const filteredRequests = requestById.filter((item) => {
+        return item.estado.toLowerCase() === status.toLowerCase()
+      })
+      setRequestById(filteredRequests)
+    }
   }
 
-  // Filtrar las solicitudes por nombre y estado
-  const filteredRequests = currentItems.filter((item) => {
-    const nombreMatches = item.nombres.toLowerCase().includes(searchValue.toLowerCase())
-    const estadoMatches = selectedEstado === '' || item.estado === selectedEstado
-    return nombreMatches && estadoMatches
-  })
+  // Función para manejar la búsqueda de solicitudes por nombre
+  const filterNames = (searchValue) => {
+    setSearchValue(searchValue)
 
-  // Función para aplicar el filtro de fecha
-  const filterRequestsByDate = (requests, dateFilter) => {
-    if (!dateFilter) {
-      // Si no hay fecha seleccionada, devuelve todas las solicitudes
-      return requests
+    if (!searchValue) {
+      getRequets()
+      getRequetsById()
+    } else {
+      // Filtrar usuarios por nombre y apellido
+      const filteredRequests = request.filter((item) => {
+        const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
+        const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
+
+        return nombre || apellido
+      })
+
+      setRequest(filteredRequests)
     }
-    const currentDate = new Date()
-    const filteredRequests = requests.filter((item) => {
-      switch (dateFilter) {
-        case 'week':
-          // Filtrar solicitudes de la última semana
-          const oneWeekAgo = new Date()
-          oneWeekAgo.setDate(currentDate.getDate() - 7)
-          return new Date(item.fecha_creacion) >= oneWeekAgo
-        case 'month':
-          // Filtrar solicitudes del último mes
-          const oneMonthAgo = new Date()
-          oneMonthAgo.setMonth(currentDate.getMonth() - 1)
-          return new Date(item.fecha_creacion) >= oneMonthAgo
-        case 'year':
-          // Filtrar solicitudes del último año
-          const oneYearAgo = new Date()
-          oneYearAgo.setFullYear(currentDate.getFullYear() - 1)
-          return new Date(item.fecha_creacion) >= oneYearAgo
-        default:
-          // No se aplica ningún filtro de fecha
-          return true
-      }
-    })
-    // Devuelve las solicitudes filtradas o todas las solicitudes si no hay filtro aplicado
-    return filteredRequests
   }
 
   const modalReport = () => {
     setModalOpen(!modalOpen)
+  }
+
+  // Función para manejar el cambio de fecha
+  const handleDateSelect = (date) => {
+    setSelectedDate(date)
+    const userRole = getElementsByRole()
+    if (date) {
+      if (userRole.adminCoordi) {
+        // Realizar la búsqueda basada en la variable request
+        const filteredRequests = request.filter((item) => {
+          const requestDateAdmincoordi = new Date(item.fecha_creacion)
+          return requestDateAdmincoordi.toDateString() === date.toDateString()
+        })
+        setRequest(filteredRequests)
+      } else if (userRole.instructor) {
+        // Realizar la búsqueda basada en la variable requestById
+        const filteredRequests = requestById.filter((item) => {
+          const requestDateInstructor = new Date(item.fecha_creacion)
+          return requestDateInstructor.toDateString() === date.toDateString()
+        })
+        setRequestById(filteredRequests)
+      }
+    } else {
+      if (userRole.adminCoordi) {
+        setRequest(request)
+      } else if (userRole.instructor) {
+        setRequestById(requestById)
+      }
+    }
+  }
+
+  // Función para ordenar la lista de solicitudes por nombre
+  const sortRequestsByName = () => {
+    const sortedRequests = [...request]
+    sortedRequests.sort((a, b) => {
+      const nameA = `${a.nombres} ${a.apellidos}`.toLowerCase()
+      const nameB = `${b.nombres} ${b.apellidos}`.toLowerCase()
+      if (sortOrder === 'asc') {
+        if (nameA < nameB) return -1
+        if (nameA > nameB) return 1
+      } else {
+        if (nameA > nameB) return -1
+        if (nameA < nameB) return 1
+      }
+      return 0
+    })
+
+    // Cambiar el orden de clasificación para la próxima vez
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+
+    setRequest(sortedRequests)
+  }
+
+  // // Función para eliminar el filtro
+  const clearFilter = () => {
+    setSelectedStatus('')
+    // Vuelve a obtener todas las solicitudes
+    getRequets()
+    getRequetsById()
+  }
+
+  const clearFilterDate = () => {
+    setSelectedDate('')
+    // Vuelve a obtener todas las solicitudes
+    getRequets()
+    getRequetsById()
   }
 
   return (
@@ -230,39 +284,74 @@ const Requests = () => {
         <Sliderbar />
         <Toaster position="top-right" closeButton richColors />
         <section className="w-full overflow-auto ">
-          <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
-            <section className="w-[60%] col-span-2 right-0 relative">
-              <Search
-                request
-                filtro={filtroVisible}
-                placeholder={'Buscar solicitud'}
-                icon={<i className="fi fi-rr-settings-sliders relative right-[3rem] cursor-pointer hover:bg-default-200 p-[4px] rounded-full" onClick={() => setFiltroVisible(!filtroVisible)} />}
-                searchStudent={searchRequestsByName}
-                searchResults={searchResults}
-                searchValue={searchValue}
-                selectedEstado={selectedEstado}
-                setSelectedEstado={setSelectedEstado}
-                selectedDateFilter={selectedDateFilter}
-                setSelectedDateFilter={setSelectedDateFilter}
-              />
+          <header className="px-[1.5rem] pt-[1.5rem] pb-[.5rem]">
+            <section className="grid grid-cols-3 place-items-end">
+              <section className="w-[60%] col-span-2 right-0 relative">
+                <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} dateArray={request} />
+              </section>
+              <section className="w-full h-full flex justify-center items-center">
+                <NotifyBadge />
+              </section>
             </section>
-            <section className="w-full h-full flex justify-center items-center">
-              <NotifyBadge />
+            <section className="px-[.5rem] mt-5 flex">
+              <DatePicker selected={selectedDate} onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" isClearable placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
+              <Button color="primary" variant="light" onClick={clearFilterDate}>
+                <i className="fi fi-rr-eraser " />
+                Limpiar fecha
+              </Button>
             </section>
           </header>
 
-          <section className="px-[2rem] top-[.5rem] relative mr-auto h-[73vh] ">
+          <section className="px-[2rem] relative mr-auto h-[65vh]">
             <Table className="h-full select-none" aria-label="Tabla para ver las solicitudes">
               <TableHeader>
-                <TableColumn aria-label="Nombre del solicitante">Nombre del solicitante</TableColumn>
+                <TableColumn aria-label="Nombre del solicitante" className="flex items-center">
+                  Nombre del solicitante
+                  {elements.adminCoordi && (
+                    <span onClick={sortRequestsByName} className="ml-2 hover:bg-default-500 hover:text-white text-[16px] p-2 rounded-full flex items-center">
+                      {sortOrder === 'asc' ? <i className="fi fi-rr-sort-alpha-up cursor-pointer" /> : <i className="fi fi-sr-sort-alpha-down-alt cursor-pointer" />}
+                    </span>
+                  )}
+                </TableColumn>
                 <TableColumn aria-label="Fecha de la solicitud">Fecha de la solicitud</TableColumn>
                 <TableColumn aria-label="Tipo de solicitud">Tipo de solicitud</TableColumn>
-                <TableColumn aria-label="Estado">Estado</TableColumn>
+                <TableColumn aria-label="Estado" className="flex items-center gap-x-4">
+                  Estado
+                  <Popover placement="right">
+                    <PopoverTrigger>
+                      <section className="w-4 cursor-pointer">
+                        <i className="fi fi-br-menu-dots-vertical text-sm" />
+                      </section>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <section className="px-1 py-2 flex flex-col gap-4">
+                        <p className="font-semibold text-default-400">
+                          Filtrar por
+                          <i className="fi fi-sr-filter ml-2 text-sm" />
+                        </p>
+                        <Divider className="m-0 p-0" />
+                        <Button size="sm" className="bg-yellow-200 text-warning" onClick={() => filterByStatus('En proceso')}>
+                          En proceso
+                        </Button>
+                        <Button size="sm" className="bg-red-200 text-danger" onClick={() => filterByStatus('Rechazado')}>
+                          Rechazado
+                        </Button>
+                        <Button size="sm" className="bg-[#45d48383] text-success" onClick={() => filterByStatus('Aprobado')}>
+                          Aprobado
+                        </Button>
+                        <Button color="primary" variant="light" onClick={clearFilter}>
+                          <i className="fi fi-rr-eraser " />
+                          Limpiar
+                        </Button>
+                      </section>
+                    </PopoverContent>
+                  </Popover>
+                </TableColumn>
                 <TableColumn aria-label="Detalles">Detalles</TableColumn>
               </TableHeader>
 
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
-                {filterRequestsByDate(filteredRequests, selectedDateFilter).map((item) => (
+                {currentItems.map((item) => (
                   <TableRow key={item.id_solicitud} className={`hover:bg-gray-200 transition-all ${item.id_solicitud === parseInt(highlightedRequestId) ? 'highlighted-row' : ''}`}>
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
                     <TableCell>{formatDate(item.fecha_creacion)}</TableCell>
@@ -277,7 +366,7 @@ const Requests = () => {
               </TableBody>
             </Table>
             <section className="grid place-items-center w-full mt-[.5rem] ">
-              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />
+              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />{' '}
             </section>
           </section>
           <Footer />
