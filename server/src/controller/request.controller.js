@@ -272,7 +272,6 @@ export const createRequest = async (req, res) => {
     /* Enviar respuesta existosa */
     res.status(201).send({ message: 'Solicitud creada exitosamente' })
   } catch (error) {
-    console.log(error)
     res.status(500).send({ message: 'Error al crear la solicitud' })
   }
 }

@@ -19,7 +19,7 @@ const Students = () => {
 
   // Estados para gestionar los datos de los aprendices y grupos
   const [apprentices, setApprentices] = useState([])
-  const [informationGruops, setInformationGruops] = useState([])
+  const [informationGroups, setInformationGroups] = useState([])
   const [message, setMessage] = useState()
   const [idStudent, setIdStudent] = useState()
   const [apprenticesSearch, setApprenticesSearch] = useState([])
@@ -59,7 +59,7 @@ const Students = () => {
       try {
         const response = await getFichasById(id_ficha)
         const res = response.data.result[0]
-        setInformationGruops(res)
+        setInformationGroups(res)
       } catch (error) {}
     }
     getFichasByIdFicha()
@@ -155,8 +155,8 @@ const Students = () => {
             </Button>
 
             <section>
-              <p className="font-semibold text-lg ">{informationGruops.nombre_programa}</p>
-              <p className="flex justify-end">{informationGruops.numero_ficha}</p>
+              <p className="font-semibold text-lg ">{informationGroups.nombre_programa}</p>
+              <p className="flex justify-end">{informationGroups.numero_ficha}</p>
             </section>
           </section>
           <section className="h-[65vh] max-sm:h-[190%] max-[935px]:h-[115%]">

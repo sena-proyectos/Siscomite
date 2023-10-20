@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react' // Importar el hook de estado
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Button } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
@@ -16,6 +16,8 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
 import { requestStore } from '../../store/config'
+import { Toaster, toast } from 'sonner'
+import { ModalGenerateReport } from '../Utils/Modals/ModalGenerateReports'
 
 // Componente Requests
 const Requests = () => {
@@ -33,6 +35,8 @@ const Requests = () => {
   const [selectedValueDetails, setSelectedValueDetails] = useState('') // Estado para el valor de estado seleccionado
 
   const [highlightedRequestId, setHighlightedRequestId] = useState(null)
+
+  const [modalOpen, setModalOpen] = useState(false)
 
   // Obtener los elementos que se deben mostrar según el rol
   const getElementsByRole = () => {
@@ -111,7 +115,7 @@ const Requests = () => {
       }
     } catch (error) {
       toast.error('¡Opss!', {
-        description: "Error al obtener las solicitudes"
+        description: 'Error al obtener las solicitudes'
       })
     }
   }
@@ -213,6 +217,10 @@ const Requests = () => {
     return filteredRequests
   }
 
+  const modalReport = () => {
+    setModalOpen(!modalOpen)
+  }
+
   return (
     <>
       {modalRequest && <ModalRequest modalDetails={isOpen} cerrarModal={modalDetails} requestID={requestId} />}
@@ -220,6 +228,7 @@ const Requests = () => {
 
       <main className="h-screen flex">
         <Sliderbar />
+        <Toaster position="top-right" closeButton richColors />
         <section className="w-full overflow-auto ">
           <header className="p-[1.5rem] grid grid-cols-3 place-items-end">
             <section className="w-[60%] col-span-2 right-0 relative">
@@ -272,6 +281,12 @@ const Requests = () => {
             </section>
           </section>
           <Footer />
+          <section className="absolute right-4">
+            <Button className="" variant="bordered" color="success" onClick={modalReport}>
+              Generar reportes
+            </Button>
+          </section>
+          {modalOpen && <ModalGenerateReport cerrarModal={setModalOpen} />}
         </section>
       </main>
     </>

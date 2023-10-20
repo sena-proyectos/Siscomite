@@ -22,7 +22,6 @@ export const ModalGenerateReport = ({ cerrarModal }) => {
 
         CreateFileReport(reportApprentices)
       } catch (error) {
-        console.log(error)
         const message = error?.response?.data?.message
         toast.error('¡Opss!', {
           description: message || 'Ha ocurrido un error inesperado'
@@ -35,7 +34,6 @@ export const ModalGenerateReport = ({ cerrarModal }) => {
 
         CreateFileReportRequest(reportRequest)
       } catch (error) {
-        console.log(error)
         const message = error?.response?.data?.message
         toast.error('¡Opss!', {
           description: message || 'Ha ocurrido un error inesperado'
@@ -48,7 +46,6 @@ export const ModalGenerateReport = ({ cerrarModal }) => {
 
         CreateFileReportApprenticesByGroups(reportApprenticeByGroup)
       } catch (error) {
-        console.log(error)
         const message = error?.response?.data?.message
         toast.error('¡Opss!', {
           description: message

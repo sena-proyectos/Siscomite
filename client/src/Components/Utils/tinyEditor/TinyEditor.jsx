@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 
-export const TinyEditor = ({ template, onContentChange }) => {
+export const TinyEditor = ({ template, onContentChange, minH, maxH }) => {
   const editorRef = useRef(null)
 
   const handleEditorChange = (content) => {
@@ -23,9 +23,9 @@ export const TinyEditor = ({ template, onContentChange }) => {
       value={template} // Usa el contenido HTML dinámico aquí
       onEditorChange={handleEditorChange}
       init={{
-        min_height: 500,
-        max_height: 500,
-        width: 600,
+        min_height: minH,
+        max_height: maxH,
+        width: 500,
         plugins: ['fullscreen', 'image', 'link', 'lists', 'preview', 'table'],
         content_style: template
       }}

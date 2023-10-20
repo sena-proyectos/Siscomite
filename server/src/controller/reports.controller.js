@@ -31,7 +31,6 @@ export const ReportsFileApprentice = async (req, res) => {
 
     return res.status(201).json({ result })
   } catch (error) {
-    console.log(error)
     return res.status(201).json({ message: 'Error al generar reportes de los aprendices' })
   }
 }
@@ -63,7 +62,6 @@ export const ReportsFileRequest = async (req, res) => {
 
     return res.status(201).json({ result })
   } catch (error) {
-    console.log(error)
     return res.status(201).json({ message: 'Error al generar reportes de las solicitudes' })
   }
 }
@@ -108,7 +106,6 @@ export const ReportsFileApprenticeByGroup = async (req, res) => {
       return res.status(201).json({ result })
     }
   } catch (error) {
-    console.log(error)
     return res.status(201).json({ message: 'Error al generar reportes de los aprendices por numero de ficha' })
   }
 }

@@ -16,7 +16,7 @@ import sw from 'sweetalert2'
 /* Definicion del componente */
 const Groups = () => {
   /* Estado y variables de estado del componente */
-  const [isOpen] = useState(false)
+  // const [isOpen] = useState(false)
   const [fichas, setFichas] = useState([])
   const [isGridView, setIsGridView] = useState(true)
   const [actualView, setActualView] = useState(null)
@@ -190,7 +190,7 @@ const Groups = () => {
 
   return (
     <>
-      {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={getFicha} />}
+      {modalGroups && <ModalAddGroups cerrarModal={modalAddGroups} reloadFetchState={getFicha} />}
 
       <main className="flex h-screen">
         <Sliderbar />
@@ -310,7 +310,7 @@ const Groups = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filteredGroups.length === 0 ? <h1 className="p-[1rem] text-center text-gray-600">No existen fichas registradas</h1> : ''}
+                        {filteredGroups.length === 0 ? <p className="p-[1rem] text-center text-gray-600">No existen fichas registradas</p> : ''}
                         {filteredGroups.map((card) => (
                           <Link to={`/students/${card.id_ficha} `} key={card.id_ficha}>
                             <tr className="grid grid-cols-6-column-table text-sm text-default-700 p-2 place-content-center hover:bg-blue-200 hover:rounded-xl  mt-[.5rem] transition-transform duration-200 ease-in-out transform hover:scale-[1.02] items-center">

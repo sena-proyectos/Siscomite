@@ -51,11 +51,11 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
   const [sortOrder, setSortOrder] = useState("asc"); // Estado para el orden de los nombres
 
   return (
-    <form className="flex flex-col" method="get" onChange={handleSearch} onSubmit={evnt}>
-      <section className="flex items-center w-full  ">
+    <section className="flex flex-col" method="get" onChange={handleSearch} onSubmit={evnt}>
+      <form className="flex items-center w-full  ">
         <input type="text" name="buscar" className="shadow-md outline-none rounded-xl p-[10px] w-full max-[900px]:w-[20rem]" placeholder={placeholder} ref={search} autoComplete="off" />
         {icon}
-      </section>
+      </form>
 
       {filtro && (
         <section className="w-[27rem]  z-10 animate-appearance-in absolute mt-[3rem]">
@@ -228,7 +228,7 @@ const Search = ({ searchStudent, placeholder, icon, filtro, ficha, request, teac
           </section>
         </section>
       )}
-    </form>
+    </section>
   )
 }
 

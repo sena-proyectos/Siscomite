@@ -115,7 +115,7 @@ const Procedures = () => {
             <NotifyBadge />
           </section>
         </header>
-        <section className="h-[85vh] grid grid-cols-2 gap-1">
+        <section className="h-[85vh] grid grid-cols-2 w-[90%] m-5">
           <section className="w-full flex flex-col justify-center gap-5  p-20">
             <Dropdown>
               <DropdownTrigger>
@@ -144,7 +144,7 @@ const Procedures = () => {
             </Button>
           </section>
           <section className="h-full grid mt-[3rem] place-items-center">
-            <TinyEditor template={!htmlContent ? '<h2><strong>Seleccione una plantilla y podrás visualizarla aquí.</strong></h2>' : htmlContent} onContentChange={setHtmlContent} />
+            <TinyEditor template={!htmlContent ? '<h2><strong>Seleccione una plantilla y podrás visualizarla aquí.</strong></h2>' : htmlContent} onContentChange={setHtmlContent} minH={450} maxH={450}/>
           </section>
         </section>
         <Footer />

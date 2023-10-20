@@ -281,7 +281,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                 <input id="upload" type="file" className="hidden" onChange={handleFileChange} />
               </section>
               <section>
-                <TinyEditor template={!valueFile ? '<h2><strong>Seleccione un archivo y podrás visualizarlo aquí.</strong></h2>' : valueFile} onContentChange={setValuefile} />
+                <TinyEditor template={!valueFile ? '<h2><strong>Seleccione un archivo y podrás visualizarlo aquí.</strong></h2>' : valueFile} onContentChange={setValuefile}  minH={480} maxH={480}/>
               </section>
             </section>
           ) : (
