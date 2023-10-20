@@ -91,7 +91,7 @@ export const ModalGenerateReport = ({ cerrarModal }) => {
             </Select>
             {apprenticeByGroup ? <Input type="text" label={'Digite el número de la ficha'} onChange={(e) => setGroupNumber(e.target.value)} /> : null}
 
-            <Button color="success" variant="bordered" onClick={generateReportExcelFile} isDisabled={!selectedReport || !groupNumber}>
+            <Button color="success" variant="bordered" onClick={generateReportExcelFile} isDisabled={!selectedReport}>
               Descargar reporte
             </Button>
           </section>

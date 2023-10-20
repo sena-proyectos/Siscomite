@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react' // Importar el hook de estado
 import { Sliderbar } from '../Sliderbar/Sliderbar' // Importar el componente Sliderbar
 import { Search } from '../Search/Search' // Importar el componente Search
 import { Footer } from '../Footer/Footer' // Importar el componente Footer
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Button, Popover, PopoverTrigger, PopoverContent, Button, Divider } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, Popover, PopoverTrigger, PopoverContent, Button, Divider } from '@nextui-org/react' // Importar componentes de la tabla de Next.js
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge' // Importar el componente Notifybadge para notificaciones
 import { ModalEditRequest } from '../Utils/Modals/ModalEditRequest' // Importar el componente ModalEditRequest
 import { ModalRequest } from '../Utils/Modals/ModalRequest' // Importar el componente ModalRequest
@@ -260,7 +260,7 @@ const Requests = () => {
     setRequest(sortedRequests)
   }
 
-  // // Función para eliminar el filtro
+  // Función para eliminar el filtro
   const clearFilter = () => {
     setSelectedStatus('')
     // Vuelve a obtener todas las solicitudes
