@@ -19,6 +19,9 @@ import { requestStore } from '../../store/config'
 import DatePicker from 'react-datepicker' // Inporta bibloteca de react para el calendario
 import 'react-datepicker/dist/react-datepicker.css' // Estilos del calendario
 
+let originalRequest = []; // Copia de los datos originales de request
+let originalRequestById = []; // Copia de los datos originales de requestById
+
 // Componente Requests
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
@@ -105,6 +108,7 @@ const Requests = () => {
     try {
       const response = await getRequest()
       const res = response.data.result
+      originalRequest = res;
       setRequest(res)
       // Busca si hay alguna solicitud en estado "En proceso"
       const hasEnProceso = res.some((item) => item.estado === 'En proceso')
@@ -127,6 +131,7 @@ const Requests = () => {
     try {
       const response = await getRequestByIdUser(userID)
       const res = response.data.result
+      originalRequestById = res;
       setRequestById(res)
     } catch (error) {
       toast.error('¡Opss!', {
@@ -165,70 +170,72 @@ const Requests = () => {
   // Crear una función para filtrar las solicitudes por estado
   const filterByStatus = (status) => {
     // Obtén el rol del usuario
-    const userRole = getElementsByRole();
+    const userRole = getElementsByRole()
     if (userRole.adminCoordi) {
       // Realizar el filtrado basado en la variable request
       const filteredRequests = request.filter((item) => {
-        return item.estado.toLowerCase() === status.toLowerCase();
-      });
-      setRequest(filteredRequests);
+        return item.estado.toLowerCase() === status.toLowerCase()
+      })
+      setRequest(filteredRequests)
     } else if (userRole.instructor) {
       // Realizar el filtrado basado en la variable requestById
       const filteredRequests = requestById.filter((item) => {
-        return item.estado.toLowerCase() === status.toLowerCase();
-      });
-      setRequestById(filteredRequests);
-    }
-  };
-  
-
-  // Función para manejar la búsqueda de solicitudes por nombre
-  const filterNames = (searchValue) => {
-    setSearchValue(searchValue)
-
-    if (!searchValue) {
-      getRequets()
-      getRequetsById()
-    } else {
-      // Filtrar usuarios por nombre y apellido
-      const filteredRequests = request.filter((item) => {
-        const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
-        const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
-
-        return nombre || apellido
+        return item.estado.toLowerCase() === status.toLowerCase()
       })
-
-      setRequest(filteredRequests)
+      setRequestById(filteredRequests)
     }
   }
 
-  // Función para manejar el cambio de fecha 
+  // Función para manejar la búsqueda de solicitudes por nombre
+
+  const filterNames = (searchValue) => {
+    setSearchValue(searchValue)
+
+    // Realiza la búsqueda en todas las solicitudes
+    const filteredRequests = request.filter((item) => {
+      const nombre = item.nombres.toString().toLowerCase().includes(searchValue.toLowerCase())
+      const apellido = item.apellidos.toString().toLowerCase().includes(searchValue.toLowerCase())
+
+      return nombre || apellido
+    })
+    // Actualiza el estado de las solicitudes con los resultados de la búsqueda
+    setRequest(filteredRequests)
+
+    // Si la barra de búsqueda está vacía, vuelve a obtener todas las solicitudes
+    if (searchValue === '') {
+      getRequets()
+    }
+  }
+
+  // Función para manejar el cambio de fecha
+  // Función para restaurar los datos originales
+  const restoreOriginalData = () => {
+    setRequest([...originalRequest]);
+    setRequestById([...originalRequestById]);
+  }
+
+  // Función para manejar el cambio de fecha
   const handleDateSelect = (date) => {
-    setSelectedDate(date)
-    const userRole = getElementsByRole()
+    setSelectedDate(date);
+    const userRole = getElementsByRole();
     if (date) {
       if (userRole.adminCoordi) {
         // Realizar la búsqueda basada en la variable request
-        const filteredRequests = request.filter((item) => {
-          const requestDateAdmincoordi = new Date(item.fecha_creacion)
-          return requestDateAdmincoordi.toDateString() === date.toDateString()
-        })
-        setRequest(filteredRequests)
-      } 
-      else if (userRole.instructor) {
+        const filteredRequests = originalRequest.filter((item) => {
+          const requestDateAdmincoordi = new Date(item.fecha_creacion);
+          return requestDateAdmincoordi.toDateString() === date.toDateString();
+        });
+        setRequest(filteredRequests);
+      } else if (userRole.instructor) {
         // Realizar la búsqueda basada en la variable requestById
-        const filteredRequests = requestById.filter((item) => {
-          const requestDateInstructor = new Date(item.fecha_creacion)
-          return requestDateInstructor.toDateString() === date.toDateString()
-        })
-        setRequestById(filteredRequests)
+        const filteredRequests = originalRequestById.filter((item) => {
+          const requestDateInstructor = new Date(item.fecha_creacion);
+          return requestDateInstructor.toDateString() === date.toDateString();
+        });
+        setRequestById(filteredRequests);
       }
     } else {
-      if (userRole.adminCoordi) {
-        setRequest(request);
-      } else if (userRole.instructor){
-        setRequestById(requestById)
-      }
+      restoreOriginalData(); // Restaura los datos originales
     }
   }
 
@@ -261,14 +268,13 @@ const Requests = () => {
     getRequets()
     getRequetsById()
   }
-  
+
   const clearFilterDate = () => {
     setSelectedDate('')
     // Vuelve a obtener todas las solicitudes
     getRequets()
     getRequetsById()
   }
-
 
   return (
     <>
@@ -280,15 +286,13 @@ const Requests = () => {
         <section className="w-full overflow-auto ">
           <header className="px-[1.5rem] pt-[1.5rem] pb-[.5rem]">
             <section className="grid grid-cols-3 place-items-end">
-              <section className="w-[60%] col-span-2 right-0 relative">
-                <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} dateArray={request} />
-              </section>
+              <section className="w-[60%] col-span-2 right-0 relative">{elements.adminCoordi && <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} />}</section>
               <section className="w-full h-full flex justify-center items-center">
                 <NotifyBadge />
               </section>
             </section>
             <section className="px-[.5rem] mt-5 flex">
-              <DatePicker selected={selectedDate} onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" isClearable placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
+              <DatePicker selected={selectedDate} disabledKeyboardNavigation onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
               <Button color="primary" variant="light" onClick={clearFilterDate}>
                 <i className="fi fi-rr-eraser " />
                 Limpiar fecha
@@ -360,7 +364,7 @@ const Requests = () => {
               </TableBody>
             </Table>
             <section className="grid place-items-center w-full mt-[.5rem] ">
-              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />{' '}
+              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && requestById.length} onChange={handlePageChange} />{' '}
             </section>
           </section>
           <Footer />
