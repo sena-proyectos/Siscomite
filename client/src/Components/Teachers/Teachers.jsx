@@ -37,7 +37,10 @@ const Teachers = () => {
       const res = response.data.result
       setTeacher(res)
     } catch (error) {
-      console.error(error)
+      const message = error?.response?.data?.message
+      toast.error('¡Opss!', {
+        description: message
+      })
     }
   }
 

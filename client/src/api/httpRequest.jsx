@@ -84,10 +84,9 @@ export const getApprenticesById = (userId) => {
 }
 
 /* Create Request */
-export const createRequest = (data) => {
+export const createRequest = (formData) => {
   const URL = `${BaseUrl}${api}/createSolicitud`
-  const response = axios.post(URL, data)
-
+  const response = axios.post(URL, formData)
   return response
 }
 
@@ -130,6 +129,7 @@ export const getFichasById = (id) => {
 
   return response
 }
+
 /* change state groups */
 export const changeStateGroups = (idgroups) => {
   const URL = `${BaseUrl}${api}/stateFicha/${idgroups}`
@@ -165,6 +165,16 @@ export const getCoordination = () => {
 export const getRules = () => {
   const URL = `${BaseUrl}${api}/getRules`
   const response = axios.get(URL)
+  return response
+}
+
+/* Obtener archivo por nombre */
+export const getSingleFile = async (nombreArchivo) => {
+  const URL = `${BaseUrl}${api}/obtenerArchivo${nombreArchivo}`
+  const response = await axios.get(URL, {
+    responseType: 'blob' // Para manejar una respuesta binaria (archivo)
+  })
+
   return response
 }
 
@@ -292,6 +302,39 @@ export const templateID = (IdTemplate) => {
 export const postRules = (data) => {
   const URL = `${BaseUrl}${api}/createRule`
   const response = axios.post(URL, data)
-  
+
   return response
 }
+
+/* get file by name  */
+export const downloadFile = (nameFile) => {
+  const URL = `${BaseUrl}${api}/obtenerArchivo/${nameFile}`
+  const response = axios.get(URL, { responseType: 'blob' })
+
+  return response
+}
+
+/* generate reports apprentices */
+/* ************************************ */
+export const fileReportApprentices = () => {
+  const URL = `${BaseUrl}${api}/generateReportApprentices`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* generate reports request */
+export const fileReportRequest = () => {
+  const URL = `${BaseUrl}${api}/generateReportRequest`
+  const response = axios.get(URL)
+
+  return response
+}
+
+export const fileReportByGroup = (numeroFicha) => {
+  const URL = `${BaseUrl}${api}/generateReportByGroup?numero_ficha=${numeroFicha}`
+  const response = axios.get(URL)
+
+  return response
+}
+/* ************************************ */

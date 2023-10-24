@@ -1,7 +1,8 @@
 import { Accordion, AccordionItem, Popover, PopoverTrigger, PopoverContent, Input, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
 import { useState, useEffect } from 'react'
+import { Toaster, toast } from 'sonner'
 
-import { getRequestById } from '../../../api/httpRequest'
+import { downloadFile, getRequestById } from '../../../api/httpRequest'
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 import { TinyEditor } from '../tinyEditor/TinyEditor'
@@ -21,7 +22,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
   const [descripcionCaso, setDescripcionCaso] = useState(null)
   const [TituloCapitulo, setTituloCapitulo] = useState(null)
   const [fechaCreacion, setFechaCreacion] = useState(null)
-  const [archivoID, setArchivoId] = useState(null)
+  const [archivoNombre, setNombreArchivo] = useState(null)
 
   /* estados para almacenar los datos de las infracciones */
   const [numeroArticulo, setNumeroArticulo] = useState(null)
@@ -108,7 +109,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
       const descripcionCaso = [...new Set(datosUnicosArray.map((item) => item.descripcion_caso))]
       const tituloCapitulo = [...new Set(datosUnicosArray.map((item) => item.titulo_capitulo))]
       const fechaCreacion = [...new Set(datosUnicosArray.map((item) => item.fecha_creacion))]
-      const idArchivo = [...new Set(datosUnicosArray.map((item) => item.id_archivo_solicitud))]
+      const nombreArchivo = [...new Set(datosUnicosArray.map((item) => item.nombre_archivo))]
 
       // Convertir los objetos únicos de nuevo a objetos JSON de las infracciones
       const numeroArticulo = [...new Set(datosUnicosArray.map((item) => item.numero_articulo))]
@@ -131,7 +132,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
       setDescripcionCaso(descripcionCaso)
       setTituloCapitulo(tituloCapitulo)
       setFechaCreacion(fechaCreacion[0])
-      setArchivoId(idArchivo)
+      setNombreArchivo(nombreArchivo[0])
 
       /* Datos de las infracciones */
       setNumeroArticulo(numeroArticulo)
@@ -214,7 +215,9 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
 
             setValuefile(content)
           } catch (error) {
-            console.error('Error al procesar el archivo Word', error)
+            toast.error('¡Opss!', {
+              description: 'Error al procesar el archivo Word'
+            })
           }
         }
         reader.readAsArrayBuffer(file)
@@ -226,10 +229,36 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
 
   // ...
 
+  const fileDownload = async () => {
+    try {
+      const response = await downloadFile(archivoNombre)
+
+      // Crear un objeto Blob con el contenido del archivo
+      const blob = response.data
+
+      // Crear una URL de objeto (Object URL) para el Blob
+      const url = window.URL.createObjectURL(blob)
+
+      // Crear un enlace (link) en el DOM para descargar el archivo
+      const a = document.createElement('a')
+      a.href = url
+      a.download = archivoNombre // Asigna el nombre del archivo
+      a.click()
+
+      // Liberar la URL de objeto (Object URL) cuando ya no sea necesaria
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      toast.error('¡Opss!', {
+        description: 'Error al descargar el archivo'
+      })
+    }
+  }
+
   return (
     <>
+      <Toaster position="top-right" closeButton richColors />
       <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center">
-        <section className={`bg-white ${modalCitation ? 'w-[85rem] h-[45rem]' : 'w-[35rem]'} p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in `}>
+        <section className={`bg-white ${modalCitation ? 'w-auto h-auto' : 'w-[35rem]'} p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in `}>
           <header className="flex justify-center ">
             <h3 className="font-semibold text-2xl" id="solicitud-label">
               <i className="fi fi-rr-file-circle-info text-gray-500 px-3"></i>Detalle de solicitud
@@ -243,7 +272,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
               <section className=" flex flex-col items-center justify-center">
                 <section className="flex w-[33rem] text-gray-500 gap-2 mb-2">
                   <strong>Nota: </strong>
-                  <p > Debe seleccionar el archivo de la carta de citación a comité de evaluación y seguimiento y transcribir el texto al archivo original.</p>
+                  <p> Debe seleccionar el archivo de la carta de citación a comité de evaluación y seguimiento y transcribir el texto al archivo original.</p>
                 </section>
                 <label htmlFor="upload" className="w-[80%] flex flex-col items-center justify-center gap-2 p-10 cursor-pointer bg-white rounded-md border border-blue-600 shadow-md">
                   <i className="fi fi-rr-add-document text-blue-600 text-3xl" />
@@ -252,7 +281,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                 <input id="upload" type="file" className="hidden" onChange={handleFileChange} />
               </section>
               <section>
-                <TinyEditor template={!valueFile ? '<h2><strong>Seleccione un archivo y podrás visualizarlo aquí.</strong></h2>' : valueFile} onContentChange={setValuefile} />
+                <TinyEditor template={!valueFile ? '<h2><strong>Seleccione un archivo y podrás visualizarlo aquí.</strong></h2>' : valueFile} onContentChange={setValuefile}  minH={480} maxH={480}/>
               </section>
             </section>
           ) : (
@@ -351,7 +380,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                         <Input type="text" variant="underlined" label="Artículo" defaultValue={numeroArticulo} isReadOnly />
                       </section>
                       <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Input type="text" variant="underlined" label="Evidencias" defaultValue={archivoID} isReadOnly />
+                        <Button onClick={fileDownload}>Descargar evidencias</Button>
                       </section>
                       <section>
                         <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>

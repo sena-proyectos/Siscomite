@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react' // Importa los hooks useEffect y useState de React.
-import { userInformationStore } from '../../../store/config' // Importa una función para obtener información del usuario.
 import { countMessage, sendEmail } from '../../../api/httpRequest' // Importa funciones para contar mensajes y enviar correos electrónicos.
 import { Notify } from '../NotifyBar/NotifyBar' // Importa el componente Notify.
-import { notificationStore } from '../../../store/config' // Importa una función para gestionar notificaciones.
+import { notificationStore, userInformationStore } from '../../../store/config' // Importa una función para gestionar notificaciones.
 
 import { Badge } from '@nextui-org/react' // Importa el componente Badge de una biblioteca externa.
 
@@ -27,7 +26,7 @@ export const NotifyBadge = () => {
         const res = response.data.result[0].num_message // Obtiene el número actual de notificaciones.
 
         if (prevNumCount !== 0 && res > prevNumCount) {
-          // sendMail() // Envía un correo electrónico.
+          sendMail() // Envía un correo electrónico.
 
           // Muestra una notificación en el sistema operativo si es posible.
           if ('Notification' in window && Notification.permission === 'granted') {
@@ -46,7 +45,7 @@ export const NotifyBadge = () => {
 
     const intervalId = setInterval(messageCount, 1000) // Ejecuta la función cada segundo.
 
-    // Limpia el intervalo cuando el componente se desmonta.  
+    // Limpia el intervalo cuando el componente se desmonta.
     return () => {
       clearInterval(intervalId)
     }

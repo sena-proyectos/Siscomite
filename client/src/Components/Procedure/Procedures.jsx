@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
-
 import { Footer } from '../Footer/Footer'
 import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Button, Input, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem, Spinner, Card } from '@nextui-org/react'
@@ -38,20 +37,22 @@ const Procedures = () => {
   const sendEmailFile = async () => {
     const formData = new FormData()
     formData.append('to', email) // Reemplaza con la dirección de correo deseada
-    formData.append('subject', 'Prueba de correo con archivo')
-    formData.append('text', 'Este correo es una prueba para probar si funciona enviando archivos')
+    formData.append('subject', 'Comité de evaluación y seguimiento')
+    formData.append('text', '')
     formData.append('html', htmlContent)
     formData.append('file', file)
     setLoading(true)
 
     if (!file) {
-      return toast.error('Opss!!', {
+      setLoading(false)
+      return toast.error('¡Ops!', {
         description: 'Debe seleccionar un archivo.'
       })
     }
 
     if (!email) {
-      return toast.error('Opss!!', {
+      setLoading(false)
+      return toast.error('¡Ops!', {
         description: 'Debe digitar el correo a quien será remitido el mensaje.'
       })
     }
@@ -60,14 +61,15 @@ const Procedures = () => {
       const response = await emailFile(formData)
       const res = response.data.message
 
-      toast.success('Genial!!', {
+      toast.success('¡Genial!', {
         description: res
       })
+
       setLoading(false)
     } catch (error) {
       setLoading(false)
       const message = error.response.data.message
-      toast.error('Opss!!', {
+      toast.error('¡Ops!', {
         description: message
       })
     }
@@ -80,7 +82,7 @@ const Procedures = () => {
         const res = response.data.result
         setTemplatesName(res)
       } catch (error) {
-        toast.error('¡Opss!', {
+        toast.error('¡Ops!', {
           description: 'Error al obtener las plantillas'
         })
       }
@@ -89,13 +91,20 @@ const Procedures = () => {
     templatesGet()
   }, [])
 
+  const loadingState = () => {
+    setLoading(false)
+  }
+
   return (
-    <main className="flex h-secreen">
+    <main className="flex h-screen">
       <Sliderbar />
       {loading && (
         <section className="inset-0 bg-[#0000006a] z-50 absolute flex items-center justify-center backdrop-blur-[3px]">
-          <Card>
-            <Spinner label="Cargando..." color="primary" className='p-5'/>
+          <Card className="p-5">
+            <Spinner label="Cargando..." color="primary" className="p-5" />
+            <Button color="danger" variant={'bordered'} onClick={loadingState}>
+              Cancelar
+            </Button>
           </Card>
         </section>
       )}
@@ -106,7 +115,7 @@ const Procedures = () => {
             <NotifyBadge />
           </section>
         </header>
-        <section className="h-[85vh] grid grid-cols-2 gap-1">
+        <section className="h-[85vh] grid grid-cols-2 w-[90%] m-5">
           <section className="w-full flex flex-col justify-center gap-5  p-20">
             <Dropdown>
               <DropdownTrigger>
@@ -135,7 +144,7 @@ const Procedures = () => {
             </Button>
           </section>
           <section className="h-full grid mt-[3rem] place-items-center">
-            <TinyEditor template={!htmlContent ? '<h2><strong>Seleccione una plantilla y podrás visualizarla aquí.</strong></h2>' : htmlContent} onContentChange={setHtmlContent} />
+            <TinyEditor template={!htmlContent ? '<h2><strong>Seleccione una plantilla y podrás visualizarla aquí.</strong></h2>' : htmlContent} onContentChange={setHtmlContent} minH={450} maxH={450}/>
           </section>
         </section>
         <Footer />

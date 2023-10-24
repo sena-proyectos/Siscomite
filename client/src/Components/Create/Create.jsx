@@ -21,21 +21,21 @@ const Create = () => {
   const [selectedApprentice, setSelectedApprentice] = useState([])
   const [selectedInstructor, setSelectedInstructor] = useState([])
 
-  const [numSeleccionados, setNumseleccionado] = useState([])
+  const [numSeleccionados, setNumSeleccionado] = useState([])
 
   const [coordination, setCoordination] = useState([])
 
   const [selectedKeys, setSelectedKeys] = React.useState(new Set(['Coordinador']))
   const selectedValue = React.useMemo(() => Array.from(selectedKeys).map((key) => key.replace(/_/g, ' ')), [selectedKeys])
 
-  // estados para manejar la selección de opciones y resultados de búsqueda
+  // Estados para manejar la selección de opciones y resultados de búsqueda
   const [selectedFalta, setSelectedFalta] = React.useState(new Set(['Calificación']))
   const selectedValueFalta = React.useMemo(() => Array.from(selectedFalta).join(', ').replaceAll('_', ' '), [selectedFalta])
 
   const [tipoSolicitud, setTipoSolicitud] = useState(null)
   const [descripcion, setDescripcion] = useState(null)
 
-  const { userInformation } = userInformationStore()
+  const [selectFile, setSelectFile] = useState()
 
   /* Estado para almacenar el reglamento obtenido de la base de datos */
   const [rules, setRules] = useState([])
@@ -53,7 +53,7 @@ const Create = () => {
         setTeacherSearch(response.data.user)
       }
     } catch (error) {
-      const message = error.response?.data?.message || 'No se encontro al instructor'
+      const message = error.response?.data?.message || 'No se encontró al instructor'
       setError(message)
       setTeacherSearch([])
     }
@@ -64,7 +64,7 @@ const Create = () => {
     try {
       if (nombres.trim() === '') {
         setUserSearch([])
-        setError(null)
+        setErrorUser(null)
         return
       } else {
         setErrorUser(null)
@@ -72,7 +72,7 @@ const Create = () => {
         setUserSearch(response.data.user)
       }
     } catch (error) {
-      const message = error.response?.data?.message || 'No se encontro al aprendiz'
+      const message = error.response?.data?.message || 'No se encontró al aprendiz'
       setErrorUser(message)
       setUserSearch([])
     }
@@ -83,36 +83,81 @@ const Create = () => {
     coordinations()
   }, [])
 
+  const { userInformation } = userInformationStore()
 
-  // Función para enviar datos
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0]
+    setSelectFile(file)
+  }
+
   const sendData = async () => {
-    const dataValue = {
-      tipo_solicitud: tipoSolicitud, // Agregar el valor del radio
-      nombre_coordinacion: selectedValue.join(', '), // Agregar el valor del dropdown
-      id_usuario_solicitante: `${userInformation.id_usuario}`,
-      descripcion_caso: descripcion,
-      calificacion_causa: selectedValueFalta,
-      aprendicesSeleccionados: selectedApprentice.map((item) => item.id_aprendiz),
-      instructoresSeleccionados: selectedInstructor.map((item) => item.id_usuario),
-      numeralesSeleccionados: numSeleccionados,
-      categoria_causa: 'Academica',
-      id_archivo: '13'
-    }
     try {
-      const response = await createRequest(dataValue)
-      const res = response.data.message
+      const solicitudFormData = new FormData()
+      solicitudFormData.append('tipo_solicitud', tipoSolicitud)
+      solicitudFormData.append('nombre_coordinacion', selectedValue.join(', '))
+      solicitudFormData.append('id_usuario_solicitante', `${userInformation.id_usuario}`)
+      solicitudFormData.append('descripcion_caso', descripcion)
+      solicitudFormData.append('calificacion_causa', selectedValueFalta)
+      solicitudFormData.append('categoria_causa', 'Academica')
+      solicitudFormData.append('archivo', selectFile)
+
+      // Agrega los IDs de los aprendices seleccionados al FormData
+      selectedApprentice.forEach((item) => {
+        solicitudFormData.append('aprendicesSeleccionados', [item.id_aprendiz])
+      })
+
+      // Agrega los IDs de los instructores seleccionados al FormData
+      selectedInstructor.forEach((item) => {
+        solicitudFormData.append('instructoresSeleccionados', [item.id_usuario])
+      })
+
+      // Agrega los IDs de los numerales seleccionados al FormData
+      numSeleccionados.forEach((numeralId) => {
+        solicitudFormData.append('numeralesSeleccionados', [numeralId])
+      })
+
+      /* Validaciones al crear la solicitud */
+      /* Validación del archivo PDF */
+      if (!selectFile) {
+        toast.error('Opss!!', {
+          description: 'Debe subir su archivo PDF con las evidencias de la solicitud.'
+        })
+        return
+      }
+
+      /* Validación de la calificación de la solicitud */
+      if (selectedValueFalta === 'Calificación') {
+        toast.error('Opss!!', {
+          description: 'Debe seleccionar cuál es la calificación de la falta.'
+        })
+        return
+      }
+
+      /* Validación de la descripción del caso de la solicitud */
+      if (!descripcion) {
+        toast.error('Opss!!', {
+          description: 'Es obligatorio especificar la descripción del caso.'
+        })
+        return
+      }
+      // Envia la solicitud con el ID del archivo
+      const response = await createRequest(solicitudFormData)
+
+      /* Enviamos mensaje de respuesta */
+      const res = response?.data?.message
       toast.success('Genial!!', {
         description: res
       })
     } catch (error) {
-      const message = error.response.data.message
+      /* Enviamos respuesta errónea en caso de que exista */
+      const message = error.response?.data?.message
       toast.error('Opss!!', {
         description: message
       })
     }
   }
 
-  /* Funcion para obtener los instructores */
+  /* Función para obtener los instructores */
   const coordinations = async () => {
     try {
       const response = await getCoordination()
@@ -137,6 +182,7 @@ const Create = () => {
         })
         return
       }
+
       if (tipoSolicitud === null) {
         toast.error('Opss!!', {
           description: 'No se puede elegir a un instructor sin antes determinar si se trata de un proceso individual o grupal.'
@@ -147,9 +193,7 @@ const Create = () => {
       /* Extender el array y agregar el nuevo */
       setSelectedInstructor([...selectedInstructor, res])
       setTeacherSearch([])
-    } catch (error) {
-      console.error('Error obteniendo detalles del instructor:', error)
-    }
+    } catch (error) {}
   }
 
   // Función para manejar el clic en un aprendiz
@@ -174,9 +218,7 @@ const Create = () => {
       setSelectedApprentice([...selectedApprentice, res])
 
       setUserSearch([])
-    } catch (error) {
-      console.error('Error obteniendo detalles del aprendiz:', error)
-    }
+    } catch (error) {}
   }
 
   // Función para eliminar aprendices seleccionados
@@ -216,19 +258,10 @@ const Create = () => {
 
     if (checked) {
       // Si el checkbox se marca, agrega el numeralId al estado numSeleccionados
-      setNumseleccionado((prevSelected) => [...prevSelected, numeralId])
+      setNumSeleccionado((prevSelected) => [...prevSelected, numeralId])
     } else {
       // Si el checkbox se desmarca, elimina el numeralId del estado numSeleccionados
-      setNumseleccionado((prevSelected) => prevSelected.filter((numeral) => numeral !== numeralId))
-    }
-  }
-
-  const [file, setFile] = useState(null)
-
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0]
-    if (selectedFile) {
-      setFile(selectedFile)
+      setNumSeleccionado((prevSelected) => prevSelected.filter((numeral) => numeral !== numeralId))
     }
   }
 
@@ -308,7 +341,7 @@ const Create = () => {
                         </Tooltip>
                       ))}
                       {selectedInstructor.map((item) => (
-                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" key={item.id_usuario}>
+                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover-bg-blue-900 rounded-lg p-2" key={item.id_usuario}>
                           <React.Fragment>
                             <li>{item.numero_documento}</li>
                             <li>{item.nombres + ' ' + item.apellidos}</li>
@@ -336,7 +369,7 @@ const Create = () => {
                     <>
                       {userSearch.map((item) => (
                         <Tooltip color="success" content="Agregar aprendiz" placement="right" key={item.id_aprendiz}>
-                          <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2" onClick={() => handleUserClick(item.id_aprendiz)}>
+                          <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover-bg-blue-900 rounded-lg p-2" onClick={() => handleUserClick(item.id_aprendiz)}>
                             <React.Fragment>
                               <li>{item.numero_documento_aprendiz}</li>
                               <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
@@ -348,7 +381,7 @@ const Create = () => {
                         </Tooltip>
                       ))}
                       {selectedApprentice.map((item) => (
-                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover:bg-blue-900 rounded-lg p-2 " key={item.id_aprendiz}>
+                        <ul className="flex justify-between text-[13px] py-[.5rem] cursor-pointer hover-bg-blue-900 rounded-lg p-2 " key={item.id_aprendiz}>
                           <React.Fragment>
                             <li>{item.numero_documento_aprendiz}</li>
                             <li>{item.nombres_aprendiz + ' ' + item.apellidos_aprendiz}</li>
@@ -374,9 +407,9 @@ const Create = () => {
               <section className="">
                 <Tooltip showArrow={true} color="danger" content="La evidencia tiene que ser en un PDF">
                   <label className="inline-block bg-[#2E323E] text-white w-[12rem] p-[16px] rounded-xl cursor-pointer select-none text-center">
-                    {file ? `Evidencia Subida` : 'Subir evidencia'}
+                    {selectFile ? `Evidencia Subida` : 'Subir evidencia'}
                     <i className="fi fi-rr-upload px-[.5rem]" />
-                    <input type="file" className="hidden" onChange={handleFileChange} />
+                    <input type="file" id="archivo" name="archivo" className="hidden" onChange={handleFileChange} accept=".pdf" />
                   </label>
                 </Tooltip>
               </section>

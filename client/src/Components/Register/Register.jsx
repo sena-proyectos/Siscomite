@@ -23,7 +23,7 @@ export const Register = () => {
     CC: '1',
     TI: '2',
     CE: '3',
-    PEP: '4'
+    "PEP": '4'
   }
 
   /* Enviar datos capturados al servidor  */

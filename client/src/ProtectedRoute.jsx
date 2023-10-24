@@ -9,14 +9,14 @@ export const ProtectedRoute = ({ redirectPath = '/', allowedRoles = [] }) => {
 
   // Verifica si al menos uno de los roles del usuario coincide con los roles permitidos.
   const hasPermission = userRoles.some((role) => allowedRoles.includes(role))
-  
+
   if (!cookie || !hasPermission) {
     return <Navigate to={redirectPath} replace />
   }
 
-  return (
-    <>
-      <Outlet />
-    </>
-  )
+  if (navigator.onLine) {
+    return <Outlet />
+  } else {
+    return <Navigate to={redirectPath} replace />
+  }
 }

@@ -83,6 +83,7 @@ export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetch, fetchByI
       })
       fetchById()
       reloadFetch()
+      getIdRequest()
     } catch (error) {
       const message = error.response.data.message
       toast.error('Opss!!', {

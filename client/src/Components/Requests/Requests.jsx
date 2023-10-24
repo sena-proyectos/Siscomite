@@ -16,6 +16,8 @@ import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 
 import { requestStore } from '../../store/config'
+import { Toaster, toast } from 'sonner'
+import { ModalGenerateReport } from '../Utils/Modals/ModalGenerateReports'
 import DatePicker from 'react-datepicker' // Inporta bibloteca de react para el calendario
 import 'react-datepicker/dist/react-datepicker.css' // Estilos del calendario
 
@@ -38,6 +40,8 @@ const Requests = () => {
   const [selectedStatus, setSelectedStatus] = useState('')
   const [selectedDate, setSelectedDate] = useState(null) //Estado para seleccionar la fecha seleccionada
   const [highlightedRequestId, setHighlightedRequestId] = useState(null)
+
+  const [modalOpen, setModalOpen] = useState(false)
 
   // Obtener los elementos que se deben mostrar según el rol
   const getElementsByRole = () => {
@@ -261,7 +265,7 @@ const Requests = () => {
     setRequest(sortedRequests)
   }
 
-  // // Función para eliminar el filtro
+  // Función para eliminar el filtro
   const clearFilter = () => {
     setSelectedStatus('')
     // Vuelve a obtener todas las solicitudes
@@ -283,6 +287,7 @@ const Requests = () => {
 
       <main className="h-screen flex">
         <Sliderbar />
+        <Toaster position="top-right" closeButton richColors />
         <section className="w-full overflow-auto ">
           <header className="px-[1.5rem] pt-[1.5rem] pb-[.5rem]">
             <section className="grid grid-cols-3 place-items-end">
@@ -368,6 +373,12 @@ const Requests = () => {
             </section>
           </section>
           <Footer />
+          <section className="absolute right-4">
+            <Button className="" variant="bordered" color="success" onClick={modalReport}>
+              Generar reportes
+            </Button>
+          </section>
+          {modalOpen && <ModalGenerateReport cerrarModal={setModalOpen} />}
         </section>
       </main>
     </>

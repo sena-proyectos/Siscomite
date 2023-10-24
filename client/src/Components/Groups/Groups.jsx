@@ -16,7 +16,7 @@ import sw from 'sweetalert2'
 /* Definicion del componente */
 const Groups = () => {
   /* Estado y variables de estado del componente */
-  const [isOpen] = useState(false)
+  // const [isOpen] = useState(false)
   const [fichas, setFichas] = useState([])
   const [isGridView, setIsGridView] = useState(true)
   const [actualView, setActualView] = useState(null)
@@ -43,9 +43,7 @@ const Groups = () => {
       const response = await getFichas()
       const res = response.data.result
       setFichas(res)
-    } catch (error) {
-      console.error(error)
-    }
+    } catch (error) {}
   }
 
   // Paginación
@@ -216,7 +214,7 @@ const Groups = () => {
   }
   return (
     <>
-      {modalGroups && <ModalAddGroups modalAddGroups={isOpen} cerrarModal={modalAddGroups} reloadFetchState={getFicha} />}
+      {modalGroups && <ModalAddGroups cerrarModal={modalAddGroups} reloadFetchState={getFicha} />}
 
       <main className="flex h-screen">
         <Sliderbar />
