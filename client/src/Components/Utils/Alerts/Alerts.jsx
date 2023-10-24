@@ -41,7 +41,7 @@ export const Alerts = ({ cerrarAlert, contenido, recordatorio, descargarExcel })
     }
   }
 
-  // Agregamos un manejador de eventos para cancelar el cierre al hacer clic en la alerta
+  // Manejador de eventos para cancelar el cierre al hacer clic en la alerta
   const AlertClick = () => {
     if (alertTime) {
       setShowAlert(false)

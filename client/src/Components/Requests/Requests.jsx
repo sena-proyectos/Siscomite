@@ -21,8 +21,8 @@ import { ModalGenerateReport } from '../Utils/Modals/ModalGenerateReports'
 import DatePicker from 'react-datepicker' // Inporta bibloteca de react para el calendario
 import 'react-datepicker/dist/react-datepicker.css' // Estilos del calendario
 
-let originalRequest = [] // Copia de los datos originales de request
-let originalRequestById = [] // Copia de los datos originales de requestById
+let copiaRequest = [] // Copia de los datos originales de request
+let copiaRequestById = [] // Copia de los datos originales de requestById
 
 
 // Componente Requests
@@ -116,7 +116,7 @@ const Requests = () => {
     try {
       const response = await getRequest()
       const res = response.data.result
-      originalRequest = res
+      copiaRequest = res
       setRequest(res)
       // Busca si hay alguna solicitud en estado "En proceso"
       const hasEnProceso = res.some((item) => item.estado === 'En proceso')
@@ -139,7 +139,7 @@ const Requests = () => {
     try {
       const response = await getRequestByIdUser(userID)
       const res = response.data.result
-      originalRequestById = res
+      copiaRequestById = res
       setRequestById(res)
     } catch (error) {
       toast.error('¡Opss!', {
@@ -187,13 +187,13 @@ const Requests = () => {
     const userRole = getElementsByRole()
     if (userRole.adminCoordi) {
       // Realizar el filtrado basado en la variable request
-      const filteredRequests = originalRequest.filter((item) => {
+      const filteredRequests = copiaRequest.filter((item) => {
         return item.estado.toLowerCase() === status.toLowerCase()
       })
       setRequest(filteredRequests)
     } else if (userRole.instructor) {
       // Realizar el filtrado basado en la variable requestById
-      const filteredRequests = originalRequestById.filter((item) => {
+      const filteredRequests = copiaRequestById.filter((item) => {
         return item.estado.toLowerCase() === status.toLowerCase()
       })
       setRequestById(filteredRequests)
@@ -230,14 +230,14 @@ const Requests = () => {
     if (date) {
       if (userRole.adminCoordi) {
         // Realizar la búsqueda basada en la variable request
-        const filteredRequests = originalRequest.filter((item) => {
+        const filteredRequests = copiaRequest.filter((item) => {
           const requestDateAdmincoordi = new Date(item.fecha_creacion)
           return requestDateAdmincoordi.toDateString() === date.toDateString()
         })
         setRequest(filteredRequests)
       } else if (userRole.instructor) {
         // Realizar la búsqueda basada en la variable requestById
-        const filteredRequests = originalRequestById.filter((item) => {
+        const filteredRequests = copiaRequestById.filter((item) => {
           const requestDateInstructor = new Date(item.fecha_creacion)
           return requestDateInstructor.toDateString() === date.toDateString()
         })
@@ -295,8 +295,10 @@ const Requests = () => {
         <Toaster position="top-right" closeButton richColors />
         <section className="w-full overflow-auto ">
           <header className="px-[1.5rem] pt-[1.5rem] pb-[.5rem]">
-            <section className="grid grid-cols-3 place-items-end">
-              <section className="w-[60%] col-span-2 right-0 relative">{elements.adminCoordi && <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} />}</section>
+            <section className="grid grid-cols-3 place-items-end min-h-[2rem]">
+              <section className="w-[60%]  col-span-2 right-0 relative">
+                {elements.adminCoordi ? (<Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} />): null}
+                </section>
               <section className="w-full h-full flex justify-center items-center">
                 <NotifyBadge />
               </section>
