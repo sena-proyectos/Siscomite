@@ -1,6 +1,6 @@
 /* Importaciones de modulos y componentes */
 import './Register.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import React, { useRef, useState } from 'react'
 import { register } from '../../api/httpRequest'
 import { Footer } from '../Footer/Footer'
@@ -17,6 +17,7 @@ export const Register = () => {
   const [numeroDocumento, setNumeroDocumento] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [selectedTipoDocumento, setSelectedTipoDocumento] = useState('')
+  const Navigate = useNavigate()
 
   /* mapeo de los valores segun la base de datos */
   const documentoOptions = {
@@ -64,6 +65,7 @@ export const Register = () => {
         toast.success('¡Genial!', {
           description: message
         })
+        Navigate('/')
       }
     } catch (error) {
       const message = error?.response?.data?.message

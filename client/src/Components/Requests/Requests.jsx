@@ -24,7 +24,6 @@ import 'react-datepicker/dist/react-datepicker.css' // Estilos del calendario
 let copiaRequest = [] // Copia de los datos originales de request
 let copiaRequestById = [] // Copia de los datos originales de requestById
 
-
 // Componente Requests
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
@@ -221,8 +220,6 @@ const Requests = () => {
     }
   }
 
-  
-
   // Función para manejar el cambio de fecha
   const handleDateSelect = (date) => {
     setSelectedDate(date)
@@ -296,19 +293,24 @@ const Requests = () => {
         <section className="w-full overflow-auto ">
           <header className="px-[1.5rem] pt-[1.5rem] pb-[.5rem]">
             <section className="grid grid-cols-3 place-items-end min-h-[2rem]">
-              <section className="w-[60%]  col-span-2 right-0 relative">
-                {elements.adminCoordi ? (<Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} />): null}
-                </section>
+              <section className="w-[60%]  col-span-2 right-0 relative">{elements.adminCoordi ? <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} /> : null}</section>
               <section className="w-full h-full flex justify-center items-center">
                 <NotifyBadge />
               </section>
             </section>
-            <section className="px-[.5rem] mt-5 flex">
-              <DatePicker selected={selectedDate} disabledKeyboardNavigation onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
-              <Button color="primary" variant="light" onClick={clearFilterDate}>
-                <i className="fi fi-rr-eraser " />
-                Limpiar fecha
-              </Button>
+            <section className="px-[.5rem] mt-5 flex justify-between">
+              <section className='flex'>
+                <DatePicker selected={selectedDate} disabledKeyboardNavigation onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
+                <Button color="primary" variant="light" onClick={clearFilterDate}>
+                  <i className="fi fi-rr-eraser " />
+                  Limpiar fecha
+                </Button>
+              </section>
+              <section>
+                <Button variant="bordered" color="success" onClick={modalReport}>
+                  Generar reportes
+                </Button>
+              </section>
             </section>
           </header>
 
@@ -380,11 +382,7 @@ const Requests = () => {
             </section>
           </section>
           <Footer />
-          <section className="absolute right-4">
-            <Button className="" variant="bordered" color="success" onClick={modalReport}>
-              Generar reportes
-            </Button>
-          </section>
+
           {modalOpen && <ModalGenerateReport cerrarModal={setModalOpen} />}
         </section>
       </main>
