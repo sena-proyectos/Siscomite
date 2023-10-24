@@ -21,8 +21,9 @@ import { ModalGenerateReport } from '../Utils/Modals/ModalGenerateReports'
 import DatePicker from 'react-datepicker' // Inporta bibloteca de react para el calendario
 import 'react-datepicker/dist/react-datepicker.css' // Estilos del calendario
 
-let originalRequest = []; // Copia de los datos originales de request
-let originalRequestById = []; // Copia de los datos originales de requestById
+let originalRequest = [] // Copia de los datos originales de request
+let originalRequestById = [] // Copia de los datos originales de requestById
+
 
 // Componente Requests
 const Requests = () => {
@@ -88,7 +89,6 @@ const Requests = () => {
 
   // Estado y función para controlar la apertura del modal de detalles
   const [modalRequest, setModalDetails] = useState(false)
-
   const modalDetails = (id) => {
     setModalDetails(!modalRequest)
     setRequestId(id)
@@ -99,6 +99,10 @@ const Requests = () => {
   const modalDetailsEdit = (id) => {
     setModalDetailsEdit(!modalRequestEdit)
     setRequestId(id)
+  }
+  //Funcion para controlar la apertura de la modal para generar reportes
+  const modalReport = () => {
+    setModalOpen(!modalOpen)
   }
 
   useEffect(() => {
@@ -112,7 +116,7 @@ const Requests = () => {
     try {
       const response = await getRequest()
       const res = response.data.result
-      originalRequest = res;
+      originalRequest = res
       setRequest(res)
       // Busca si hay alguna solicitud en estado "En proceso"
       const hasEnProceso = res.some((item) => item.estado === 'En proceso')
@@ -135,7 +139,7 @@ const Requests = () => {
     try {
       const response = await getRequestByIdUser(userID)
       const res = response.data.result
-      originalRequestById = res;
+      originalRequestById = res
       setRequestById(res)
     } catch (error) {
       toast.error('¡Opss!', {
@@ -171,19 +175,25 @@ const Requests = () => {
   }, [requestInformation])
 
   // ---------------- Filtros --------------------
+  // Función para restaurar los datos originales
+  const restoreOriginalData = () => {
+    setRequest([...originalRequest])
+    setRequestById([...originalRequestById])
+  }
+
   // Crear una función para filtrar las solicitudes por estado
   const filterByStatus = (status) => {
     // Obtén el rol del usuario
     const userRole = getElementsByRole()
     if (userRole.adminCoordi) {
       // Realizar el filtrado basado en la variable request
-      const filteredRequests = request.filter((item) => {
+      const filteredRequests = originalRequest.filter((item) => {
         return item.estado.toLowerCase() === status.toLowerCase()
       })
       setRequest(filteredRequests)
     } else if (userRole.instructor) {
       // Realizar el filtrado basado en la variable requestById
-      const filteredRequests = requestById.filter((item) => {
+      const filteredRequests = originalRequestById.filter((item) => {
         return item.estado.toLowerCase() === status.toLowerCase()
       })
       setRequestById(filteredRequests)
@@ -211,35 +221,30 @@ const Requests = () => {
     }
   }
 
-  // Función para manejar el cambio de fecha
-  // Función para restaurar los datos originales
-  const restoreOriginalData = () => {
-    setRequest([...originalRequest]);
-    setRequestById([...originalRequestById]);
-  }
+  
 
   // Función para manejar el cambio de fecha
   const handleDateSelect = (date) => {
-    setSelectedDate(date);
-    const userRole = getElementsByRole();
+    setSelectedDate(date)
+    const userRole = getElementsByRole()
     if (date) {
       if (userRole.adminCoordi) {
         // Realizar la búsqueda basada en la variable request
         const filteredRequests = originalRequest.filter((item) => {
-          const requestDateAdmincoordi = new Date(item.fecha_creacion);
-          return requestDateAdmincoordi.toDateString() === date.toDateString();
-        });
-        setRequest(filteredRequests);
+          const requestDateAdmincoordi = new Date(item.fecha_creacion)
+          return requestDateAdmincoordi.toDateString() === date.toDateString()
+        })
+        setRequest(filteredRequests)
       } else if (userRole.instructor) {
         // Realizar la búsqueda basada en la variable requestById
         const filteredRequests = originalRequestById.filter((item) => {
-          const requestDateInstructor = new Date(item.fecha_creacion);
-          return requestDateInstructor.toDateString() === date.toDateString();
-        });
-        setRequestById(filteredRequests);
+          const requestDateInstructor = new Date(item.fecha_creacion)
+          return requestDateInstructor.toDateString() === date.toDateString()
+        })
+        setRequestById(filteredRequests)
       }
     } else {
-      restoreOriginalData(); // Restaura los datos originales
+      restoreOriginalData() // Restaura los datos originales
     }
   }
 
@@ -369,7 +374,7 @@ const Requests = () => {
               </TableBody>
             </Table>
             <section className="grid place-items-center w-full mt-[.5rem] ">
-              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && requestById.length} onChange={handlePageChange} />{' '}
+              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && requestById.length} onChange={handlePageChange} />
             </section>
           </section>
           <Footer />

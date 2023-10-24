@@ -35,7 +35,7 @@ const Search = ({ searchUser, placeholder, icon }) => {
       <form className="flex items-center w-full  ">
         <input type="text" name="buscar" className="shadow-md outline-none rounded-xl p-[10px] w-full max-[900px]:w-[20rem]" placeholder={placeholder} ref={search} autoComplete="off" />
         {icon}
-      </section>
+      </form>
     </main>
   )
 }
