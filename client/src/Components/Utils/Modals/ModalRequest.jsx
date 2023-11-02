@@ -379,8 +379,8 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                       <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                         <Input type="text" variant="underlined" label="Artículo" defaultValue={numeroArticulo} isReadOnly />
                       </section>
-                      <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Button onClick={fileDownload}>Descargar evidencias</Button>
+                      <section className="flex flex-wrap mt-4 md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <Button variant='bordered' color='primary' onClick={fileDownload}>Descargar evidencias</Button>
                       </section>
                       <section>
                         <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>
