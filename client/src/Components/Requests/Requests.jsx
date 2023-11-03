@@ -305,6 +305,7 @@ const Requests = () => {
           <section className="px-[2rem] relative mr-auto h-[65vh]">
             <Table className="h-full select-none" aria-label="Tabla para ver las solicitudes">
               <TableHeader>
+                <TableColumn aria-label="Número de la solicitud">Número de la solicitud</TableColumn>
                 <TableColumn aria-label="Nombre del solicitante" className="flex items-center">
                   Nombre del solicitante
                   {elements.adminCoordi && (
@@ -353,6 +354,7 @@ const Requests = () => {
               <TableBody emptyContent={elements.adminCoordi ? 'No existen solicitudes hechas' : 'No tienes solicitudes hechas'}>
                 {currentItems.map((item) => (
                   <TableRow key={item.id_solicitud} className={`hover:bg-gray-200 transition-all ${item.id_solicitud === parseInt(highlightedRequestId) ? 'highlighted-row' : ''}`}>
+                    <TableCell>{item.id_solicitud}</TableCell>
                     <TableCell>{item.nombres + ' ' + item.apellidos}</TableCell>
                     <TableCell>{formatDate(item.fecha_creacion)}</TableCell>
                     <TableCell>{item.tipo_solicitud}</TableCell>

@@ -15,7 +15,8 @@ export const ModalGenerateReport = ({ cerrarModal }) => {
   }
 
   const generateReportExcelFile = async () => {
-    if (selectedReport === 'Aprendices seleccionados a comité') {
+    if (selectedReport === 'Aprendices citados a comité de evaluación y seguimiento') {
+      setApprenticeBygroup(false)
       try {
         const response = await fileReportApprentices()
         const reportApprentices = response.data.result
@@ -29,6 +30,7 @@ export const ModalGenerateReport = ({ cerrarModal }) => {
       }
     } else if (selectedReport === 'Solicitudes rechazadas y aceptadas') {
       try {
+        setApprenticeBygroup(false)
         const response = await fileReportRequest()
         const reportRequest = response.data.result
 
@@ -60,9 +62,9 @@ export const ModalGenerateReport = ({ cerrarModal }) => {
 
   return (
     <>
-      <main className="h-screen w-screen absolute inset-0 z-20 grid place-content-center ">
+      <main className="h-screen w-auto absolute inset-0 z-20 grid place-content-center ">
         <Toaster position="top-right" closeButton richColors />
-        <section className={' w-[30rem] bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
+        <section className={' w-[35rem] bg-white p-[2rem] border-t-[4px] border-[#2e323e] rounded-2xl overflow-auto animate-appearance-in '}>
           <header className="flex justify-center ">
             <h3 className="font-semibold text-2xl">Generar reportes</h3>
             <section className="absolute flex justify-center items-center h-[25px] w-[25px] text-[10px] top-[15px] left-[90%] max-md:left-[85%] hover:bg-default-100 active:bg-default-200 rounded-full cursor-pointer" onClick={closeModal}>
@@ -73,23 +75,23 @@ export const ModalGenerateReport = ({ cerrarModal }) => {
             <Select
               label="¿Qué reporte quieres descargar?"
               placeholder="Selecciona un tipo de reporte."
-              className="w-full"
+              className="w-[31rem]"
               value={selectedReport}
               onChange={(e) => {
                 setSelectedReport(e.target.value)
               }}
             >
-              <SelectItem key={'Aprendices seleccionados a comité'} value={'Aprendices'}>
-                Aprendices seleccionados a comité
+              <SelectItem key={'Aprendices citados a comité de evaluación y seguimiento'} value={'Aprendices'}>
+                Aprendices citados a comité de evaluación y seguimiento
               </SelectItem>
               <SelectItem key={'Solicitudes rechazadas y aceptadas'} value={'Solicitudes'}>
                 Solicitudes rechazadas y aceptadas
               </SelectItem>
               <SelectItem key={'Aprendices por número de ficha'} value={'AprendicesPorFicha'} onClick={changeButton}>
-                Aprendices por número de ficha
+                Aprendices citados a comité de evaluación y seguimiento por número de ficha
               </SelectItem>
             </Select>
-            {apprenticeByGroup ? <Input type="text" label={'Digite el número de la ficha'} onChange={(e) => setGroupNumber(e.target.value)} /> : null}
+            {apprenticeByGroup ? <Input type="text" label={'Digite el número de la ficha'} className="w-auto" onChange={(e) => setGroupNumber(e.target.value)} /> : null}
 
             <Button color="success" variant="bordered" onClick={generateReportExcelFile} isDisabled={!selectedReport}>
               Descargar reporte

@@ -145,12 +145,16 @@ const Students = () => {
             <section className="w-[60%] col-span-2 max-[700px]:col-span-2  right-0 relative">
               <Search placeholder={'Buscar aprendiz'} searchUser={searchApprentices} />
             </section>
-            <section className="flex items-center mr-[40%] cursor-pointer gap-x-4">
-              <Button color="danger" variant="bordered" onClick={StateGroups}>
-                Deshabilitar ficha
-              </Button>
-              <NotifyBadge />
-            </section>
+            {informationGroups.estado === 'ACTIVO' ? (
+              <section className="flex items-center mr-[40%] cursor-pointer gap-x-4">
+                <Button color="danger" variant="bordered" onClick={StateGroups}>
+                  Deshabilitar ficha
+                </Button>
+                <NotifyBadge />
+              </section>
+            ) : (
+              ''
+            )}
           </header>
 
           <section className=" flex justify-between px-[4rem] ">

@@ -387,8 +387,8 @@ const Groups = () => {
                               <td className="px-3 relative whitespace-normal text-small">{card.etapa_programa}</td>
                               <td className="px-3 relative whitespace-normal text-small">{card.nombre_coordinador + ' ' + card.apellido_coordinador}</td>
                               <td className="z-100">
-                                <Chip size="sm" color="success" variant="flat" radius="full" key={'activo'}>
-                                  Activo
+                                <Chip size="sm" color={card.estado === 'ACTIVO' ? 'success' : 'danger'} variant="flat" radius="full" key={'activo'}>
+                                  {card.estado}
                                 </Chip>
                               </td>
                             </tr>
