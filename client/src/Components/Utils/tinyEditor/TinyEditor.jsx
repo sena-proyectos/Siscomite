@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { Editor } from '@tinymce/tinymce-react'
 
-export const TinyEditor = ({ template, onContentChange, minH, maxH }) => {
+export const TinyEditor = ({ template, onContentChange, minH, maxH, width }) => {
   const editorRef = useRef(null)
 
   const handleEditorChange = (content) => {
@@ -25,8 +25,8 @@ export const TinyEditor = ({ template, onContentChange, minH, maxH }) => {
       init={{
         min_height: minH,
         max_height: maxH,
-        width: 500,
-        plugins: ['fullscreen', 'image', 'link', 'lists', 'preview', 'table'],
+        width: width || 500,
+        plugins: ['fullscreen', 'image', 'link', 'lists', 'preview', 'table', 'code'],
         content_style: template
       }}
     />
