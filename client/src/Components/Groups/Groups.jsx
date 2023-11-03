@@ -145,6 +145,7 @@ const Groups = () => {
   }
 
   // ---------------- Filtros --------------------
+  // Función para filtrar por nombre y número de ficha
   const filterNames = (searchValue) => {
     setSearchValue(searchValue)
 

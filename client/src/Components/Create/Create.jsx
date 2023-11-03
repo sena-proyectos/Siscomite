@@ -9,6 +9,7 @@ import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordina
 import { Toaster, toast } from 'sonner'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import { userInformationStore } from '../../store/config'
+import { useNavigate } from 'react-router-dom'
 
 // Definición del componente Create
 const Create = () => {
@@ -36,6 +37,7 @@ const Create = () => {
   const [descripcion, setDescripcion] = useState(null)
 
   const [selectFile, setSelectFile] = useState()
+  const Navigate = useNavigate()
 
   /* Estado para almacenar el reglamento obtenido de la base de datos */
   const [rules, setRules] = useState([])
@@ -69,7 +71,7 @@ const Create = () => {
       } else {
         setErrorUser(null)
         const response = await getApprenticesByName(nombres)
-        
+
         setUserSearch(response.data.user)
       }
     } catch (error) {
@@ -153,6 +155,9 @@ const Create = () => {
       toast.success('Genial!!', {
         description: res
       })
+      setTimeout(() => {
+        Navigate('/requests')
+      }, 3000)
     } catch (error) {
       /* Enviamos respuesta errónea en caso de que exista */
       const message = error.response?.data?.message

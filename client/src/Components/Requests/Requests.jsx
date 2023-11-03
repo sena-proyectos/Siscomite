@@ -21,6 +21,9 @@ import { ModalGenerateReport } from '../Utils/Modals/ModalGenerateReports'
 import DatePicker from 'react-datepicker' // Inporta bibloteca de react para el calendario
 import 'react-datepicker/dist/react-datepicker.css' // Estilos del calendario
 
+let copiaRequest = [] // Copia de los datos originales de request
+let copiaRequestById = [] // Copia de los datos originales de requestById
+
 // Componente Requests
 const Requests = () => {
   const [isOpen] = useState(false) // Estado para controlar la apertura de un modal
@@ -85,7 +88,6 @@ const Requests = () => {
 
   // Estado y función para controlar la apertura del modal de detalles
   const [modalRequest, setModalDetails] = useState(false)
-
   const modalDetails = (id) => {
     setModalDetails(!modalRequest)
     setRequestId(id)
@@ -96,6 +98,10 @@ const Requests = () => {
   const modalDetailsEdit = (id) => {
     setModalDetailsEdit(!modalRequestEdit)
     setRequestId(id)
+  }
+  //Funcion para controlar la apertura de la modal para generar reportes
+  const modalReport = () => {
+    setModalOpen(!modalOpen)
   }
 
   useEffect(() => {
@@ -109,6 +115,7 @@ const Requests = () => {
     try {
       const response = await getRequest()
       const res = response.data.result
+      copiaRequest = res
       setRequest(res)
       // Busca si hay alguna solicitud en estado "En proceso"
       const hasEnProceso = res.some((item) => item.estado === 'En proceso')
@@ -131,6 +138,7 @@ const Requests = () => {
     try {
       const response = await getRequestByIdUser(userID)
       const res = response.data.result
+      copiaRequestById = res
       setRequestById(res)
     } catch (error) {
       toast.error('¡Opss!', {
@@ -166,19 +174,25 @@ const Requests = () => {
   }, [requestInformation])
 
   // ---------------- Filtros --------------------
+  // Función para restaurar los datos originales
+  const restoreOriginalData = () => {
+    setRequest([...originalRequest])
+    setRequestById([...originalRequestById])
+  }
+
   // Crear una función para filtrar las solicitudes por estado
   const filterByStatus = (status) => {
     // Obtén el rol del usuario
     const userRole = getElementsByRole()
     if (userRole.adminCoordi) {
       // Realizar el filtrado basado en la variable request
-      const filteredRequests = request.filter((item) => {
+      const filteredRequests = copiaRequest.filter((item) => {
         return item.estado.toLowerCase() === status.toLowerCase()
       })
       setRequest(filteredRequests)
     } else if (userRole.instructor) {
       // Realizar el filtrado basado en la variable requestById
-      const filteredRequests = requestById.filter((item) => {
+      const filteredRequests = copiaRequestById.filter((item) => {
         return item.estado.toLowerCase() === status.toLowerCase()
       })
       setRequestById(filteredRequests)
@@ -186,27 +200,24 @@ const Requests = () => {
   }
 
   // Función para manejar la búsqueda de solicitudes por nombre
+
   const filterNames = (searchValue) => {
     setSearchValue(searchValue)
 
-    if (!searchValue) {
+    // Realiza la búsqueda en todas las solicitudes
+    const filteredRequests = request.filter((item) => {
+      const nombre = item.nombres.toString().toLowerCase().includes(searchValue.toLowerCase())
+      const apellido = item.apellidos.toString().toLowerCase().includes(searchValue.toLowerCase())
+
+      return nombre || apellido
+    })
+    // Actualiza el estado de las solicitudes con los resultados de la búsqueda
+    setRequest(filteredRequests)
+
+    // Si la barra de búsqueda está vacía, vuelve a obtener todas las solicitudes
+    if (searchValue === '') {
       getRequets()
-      getRequetsById()
-    } else {
-      // Filtrar usuarios por nombre y apellido
-      const filteredRequests = request.filter((item) => {
-        const nombre = item.nombres.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
-        const apellido = item.apellidos.toLowerCase().toUpperCase().includes(searchValue.toLowerCase().toUpperCase())
-
-        return nombre || apellido
-      })
-
-      setRequest(filteredRequests)
     }
-  }
-
-  const modalReport = () => {
-    setModalOpen(!modalOpen)
   }
 
   // Función para manejar el cambio de fecha
@@ -216,25 +227,21 @@ const Requests = () => {
     if (date) {
       if (userRole.adminCoordi) {
         // Realizar la búsqueda basada en la variable request
-        const filteredRequests = request.filter((item) => {
+        const filteredRequests = copiaRequest.filter((item) => {
           const requestDateAdmincoordi = new Date(item.fecha_creacion)
           return requestDateAdmincoordi.toDateString() === date.toDateString()
         })
         setRequest(filteredRequests)
       } else if (userRole.instructor) {
         // Realizar la búsqueda basada en la variable requestById
-        const filteredRequests = requestById.filter((item) => {
+        const filteredRequests = copiaRequestById.filter((item) => {
           const requestDateInstructor = new Date(item.fecha_creacion)
           return requestDateInstructor.toDateString() === date.toDateString()
         })
         setRequestById(filteredRequests)
       }
     } else {
-      if (userRole.adminCoordi) {
-        setRequest(request)
-      } else if (userRole.instructor) {
-        setRequestById(requestById)
-      }
+      restoreOriginalData() // Restaura los datos originales
     }
   }
 
@@ -285,20 +292,25 @@ const Requests = () => {
         <Toaster position="top-right" closeButton richColors />
         <section className="w-full overflow-auto ">
           <header className="px-[1.5rem] pt-[1.5rem] pb-[.5rem]">
-            <section className="grid grid-cols-3 place-items-end">
-              <section className="w-[60%] col-span-2 right-0 relative">
-                <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} dateArray={request} />
-              </section>
+            <section className="grid grid-cols-3 place-items-end min-h-[2rem]">
+              <section className="w-[60%]  col-span-2 right-0 relative">{elements.adminCoordi ? <Search placeholder={'Buscar solicitud'} icon={<i className="fi fi-br-search relative right-[3rem] " />} searchUser={filterNames} searchValue={searchValue} /> : null}</section>
               <section className="w-full h-full flex justify-center items-center">
                 <NotifyBadge />
               </section>
             </section>
-            <section className="px-[.5rem] mt-5 flex">
-              <DatePicker selected={selectedDate} onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" isClearable placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
-              <Button color="primary" variant="light" onClick={clearFilterDate}>
-                <i className="fi fi-rr-eraser " />
-                Limpiar fecha
-              </Button>
+            <section className="px-[.5rem] mt-5 flex justify-between">
+              <section className="flex">
+                <DatePicker selected={selectedDate} disabledKeyboardNavigation onChange={(date) => handleDateSelect(date)} showIcon icon="fi fi-rr-calendar-pen" dateFormat="dd/MM/yyyy" placeholderText="Seleccionar fecha" className="cursor-pointer border-2 border-primary px-5 py-[5px] text-sm rounded-lg outline-none h-[2.5rem]" />
+                <Button color="primary" variant="light" onClick={clearFilterDate}>
+                  <i className="fi fi-rr-eraser " />
+                  Limpiar fecha
+                </Button>
+              </section>
+              <section>
+                <Button variant="bordered" color="success" onClick={modalReport}>
+                  Generar reportes
+                </Button>
+              </section>
             </section>
           </header>
 
@@ -368,7 +380,7 @@ const Requests = () => {
               </TableBody>
             </Table>
             <section className="grid place-items-center w-full mt-[.5rem] ">
-              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && request.length} onChange={handlePageChange} />{' '}
+              <Pagination className={`relative top-[.5rem]  max-[935px]:mt-[8px]  z-0 searchValue `} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={request && requestById.length} onChange={handlePageChange} />
             </section>
           </section>
           <Footer />
