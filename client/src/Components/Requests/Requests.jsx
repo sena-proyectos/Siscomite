@@ -372,11 +372,13 @@ const Requests = () => {
             </section>
           </section>
           <Footer />
-          <section className="absolute right-4">
-            <Button className="" variant="bordered" color="success" onClick={modalReport}>
-              Generar reportes
-            </Button>
-          </section>
+          {elements.adminCoordi && (
+            <section className="absolute right-4">
+              <Button className="" variant="bordered" color="success" onClick={modalReport}>
+                Generar reportes
+              </Button>
+            </section>
+          )}
           {modalOpen && <ModalGenerateReport cerrarModal={setModalOpen} />}
         </section>
       </main>

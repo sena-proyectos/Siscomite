@@ -119,7 +119,7 @@ export const searchUser = async (req, res) => {
 
   try {
     // Consulta SQL para buscar aprendices por nombre (usando LIKE para búsqueda parcial)
-    const [user] = await pool.query('SELECT * FROM aprendices WHERE CONCAT(nombres_aprendiz, " ", apellidos_aprendiz) LIKE ?', [`%${nombres}%`])
+    const [user] = await pool.query('SELECT * FROM aprendices WHERE estado = "EN FORMACION" AND CONCAT(nombres_aprendiz, " ", apellidos_aprendiz) LIKE ?;', [`%${nombres}%`])
 
     // Verificar si se encontraron resultados
     if (user.length === 0) return res.status(400).send({ message: 'No se encontró al aprendiz' })
@@ -139,7 +139,7 @@ export const searchTeacher = async (req, res) => {
 
   try {
     // Consulta SQL para buscar instructores por nombre (usando LIKE para búsqueda parcial)
-    const [user] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 2 AND CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
+    const [user] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 2 AND estado = "ACTIVO" AND CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
 
     // Verificar si se encontraron resultados
     if (user.length === 0) return res.status(400).send({ message: 'No se encontró ningún instructor' })

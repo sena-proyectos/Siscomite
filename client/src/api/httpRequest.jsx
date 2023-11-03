@@ -59,7 +59,7 @@ export const search = (nombres) => {
   return response
 }
 
-/* Get user by name */
+/* Get apprentices by name */
 export const getApprenticesByName = (nombres) => {
   const URL = `${BaseUrl}${api}/searchUser?nombres=${nombres}`
   const response = axios.get(URL)
@@ -306,10 +306,19 @@ export const postRules = (data) => {
   return response
 }
 
-/* get file by name  */
+/* get file by name  (DOWNLOAD)*/
 export const downloadFile = (nameFile) => {
   const URL = `${BaseUrl}${api}/obtenerArchivo/${nameFile}`
+
   const response = axios.get(URL, { responseType: 'blob' })
+
+  return response
+}
+
+/* get file by id apprentice */
+export const getFileByApprentice = (idApprentice) => {
+  const URL = `${BaseUrl}${api}/fileByApprentice/${idApprentice}`
+  const response = axios.get(URL)
 
   return response
 }

@@ -1,8 +1,5 @@
 import { pool } from '../db.js'
-import multerMiddleware from '../middlewares/files.middlewares.js'
 import fs from 'fs'
-
-export const uploadFile = multerMiddleware.single('archivo')
 
 export const handleFileUpload = async (req, res) => {
   const { filename } = req.file
@@ -32,14 +29,43 @@ export const getFiles = async (req, res) => {
 // Obtener un archivo por su nombre
 export const getSingleFile = async (req, res) => {
   const { nombreArchivo } = req.params
-  const filePath = `uploads/${nombreArchivo}`
-
+  const filePath = `C:/Archivos_SiscomiteSF/Docs/${nombreArchivo}`
+  
   try {
     if (fs.existsSync(filePath)) {
       res.download(filePath)
     } else {
       res.status(404).json({ message: 'Archivo no encontrado' })
     }
+  } catch (error) {
+    res.status(500).send('Error interno del servidor')
+  }
+}
+
+// Obtener un archivo por su nombre e id del aprendiz
+export const getSingleFileByApprentice = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const [result] = await pool.query(
+      `SELECT DISTINCT
+    detalle_solicitud_aprendices.id_aprendiz,
+    detalle_solicitud_aprendices.id_solicitud AS numero_solicitud,
+    usuarios.nombres,
+    usuarios.apellidos,
+    archivos.nombre_archivo,
+    solicitud.fecha_creacion AS fecha_creacion_solicitud
+    FROM detalle_solicitud_aprendices
+    INNER JOIN solicitud ON detalle_solicitud_aprendices.id_solicitud = solicitud.id_solicitud
+    INNER JOIN usuarios ON solicitud.id_usuario_solicitante = usuarios.id_usuario
+    INNER JOIN archivos ON solicitud.id_archivo = archivos.id_archivo
+    WHERE detalle_solicitud_aprendices.id_aprendiz = ?;`,
+      [id]
+    )
+
+    if (!result[0]) return res.status(400).send({ message: 'El aprendiz no tiene archivos o no ha sido citado a comité de evaluación y seguimiento' })
+
+    res.status(201).send({ result })
   } catch (error) {
     res.status(500).send('Error interno del servidor')
   }
