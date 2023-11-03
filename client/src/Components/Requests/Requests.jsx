@@ -306,11 +306,13 @@ const Requests = () => {
                   Limpiar fecha
                 </Button>
               </section>
-              <section>
-                <Button variant="bordered" color="success" onClick={modalReport}>
-                  Generar reportes
-                </Button>
-              </section>
+              {elements.adminCoordi && (
+                <section>
+                  <Button variant="bordered" color="success" onClick={modalReport}>
+                    Generar reportes
+                  </Button>
+                </section>
+              )}
             </section>
           </header>
 
@@ -384,13 +386,7 @@ const Requests = () => {
             </section>
           </section>
           <Footer />
-          {elements.adminCoordi && (
-            <section className="absolute right-4">
-              <Button className="" variant="bordered" color="success" onClick={modalReport}>
-                Generar reportes
-              </Button>
-            </section>
-          )}
+
           {modalOpen && <ModalGenerateReport cerrarModal={setModalOpen} />}
         </section>
       </main>
