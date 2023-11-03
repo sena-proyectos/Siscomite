@@ -6,10 +6,32 @@ import { downloadFile, getRequestById } from '../../../api/httpRequest'
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 import { TinyEditor } from '../tinyEditor/TinyEditor'
-import { elements } from '../../Sliderbar/Sliderbar'
 
 import { summonsLetter, actFormat } from '../TemplateStatic/TemplateStatic'
 
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
+
+const getElementsByRole = () => {
+  const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+  const information = jwt(token) // Decodificar el token JWT
+  let rolToken = information.id_rol
+
+  // Mapear los ID de rol a nombres de rol
+  if (rolToken === 1) rolToken = 'Coordinador'
+  if (rolToken === 2) rolToken = 'Instructor'
+  if (rolToken === 3) rolToken = 'Administrador'
+
+  return {
+    adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+    administration: rolToken === 'Administrador',
+    coordination: rolToken === 'Coordinador',
+    instructor: rolToken === 'Instructor'
+  }
+}
+
+// Obtener los elementos que se deben mostrar según el rol
+const elements = getElementsByRole()
 
 export const ModalRequest = ({ cerrarModal, requestID }) => {
   // Estados para almacenar los datos completos de aprendices, usuarios y numerales
@@ -482,7 +504,9 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                         <Input type="text" variant="underlined" label="Artículo" defaultValue={numeroArticulo} isReadOnly />
                       </section>
                       <section className="flex flex-wrap mt-4 md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Button variant='bordered' color='primary' onClick={fileDownload}>Descargar evidencias</Button>
+                        <Button variant="bordered" color="primary" onClick={fileDownload}>
+                          Descargar evidencias
+                        </Button>
                       </section>
                       <section>
                         <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>

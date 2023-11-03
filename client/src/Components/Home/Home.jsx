@@ -6,7 +6,30 @@ import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
-import { elements } from '../Sliderbar/Sliderbar'
+
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
+
+const getElementsByRole = () => {
+  const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+  const information = jwt(token) // Decodificar el token JWT
+  let rolToken = information.id_rol
+
+  // Mapear los ID de rol a nombres de rol
+  if (rolToken === 1) rolToken = 'Coordinador'
+  if (rolToken === 2) rolToken = 'Instructor'
+  if (rolToken === 3) rolToken = 'Administrador'
+
+  return {
+    adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+    administration: rolToken === 'Administrador',
+    coordination: rolToken === 'Coordinador',
+    instructor: rolToken === 'Instructor'
+  }
+}
+
+// Obtener los elementos que se deben mostrar según el rol
+const elements = getElementsByRole()
 
 const Home = () => {
   /* matriz para las cards de acceso rapido del home */

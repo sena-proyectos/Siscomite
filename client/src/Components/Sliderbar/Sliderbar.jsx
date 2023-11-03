@@ -2,9 +2,9 @@
 import './Sliderbar.css' // Importar el archivo CSS para estilos específicos
 import { useEffect, useState } from 'react' // Importar React, useEffect y useState desde React
 import { Link, useNavigate, useLocation } from 'react-router-dom' // Importar funciones de navegación y ubicación de React Router DOM
+import { userInformationStore } from '../../store/config'
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { userInformationStore } from '../../store/config'
 
 const getElementsByRole = () => {
   const token = Cookie.get('token') // Obtener el token almacenado en las cookies
@@ -25,7 +25,7 @@ const getElementsByRole = () => {
 }
 
 // Obtener los elementos que se deben mostrar según el rol
-export const elements = getElementsByRole()
+const elements = getElementsByRole()
 
 // Función para saber si la ruta está activa
 const isActiveRoute = (currentPath, targetPath) => {
