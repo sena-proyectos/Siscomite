@@ -14,7 +14,6 @@ export const getsolicitud = async (req, res) => {
  * La función `getRequestById` es una función asíncrona que recupera una solicitud por su ID de una
  * base de datos y envía una respuesta con el resultado.
  */
-
 export const getRequestById = async (req, res) => {
   const { id } = req.params
   try {
@@ -197,11 +196,12 @@ export const getRules = async (req, res) => {
  * Esta función crea una solicitud insertando datos en una tabla de base de datos.
  */
 export const createRequest = async (req, res) => {
-  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados } = req.body
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso, numeralesSeleccionados, aprendicesSeleccionados, instructoresSeleccionados, dataApprentice } = req.body
 
   const numeralesArray = Array.isArray(numeralesSeleccionados) ? numeralesSeleccionados : [numeralesSeleccionados]
   const instructoresArray = Array.isArray(instructoresSeleccionados) ? instructoresSeleccionados : [instructoresSeleccionados]
   const aprendicesArray = Array.isArray(aprendicesSeleccionados) ? aprendicesSeleccionados : [aprendicesSeleccionados]
+  const dataApprenticeArray = Array.isArray(dataApprentice) ? dataApprentice : [dataApprentice]
 
   try {
     /* Verifica el tipo de archivo */
@@ -228,8 +228,15 @@ export const createRequest = async (req, res) => {
       return res.status(400).send({ message: 'Debe subir su archivo PDF con las evidencias de la solicitud.' })
     }
     /* Insertar el archivo en la base de datos si es necesario */
-    const resultFile = await pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `Downloads/Evidencias-Siscomite${filename}`, fileType])
-    const fileId = resultFile[0].insertId
+    const filePromises = dataApprenticeArray.map(async (data) => {
+      return pool.query('INSERT INTO archivos (nombre_archivo, ruta_archivo, tipo_archivo) VALUES (?, ?, ?)', [filename, `C:/Archivos_SiscomiteSF/${data}`, fileType])
+    })
+
+    // Espera a que todas las inserciones en la tabla de archivos se completen
+    const fileResults = await Promise.all(filePromises)
+
+    // Obtiene el fileId del primer resultado
+    const fileId = fileResults[0][0].insertId
 
     /* Crear la solicitud */
     const currentDate = new Date().toISOString().slice(0, 19).replace('T', ' ') // Formato YYYY-MM-DD HH:mm:ss
