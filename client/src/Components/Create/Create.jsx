@@ -9,6 +9,7 @@ import { getTeacherByName, getApprenticesByName, getApprenticesById, getCoordina
 import { Toaster, toast } from 'sonner'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 import { userInformationStore } from '../../store/config'
+import { useNavigate } from 'react-router-dom'
 
 // Definición del componente Create
 const Create = () => {
@@ -36,6 +37,7 @@ const Create = () => {
   const [descripcion, setDescripcion] = useState(null)
 
   const [selectFile, setSelectFile] = useState()
+  const Navigate = useNavigate()
 
   /* Estado para almacenar el reglamento obtenido de la base de datos */
   const [rules, setRules] = useState([])
@@ -69,6 +71,7 @@ const Create = () => {
       } else {
         setErrorUser(null)
         const response = await getApprenticesByName(nombres)
+
         setUserSearch(response.data.user)
       }
     } catch (error) {
@@ -99,11 +102,13 @@ const Create = () => {
       solicitudFormData.append('descripcion_caso', descripcion)
       solicitudFormData.append('calificacion_causa', selectedValueFalta)
       solicitudFormData.append('categoria_causa', 'Academica')
-      solicitudFormData.append('archivo', selectFile)
 
       // Agrega los IDs de los aprendices seleccionados al FormData
       selectedApprentice.forEach((item) => {
+        const dataApprentice = item.nombres_aprendiz + '_' + item.apellidos_aprendiz + '_' + item.numero_documento_aprendiz
+
         solicitudFormData.append('aprendicesSeleccionados', [item.id_aprendiz])
+        solicitudFormData.append('dataApprentice', dataApprentice)
       })
 
       // Agrega los IDs de los instructores seleccionados al FormData
@@ -115,6 +120,8 @@ const Create = () => {
       numSeleccionados.forEach((numeralId) => {
         solicitudFormData.append('numeralesSeleccionados', [numeralId])
       })
+
+      solicitudFormData.append('archivo', selectFile)
 
       /* Validaciones al crear la solicitud */
       /* Validación del archivo PDF */
@@ -148,6 +155,9 @@ const Create = () => {
       toast.success('Genial!!', {
         description: res
       })
+      setTimeout(() => {
+        Navigate('/requests')
+      }, 3000)
     } catch (error) {
       /* Enviamos respuesta errónea en caso de que exista */
       const message = error.response?.data?.message
@@ -172,6 +182,14 @@ const Create = () => {
 
   // Función para manejar el clic en un instructor
   const handleTeacherClick = async (idInstructor) => {
+    // Verifica si el instructor ya ha sido seleccionado
+    if (selectedInstructor.some((instructor) => instructor.id_usuario === idInstructor)) {
+      toast.error('Opss!!', {
+        description: 'Este instructor ya ha sido seleccionado.'
+      })
+      return
+    }
+
     try {
       const response = await getInstructorById(idInstructor)
       const [res] = response.data.result
@@ -198,6 +216,14 @@ const Create = () => {
 
   // Función para manejar el clic en un aprendiz
   const handleUserClick = async (userId) => {
+    // Verifica si el aprendiz ya ha sido seleccionado
+    if (selectedApprentice.some((apprentice) => apprentice.id_aprendiz === userId)) {
+      toast.error('Opss!!', {
+        description: 'Este aprendiz ya ha sido seleccionado.'
+      })
+      return
+    }
+
     try {
       const response = await getApprenticesById(userId)
       const [res] = response.data.result
@@ -216,7 +242,6 @@ const Create = () => {
       }
       // Extender el array selectedApprentice con los nuevos detalles
       setSelectedApprentice([...selectedApprentice, res])
-
       setUserSearch([])
     } catch (error) {}
   }

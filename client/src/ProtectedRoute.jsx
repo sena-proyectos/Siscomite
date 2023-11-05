@@ -14,9 +14,11 @@ export const ProtectedRoute = ({ redirectPath = '/', allowedRoles = [] }) => {
     return <Navigate to={redirectPath} replace />
   }
 
-  if (navigator.onLine) {
-    return <Outlet />
-  } else {
-    return <Navigate to={redirectPath} replace />
-  }
+  // if (navigator.onLine) {
+  //   return <Outlet />
+  // } else {
+  //   return <Navigate to={redirectPath} replace />
+  // }
+
+  return <Outlet />
 }

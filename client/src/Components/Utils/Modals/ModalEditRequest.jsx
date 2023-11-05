@@ -1,13 +1,14 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, Textarea } from '@nextui-org/react'
 
-import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
-import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 import { getRequestById, updateRequest } from '../../../api/httpRequest'
 
 import { Toaster, toast } from 'sonner'
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
+
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 
 export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetch, fetchById }) => {
   /* estado para almacenar los datos de la solicitud */
@@ -32,28 +33,6 @@ export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetch, fetchByI
   const closeModal = () => {
     cerrarModal()
   }
-
-  // Obtener los elementos que se deben mostrar según el rol
-  const getElementsByRole = () => {
-    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
-    const information = jwt(token) // Decodificar el token JWT
-    let rolToken = information.id_rol
-
-    // Mapear los ID de rol a nombres de rol
-    if (rolToken === 1) rolToken = 'Coordinador'
-    if (rolToken === 2) rolToken = 'Instructor'
-    if (rolToken === 3) rolToken = 'Administrador'
-
-    return {
-      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
-      administration: rolToken === 'Administrador',
-      coordination: rolToken === 'Coordinador',
-      instructor: rolToken === 'Instructor'
-    }
-  }
-
-  // Obtener los elementos que se deben mostrar según el rol
-  const elements = getElementsByRole()
 
   useEffect(() => {
     getIdRequest()
@@ -101,6 +80,27 @@ export const ModalEditRequest = ({ cerrarModal, requestID, reloadFetch, fetchByI
     }
     return '' // Devuelve una cadena vacía si dateString no es válido
   }
+
+  const getElementsByRole = () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
+
+    // Mapear los ID de rol a nombres de rol
+    if (rolToken === 1) rolToken = 'Coordinador'
+    if (rolToken === 2) rolToken = 'Instructor'
+    if (rolToken === 3) rolToken = 'Administrador'
+
+    return {
+      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+      administration: rolToken === 'Administrador',
+      coordination: rolToken === 'Coordinador',
+      instructor: rolToken === 'Instructor'
+    }
+  }
+
+  // Obtener los elementos que se deben mostrar según el rol
+  const elements = getElementsByRole()
 
   return (
     <>

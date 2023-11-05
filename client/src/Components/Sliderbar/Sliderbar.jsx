@@ -2,9 +2,9 @@
 import './Sliderbar.css' // Importar el archivo CSS para estilos específicos
 import { useEffect, useState } from 'react' // Importar React, useEffect y useState desde React
 import { Link, useNavigate, useLocation } from 'react-router-dom' // Importar funciones de navegación y ubicación de React Router DOM
+import { userInformationStore } from '../../store/config'
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
-import { userInformationStore } from '../../store/config'
 
 // Función para saber si la ruta está activa
 const isActiveRoute = (currentPath, targetPath) => {
@@ -25,24 +25,6 @@ const Sliderbar = () => {
 
   const { setUserInformation, userInformation } = userInformationStore()
 
-  const getElementsByRole = () => {
-    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
-    const information = jwt(token) // Decodificar el token JWT
-    let rolToken = information.id_rol
-
-    // Mapear los ID de rol a nombres de rol
-    if (rolToken === 1) rolToken = 'Coordinador'
-    if (rolToken === 2) rolToken = 'Instructor'
-    if (rolToken === 3) rolToken = 'Administrador'
-
-    return {
-      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
-      administration: rolToken === 'Administrador',
-      coordination: rolToken === 'Coordinador',
-      instructor: rolToken === 'Instructor'
-    }
-  }
-
   // Función para obtener información del usuario desde el token JWT
   const getInformation = () => {
     const token = Cookie.get('token') // Obtener el token almacenado en las cookies
@@ -62,6 +44,24 @@ const Sliderbar = () => {
   const logout = () => {
     Cookie.remove('token') // Eliminar el token de las cookies
     navigate('/') // Redirigir a la página de inicio
+  }
+
+  const getElementsByRole = () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
+
+    // Mapear los ID de rol a nombres de rol
+    if (rolToken === 1) rolToken = 'Coordinador'
+    if (rolToken === 2) rolToken = 'Instructor'
+    if (rolToken === 3) rolToken = 'Administrador'
+
+    return {
+      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+      administration: rolToken === 'Administrador',
+      coordination: rolToken === 'Coordinador',
+      instructor: rolToken === 'Instructor'
+    }
   }
 
   // Obtener los elementos que se deben mostrar según el rol

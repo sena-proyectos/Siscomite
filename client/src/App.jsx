@@ -17,12 +17,6 @@ import { ProtectedRoute } from './ProtectedRoute'
 import { Toaster, toast } from 'sonner'
 
 function App() {
-  if (!navigator.onLine) {
-    toast.error('¡Opss!', {
-      description: 'El computador no está conectado a Internet por lo tanto no podrás usar los servicios de Siscomite.'
-    })
-  }
-
   return (
     <>
       <Toaster position="top-right" closeButton richColors />

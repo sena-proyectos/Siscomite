@@ -60,7 +60,6 @@ export const Login = () => {
       // Redirige al usuario a la página de inicio ('/home').
       navigate('/home')
     } catch (error) {
-      console.log(error)
       const message = error?.response?.data?.message
       toast.error('Oppss!!', {
         description: message

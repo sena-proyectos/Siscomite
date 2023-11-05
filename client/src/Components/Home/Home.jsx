@@ -6,6 +6,7 @@ import { Sliderbar } from '../Sliderbar/Sliderbar'
 import { Footer } from '../Footer/Footer'
 import { Link } from 'react-router-dom'
 import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
+
 import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
 import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 
@@ -42,7 +43,9 @@ const Home = () => {
     {
       titleHome: `${elements.administration ? 'Trámites solicitud' : elements.coordination ? 'Usuarios' : 'Crear solicitud'}`,
       image: '/image/solicitud.webp',
-      descripciónHome: `${elements.administration ? 'Aquí podrás realizar trámites de las solicitudes como enviar archivos a los distintos correos con su respectiva plantilla.' : elements.coordination ? 'Aquí puedes visualizar todos los usuarios registrados en la plataforma, revisar su estado y gestionar sus permisos.' : 'Aquí podrás crear una solicitud para un comité de evaluación y seguimiento.'}`,
+      descripciónHome: `${
+        elements.administration ? 'Aquí podrás realizar trámites de las solicitudes como enviar archivos a los distintos correos con su respectiva plantilla.' : elements.coordination ? 'Aquí puedes visualizar todos los usuarios registrados en la plataforma, revisar su estado y gestionar sus permisos.' : 'Aquí podrás crear una solicitud para un comité de evaluación y seguimiento.'
+      }`,
       Link: `${elements.administration ? '/procedures' : elements.coordination ? '/teachers' : '/create'}`
     },
     {

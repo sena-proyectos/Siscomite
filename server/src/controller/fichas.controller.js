@@ -9,8 +9,7 @@ export const getFichas = async (req, res) => {
     const [result] = await pool.query(`
     SELECT fichas.*, usuarios.nombres AS nombre_coordinador, usuarios.apellidos AS apellido_coordinador
     FROM fichas 
-    INNER JOIN usuarios ON fichas.id_usuario_coordinador = usuarios.id_usuario
-    WHERE fichas.estado = 'ACTIVO';
+    INNER JOIN usuarios ON fichas.id_usuario_coordinador = usuarios.id_usuario;
     `)
 
     res.status(200).send({ result })
@@ -56,6 +55,9 @@ export const getFichaBynumFicha = async (req, res) => {
 
 export const createFicha = async (req, res) => {
   const { numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, id_modalidad, id_usuario_coordinador } = req.body
+
+  if (!id_usuario_coordinador) return res.status(500).send({ message: 'Debe seleccionar un coordinador' })
+
   try {
     await pool.query('INSERT INTO fichas (numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, estado, id_modalidad, id_usuario_coordinador) VALUES (?, ?, ?, ?, ?, "ACTIVO", ?, ?)', [numero_ficha, nombre_programa, jornada, etapa_programa, numero_trimestre, id_modalidad, id_usuario_coordinador])
 

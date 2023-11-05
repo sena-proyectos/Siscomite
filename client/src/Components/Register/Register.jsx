@@ -1,6 +1,6 @@
 /* Importaciones de modulos y componentes */
 import './Register.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import React, { useRef, useState } from 'react'
 import { register } from '../../api/httpRequest'
 import { Footer } from '../Footer/Footer'
@@ -17,9 +17,7 @@ export const Register = () => {
   const [numeroDocumento, setNumeroDocumento] = useState('')
   const [contrasena, setContrasena] = useState('')
   const [selectedTipoDocumento, setSelectedTipoDocumento] = useState('')
-
-  // Limpiar el formulario al enviarlo
-  const cleanInput = useRef(null)
+  const Navigate = useNavigate()
 
   /* mapeo de los valores segun la base de datos */
   const documentoOptions = {
@@ -49,9 +47,9 @@ export const Register = () => {
         const errorDetails = error.details[0] // Obtén el primer detalle de error
         const errorMessage = errorDetails.message
 
-        if (errorDetails.path[0] === 'email_sena'){
+        if (errorDetails.path[0] === 'email_sena') {
           toast.error('Formato de correo institucional inválido')
-        }else if(errorDetails.path[0] === 'numero_celular') {
+        } else if (errorDetails.path[0] === 'numero_celular') {
           toast.error('El número de celular no es válido, verifíquelo')
         } else if (errorDetails.path[0] === 'numero_documento') {
           toast.error('El número de documento no es válido')
@@ -67,7 +65,7 @@ export const Register = () => {
         toast.success('¡Genial!', {
           description: message
         })
-
+        Navigate('/')
       }
     } catch (error) {
       const message = error?.response?.data?.message

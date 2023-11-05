@@ -20,14 +20,23 @@ export const ReportsFileApprentice = async (req, res) => {
     fichas.etapa_programa,
     fichas.numero_trimestre,
     fichas.estado,
-    GROUP_CONCAT(solicitud.id_solicitud) AS numero_solicitud
+    solicitud.id_solicitud AS numero_solicitud,
+    solicitud.tipo_solicitud,
+    solicitud.calificacion_causa,
+    solicitud.categoria_causa,
+    solicitud.estado,
+    solicitud.estado_descripcion,
+    solicitud.nombre_coordinacion,
+    solicitud.fecha_creacion
     FROM detalle_solicitud_aprendices
     INNER JOIN aprendices ON detalle_solicitud_aprendices.id_aprendiz = aprendices.id_aprendiz
     INNER JOIN fichas ON aprendices.id_ficha = fichas.id_ficha
     INNER JOIN solicitud ON detalle_solicitud_aprendices.id_solicitud = solicitud.id_solicitud
     INNER JOIN documentos ON aprendices.id_documento = documentos.id_documento
-    GROUP BY aprendices.id_aprendiz;
-`)
+    ORDER BY aprendices.nombres_aprendiz, aprendices.apellidos_aprendiz;
+    `)
+
+    if (!result[0]) return res.status(400).send({ message: 'No hay registros que generar.' })
 
     return res.status(201).json({ result })
   } catch (error) {
@@ -59,6 +68,8 @@ export const ReportsFileRequest = async (req, res) => {
     INNER JOIN documentos ON usuarios.id_documento = documentos.id_documento
     WHERE solicitud.estado = 'Aprobado' OR solicitud.estado = 'Rechazado'
 `)
+
+    if (!result[0]) return res.status(400).send({ message: 'No hay registros que generar.' })
 
     return res.status(201).json({ result })
   } catch (error) {

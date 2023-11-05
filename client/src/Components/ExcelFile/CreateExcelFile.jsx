@@ -22,7 +22,7 @@ export const CreateFileReport = (apprenticesReport) => {
   let ws = XLSX.utils.json_to_sheet(transformedApprenticesReport)
 
   // Configurar los anchos de columna (por ejemplo, el primer campo tendrá un ancho de 20)
-  ws['!cols'] = Array(16).fill({ wch: 20 }) // 16 columnas con ancho 20
+  ws['!cols'] = Array(30).fill({ wch: 20 }) // 16 columnas con ancho 20
 
   // Agregar la hoja de cálculo al libro
   XLSX.utils.book_append_sheet(workbook, ws, 'AprendicesEnComité')

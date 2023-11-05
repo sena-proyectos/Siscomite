@@ -6,7 +6,11 @@ import { downloadFile, getRequestById } from '../../../api/httpRequest'
 
 import { format } from 'date-fns' // Importar biblioteca para formatear las fechas
 import { TinyEditor } from '../tinyEditor/TinyEditor'
-import mammoth from 'mammoth'
+
+import { summonsLetter, actFormat } from '../TemplateStatic/TemplateStatic'
+
+import Cookie from 'js-cookie' // Importar el módulo Cookie para trabajar con cookies
+import jwt from 'jwt-decode' // Importar el módulo jwt-decode para decodificar tokens JWT
 
 export const ModalRequest = ({ cerrarModal, requestID }) => {
   // Estados para almacenar los datos completos de aprendices, usuarios y numerales
@@ -29,7 +33,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
   const [numerales, setNumerales] = useState([])
 
   const [modalCitation, setModalCitation] = useState(false)
-  const [file, setFile] = useState(null)
+  const [selectedFile, setSelectedFile] = useState(null)
   const [valueFile, setValuefile] = useState(null)
 
   useEffect(() => {
@@ -80,7 +84,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
         if (item.tipo_documento_solicitante && item.nombre_usuario_solicitante) {
           const usuario = {
             tipoDocumento: item.tipo_documento_solicitante,
-            nombre: item.nombre_usuario_solicitante,
+            nombres: item.nombre_usuario_solicitante,
             apellidos: item.apellidos_usuario_solicitante,
             numeroDocumento: item.numero_documento_usuario_solicitante,
             emailSena: item.email_sena_usuario_solicitante,
@@ -169,70 +173,161 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
     return format(date, 'yyyy-MM-dd')
   }
 
+  // Cerrar o abrir apartado de generar documentos
   const generateCitationModal = () => {
     setModalCitation(!modalCitation)
   }
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0]
-    if (selectedFile) {
-      setFile(selectedFile)
-    }
+  const handleSelectChange = (e) => {
+    const value = e.target.value
+    if (value === '') setValuefile('')
+    // Concatena el nombre del archivo seleccionado con la ruta de la carpeta "public"
+    setSelectedFile(value)
   }
 
-  // ...
-
+  /* Funcion que reemplaza los datos de las plantillas seleccionadas y que se ejecuta cada que se renderiza el componente */
   useEffect(() => {
     const onFileUpload = async () => {
-      if (file) {
-        const reader = new FileReader()
-        reader.onload = async (e) => {
-          const arrayBuffer = e.target.result
+      if (selectedFile) {
+        // Variable que contiene la plantilla seleccionada
+        let content = selectedFile
 
-          try {
-            const result = await mammoth.convertToHtml({ arrayBuffer })
-            let content = result.value
+        // Construir una cadena con los datos de los aprendices
+        const nombresAprendices = aprendices.map((aprendiz) => aprendiz.nombres + ' ' + aprendiz.apellidos).join(', ')
+        const correosAprendices = aprendices.map((aprendiz) => aprendiz.emailSena).join(', ')
+        const numeroFicha = aprendices.map((aprendiz) => aprendiz.numeroFicha).join(', ')
+        const programaFicha = aprendices.map((aprendiz) => aprendiz.nombreProgramaFicha).join(', ')
 
-            // Construir una cadena de nombres de aprendices
-            const nombresAprendices = aprendices.map((aprendiz) => aprendiz.nombres + ' ' + aprendiz.apellidos).join(', ')
-            const correosAprendices = aprendices.map((aprendiz) => aprendiz.emailSena).join(', ')
-            const numeroFicha = aprendices.map((aprendiz) => aprendiz.numeroFicha).join(', ')
-            const programaFicha = aprendices.map((aprendiz) => aprendiz.nombreProgramaFicha).join(', ')
+        const nombresInstructores = usuarios.map((usuarios) => usuarios.nombres + ' ' + usuarios.apellidos).join(', ')
+        const faltas = numerales.map((numerales) => TituloCapitulo + numeroArticulo + `${numerales.numero}` + '. ' + numerales.descripcion).join(', ')
 
-            const nombresInstructores = usuarios.map((usuarios) => usuarios.nombre + ' ' + usuarios.apellidos).join(', ')
-            const faltas = numerales.map((numerales) => TituloCapitulo + numeroArticulo + `${numerales.numero}` + '. ' + numerales.descripcion).join(', ')
+        /* CARTA DE CITACIÓN */
+        // Reemplazar el marcador con la cadena de texto para la carta de citación
+        content = content.replace('*NombreAprendiz*', nombresAprendices)
+        content = content.replace('*CorreoElectronico*', correosAprendices)
+        content = content.replace('*FichaCompleta*', numeroFicha)
+        content = content.replace('*ProgCompleto*', programaFicha)
+        content = content.replace('*Instructor*', nombresInstructores)
+        content = content.replace('3. Incumplir con las actividades de aprendizaje acordadas y los compromisos adquiridos como aprendiz SENA, sin justa causa', descripcionCaso)
+        content = content.replace('grave', calificacionCausa)
+        content = content.replace(
+          '“CAPÍTULO III. DEBERES DEL APRENDIZ SENA. ARTÍCULO 9o. “Se entiende por deber, la obligación legal, social y moral que compromete a la persona a cumplir con determinada actuación, asumiendo con responsabilidad todos sus actos, para propiciar la armonía, el respeto, la integración, el bienestar común, la sana convivencia, el servicio a los demás, la seguridad de las personas y de los bienes de la institución. Son deberes del aprendiz SENA durante el proceso de ejecución de la formación, los siguientes: 1. Cumplir con todas las actividades propias de su proceso de aprendizaje o del plan de mejoramiento, definidas durante su etapa lectiva y productiva. 13. Conocer y asumir las políticas y directrices institucionales establecidas, así como el Reglamento del Aprendiz SENA, y convivir en comunidad de acuerdo con ellos. CAPITULO IV PROHIBICIONES. ARTÍCULO 10. Se consideran prohibiciones para los aprendices del SENA',
+          faltas
+        )
 
-            // Reemplazar el marcador con la cadena de nombres
-            content = content.replace('*NombreAprendiz*', nombresAprendices)
-            content = content.replace('*CorreoElectronico*', correosAprendices)
-            content = content.replace('*FichaCompleta*', numeroFicha)
-            content = content.replace('*ProgCompleto*', programaFicha)
-            content = content.replace('*Instructor*', nombresInstructores)
-            content = content.replace(
-              '“CAPÍTULO III. DEBERES DEL APRENDIZ SENA. ARTÍCULO 9o. “Se entiende por deber, la obligación legal, social y moral que compromete a la persona a cumplir con determinada actuación, asumiendo con responsabilidad todos sus actos, para propiciar la armonía, el respeto, la integración, el bienestar común, la sana convivencia, el servicio a los demás, la seguridad de las personas y de los bienes de la institución. Son deberes del aprendiz SENA durante el proceso de ejecución de la formación, los siguientes: 1. Cumplir con todas las actividades propias de su proceso de aprendizaje o del plan de mejoramiento, definidas durante su etapa lectiva y productiva. 13. Conocer y asumir las políticas y directrices institucionales establecidas, así como el Reglamento del Aprendiz SENA, y convivir en comunidad de acuerdo con ellos. CAPITULO IV PROHIBICIONES. ARTÍCULO 10. Se consideran prohibiciones para los aprendices del SENA',
-              faltas
-            )
+        /* FORMATO DE ACTAS */
+        // Reemplazar el marcador con la cadena de texto para el formato de las actas
+        const userData = [...usuarios, ...aprendices]
 
-            setValuefile(content)
-          } catch (error) {
-            toast.error('¡Opss!', {
-              description: 'Error al procesar el archivo Word'
-            })
-          }
-        }
-        reader.readAsArrayBuffer(file)
+        /* Generamos las filas a insertar con los datos de los usuarios */
+        const insertRow = userData.map(
+          (dataUser, index) => `
+          <tr style="height: 60.2pt">
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 25.6pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 700; text-decoration: none; vertical-align: baseline; font-size: 10pt; font-family: 'Times New Roman'; font-style: normal">${index + 1}</span></p>
+            </td>
+            <td style="border-right-style: solid; padding: 0pt 5.8pt 0pt 5.8pt; border-bottom-color: #000000; border-top-width: 1pt; border-right-width: 1pt; border-left-color: #000000; vertical-align: top; border-right-color: #000000; border-left-width: 1pt; border-top-style: solid; border-left-style: solid; border-bottom-width: 1pt; width: 81.8pt; border-top-color: #e90505; border-bottom-style: solid; padding-top: 10px; font-size: 14pt;" colspan="1" rowspan="1">
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 400; text-decoration: none; vertical-align: baseline; font-size: 10pt; font-family: 'Times New Roman'; font-style: normal">${
+                dataUser.nombres + ' ' + dataUser.apellidos
+              }</span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 59.5pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 400; text-decoration: none; vertical-align: baseline; font-size: 10pt; font-family: 'Times New Roman'; font-style: normal">${dataUser.numeroDocumento}</span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 31.9pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 700; text-decoration: none; vertical-align: baseline; font-size: 10pt; font-family: 'Times New Roman'; font-style: normal"></span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 70.5pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 700; text-decoration: none; vertical-align: baseline; font-size: 12pt; font-family: 'Times New Roman'; font-style: normal"></span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 38.4pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 400; text-decoration: none; vertical-align: baseline; font-size: 10pt; font-family: 'Times New Roman'; font-style: normal"></span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 76.8pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 400; text-decoration: none; vertical-align: baseline; font-size: 10pt; font-family: 'Times New Roman'; font-style: normal"></span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 83.3pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 400; text-decoration: none; vertical-align: baseline; font-size: 10pt; font-family: 'Times New Roman'; font-style: normal">${dataUser.emailSena}</span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 64pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 400; text-decoration: none; vertical-align: baseline; font-size: 10pt; font-family: 'Times New Roman'; font-style: normal">${dataUser.celular}</span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 76.8pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 400; text-decoration: none; vertical-align: baseline; font-size: 12pt; font-family: 'Times New Roman'; font-style: normal">X</span></p>
+            </td>
+            <td
+              style="border-right-style: solid;padding: 0pt 5.8pt 0pt 5.8pt;border-bottom-color: #000000;border-top-width: 1pt;border-right-width: 1pt;border-left-color: #000000;vertical-align: middle;border-right-color: #000000;border-left-width: 1pt;border-top-style: solid;border-left-style: solid;border-bottom-width: 1pt;width: 96.3pt;border-top-color: #000000;border-bottom-style: solid;
+              "
+              colspan="1"
+              rowspan="1"
+            >
+              <p style="margin: 0; color: #000000; font-size: 12pt; font-family: 'Times New Roman'; padding-top: 0pt; padding-bottom: 0pt; line-height: 1; text-align: center; height: 12pt"><span style="color: #000000; font-weight: 400; text-decoration: none; vertical-align: baseline; font-size: 12pt; font-family: 'Times New Roman'; font-style: normal"></span></p>
+            </td>
+          </tr>
+        `
+        )
+        /* Insertamos las filas generadas reemplazandolas por contenido de la plantilla seleccionada */
+        content = content.replace('<!-- FILAS A INSERTAR -->', insertRow)
+
+        /* Pasamos el valor a un estado para renderizarlo en el tinyEDITOR */
+        setValuefile(content)
       }
     }
 
     onFileUpload()
-  }, [file, aprendices])
+  }, [selectedFile, aprendices])
 
   // ...
 
+  // Funcion para descargar las evidencias
   const fileDownload = async () => {
     try {
       const response = await downloadFile(archivoNombre)
-
       // Crear un objeto Blob con el contenido del archivo
       const blob = response.data
 
@@ -254,6 +349,27 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
     }
   }
 
+  const getElementsByRole = () => {
+    const token = Cookie.get('token') // Obtener el token almacenado en las cookies
+    const information = jwt(token) // Decodificar el token JWT
+    let rolToken = information.id_rol
+
+    // Mapear los ID de rol a nombres de rol
+    if (rolToken === 1) rolToken = 'Coordinador'
+    if (rolToken === 2) rolToken = 'Instructor'
+    if (rolToken === 3) rolToken = 'Administrador'
+
+    return {
+      adminCoordi: rolToken === 'Administrador' || rolToken === 'Coordinador',
+      administration: rolToken === 'Administrador',
+      coordination: rolToken === 'Coordinador',
+      instructor: rolToken === 'Instructor'
+    }
+  }
+
+  // Obtener los elementos que se deben mostrar según el rol
+  const elements = getElementsByRole()
+
   return (
     <>
       <Toaster position="top-right" closeButton richColors />
@@ -268,20 +384,28 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
             </section>
           </header>
           {modalCitation ? (
-            <section className="grid grid-cols-2 gap-2 mt-5">
-              <section className=" flex flex-col items-center justify-center">
-                <section className="flex w-[33rem] text-gray-500 gap-2 mb-2">
-                  <strong>Nota: </strong>
-                  <p> Debe seleccionar el archivo de la carta de citación a comité de evaluación y seguimiento y transcribir el texto al archivo original.</p>
+            <section className="mt-5 ">
+              <aside className="grid grid-cols-2 ">
+                <section>
+                  <select onChange={handleSelectChange} className="mb-2 border border-black p-2 rounded-lg">
+                    <option value="">Ninguno</option>
+                    <option value={actFormat}>Plantilla del formato de Actas</option>
+                    <option value={summonsLetter}>Carta de citación a comité de evaluación y seguimiento</option>
+                  </select>
                 </section>
-                <label htmlFor="upload" className="w-[80%] flex flex-col items-center justify-center gap-2 p-10 cursor-pointer bg-white rounded-md border border-blue-600 shadow-md">
-                  <i className="fi fi-rr-add-document text-blue-600 text-3xl" />
-                  <span className="text-gray-600 font-se">{file ? `Archivo seleccionado: ${file.name}` : 'Subir archivo'}</span>
-                </label>
-                <input id="upload" type="file" className="hidden" onChange={handleFileChange} />
-              </section>
+                <section>
+                  <h1>
+                    <strong>Nota: </strong>
+                    Recuerde modificar y revisar el documento antes de ser exportado.
+                    <br />
+                    <strong>- </strong>Para exportar el documento dele click a "file",
+                    <br />
+                    luego a "print" y seleccione el destino como PDF.
+                  </h1>
+                </section>
+              </aside>
               <section>
-                <TinyEditor template={!valueFile ? '<h2><strong>Seleccione un archivo y podrás visualizarlo aquí.</strong></h2>' : valueFile} onContentChange={setValuefile}  minH={480} maxH={480}/>
+                <TinyEditor template={!valueFile ? '<h2><strong>Seleccione un archivo y podrás visualizarlo aquí.</strong></h2>' : valueFile} onContentChange={setValuefile} minH={460} maxH={460} width={1200} />
               </section>
             </section>
           ) : (
@@ -313,7 +437,7 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                       <TableBody items={usuarios}>
                         {(item) => (
                           <TableRow key={item.numeroDocumento}>
-                            <TableCell>{item.nombre}</TableCell>
+                            <TableCell>{item.nombres}</TableCell>
                             <TableCell>{item.apellidos}</TableCell>
                             <TableCell>{item.tipoDocumento}</TableCell>
                             <TableCell>{item.numeroDocumento}</TableCell>
@@ -379,8 +503,10 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
                       <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
                         <Input type="text" variant="underlined" label="Artículo" defaultValue={numeroArticulo} isReadOnly />
                       </section>
-                      <section className="flex  flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-4">
-                        <Button onClick={fileDownload}>Descargar evidencias</Button>
+                      <section className="flex flex-wrap mt-4 md:flex-nowrap mb-6 md:mb-0 gap-4">
+                        <Button variant="bordered" color="primary" onClick={fileDownload}>
+                          Descargar evidencias
+                        </Button>
                       </section>
                       <section>
                         <Popover placement="top-end" size="lg" backdrop="opaque" showArrow>
@@ -426,10 +552,11 @@ export const ModalRequest = ({ cerrarModal, requestID }) => {
               </section>
             </section>
           )}
-
-          <Button className="w-full mt-5" variant="bordered" onClick={generateCitationModal}>
-            {modalCitation ? 'Ver datos de la solicitud' : 'Generar carta de citación'}
-          </Button>
+          {elements.adminCoordi && (
+            <Button className="w-full mt-5" variant="bordered" onClick={generateCitationModal}>
+              {modalCitation ? 'Ver datos de la solicitud' : 'Generar documentación de la solicitud'}
+            </Button>
+          )}
         </section>
         <section className="inset-0 bg-[#0000006a] -z-10 fixed flex items-center justify-center backdrop-blur-[3px]" onClick={closeModal} />
       </main>
