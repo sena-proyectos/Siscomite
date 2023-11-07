@@ -251,8 +251,8 @@ const Groups = () => {
                       <Divider />
                       <select name="estado" onChange={(e) => setSelectedEstado(e.target.value)} value={selectedEstado} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">
                         <option value="">Estado</option>
-                        <option value="Activo">Activo</option>
-                        <option value="Deshabilitado">Deshabilitado</option>
+                        <option value="ACTIVO">Activo</option>
+                        <option value="INACTIVO">Inactivo</option>
                       </select>
 
                       <select name="jornada" onChange={(e) => setSelectedJornada(e.target.value)} value={selectedJornada} className="bg-gray-50 border border-gray-300 text-gray-900 text-[15px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 outline-none">

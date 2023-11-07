@@ -108,8 +108,8 @@ const Setting = () => {
       <Toaster position="top-right" closeButton richColors />
       <Sliderbar />
       <section className="w-full max-[900px]:min-w-[80%] overflow-auto">
-        <section className="h-screen grid grid-cols-2 gap-4 place-items-center max-[900px]:grid-cols-1 max-[900px]:place-items-center">
-          <form className="p-[1rem] w-full">
+        <section className="h-screen grid place-items-center max-[900px]:grid-cols-1 max-[900px]:place-items-center">
+          <form className="p-[1rem] w-[50%]">
             <Card className=" h-full overflow-auto">
               <CardHeader className="flex justify-between items-start pb-0 ">
                 <section className="flex gap-3">
