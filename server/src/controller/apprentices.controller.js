@@ -46,7 +46,7 @@ export const getApprenticeById = async (req, res) => {
   try {
     const [result] = await pool.query('SELECT * FROM aprendices WHERE id_aprendiz = ?', [id])
     if (result.length === 0) {
-      res.status(404).send({ message: `No se pudo encontrar al aprendiz con id ${id}` })
+      res.status(404).send({ message: `No se pudo encontrar al aprendiz` })
     } else {
       res.status(200).send({ result })
     }

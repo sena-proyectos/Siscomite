@@ -4,12 +4,14 @@ import { Search } from '../Search/Search'
 import { Card, CardHeader, CardBody, Button, Pagination } from '@nextui-org/react'
 import { Footer } from '../Footer/Footer'
 import { useEffect, useState } from 'react'
-import { ModalAddStudents } from '../Utils/Modals/ModaAddStudents'
+import { ModalAddStudents } from '../Utils/Modals/ModalAddStudents'
 import { ModalInfoStudents } from '../Utils/Modals/ModalInfoStudents'
-import { Notify } from '../Utils/NotifyBar/NotifyBar'
+import { NotifyBadge } from '../Utils/NotifyBadge/NotifyBadge'
 
 import { useParams, useNavigate } from 'react-router-dom'
-import { getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { changeStateGroups, getApprenticesByIdFicha, getFichasById, searchApprenticesByIdFicha } from '../../api/httpRequest'
+import { Toaster, toast } from 'sonner'
+import sw from 'sweetalert2'
 
 const Students = () => {
   // Obtener el parámetro id_ficha desde la URL
@@ -17,18 +19,14 @@ const Students = () => {
 
   // Estados para gestionar los datos de los aprendices y grupos
   const [apprentices, setApprentices] = useState([])
-  const [informationGruops, setInformationGruops] = useState([])
+  const [informationGroups, setInformationGroups] = useState([])
   const [message, setMessage] = useState()
   const [idStudent, setIdStudent] = useState()
   const [apprenticesSearch, setApprenticesSearch] = useState([])
   const [error, setError] = useState(null)
-  const [reloadFetch, setReloadFetch] = useState(false)
-
-  // Estado para controlar la apertura de la notificación
-  const [notifyOpen, setNotifyOpen] = useState(false)
 
   // Número de elementos por página
-  const itemsPerPage = 9 
+  const itemsPerPage = 9
   const [activePage, setActivePage] = useState(1)
 
   // Calcula los datos a mostrar en la página actual
@@ -38,33 +36,30 @@ const Students = () => {
   const totalPages = Math.ceil(apprentices && apprentices.length / itemsPerPage)
 
   const navigate = useNavigate()
-  const [isOpen, setIsOpen] = useState(false)
 
-    // Función para obtener los aprendices por ID de ficha
+  // Función para obtener los aprendices por ID de ficha
   const getApprentices = async () => {
     try {
       const response = await getApprenticesByIdFicha(id_ficha)
       const res = response.data.result
       setApprentices(res)
+      setMessage(null)
     } catch (error) {
       setMessage(error.response.data.message)
     }
   }
   useEffect(() => {
     getApprentices()
-    if (reloadFetch === true) {
-      setMessage(null)
-      setReloadFetch(false)
-    }
-  }, [apprentices, reloadFetch])
+    setMessage(null)
+  }, [])
 
   useEffect(() => {
-       // Obtener información de las fichas por ID de ficha
+    // Obtener información de las fichas por ID de ficha
     const getFichasByIdFicha = async () => {
       try {
         const response = await getFichasById(id_ficha)
         const res = response.data.result[0]
-        setInformationGruops(res)
+        setInformationGroups(res)
       } catch (error) {}
     }
     getFichasByIdFicha()
@@ -75,7 +70,7 @@ const Students = () => {
     setActivePage(pageNumber)
   }
 
-    // Función para buscar aprendices
+  // Función para buscar aprendices
   const searchApprentices = async (nombres) => {
     const idFicha = id_ficha
     try {
@@ -95,10 +90,6 @@ const Students = () => {
     }
   }
 
-  const toggleNotify = () => {
-    setNotifyOpen(!notifyOpen)
-  }
-
   //Abrir Modal para agregar estudiantes
   const [modalAddStudent, setModalStudentAdd] = useState(false)
   const modalStudents = () => {
@@ -111,31 +102,59 @@ const Students = () => {
     setIdStudent(id)
   }
 
+  const StateGroups = () => {
+    try {
+      sw.fire({
+        title: '¿Estás seguro que quieres desactivar esta ficha?',
+        text: 'Estos cambios serán irreversibles',
+        showDenyButton: true,
+        confirmButtonText: 'Desactivar',
+        denyButtonText: `Cancelar`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const response = await changeStateGroups(id_ficha)
+          const message = response.data.message
+          toast.success('Genial!!', {
+            description: message
+          })
+          navigate('/groups')
+        }
+      })
+    } catch (error) {
+      const message = error.response.data.message
+      toast.error('Opss!!', {
+        description: message
+      })
+    }
+  }
+
   return (
     <>
-      {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={setReloadFetch} />}
+      {modalAddStudent && <ModalAddStudents cerrarModal={modalStudents} reloadFetchState={getApprentices} />}
 
       {modalInfoStudents && <ModalInfoStudents cerrarModal={infoStudents} idStudents={idStudent} />}
 
       <main className="flex h-screen">
         <Sliderbar />
+        <Toaster position="top-right" closeButton richColors />
         <section className="w-full h-screen overflow-auto">
-          <header className="p-[1.5rem] flex items-center justify-center">
-            <section className="w-[40%] max-md:max-w-[10rem]">
-              <Search placeholder={'Buscar aprendiz'} searchStudent={searchApprentices} icon={<i className="fi fi-rr-settings-sliders relative left-[-3rem]" />} />
+          <header
+            className="p-[1.5rem] grid grid-cols-3 place-items-end max-[700px]:grid
+            max-[700px]:grid-rows-3   max-[900px]:place-items-center"
+          >
+            <section className="w-[60%] col-span-2 max-[700px]:col-span-2  right-0 relative">
+              <Search placeholder={'Buscar aprendiz'} searchUser={searchApprentices} />
             </section>
-            <Button color="danger" variant="bordered">
-              Deshabilitar
-            </Button>
-            <section className="absolute right-[5%] cursor-pointer ">
-              {notifyOpen ? (
-                <></>
-              ) : (
-                <section className="bg-green-200 rounded-full w-[2rem] h-[2rem] grid place-items-center" onClick={toggleNotify}>
-                  <i className="fi fi-ss-bell text-green-400 p-[.3rem] mt-[]" />
-                </section>
-              )}
-            </section>
+            {informationGroups.estado === 'ACTIVO' ? (
+              <section className="flex items-center mr-[40%] cursor-pointer gap-x-4">
+                <Button color="danger" variant="bordered" onClick={StateGroups}>
+                  Deshabilitar ficha
+                </Button>
+                <NotifyBadge />
+              </section>
+            ) : (
+              ''
+            )}
           </header>
 
           <section className=" flex justify-between px-[4rem] ">
@@ -144,21 +163,21 @@ const Students = () => {
             </Button>
 
             <section>
-              <p className="font-semibold text-lg ">{informationGruops.nombre_programa}</p>
-              <p className="flex justify-end">{informationGruops.numero_ficha}</p>
+              <p className="font-semibold text-lg ">{informationGroups.nombre_programa}</p>
+              <p className="flex justify-end">{informationGroups.numero_ficha}</p>
             </section>
           </section>
-          <section className="h-[65vh] max-sm:h-[190%] max-[935px]:h-[115%]">
-            <section className="grid grid-cols-3 gap-5 items-center justify-center px-9 max-sm:grid-cols-1 max-[935px]:grid-cols-2 ">
+          <section className="min-h-[65vh]">
+            <section className="grid grid-cols-3 gap-5 px-9 max-sm:grid-cols-1 max-[935px]:grid-cols-2 w-full h-full ">
               {error ? (
-                <h1>{error}</h1>
+                <h1 className="text-gray-500 text-center grid place-content-center max-w-[590px]">{error}</h1>
               ) : (
                 <>
-                  {message && <h1>{message}</h1>}
+                  {message && <h1 className="text-gray-500 text-center grid place-content-center">{message}</h1>}
                   {apprenticesSearch.length > 0 ? (
                     <>
                       {apprenticesSearch.map((item) => (
-                        <Card className="w-full  z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
+                        <Card className="w-full max-h-[8rem] z-0 shadow-lg" onClick={() => infoStudents(item.id_aprendiz)} key={item.id_aprendiz}>
                           <CardHeader onClick={() => infoStudents(item.id_aprendiz)} className="justify-between pb-0 cursor-pointer">
                             <div className="flex gap-5">
                               <i className="fi fi-rr-circle-user text-green-500 text-[2rem]"></i>
@@ -205,17 +224,14 @@ const Students = () => {
           </section>
 
           <section className="grid place-items-center ">
-            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[7.5rem] max-[935px]:mt-[8px]  z-0 ${apprenticesSearch.length > 0 ? 'hidden' : ''}`} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
+            <Pagination className={`relative top-[.5rem] max-[935px]:pb-[2rem] max-[935px]:mt-[8px]  z-0 ${apprenticesSearch.length > 0 ? 'hidden' : ''}`} total={totalPages || 1} initialPage={1} color={'primary'} totalitemscount={apprentices && apprentices.length} onChange={handlePageChange} />
           </section>
           <section className="absolute grid place-items-center bottom-9 right-[2.5%]">
-            <button className="w-[13rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalStudents}>
-              <p className="text-[15px] top-0 block">
-                <i className="fi fi-br-plus block" />
-                Agregar aprendices
-              </p>
+            <button className="w-[13rem] max-[800px]:w-[5rem] h-[60px] rounded-3xl text-white shadow-2xl  bg-[#2e323e] relative cursor-pointer outline-none border-none active:bg-[#87a0ec] active:transform active:scale-90 transition duration-150 ease-in-out" onClick={modalStudents}>
+              <i className="fi fi-br-plus" />
+              <p className="text-[15px] top-0 max-[800px]:hidden">Agregar aprendices</p>
             </button>
           </section>
-          <Notify isOpen={notifyOpen} toggleNotify={toggleNotify} />
           <Footer />
         </section>
       </main>

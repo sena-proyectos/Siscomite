@@ -1,5 +1,6 @@
 // Importación del módulo 'pool' desde '../db.js'
 import { pool } from '../db.js'
+import { emailConfig } from '../config.js'
 
 // Controlador para obtener todos los usuarios
 export const getUser = async (req, res) => {
@@ -15,11 +16,41 @@ export const getUser = async (req, res) => {
   }
 }
 
+/* controlador para obtener instructores por ID */
+export const userById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_usuario = ? and id_rol = 2', [id])
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al instructor` })
+    } else {
+      res.status(200).send({ result })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener el instructor' })
+  }
+}
+
+/* controlador para obtener usuarios por ID */
+export const usersById = async (req, res) => {
+  const { id } = req.params
+  try {
+    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_usuario = ?', [id])
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al usuario` })
+    } else {
+      res.status(200).send({ result })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al obtener el usuario' })
+  }
+}
+
 // Controlador para obtener todos los instructores
 export const getTeacher = async (req, res) => {
   try {
     // Consulta SQL para seleccionar usuarios con un id de rol igual a 2 (instructor)
-    const [result] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 2')
+    const [result] = await pool.query('SELECT * FROM usuarios')
 
     // Enviar una respuesta exitosa con los resultados
     res.status(200).send({ result })
@@ -88,7 +119,7 @@ export const searchUser = async (req, res) => {
 
   try {
     // Consulta SQL para buscar aprendices por nombre (usando LIKE para búsqueda parcial)
-    const [user] = await pool.query('SELECT * FROM aprendices WHERE CONCAT(nombres_aprendiz, " ", apellidos_aprendiz) LIKE ?', [`%${nombres}%`])
+    const [user] = await pool.query('SELECT * FROM aprendices WHERE estado = "EN FORMACION" AND CONCAT(nombres_aprendiz, " ", apellidos_aprendiz) LIKE ?;', [`%${nombres}%`])
 
     // Verificar si se encontraron resultados
     if (user.length === 0) return res.status(400).send({ message: 'No se encontró al aprendiz' })
@@ -108,7 +139,7 @@ export const searchTeacher = async (req, res) => {
 
   try {
     // Consulta SQL para buscar instructores por nombre (usando LIKE para búsqueda parcial)
-    const [user] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 2 AND CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
+    const [user] = await pool.query('SELECT * FROM usuarios WHERE id_rol = 2 AND estado = "ACTIVO" AND CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
 
     // Verificar si se encontraron resultados
     if (user.length === 0) return res.status(400).send({ message: 'No se encontró ningún instructor' })
@@ -138,5 +169,117 @@ export const searchCoordination = async (req, res) => {
   } catch (error) {
     // Manejar errores y enviar una respuesta de error
     res.status(401).send({ message: 'Ha ocurrido un error inesperado' })
+  }
+}
+
+// Controlador para actualizar los datos de los usuarios
+export const updateUserById = async (req, res) => {
+  const { email_sena, email_personal, numero_celular, telefono_fijo } = req.body
+  const { id } = req.params
+  const hashedPassword = req.hashedPassword
+  try {
+    const [result] = await pool.query('UPDATE usuarios SET email_sena = IFNULL(?, email_sena), email_personal = IFNULL(?, email_personal), numero_celular = IFNULL(?, numero_celular), telefono_fijo = IFNULL(?, telefono_fijo), contrasena = IFNULL(?, contrasena) WHERE id_usuario = ? ', [email_sena, email_personal, numero_celular, telefono_fijo, hashedPassword, id])
+
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al usuario` })
+    } else {
+      res.status(200).send({ message: 'Datos actualizados correctamente' })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al actualizar el usuario' })
+  }
+}
+
+/* Cambiar el estado de la cuenta */
+export const changeStateAccount = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const [result] = await pool.query('UPDATE usuarios SET estado = "INACTIVO" WHERE id_usuario = ?', [id])
+
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al usuario` })
+    } else {
+      res.status(200).send({ message: 'Cuenta deshabilitada correctamente, serás redireccionado a la página de inicio' })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al deshabilitar el usuario' })
+  }
+}
+
+export const changeStateUser = async (req, res) => {
+  const { id } = req.params
+  const { action } = req.body
+
+  try {
+    let newState = ''
+    if (action === 'habilitar') {
+      newState = 'ACTIVO'
+    } else if (action === 'deshabilitar') {
+      newState = 'INACTIVO'
+    } else {
+      return res.status(400).send({ message: 'Acción no válida' })
+    }
+
+    const [result] = await pool.query('UPDATE usuarios SET estado = ? WHERE id_usuario = ?', [newState, id])
+
+    if (result.affectedRows === 0) {
+      res.status(404).send({ message: 'No se encontró al usuario' })
+    } else {
+      res.status(200).send({ message: `Usuario ${action === 'habilitar' ? 'habilitado' : 'deshabilitado'} correctamente.` })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al cambiar el estado del usuario' })
+  }
+}
+
+/* Cambiar el estado de la cuenta de un instructor */
+export const changeRol = async (req, res) => {
+  const { id } = req.params
+  const { id_rol } = req.body
+
+  try {
+    const [result] = await pool.query('UPDATE usuarios SET id_rol = ? WHERE id_usuario = ?', [id_rol, id])
+
+    if (result.length === 0) {
+      res.status(404).send({ message: `No se encontró al usuario` })
+    } else {
+      res.status(200).send({ message: 'Rol cambiado correctamente.' })
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Error al cambiar el rol del usuario' })
+  }
+}
+
+// Controlador para buscar un usuarios por nombre
+export const search = async (req, res) => {
+  // Extraer el nombre a buscar desde la consulta
+  const { nombres } = req.query
+
+  try {
+    // Consulta SQL para buscar usuarios por nombre (usando LIKE para búsqueda parcial)
+    const [user] = await pool.query('SELECT * FROM usuarios WHERE CONCAT(nombres, " ", apellidos) LIKE ?', [`%${nombres}%`])
+
+    // Verificar si se encontraron resultados
+    if (user.length === 0) return res.status(400).send({ message: 'No se encontró al usuario' })
+
+    // Enviar una respuesta exitosa con los resultados
+    res.status(200).send({ user })
+  } catch (error) {
+    // Manejar errores y enviar una respuesta de error
+    res.status(401).send({ message: 'Ha ocurrido un error inesperado' })
+  }
+}
+
+export const forgotPassword = async (req, res) => {
+  const { email_sena } = req.body
+  const { hashedPassword } = req
+
+  try {
+    await pool.query('UPDATE usuarios SET contrasena = IFNULL(?, contrasena) WHERE email_sena = ?', [hashedPassword, email_sena])
+
+    return res.status(200).json({ message: 'Contraseña actualizada correctamente' })
+  } catch (error) {
+    return res.status(500).send('Hubo un error al enviar el email')
   }
 }

@@ -11,6 +11,30 @@ export const getUsers = () => {
   return response
 }
 
+/* update state account user */
+export const stateUser = (userID) => {
+  const URL = `${BaseUrl}${api}/stateUser/${userID}`
+  const response = axios.patch(URL)
+
+  return response
+}
+
+/* update state account teacher */
+export const stateTeacher = (userID, data) => {
+  const URL = `${BaseUrl}${api}/stateTeacher/${userID}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* change rol account teacher */
+export const changeRolTeacher = (userID, data) => {
+  const URL = `${BaseUrl}${api}/changeRol/${userID}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
 /* Get teachers */
 export const getTeachers = () => {
   const URL = `${BaseUrl}${api}/teachers`
@@ -27,7 +51,15 @@ export const getTeacherByName = (nombres) => {
   return response
 }
 
-/* Get user by name */
+/* Get teachers by name */
+export const search = (nombres) => {
+  const URL = `${BaseUrl}${api}/search?nombres=${nombres}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* Get apprentices by name */
 export const getApprenticesByName = (nombres) => {
   const URL = `${BaseUrl}${api}/searchUser?nombres=${nombres}`
   const response = axios.get(URL)
@@ -52,10 +84,9 @@ export const getApprenticesById = (userId) => {
 }
 
 /* Create Request */
-export const createRequest = (data) => {
+export const createRequest = (formData) => {
   const URL = `${BaseUrl}${api}/createSolicitud`
-  const response = axios.post(URL, data)
-
+  const response = axios.post(URL, formData)
   return response
 }
 
@@ -99,6 +130,14 @@ export const getFichasById = (id) => {
   return response
 }
 
+/* change state groups */
+export const changeStateGroups = (idgroups) => {
+  const URL = `${BaseUrl}${api}/stateFicha/${idgroups}`
+  const response = axios.patch(URL)
+
+  return response
+}
+
 /* Create apprentices */
 export const createApprentices = (data) => {
   const URL = `${BaseUrl}${api}/createAprendiz`
@@ -122,4 +161,189 @@ export const getCoordination = () => {
 
   return response
 }
+/* Get reglamento */
+export const getRules = () => {
+  const URL = `${BaseUrl}${api}/getRules`
+  const response = axios.get(URL)
+  return response
+}
 
+/* Obtener archivo por nombre */
+export const getSingleFile = async (nombreArchivo) => {
+  const URL = `${BaseUrl}${api}/obtenerArchivo${nombreArchivo}`
+  const response = await axios.get(URL, {
+    responseType: 'blob' // Para manejar una respuesta binaria (archivo)
+  })
+
+  return response
+}
+
+/* get instructors by id */
+export const getInstructorById = (idInstructor) => {
+  const URL = `${BaseUrl}${api}/user/${idInstructor}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* get request */
+export const getRequest = () => {
+  const URL = `${BaseUrl}${api}/solicitudes`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* get request by id */
+export const getRequestById = (idRequest) => {
+  const URL = `${BaseUrl}${api}/solicitud/${idRequest}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* get request by id user */
+export const getRequestByIdUser = (userID) => {
+  const URL = `${BaseUrl}${api}/solicitudByIdUser/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* update request */
+export const updateRequest = (data, idRequest) => {
+  const URL = `${BaseUrl}${api}/updateSolicitud/${idRequest}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* get messages */
+export const getMessageById = (userID) => {
+  const URL = `${BaseUrl}${api}/notifyByIdUser/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* get messages */
+export const countMessage = (userID) => {
+  const URL = `${BaseUrl}${api}/countMessageId/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* update message state */
+export const updateStateMessage = (messageID) => {
+  const URL = `${BaseUrl}${api}/updateMessageState/${messageID}`
+  const response = axios.patch(URL)
+
+  return response
+}
+
+/* update information personal */
+export const updateUser = (userID, data) => {
+  const URL = `${BaseUrl}${api}/updateUser/${userID}`
+  const response = axios.patch(URL, data)
+
+  return response
+}
+
+/* get information personal */
+export const usersById = (userID) => {
+  const URL = `${BaseUrl}${api}/users/${userID}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* get teachers */
+export const getTeacher = () => {
+  const URL = `${BaseUrl}${api}/teachers`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* send email */
+export const sendEmail = (data) => {
+  const URL = `${BaseUrl}${api}/sendEmail`
+  const response = axios.post(URL, data)
+
+  return response
+}
+
+/* send email with file */
+export const emailFile = (data) => {
+  const URL = `${BaseUrl}${api}/emailFile`
+  const response = axios.post(URL, data)
+
+  return response
+}
+
+/* get templates */
+export const getTemplates = () => {
+  const URL = `${BaseUrl}${api}/getTemplate`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* get template by id  */
+export const templateID = (IdTemplate) => {
+  const URL = `${BaseUrl}${api}/getTemplateById/${IdTemplate}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* Post rules */
+export const postRules = (data) => {
+  const URL = `${BaseUrl}${api}/createRule`
+  const response = axios.post(URL, data)
+
+  return response
+}
+
+/* get file by name  (DOWNLOAD)*/
+export const downloadFile = (nameFile) => {
+  const URL = `${BaseUrl}${api}/obtenerArchivo/${nameFile}`
+
+  const response = axios.get(URL, { responseType: 'blob' })
+
+  return response
+}
+
+/* get file by id apprentice */
+export const getFileByApprentice = (idApprentice) => {
+  const URL = `${BaseUrl}${api}/fileByApprentice/${idApprentice}`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* generate reports apprentices */
+/* ************************************ */
+export const fileReportApprentices = () => {
+  const URL = `${BaseUrl}${api}/generateReportApprentices`
+  const response = axios.get(URL)
+
+  return response
+}
+
+/* generate reports request */
+export const fileReportRequest = () => {
+  const URL = `${BaseUrl}${api}/generateReportRequest`
+  const response = axios.get(URL)
+
+  return response
+}
+
+export const fileReportByGroup = (numeroFicha) => {
+  const URL = `${BaseUrl}${api}/generateReportByGroup?numero_ficha=${numeroFicha}`
+  const response = axios.get(URL)
+
+  return response
+}
+/* ************************************ */

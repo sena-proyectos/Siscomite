@@ -4,25 +4,19 @@ import { createSolicitud } from '../schemas/request.schemas.js'
 // Middleware para verificar y validar los datos de una solicitud antes de crearla
 export const createDataSolicitud = (req, res, next) => {
   // Extraer los datos de la solicitud del cuerpo de la solicitud
-  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo } = req.body
-
-  // Convertir los ID a números enteros
-  const idParsedUser = Number(id_usuario_solicitante)
-  const idParsedAprendiz = Number(id_aprendiz)
-  const idParsedArchivo = Number(id_archivo)
+  const { tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso } = req.body
 
   try {
-    // Comprobar si los ID son números válidos
-    if (isNaN(idParsedUser)) return res.status(400).json({ message: 'El usuario no es válido.' })
-    if (isNaN(idParsedAprendiz)) return res.status(400).json({ message: 'El aprendiz no es válido.' })
-    if (isNaN(idParsedArchivo)) return res.status(400).json({ message: 'El archivo no es válido.' })
-
     // Validar los datos de la solicitud utilizando el esquema de validación 'createSolicitud'
-    const { error } = createSolicitud.validate({ tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, id_aprendiz, categoria_causa, calificacion_causa, descripcion_caso, id_archivo })
-
+    const { error } = createSolicitud.validate({ tipo_solicitud, nombre_coordinacion, id_usuario_solicitante, categoria_causa, calificacion_causa, descripcion_caso })
     // Comprobar si hay un error de validación
     if (error !== undefined) {
       return res.status(400).json({ message: 'Los datos de la solicitud no son válidos, verifícalos.' })
+    }
+
+    /* Validar selección de aprendices */
+    if (nombre_coordinacion === 'Coordinador') {
+      return res.status(400).send({ message: 'Debe especificar qué coordinador está asociado a su tipo de solicitud.' })
     }
 
     // Si los datos de la solicitud son válidos, se permite que la solicitud continúe al siguiente middleware o controlador
